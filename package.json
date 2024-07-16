@@ -7,10 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "genTypes": "supabase gen types typescript --project-id $PROJECT_REF --schema public > src/types/supabase.ts"
+    "genTypes": "supabase gen types typescript --project-id eoxrihspempkfnxziwzd --schema public > src/types/supabase.ts"
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
+    "@supabase/ssr": "^0.4.0",
+    "@supabase/supabase-js": "^2.44.4",
     "@tanstack/react-query": "^5.51.1",
     "@tanstack/react-query-devtools": "^5.51.1",
     "next": "14.2.5",
