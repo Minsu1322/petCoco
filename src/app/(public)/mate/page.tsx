@@ -1,9 +1,10 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import MatePostList from "./_components/MatePostList";
-import Post from "./_components/PostForm";
+
+import Post from "./_components/postForm";
 import Link from "next/link";
+import MatePostList from "./_components/matePostList";
 
 const MatePage = () => {
   // 커스텀 훅으로 빼기

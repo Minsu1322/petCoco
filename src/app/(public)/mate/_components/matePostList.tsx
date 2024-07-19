@@ -1,5 +1,7 @@
 import { MatePostType } from "@/types/mate.type"
-import MatePostItem from "./MatePostItem"
+import MatePostItem from './matePostItem';
+
+
 
 interface MatePostListProps {
   posts: MatePostType[]

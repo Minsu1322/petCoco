@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { useLocation } from "@/zustand/useLocation";
 
 // 동적 로딩 설정
-const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/MapForm"), { ssr: false });
+const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/mapForm"), { ssr: false });
 
 // TODO:타입 밖으로 빼기
 export type PostType = {

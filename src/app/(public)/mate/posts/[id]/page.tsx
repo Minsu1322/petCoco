@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import DetailMatePost from "../_components/DetailMatePost";
+import DetailMatePost from "../_components/detailMatePost";
 
 const MatePost = ({ params }: { params: { id: string } }) => {
   const { id } = params;
