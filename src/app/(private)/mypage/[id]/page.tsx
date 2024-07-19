@@ -1,7 +1,7 @@
 import { error } from "console";
 import { ChangeEvent, useState } from "react";
-import MyPageProfile from "./components/MyPageProfile";
-import ChangeProfileModalButton from "./components/ChangeProfileModalButton";
+import MyPageProfile from "./_components/MyPageProfile";
+import ChangeProfileModalButton from "./_components/ChangeProfileModalButton";
 
 function MyPage() {
   //const user = useAuthStore((state) => state.user);
