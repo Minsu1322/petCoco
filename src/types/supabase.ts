@@ -95,10 +95,10 @@ export type Database = {
           male_female: string | null
           members: string | null
           neutered: boolean | null
-          number: string | null
+          numbers: string | null
           position: Json | null
+          size: string | null
           title: string | null
-          type: string | null
           user_id: string | null
           weight: string | null
         }
@@ -109,10 +109,10 @@ export type Database = {
           male_female?: string | null
           members?: string | null
           neutered?: boolean | null
-          number?: string | null
+          numbers?: string | null
           position?: Json | null
+          size?: string | null
           title?: string | null
-          type?: string | null
           user_id?: string | null
           weight?: string | null
         }
@@ -123,10 +123,10 @@ export type Database = {
           male_female?: string | null
           members?: string | null
           neutered?: boolean | null
-          number?: string | null
+          numbers?: string | null
           position?: Json | null
+          size?: string | null
           title?: string | null
-          type?: string | null
           user_id?: string | null
           weight?: string | null
         }
