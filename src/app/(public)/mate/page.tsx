@@ -2,7 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import Post from "./_components/postForm";
 import Link from "next/link";
 import MatePostList from "./_components/matePostList";
 
@@ -34,10 +33,9 @@ const MatePage = () => {
   return (
     <div>
       <div>
-        <p>산책 메이트 확인하기</p>
-        <div className="h-10 w-[180px] rounded-lg bg-blue-300 p-2 text-center">
+        <p className="mb-5">산책 메이트</p>
+        <div className="mb-4 h-10 w-[180px] rounded-lg bg-mainColor p-2 text-center">
           <Link href="/mate/posts">산책 메이트 구하기 🐾</Link>
-          {/* <Post /> */}
         </div>
         <MatePostList posts={posts} />
       </div>
