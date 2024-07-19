@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import { useAuthStore } from "@/zustand/authStore";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn, error } = useAuthStore();
@@ -12,6 +14,7 @@ const page = () => {
     e.preventDefault();
     await signIn({ email, password });
     alert("로그인이 완료되었습니다!");
+    router.push("/");
   };
 
   return (
