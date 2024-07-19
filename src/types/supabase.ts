@@ -52,21 +52,21 @@ export type Database = {
         Row: {
           content: string | null
           created_at: string
-          id: number
+          id: string
           post_id: string | null
           user_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
-          id?: number
+          id?: string
           post_id?: string | null
           user_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
-          id?: number
+          id?: string
           post_id?: string | null
           user_id?: string | null
         }
@@ -92,22 +92,43 @@ export type Database = {
           content: string | null
           created_at: string
           id: string
+          male_female: string | null
+          members: string | null
+          neutered: boolean | null
+          number: string | null
+          position: Json | null
           title: string | null
+          type: string | null
           user_id: string | null
+          weight: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
           id?: string
+          male_female?: string | null
+          members?: string | null
+          neutered?: boolean | null
+          number?: string | null
+          position?: Json | null
           title?: string | null
+          type?: string | null
           user_id?: string | null
+          weight?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
           id?: string
+          male_female?: string | null
+          members?: string | null
+          neutered?: boolean | null
+          number?: string | null
+          position?: Json | null
           title?: string | null
+          type?: string | null
           user_id?: string | null
+          weight?: string | null
         }
         Relationships: [
           {
@@ -121,6 +142,7 @@ export type Database = {
       }
       posts: {
         Row: {
+          category: string
           content: string | null
           created_at: string
           id: string
@@ -128,6 +150,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          category: string
           content?: string | null
           created_at?: string
           id?: string
@@ -135,6 +158,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          category?: string
           content?: string | null
           created_at?: string
           id?: string
