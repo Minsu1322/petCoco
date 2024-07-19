@@ -1,22 +1,32 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/supabase/client"; // 클라이언트 파일 경로
+import { createClient } from "@/supabase/client";
 
-export async function GET() {
-  const supabase = createClient(); // 클라이언트 생성
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const postId = searchParams.get("id");
 
-  const { data, error } = await supabase.from("comments").select(`
+  if (!postId) {
+    return NextResponse.json({ error: "id is required" }, { status: 400 });
+  }
+
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from("comments")
+    .select(
+      `
+    *,
+    users (
       id,
-      content,
-      created_at,
-      user: users (
-        nickname,
-        profileImageUrl
-      )
-    `);
+      nickname
+    )
+  `
+    )
+    .eq("post_id", postId);
+  console.log(data);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-
   return NextResponse.json(data);
 }
