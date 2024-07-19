@@ -17,9 +17,12 @@ export type PostType = {
     lat: number;
     lng: number;
   };
-  number: string;
-  neutered: boolean;
+  numbers: string;
+  neutered: null | boolean;
   male_female: string;
+  members: string;
+  size: string;
+  weight: string;
 };
 
 // interface NextPost {
@@ -32,12 +35,16 @@ export type PostType = {
 // }
 
 const PostForm = () => {
+  // TODO: state 하나로 관리하도록 변경하기
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const { position, setPosition } = useLocation();
   const [male_female, setMale_female] = useState<string>("");
-  const [neutered, setNeutered] = useState<boolean>(true);
-  const [number, setNumber] = useState<string>("");
+  const [neutered, setNeutered] = useState<boolean | null>(null);
+  const [numbers, setNumbers] = useState<string>("");
+  const [members, setMembers] = useState<string>("");
+  const [size, setSize] = useState<string>("");
+  const [weight, setWeight] = useState<string>("");
 
   const queryClient = useQueryClient();
 
@@ -75,9 +82,12 @@ const PostForm = () => {
     title,
     content,
     position,
-    number,
+    numbers,
     neutered,
-    male_female
+    male_female,
+    members,
+    size,
+    weight
   };
 
   const handleUploadPost = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -93,9 +103,12 @@ const PostForm = () => {
       setTitle("");
       setContent("");
       setPosition({ lat: 37.5556236021213, lng: 126.992199507869 });
-      setNumber("");
-      setNeutered(true);
+      setNumbers("0");
+      setNeutered(null);
       setMale_female("");
+      setSize("");
+      setWeight("");
+      setMembers("");
     } catch (err) {
       console.error(err);
     }
@@ -114,7 +127,7 @@ const PostForm = () => {
               setTitle(e.target.value);
             }}
             placeholder=" 제목을 입력해 주세요"
-            className="w-[400px] rounded-md border border-gray-300"
+            className="w-[300px] rounded-md border border-gray-300"
           />
           <div>
             <DynamicMapComponent
@@ -122,15 +135,15 @@ const PostForm = () => {
               // markerPosition={{ lat: 37.5556236021213, lng: 126.992199507869  }}
             />
           </div>
-          <div className="mt-3 flex flex-row items-center gap-x-5">
+          <div className="mt-3 flex flex-col gap-x-5">
             <div className="flex flex-row gap-x-2">
               <label htmlFor="number">반려동물 수</label>
               <select
                 name="number of animals"
                 id="number"
                 className="w-12 border border-black"
-                value={number}
-                onChange={(e) => setNumber(e.target.value)}
+                value={numbers}
+                onChange={(e) => setNumbers(e.target.value)}
               >
                 <option value="0">0</option>
                 <option value="1">1</option>
@@ -141,38 +154,93 @@ const PostForm = () => {
             <div className="flex flex-row gap-x-2">
               <p>성별 : </p>
               <label htmlFor="male_female">암컷</label>
-              <input type="checkbox" name="male_female" value="female" onChange={(e) => setMale_female(e.target.value)} />
+              <input
+                type="checkbox"
+                name="male_female"
+                value="female"
+                checked={male_female === "female"}
+                onChange={(e) => setMale_female(e.target.value)}
+              />
               <label htmlFor="male_female">수컷</label>
               <input
                 type="checkbox"
                 name="male_female"
                 value="male"
+                checked={male_female === "male"}
                 onChange={(e) => setMale_female(e.target.value)}
               />
             </div>
-            <div>
+            <div className="flex flex-row gap-x-3">
               <p>중성화 여부 : </p>
               <label>네</label>
-              <input type="radio" name="neutered" value="true" onChange={ (e) => setNeutered(e.target.value === "true")} />
-      <label>아니오</label>
-      <input type="radio" name="neutered" value="false" onChange={(e) => setNeutered(e.target.value === "false")} />
-    </div>
-          <textarea
-            value={content}
-            onChange={(e) => {
-              setContent(e.target.value);
-            }}
-            placeholder=" 글을 작성해 주세요"
-            className="mt-5 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
-          ></textarea>
+              <input
+                type="radio"
+                name="neutered"
+                value="true"
+                onChange={() => setNeutered(true)}
+                checked={neutered === true}
+              />
+              <label>아니오</label>
+              <input
+                type="radio"
+                name="neutered"
+                value="false"
+                onChange={() => setNeutered(false)}
+                checked={neutered === false}
+              />
+            </div>
+            <div className="flex flex-row gap-x-2">
+              <p> 견종 크기 : </p>
+              {/* TODO: 적당한 이름 찾기,, */}
+              <label htmlFor="size">소형견</label>
+              <input
+                type="checkbox"
+                name="size"
+                value="소형견"
+                onChange={(e) => setSize(e.target.checked ? e.target.value : "")}
+                checked={size === "소형견"}
+              />
+              <label htmlFor="male_female">중형견</label>
+              <input
+                type="checkbox"
+                name="size"
+                value="중형견"
+                onChange={(e) => setSize(e.target.checked ? e.target.value : "")}
+                checked={size === "중형견"}
+              />
+              <label htmlFor="male_female">대형견</label>
+              <input
+                type="checkbox"
+                name="size"
+                value="대형견"
+                onChange={(e) => setSize(e.target.checked ? e.target.value : "")}
+                checked={size === "대형견"}
+              />
+            </div>
+            <div className="flex flex-row gap-x-2">
+              <p>무게 : </p>
+              <input type="text" className="border" value={weight} onChange={(e) => setWeight(e.target.value)} /> kg
+            </div>
+            <div className="flex flex-row gap-x-2">
+              <p>모집인원 수 : </p>
+              <input type="text" className="border" value={members} onChange={(e) => setMembers(e.target.value)} />명
+            </div>
+            <textarea
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value);
+              }}
+              placeholder=" 글을 작성해 주세요"
+              className="mt-5 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
+            ></textarea>
+          </div>
         </div>
-        </div>
-        <button type="submit" className="h-10 w-20 rounded-md bg-blue-500 p-1 text-white">
+        <button type="submit" className="mt-3 h-10 w-20 rounded-md bg-mainColor p-1">
           등록하기
         </button>
       </form>
     </div>
-  )
-  }
+  );
+};
 
 export default PostForm;
