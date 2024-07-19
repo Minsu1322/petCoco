@@ -1,7 +1,8 @@
 "use client";
 
 import { useLocation } from "@/zustand/useLocation";
-import { Map, MapMarker } from "react-kakao-maps-sdk";
+//import { useRef, useState } from "react";
+import { Map, MapMarker, MapTypeControl, ZoomControl } from "react-kakao-maps-sdk";
 
 interface MapComponentProps {
   center: { lat: number; lng: number };
@@ -10,8 +11,25 @@ interface MapComponentProps {
 
 const MapComponent = ({ center }: MapComponentProps) => {
   const { position, setPosition } = useLocation();
+  // const mapRef = useRef<kakao.maps.Map>(null)
+  // const [mapType, setMapType] = useState<"roadmap" | "skyview">("roadmap")
+
+  // const zoomIn = () => {
+  //   const map = mapRef.current
+  //   if (!map) return
+  //   map.setLevel(map.getLevel() - 1)
+  // }
+
+  // const zoomOut = () => {
+  //   const map = mapRef.current
+  //   if (!map) return
+  //   map.setLevel(map.getLevel() + 1)
+  // }
+
 
   return (
+    <>
+
     <Map
       center={position}
       style={{ width: "500px", height: "360px" }}
@@ -23,6 +41,8 @@ const MapComponent = ({ center }: MapComponentProps) => {
           lng: latlng.getLng()
         });
       }}
+      // mapTypeId={mapType === "roadmap" ? "ROADMAP" : "HYBRID"}
+      // ref={mapRef}
     >
       <MapMarker
         position={position ?? center}
@@ -37,12 +57,50 @@ const MapComponent = ({ center }: MapComponentProps) => {
               x: 27,
               y: 69
             } // 마커이미지 옵션, 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정
-          }
+          },
+          
         }}
       >
-        <div className="w-[150px] bg-blue-300 text-center">산책 장소</div>
+        <div className="w-[150px] bg-mainColor text-center">산책 장소</div>
       </MapMarker>
+      <MapTypeControl  position={"TOPRIGHT"} />
+        <ZoomControl position={"RIGHT"} />
+          
     </Map>
+        {/* TODO: 커스텀을 위한 코드 */}
+      {/* <div className="custom_typecontrol radius_border">
+      <span
+          id="btnRoadmap"
+          className={mapType === "roadmap" ? "selected_btn" : "btn"}
+          onClick={() => setMapType("roadmap")}
+        >
+          지도
+        </span>
+        <span
+          id="btnSkyview"
+          className={mapType === "skyview" ? "selected_btn" : "btn"}
+          onClick={() => {
+            setMapType("skyview")
+          }}
+        >
+          스카이뷰
+        </span>
+      </div>
+      <div className="custom_zoomcontrol radius_border">
+        <span onClick={zoomIn}>
+          <img
+            src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
+            alt="확대"
+          />
+        </span>
+        <span onClick={zoomOut}>
+          <img
+            src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
+            alt="축소"
+          />
+        </span>
+      </div> */}
+      </>
   );
 };
 
