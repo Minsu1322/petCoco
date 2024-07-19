@@ -41,20 +41,20 @@ export default function CreatePostPage() {
   };
 
   // 게시글 작성 버튼을 클릭했을 때 호출되는 함수입니다.
-  const handlePostSubmit = async () => {
-    // 게시가 불가능한 경우 함수 실행을 종료합니다.
-    if (!isPostable) return;
-    const { error } = await supabase.from("posts").insert([{ content: post, user_id: userId }]);
+  // const handlePostSubmit = async () => {
+  //   // 게시가 불가능한 경우 함수 실행을 종료합니다.
+  //   if (!isPostable) return;
+  //   const { error } = await supabase.from("posts").insert([{ content: post, user_id: userId }]);
 
-    if (error) {
-      console.log(error);
-    } else {
-      setPost("");
-      setPostLength(0);
-      setIsPostable(false);
-      fetchPosts();
-    }
-  };
+  //   if (error) {
+  //     console.log(error);
+  //   } else {
+  //     setPost("");
+  //     setPostLength(0);
+  //     setIsPostable(false);
+  //     fetchPosts();
+  //   }
+  // };
   // 게시글 데이터를 가져오는 함수입니다.
   const fetchPosts = async () => {
     const { data, error } = await supabase.from("posts").select("*");
@@ -96,9 +96,9 @@ export default function CreatePostPage() {
             {postLength} / {MAX_POST_LENGTH}
           </span>
           {/* 게시 버튼입니다. 게시가 가능할 때만 활성화됩니다. */}
-          <button onClick={handlePostSubmit} disabled={!isPostable}>
-            게시
-          </button>
+          {/* <button onClick={handlePostSubmit} disabled={!isPostable}> */}
+          게시
+          {/* </button> */}
         </div>
       );
     };
