@@ -52,33 +52,21 @@ export type Database = {
         Row: {
           content: string | null
           created_at: string
-<<<<<<< HEAD
-          id: number
-=======
           id: string
->>>>>>> dev
           post_id: string | null
           user_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
-<<<<<<< HEAD
-          id?: number
-=======
           id?: string
->>>>>>> dev
           post_id?: string | null
           user_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
-<<<<<<< HEAD
-          id?: number
-=======
           id?: string
->>>>>>> dev
           post_id?: string | null
           user_id?: string | null
         }
@@ -104,10 +92,6 @@ export type Database = {
           content: string | null
           created_at: string
           id: string
-<<<<<<< HEAD
-          title: string | null
-          user_id: string | null
-=======
           male_female: string | null
           members: string | null
           neutered: boolean | null
@@ -117,16 +101,10 @@ export type Database = {
           title: string | null
           user_id: string | null
           weight: string | null
->>>>>>> dev
         }
         Insert: {
           content?: string | null
           created_at?: string
-<<<<<<< HEAD
-          id: string
-          title?: string | null
-          user_id?: string | null
-=======
           id?: string
           male_female?: string | null
           members?: string | null
@@ -137,16 +115,11 @@ export type Database = {
           title?: string | null
           user_id?: string | null
           weight?: string | null
->>>>>>> dev
         }
         Update: {
           content?: string | null
           created_at?: string
           id?: string
-<<<<<<< HEAD
-          title?: string | null
-          user_id?: string | null
-=======
           male_female?: string | null
           members?: string | null
           neutered?: boolean | null
@@ -156,7 +129,6 @@ export type Database = {
           title?: string | null
           user_id?: string | null
           weight?: string | null
->>>>>>> dev
         }
         Relationships: [
           {
@@ -170,44 +142,27 @@ export type Database = {
       }
       posts: {
         Row: {
-<<<<<<< HEAD
-=======
           category: string
->>>>>>> dev
           content: string | null
           created_at: string
           id: string
           title: string | null
-<<<<<<< HEAD
-        }
-        Insert: {
-=======
           user_id: string | null
         }
         Insert: {
           category: string
->>>>>>> dev
           content?: string | null
           created_at?: string
           id?: string
           title?: string | null
-<<<<<<< HEAD
-        }
-        Update: {
-=======
           user_id?: string | null
         }
         Update: {
           category?: string
->>>>>>> dev
           content?: string | null
           created_at?: string
           id?: string
           title?: string | null
-<<<<<<< HEAD
-        }
-        Relationships: []
-=======
           user_id?: string | null
         }
         Relationships: [
@@ -219,7 +174,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
->>>>>>> dev
       }
       users: {
         Row: {
