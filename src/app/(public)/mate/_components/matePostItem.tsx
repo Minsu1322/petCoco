@@ -8,7 +8,7 @@ interface MatePostItemPorps {
 const MatePostItem = ({ post }: MatePostItemPorps) => {
 
   return (
-    <Link href={`/mate/posts/${post.id}`} className="flex flex-col mb-5 w-[500px] bg-blue-100 p-4">
+    <Link href={`/mate/posts/${post.id}`} className="flex flex-col mb-5 w-[500px] bg-gray-200 p-4">
       <div className="flex flex-row justify-between">
         
         <p>{post.title}</p>
