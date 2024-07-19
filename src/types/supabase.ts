@@ -9,29 +9,30 @@ export type Database = {
           created_at: string;
           id: string;
           post_id: string | null;
-          title: string | null;
           user_id: string | null;
-          writer: string | null;
         };
         Insert: {
           content?: string | null;
           created_at?: string;
           id?: string;
           post_id?: string | null;
-          title?: string | null;
           user_id?: string | null;
-          writer?: string | null;
         };
         Update: {
           content?: string | null;
           created_at?: string;
           id?: string;
           post_id?: string | null;
-          title?: string | null;
           user_id?: string | null;
-          writer?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "comments_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "posts";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "comments_user_id_fkey";
             columns: ["user_id"];
@@ -41,27 +42,119 @@ export type Database = {
           }
         ];
       };
-      users: {
+      mateComments: {
         Row: {
-          avatar: string;
+          content: string | null;
           created_at: string;
-          email: string;
-          id: string;
-          nickname: string;
+          id: number;
+          post_id: string | null;
+          user_id: string | null;
         };
         Insert: {
-          avatar?: string;
+          content?: string | null;
           created_at?: string;
-          email: string;
-          id?: string;
-          nickname: string;
+          id?: number;
+          post_id?: string | null;
+          user_id?: string | null;
         };
         Update: {
-          avatar?: string;
+          content?: string | null;
           created_at?: string;
-          email?: string;
+          id?: number;
+          post_id?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "mateComments_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "matePosts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "mateComments_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      matePosts: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          id: string;
+          title: string | null;
+          user_id: string | null;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          id: string;
+          title?: string | null;
+          user_id?: string | null;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
           id?: string;
-          nickname?: string;
+          title?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "matePosts_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      posts: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          id: string;
+          title: string | null;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          id?: string;
+          title?: string | null;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          id?: string;
+          title?: string | null;
+        };
+        Relationships: [];
+      };
+      users: {
+        Row: {
+          created_at: string;
+          email: string | null;
+          id: string;
+          nickname: string | null;
+          profile_img: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          email?: string | null;
+          id?: string;
+          nickname?: string | null;
+          profile_img?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          email?: string | null;
+          id?: string;
+          nickname?: string | null;
+          profile_img?: string | null;
         };
         Relationships: [
           {
@@ -78,12 +171,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      delete_user: {
-        Args: {
-          user_id: string;
-        };
-        Returns: undefined;
-      };
+      [_ in never]: never;
     };
     Enums: {
       [_ in never]: never;
