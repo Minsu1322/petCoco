@@ -23,10 +23,10 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
 export const POST = async (request: NextRequest, { params }: { params: { id: string } }) => {
   const supabase = createClient();
   //const { id } = params;
-  const { title, content } = await request.json();
+  const newPost = await request.json();
 
   try {
-    const { data, error } = await supabase.from("matePosts").insert({ title, content });
+    const { data, error } = await supabase.from("matePosts").insert(newPost);
 
     if (error) {
       console.error(error);
