@@ -91,6 +91,7 @@ export type Database = {
         Row: {
           content: string | null
           created_at: string
+          dateTime: string | null
           id: string
           male_female: string | null
           members: string | null
@@ -105,6 +106,7 @@ export type Database = {
         Insert: {
           content?: string | null
           created_at?: string
+          dateTime?: string | null
           id?: string
           male_female?: string | null
           members?: string | null
@@ -119,6 +121,7 @@ export type Database = {
         Update: {
           content?: string | null
           created_at?: string
+          dateTime?: string | null
           id?: string
           male_female?: string | null
           members?: string | null
