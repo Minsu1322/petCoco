@@ -9,8 +9,13 @@ export type MatePostFullType = MatePostType & {
     };
     errMsg: string | null;
     isLoading: boolean;
+  };
+  users: {
+    nickname: string;
   }
 }
+
+export type MateNextPostType = Omit<MatePostFullType, 'user_id' | 'id' | 'created_at' | 'users'>
 
 export type MateCommentType = Tables<"mateComments">;
 
