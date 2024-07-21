@@ -1,14 +1,26 @@
 import { create } from "zustand";
 
-type useLocaStore = {
-  position: {
+type Position = {
+  center: {
     lat: number;
     lng: number;
   };
-  setPosition: (position: { lat: number; lng: number }) => void;
+  errMsg: string | null;
+  isLoading: boolean;
 };
 
-export const locationStore = create<useLocaStore>()((set) => ({
-  position: { lat: 37.5556236021213, lng: 126.992199507869 },
-  setPosition: (position) => set({ position })
+type UseLocationStore = {
+  position: Position;
+  setPosition: (position: Partial<Position>) => void;
+};
+
+export const locationStore = create<UseLocationStore>((set) => ({
+  position: { 
+    center: { lat: 37.5556236021213, lng: 126.992199507869 }, 
+    errMsg: null, 
+    isLoading: true 
+  },
+  setPosition: (newPosition) => set((state) => ({ 
+    position: { ...state.position, ...newPosition } 
+  }))
 }));
