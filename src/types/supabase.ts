@@ -89,6 +89,7 @@ export type Database = {
       }
       matePosts: {
         Row: {
+          characteristics: string | null
           content: string | null
           created_at: string
           dateTime: string | null
@@ -105,6 +106,7 @@ export type Database = {
           weight: string | null
         }
         Insert: {
+          characteristics?: string | null
           content?: string | null
           created_at?: string
           dateTime?: string | null
@@ -121,6 +123,7 @@ export type Database = {
           weight?: string | null
         }
         Update: {
+          characteristics?: string | null
           content?: string | null
           created_at?: string
           dateTime?: string | null
