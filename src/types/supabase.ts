@@ -98,6 +98,7 @@ export type Database = {
           neutered: boolean | null
           numbers: string | null
           position: Json | null
+          recruiting: boolean | null
           size: string | null
           title: string | null
           user_id: string | null
@@ -113,6 +114,7 @@ export type Database = {
           neutered?: boolean | null
           numbers?: string | null
           position?: Json | null
+          recruiting?: boolean | null
           size?: string | null
           title?: string | null
           user_id?: string | null
@@ -128,6 +130,7 @@ export type Database = {
           neutered?: boolean | null
           numbers?: string | null
           position?: Json | null
+          recruiting?: boolean | null
           size?: string | null
           title?: string | null
           user_id?: string | null
