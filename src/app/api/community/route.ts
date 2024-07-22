@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "18"); // 3열 5줄 = 15개
   const category = searchParams.get("category") || "전체";
+  const searchTerm = searchParams.get("search") || "";
 
   const supabase = createClient();
 
@@ -18,7 +19,11 @@ export async function GET(request: Request) {
         users (
           id,
           nickname
-        )
+        ),
+        comments (
+        id
+        ).eq("post_id", postId)
+        
       `,
         { count: "exact" }
       )
@@ -28,9 +33,13 @@ export async function GET(request: Request) {
       query = query.eq("category", category);
     }
 
-    const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
+    if (searchTerm) {
+      query = query.ilike("title", `%${searchTerm}%`);
+    }
 
+    const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
     console.log(data);
+
 
     if (error) {
       throw error;
