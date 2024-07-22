@@ -1,118 +1,140 @@
 "use client";
-import { createClient } from "@/supabase/client";
-import React, { use, useEffect, useState } from "react";
-const supabase = createClient();
 
-const MAX_POST_LENGTH = 125; // 125자
-interface Post {
-  id: string;
-  content: string;
-  user_id: string;
-  created_at: string;
-}
-export default function CreatePostPage() {
-  const userId = "3841c2cf-d6b6-4d60-8b8d-c483f8d9bac0";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { usePostStore } from "@/zustand/post";
+import { supabase } from "@/supabase/userClient";
 
-  // 게시글 내용을 저장하는 상태 변수와, 이 변수를 갱신하는 함수를 선언합니다.
-  const [post, setPost] = useState("");
+const CATEGORIES = [
+  { value: "자유게시판", label: "자유게시판" },
+  { value: "희귀동물", label: "희귀동물" },
+  { value: "자랑하기", label: "자랑하기" },
+  { value: "고민있어요", label: "고민있어요" }
+];
 
-  // 게시글 길이를 저장하는 상태 변수와, 이 변수를 갱신하는 함수를 선언합니다.
-  const [postLength, setPostLength] = useState(0);
+const CreatePostPage = () => {
+  const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage } = usePostStore();
 
-  // 게시글을 작성할 수 있는지 여부를 저장하는 상태 변수와, 이 변수를 갱신하는 함수를 선언합니다.
-  const [isPostable, setIsPostable] = useState(false);
+  const router = useRouter();
 
-  // posts 상태를 Post 타입의 배열로 선언합니다.
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  // 게시글 내용이 변경될 때 호출되는 함수입니다.
-  const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    // 이벤트 타겟에서 입력된 값을 가져옵니다.
-    const { value } = e.target;
-
-    // 게시글 상태를 갱신합니다.
-    setPost(value);
-
-    // 게시글 길이 상태를 갱신합니다.
-    setPostLength(value.length);
-
-    // 게시글 길이에 따라 게시가 가능한지 여부를 갱신합니다.
-    setIsPostable(value.length > 0 && value.length <= MAX_POST_LENGTH);
-  };
-
-  // 게시글 작성 버튼을 클릭했을 때 호출되는 함수입니다.
-  // const handlePostSubmit = async () => {
-  //   // 게시가 불가능한 경우 함수 실행을 종료합니다.
-  //   if (!isPostable) return;
-  //   const { error } = await supabase.from("posts").insert([{ content: post, user_id: userId }]);
-
-  //   if (error) {
-  //     console.log(error);
-  //   } else {
-  //     setPost("");
-  //     setPostLength(0);
-  //     setIsPostable(false);
-  //     fetchPosts();
-  //   }
-  // };
-  // 게시글 데이터를 가져오는 함수입니다.
-  const fetchPosts = async () => {
-    const { data, error } = await supabase.from("posts").select("*");
-
-    if (error) {
-      console.log(error);
-    } else {
-      // setPosts(data);
-    }
-    const handlepostUpdate = async (id: string, newContent: string) => {
-      const { data, error } = await supabase.from("posts").update({ content: newContent }).eq("id", id);
-
-      if (error) {
-        console.log(error);
-      } else {
-        fetchPosts();
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    files.forEach((file) => {
+      if (file.size > 5000000) {
+        alert("파일 크기가 5MB를 초과합니다.");
+        return;
       }
-
-      const handlePostDelete = async (id: string) => {
-        const { data, error } = await supabase.from("posts").delete().eq("id", id);
-
-        if (error) {
-          console.log(error);
-        } else {
-          fetchPosts();
-        }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        addImage(reader.result as string);
       };
-      useEffect(() => {
-        fetchPosts();
-      }, []);
-
-      // 컴포넌트의 UI를 반환합니다.
-      return (
-        <div>
-          {/* 텍스트 영역입니다. 사용자가 게시글을 입력할 수 있습니다. */}
-          <textarea value={post} onChange={handlePostChange} placeholder="게시글을 작성해주세요." />
-          {/* 게시글 길이를 표시합니다. */}
-          <span>
-            {postLength} / {MAX_POST_LENGTH}
-          </span>
-          {/* 게시 버튼입니다. 게시가 가능할 때만 활성화됩니다. */}
-          {/* <button onClick={handlePostSubmit} disabled={!isPostable}> */}
-          게시
-          {/* </button> */}
-        </div>
-      );
-    };
+      reader.readAsDataURL(file);
+    });
   };
 
-  {
-    /* <ul>
-          {posts.map((post) => (
-            // <li key={post.id}>
-            //   <p>{post.content}</p>
-            //   <button onClick={() => handlepostUpdate(post.id, "수정된 내용")}>수정</button>
-            //   <button onClick={() => handlePostDelete(post.id)}>삭제</button>{" "}
-            // </li>
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const { data, error } = await supabase.from("posts").insert({
+        user_id: "a078faa7-0067-4a42-a792-00c5eba79607",
+        title,
+        content,
+        category
+      });
+
+      if (error) throw error;
+
+      console.log("게시글이 성공적으로 저장되었습니다:", data);
+
+      router.push("/community");
+    } catch (error) {
+      console.error("게시글 저장 중 오류 발생:", error);
+      alert("게시글 저장에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="mx-auto max-w-2xl p-4">
+      <h1 className="mb-4 text-2xl font-bold">글 작성하기</h1>
+      <div className="mb-4">
+        <label htmlFor="category" className="mb-2 block font-semibold">
+          카테고리 선택
+        </label>
+        <div id="category" className="flex w-full flex-row rounded border p-2">
+          {CATEGORIES.map((cat) => (
+            <div key={cat.value} className="mr-2">
+              <button
+                type="button"
+                onClick={() => setCategory(cat.value)}
+                className={`rounded-full px-4 py-2 ${category === cat.value ? "bg-gray-300" : "hover:bg-gray-200"}`}
+              >
+                {cat.label}
+              </button>
+            </div>
           ))}
-        </ul> */
-  }
-}
+        </div>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="title" className="mb-2 block font-semibold">
+          제목
+        </label>
+        <input
+          type="text"
+          id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full rounded border p-2"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="content" className="mb-2 block font-semibold">
+          내용
+        </label>
+        <textarea
+          id="content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className="h-40 w-full rounded border p-2"
+          required
+        ></textarea>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="images" className="mb-2 block font-semibold">
+          이미지 첨부
+        </label>
+        <input type="file" id="images" multiple onChange={handleImageUpload} className="w-full" />
+        <div className="mt-2 flex flex-wrap gap-2">
+          {images.map((image, index) => (
+            <div key={index} className="relative">
+              <img
+                src={image}
+                alt={`attachment-${index}`}
+                className={`h-24 w-24 rounded object-cover ${index === 0 ? "border-4 border-blue-500" : ""}`}
+              />
+              {index === 0 && (
+                <span className="absolute left-0 top-0 rounded-br bg-blue-500 px-2 py-1 text-xs text-white">
+                  대표 이미지
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={() => removeImage(index)}
+                className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white"
+              ></button>
+            </div>
+          ))}
+        </div>
+      </div>
+      <button
+        type="submit"
+        className="w-full rounded bg-blue-500 p-2 font-semibold text-white transition-colors hover:bg-blue-600"
+      >
+        작성완료
+      </button>
+    </form>
+  );
+};
+
+export default CreatePostPage;
