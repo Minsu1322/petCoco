@@ -7,7 +7,7 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
   try {
     const { data, error } = await supabase.from("matePosts").select("*,users(nickname)").order("created_at", { ascending: false });
     // .limit(10);
-    console.log(data)
+   // console.log(data)
     if (error) {
       console.error(error);
       return NextResponse.json({ error: error.message }, { status: 500 });
