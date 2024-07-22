@@ -1,29 +1,38 @@
 "use client";
 
-import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useState } from "react";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-import { useLocation } from "@/zustand/useLocation";
+import { locationStore } from "@/zustand/locationStore";
+import { useRouter } from "next/navigation";
+import { MateNextPostType } from "@/types/mate.type";
+import Link from "next/link";
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/mapForm"), { ssr: false });
 
 // TODO:타입 밖으로 빼기
-export type PostType = {
-  title: string;
-  content: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
-  numbers: string;
-  neutered: null | boolean;
-  male_female: string;
-  members: string;
-  size: string;
-  weight: string;
-};
+// export type PostType = {
+//   title: string;
+//   content: string;
+//   position: {
+//     center: {
+//       lat: number;
+//       lng: number;
+//     };
+//     errMsg: string | null;
+//     isLoading: boolean;
+//   };
+//   dateTime: string;
+//   numbers: string;
+//   neutered: null | boolean;
+//   male_female: string;
+//   members: string;
+//   size: string;
+//   weight: string;
+//   recruiting: boolean;
+//   characteristics: string;
+// };
 
 // interface NextPost {
 //   title: string;
@@ -34,21 +43,34 @@ export type PostType = {
 //   }
 // }
 
+// interface PostFormProps {
+//   isEditing?: boolean;
+//   dbPosition?: { lat: number; lng: number };
+// }
+
 const PostForm = () => {
   // TODO: state 하나로 관리하도록 변경하기
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
-  const { position, setPosition } = useLocation();
+  const { position, setPosition } = locationStore();
+  const [dateTime, setDateTime] = useState<string>("");
   const [male_female, setMale_female] = useState<string>("");
   const [neutered, setNeutered] = useState<boolean | null>(null);
   const [numbers, setNumbers] = useState<string>("");
   const [members, setMembers] = useState<string>("");
   const [size, setSize] = useState<string>("");
   const [weight, setWeight] = useState<string>("");
+  const [characteristics, setCharacteristics] = useState<string>("");
+  // const [petsAge, setPetsAge] = useState<string>("");
+  // const [mateAge, setMateAge] = useState<string>("");
+  // const [mateGender, setMateGender] = useState<string>("");
+  // const [mateType, setMateType] = useState<string>("");
+  // const [mateInfo, setMateInfo] = useState<string>("");
 
   const queryClient = useQueryClient();
+  const router = useRouter();
 
-  const addPost = async (nextPost: PostType) => {
+  const addPost = async (nextPost: MateNextPostType) => {
     try {
       const response = await fetch(`/api/mate`, {
         method: "POST",
@@ -72,22 +94,31 @@ const PostForm = () => {
   };
 
   const addMutation = useMutation({
-    mutationFn: async (nextPost: PostType) => await addPost(nextPost),
+    mutationFn: async (nextPost: MateNextPostType) => await addPost(nextPost),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+      alert("등록되었습니다!");
     }
   });
 
-  const nextPost: PostType = {
+  const nextPost: MateNextPostType = {
     title,
     content,
     position,
+    dateTime,
     numbers,
     neutered,
     male_female,
     members,
     size,
-    weight
+    weight,
+    recruiting: true,
+    characteristics
+    // petsAge,
+    // mateAge,
+    // mateGender,
+    // mateType,
+    // mateInfo
   };
 
   const handleUploadPost = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -102,22 +133,34 @@ const PostForm = () => {
       addMutation.mutate(nextPost);
       setTitle("");
       setContent("");
-      setPosition({ lat: 37.5556236021213, lng: 126.992199507869 });
+      setPosition({ center: { lat: 37.5556236021213, lng: 126.992199507869 }, errMsg: null, isLoading: true });
       setNumbers("0");
       setNeutered(null);
       setMale_female("");
       setSize("");
       setWeight("");
       setMembers("");
+      setSize("");
+      setWeight("");
+      setCharacteristics("");
+      // setPetsAge('');
+      // setMateAge('');
+      // setMateGender('');
+      // setMateType('');
+      // setMateInfo('');
+
+      router.replace("/mate");
     } catch (err) {
       console.error(err);
     }
   };
-  console.log(nextPost);
 
   return (
     <div>
-      <div>글 작성</div>
+      <Link href='/mate'>
+        <div className="mt-3 flex h-10 w-20 items-center justify-center rounded-md bg-mainColor p-1 cursor-pointer" onClick={() => setPosition({ center: { lat: 37.5556236021213, lng: 126.992199507869 }, errMsg: null, isLoading: true })}>뒤로가기</div>
+      </Link>
+      <h1>산책 메이트 구하기 🐾</h1>
       <form onSubmit={handleUploadPost} className="flex flex-col">
         <div className="flex flex-col">
           <input
@@ -135,7 +178,17 @@ const PostForm = () => {
               // markerPosition={{ lat: 37.5556236021213, lng: 126.992199507869  }}
             />
           </div>
+          <div className="flex flex-row gap-x-4">
+            <label htmlFor="dateTime">산책 날짜 및 시간</label>
+            <input type="datetime-local" id="dateTime" value={dateTime} onChange={(e) => setDateTime(e.target.value)} />
+          </div>
+          <div className="flex flex-row gap-x-2">
+            <p>모집인원 수 : </p>
+            <input type="text" className="border" value={members} onChange={(e) => setMembers(e.target.value)} />명
+          </div>
+
           <div className="mt-3 flex flex-col gap-x-5">
+            <p>🐶 반려동물 정보</p>
             <div className="flex flex-row gap-x-2">
               <label htmlFor="number">반려동물 수</label>
               <select
@@ -153,86 +206,83 @@ const PostForm = () => {
             </div>
             <div className="flex flex-row gap-x-2">
               <p>성별 : </p>
-              <label htmlFor="male_female">암컷</label>
               <input
                 type="checkbox"
                 name="male_female"
                 value="female"
-                checked={male_female === "female"}
                 onChange={(e) => setMale_female(e.target.value)}
               />
+              <label htmlFor="male_female">암컷</label>
+              <input type="checkbox" name="male_female" value="male" onChange={(e) => setMale_female(e.target.value)} />
               <label htmlFor="male_female">수컷</label>
-              <input
-                type="checkbox"
-                name="male_female"
-                value="male"
-                checked={male_female === "male"}
-                onChange={(e) => setMale_female(e.target.value)}
-              />
             </div>
             <div className="flex flex-row gap-x-3">
               <p>중성화 여부 : </p>
+              <input type="checkbox" name="neutered" value="true" onChange={() => setNeutered(true)} />
               <label>네</label>
-              <input
-                type="radio"
-                name="neutered"
-                value="true"
-                onChange={() => setNeutered(true)}
-                checked={neutered === true}
-              />
+              <input type="checkbox" name="neutered" value="false" onChange={() => setNeutered(false)} />
               <label>아니오</label>
-              <input
-                type="radio"
-                name="neutered"
-                value="false"
-                onChange={() => setNeutered(false)}
-                checked={neutered === false}
-              />
             </div>
+            {/* <div className="flex flex-row gap-x-2">
+              <p>나이 : </p>
+              <input type="text" className="border" value={petsAge} onChange={(e) => setPetsAge(e.target.value)} />명
+            </div> */}
             <div className="flex flex-row gap-x-2">
-              <p> 견종 크기 : </p>
+              <p>크기 : </p>
               {/* TODO: 적당한 이름 찾기,, */}
-              <label htmlFor="size">소형견</label>
               <input
                 type="checkbox"
                 name="size"
                 value="소형견"
                 onChange={(e) => setSize(e.target.checked ? e.target.value : "")}
-                checked={size === "소형견"}
               />
-              <label htmlFor="male_female">중형견</label>
+              <label htmlFor="size">소형견</label>
               <input
                 type="checkbox"
                 name="size"
                 value="중형견"
                 onChange={(e) => setSize(e.target.checked ? e.target.value : "")}
-                checked={size === "중형견"}
               />
-              <label htmlFor="male_female">대형견</label>
+              <label htmlFor="size">중형견</label>
               <input
                 type="checkbox"
                 name="size"
                 value="대형견"
                 onChange={(e) => setSize(e.target.checked ? e.target.value : "")}
-                checked={size === "대형견"}
               />
+              <label htmlFor="size">대형견</label>
             </div>
             <div className="flex flex-row gap-x-2">
               <p>무게 : </p>
               <input type="text" className="border" value={weight} onChange={(e) => setWeight(e.target.value)} /> kg
             </div>
             <div className="flex flex-row gap-x-2">
-              <p>모집인원 수 : </p>
-              <input type="text" className="border" value={members} onChange={(e) => setMembers(e.target.value)} />명
+              <p>성격 및 특징 : </p>
+              <select
+                name="number of animals"
+                id="number"
+                className="w-16 border border-black"
+                value={characteristics}
+                onChange={(e) => setCharacteristics(e.target.value)}
+              >
+                <option value="온순함">온순함</option>
+                <option value="활발함">활발함</option>
+                <option value="소심함">소심함</option>
+                <option value="적극적">적극적</option>
+                <option value="외향적">외향적</option>
+                <option value="내향적">내향적</option>
+                <option value="낯가림">낯가림</option>
+              </select>
             </div>
             <textarea
               value={content}
               onChange={(e) => {
                 setContent(e.target.value);
               }}
-              placeholder=" 글을 작성해 주세요"
+              placeholder=" 글을 작성해 주세요."
               className="mt-5 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
             ></textarea>
+            <p className="mt-1">🐾 반려동물이 2마리 이상인 경우 본문에 추가로 정보를 기재해 주세요.</p>
           </div>
         </div>
         <button type="submit" className="mt-3 h-10 w-20 rounded-md bg-mainColor p-1">
