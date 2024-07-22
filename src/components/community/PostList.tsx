@@ -9,9 +9,9 @@ interface PostListProps {
   searchTerm: string;
   selectedSort: string;
 }
-
+// pagination 한페이지에 나오는 항목수 : limit수정(현재12)
 const fetchPosts = async (page: number, category: string, searchTerm: string): Promise<PostsResponse> => {
-  const response = await fetch(`/api/community?page=${page}&limit=18&category=${category}&search=${searchTerm}`);
+  const response = await fetch(`/api/community?page=${page}&limit=12&category=${category}&search=${searchTerm}`);
   if (!response.ok) {
     throw new Error("메인페이지오류");
   }
@@ -40,9 +40,35 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
     }
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
-  if (isError) return <div>에러 발생: {error.message}</div>;
-
+  if (isLoading) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-green-500"></div>
+          <p className="text-lg font-semibold text-green-600">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
+  if (isError) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-red-100">
+        <div className="max-w-xs rounded-lg bg-white p-4 text-center shadow-md">
+          <h2 className="font-bold text-red-600">에러 발생</h2>
+          <p className="text-sm text-red-600">{error.message}</p>
+          <svg className="mx-auto my-2 h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          <button
+            className="rounded bg-red-600 px-2 py-1 text-sm text-white hover:bg-red-700"
+            onClick={() => window.location.reload()}
+          >
+            다시 시도
+          </button>
+        </div>
+      </div>
+    );
+  }
   const sortedPosts = sortPosts(data?.data || [], selectedSort);
 
   return (
