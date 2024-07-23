@@ -175,7 +175,6 @@ const PostForm = () => {
           <div>
             <DynamicMapComponent
               center={{ lat: 37.5556236021213, lng: 126.992199507869 }}
-              // markerPosition={{ lat: 37.5556236021213, lng: 126.992199507869  }}
             />
           </div>
           <div className="flex flex-row gap-x-4">
