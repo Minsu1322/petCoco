@@ -30,7 +30,7 @@ const MatePost = ({ params }: { params: { id: string } }) => {
   if (error) {
     return <div>{error.message}</div>;
   }
-  console.log(post);
+  //console.log(post);
 
   return (<div>
     <DetailMatePost post={post} />
