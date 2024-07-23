@@ -1,6 +1,7 @@
 // Header 임시 파일
 
 import Link from "next/link";
+import LogoutButton from "./auth/LogoutBtn";
 
 const Header = () => {
   return (
@@ -13,6 +14,8 @@ const Header = () => {
         <Link href={"/community"}>
           <p>커뮤니티</p>
         </Link>
+
+        <LogoutButton />
       </div>
     </header>
   );
