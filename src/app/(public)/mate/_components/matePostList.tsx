@@ -4,7 +4,7 @@ import MatePostItem from './matePostItem';
 
 
 interface MatePostListProps {
-  posts: MatePostFullType[] | undefined;
+  posts: MatePostFullType[];
 }
 
 const MatePostList = ({posts}: MatePostListProps) => {
