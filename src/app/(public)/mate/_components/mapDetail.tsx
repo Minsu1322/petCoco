@@ -6,7 +6,7 @@ interface MapDetailProps {
 }
 
 const MapDetail = ({center}: MapDetailProps) => {
-  console.log(center)
+//  console.log(center)
   return (
     <>
     <Map
