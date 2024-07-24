@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 //import { useRef, useState } from "react";
 import { Map, MapMarker, MapTypeControl, ZoomControl } from "react-kakao-maps-sdk";
-import { getConvertAddress } from "./getConvertAddress";
+import { getConvertAddress } from "../getConvertAddress";
 
 interface MapComponentProps {
   center: { lat: number; lng: number };
@@ -34,39 +34,39 @@ const MapEdit = ({ center, isEditing, dbPosition }: MapComponentProps) => {
   // if(position.center && addressData) {
   //   setAddress(addressData);
   // }
-  console.log('현재 위치 값', position);
+  console.log("현재 위치 값", position);
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setPosition({
-            center: {
-              lat: position.coords.latitude, // 위도
-              lng: position.coords.longitude // 경도
-            },
-            isLoading: false
-          });
-        },
-        (error) => {
-          setPosition({
-            center: center,
-            errMsg: error.message,
-            isLoading: false
-          });
-        }
-      );
-    }
+  // useEffect(() => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         setPosition({
+  //           center: {
+  //             lat: position.coords.latitude, // 위도
+  //             lng: position.coords.longitude // 경도
+  //           },
+  //           isLoading: false
+  //         });
+  //       },
+  //       (error) => {
+  //         setPosition({
+  //           center: center,
+  //           errMsg: error.message,
+  //           isLoading: false
+  //         });
+  //       }
+  //     );
+  //   }
 
-    if (!navigator.geolocation) {
-      // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용 설정
-      setPosition({
-        center: center,
-        errMsg: "geolocation을 사용할수 없어요..",
-        isLoading: false
-      });
-    }
-  }, []);
+  //   if (!navigator.geolocation) {
+  //     // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용 설정
+  //     setPosition({
+  //       center: center,
+  //       errMsg: "geolocation을 사용할수 없어요..",
+  //       isLoading: false
+  //     });
+  //   }
+  // }, []);
 
   // if(isPending) {
   //   return (<div>주소 찾는 중,,,</div>)
@@ -75,7 +75,6 @@ const MapEdit = ({ center, isEditing, dbPosition }: MapComponentProps) => {
   // if(error) {
   //   return (<div>{error.message}</div>)
   // }
-
 
   return (
     <>
