@@ -15,7 +15,7 @@ export type MatePostFullType = MatePostType & {
   }
 }
 
-export type MateNextPostType = Omit<MatePostFullType, 'user_id' | 'id' | 'created_at' | 'users'>
+export type MateNextPostType = Omit<MatePostFullType,  'id' | 'created_at' | 'users'>
 
 export type MateCommentType = Tables<"mateComments">;
 
