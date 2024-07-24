@@ -18,6 +18,7 @@ interface useAuth {
   setError: (error: string | null) => void;
   signInWithGoogle: () => Promise<void>;
   signInWithKakao: () => Promise<void>;
+  setSession: (session: any) => void;
 }
 
 export const useAuthStore = create<useAuth>((set) => ({
@@ -162,5 +163,6 @@ export const useAuthStore = create<useAuth>((set) => ({
       }
   },
   setUser: (user) => set({ user }),
-  setError: (error) => set({ error })
+  setError: (error) => set({ error }),
+  setSession: (session) => set({ user: session?.user ?? null }),
 }));
