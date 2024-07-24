@@ -10,7 +10,7 @@ interface MatePostItemPorps {
 }
 
 const MatePostItem = ({ post }: MatePostItemPorps) => {
-  const { geoData, setGeoData } = locationStore();
+  const { geoData, setGeoData, isUseGeo, setIsUseGeo } = locationStore();
   // 시간 변환 함수로 분리
   const time = post.dateTime?.split("T")[1].split(":");
   const convertPeriod = time && (Number(time[0]) < 12 ? "오전" : "오후");
@@ -18,13 +18,13 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   const convertMin = time && time[1];
 
   const calculateDistance = () => {
-    if (geoData && post.position) {
-      const distance = getDistanceHaversine({
-        curPosition: geoData.center,
-        desPosition: post.position.center
-      });
-      return distance.toFixed(2); 
-    }
+      if (isUseGeo && geoData && post.position) {
+        const distance = getDistanceHaversine({
+          curPosition: geoData.center,
+          desPosition: post.position.center
+        });
+        return distance.toFixed(2); 
+      }
     return null;
   };
 
@@ -40,7 +40,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             width={70}
             height={70}
           />
-          <p className="mt-2 text-center">{post.users.nickname}</p>
+          <p className="mt-2 text-center"> {post && post.users?.nickname}</p>
         </div>
         <div className="w-full">
           <div className="flex flex-row justify-between">
