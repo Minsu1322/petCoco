@@ -4,7 +4,7 @@ import { createClient } from "@/supabase/client";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get("page") || "1");
-  const limit = parseInt(searchParams.get("limit") || "18"); // 3열 5줄 = 15개
+  const limit = parseInt(searchParams.get("limit") || "18");
   const category = searchParams.get("category") || "전체";
   const searchTerm = searchParams.get("search") || "";
 

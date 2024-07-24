@@ -11,7 +11,7 @@ interface PostListProps {
 }
 // pagination 한페이지에 나오는 항목수 : limit수정(현재12)
 const fetchPosts = async (page: number, category: string, searchTerm: string): Promise<PostsResponse> => {
-  const response = await fetch(`/api/community?page=${page}&limit=12&category=${category}&search=${searchTerm}`);
+  const response = await fetch(`/api/community?page=${page}&limit=3&category=${category}&search=${searchTerm}`);
   if (!response.ok) {
     throw new Error("메인페이지오류");
   }
@@ -74,19 +74,29 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-4 text-2xl font-bold">게시글 목록</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
+      <div className="space-y-6">
         {sortedPosts.map((post) => (
           <Link key={post.id} href={`http://localhost:3000/community/${post.id}`}>
-            <div className="flex rounded border p-4 shadow-sm">
-              <div className="flex-grow pr-4">
-                <h2 className="mb-2 text-xl font-semibold">{post.title}</h2>
-                <p className="mb-2 text-gray-600">{post.content.substring(0, 100)}...</p>
-                <p className="text-sm text-gray-500">
-                  작성자: {post.users.nickname} | 작성일: {new Date(post.created_at).toLocaleDateString()}
-                </p>
-                <p className="text-sm text-gray-500">댓글 수: {post.comments.length}</p>
+            <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-[#67C047] shadow-sm">
+              <div className="flex flex-grow flex-col justify-between p-4">
+                <div>
+                  <h2 className="mb-2 text-xl font-bold">{post.title}</h2>
+                  <p className="mb-2 line-clamp-3 text-sm text-gray-600">{post.content}</p>
+                </div>
+
+                <div className="flex items-end justify-between">
+                  <p className="text-xs text-gray-500">
+                    {post.users.nickname} | {new Date(post.created_at).toLocaleDateString()}
+                  </p>
+                  <p className="text-xs text-gray-500">댓글 {post.comments.length}개</p>
+                </div>
               </div>
-              <div className="h-20 w-20 flex-shrink-0 bg-gray-300">{/* 이미지 미리보기 공간 */}</div>
+              <div className="h-[180px] w-[120px] flex-shrink-0">
+                {post.post_imageURL && (
+                  <img src={post.post_imageURL} alt="게시글 이미지" className="h-full w-full object-cover" />
+                )}
+              </div>
             </div>
           </Link>
         ))}
