@@ -78,7 +78,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
       <div className="space-y-6">
         {sortedPosts.map((post) => (
           <Link key={post.id} href={`http://localhost:3000/community/${post.id}`}>
-            <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-[#67C047] shadow-sm">
+            <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-[#1FE476] shadow-sm">
               <div className="flex flex-grow flex-col justify-between p-4">
                 <div>
                   <h2 className="mb-2 text-xl font-bold">{post.title}</h2>
@@ -107,7 +107,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
-          className="rounded bg-[#67C047] px-4 py-2 text-white disabled:bg-[rgba(103,192,71,0.8)]"
+          className="rounded bg-[#1FE476] px-4 py-2 text-white disabled:bg-[#1FE476]"
         >
           이전
         </button>
@@ -119,7 +119,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
         <button
           onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
           disabled={data?.totalPages !== undefined && page === data.totalPages}
-          className="rounded bg-[#67C047] px-4 py-2 text-white disabled:bg-[rgba(103,192,71,0.8)]"
+          className="rounded bg-[#1FE476] px-4 py-2 text-white disabled:bg-[#1FE476]"
         >
           다음
         </button>

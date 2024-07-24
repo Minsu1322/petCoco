@@ -40,7 +40,7 @@ const CommunityMainPage = () => {
                 <button
                   key={sort}
                   className={`rounded-md border border-gray-300 px-3 py-1 ${
-                    selectedSort === sort ? "bg-[#67C047] text-white" : "bg-white hover:bg-gray-100"
+                    selectedSort === sort ? "bg-[#1FE476] text-white" : "bg-white hover:bg-gray-100"
                   }`}
                   onClick={() => setSelectedSort(sort)}
                 >
@@ -56,7 +56,7 @@ const CommunityMainPage = () => {
 
         <div className="w-1/4">
           {/* 글쓰기 버튼 */}
-          <button className="mb-8 w-full rounded-md bg-[#67C047] px-4 py-2 text-white hover:bg-[#5AAF3F]">
+          <button className="mb-8 w-full rounded-md bg-[#1FE476] px-4 py-2 text-white hover:bg-[#5AAF3F]">
             글쓰기
           </button>
 
@@ -70,7 +70,7 @@ const CommunityMainPage = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-4 py-2 focus:outline-none"
               />
-              <button type="submit" className="w-auto bg-[#67C047] px-4 py-2 text-white">
+              <button type="submit" className="w-auto bg-[#1FE476] px-4 py-2 text-white">
                 검색
               </button>
             </div>
@@ -83,8 +83,12 @@ const CommunityMainPage = () => {
               {tabs.slice(0, showMoreKeywords ? undefined : 9).map((keyword, index) => (
                 <button
                   key={keyword}
-                  className={`rounded-md border border-gray-300 px-2 py-1 text-sm ${
-                    index === 8 && !showMoreKeywords ? "bg-gray-100 hover:bg-gray-200" : "bg-white hover:bg-gray-100"
+                  className={`rounded-md border px-2 py-1 text-sm ${
+                    selectedTab === keyword
+                      ? "border-[#1FE476] bg-[#1FE476] text-white"
+                      : index === 8 && !showMoreKeywords
+                        ? "border-gray-300 bg-gray-100 hover:bg-gray-200"
+                        : "border-gray-300 bg-white hover:bg-gray-100"
                   }`}
                   onClick={() => {
                     if (index === 8 && !showMoreKeywords) {
