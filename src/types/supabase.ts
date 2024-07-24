@@ -89,42 +89,51 @@ export type Database = {
       }
       matePosts: {
         Row: {
+          characteristics: string | null
           content: string | null
           created_at: string
+          dateTime: string | null
           id: string
           male_female: string | null
           members: string | null
           neutered: boolean | null
           numbers: string | null
           position: Json | null
+          recruiting: boolean | null
           size: string | null
           title: string | null
           user_id: string | null
           weight: string | null
         }
         Insert: {
+          characteristics?: string | null
           content?: string | null
           created_at?: string
+          dateTime?: string | null
           id?: string
           male_female?: string | null
           members?: string | null
           neutered?: boolean | null
           numbers?: string | null
           position?: Json | null
+          recruiting?: boolean | null
           size?: string | null
           title?: string | null
           user_id?: string | null
           weight?: string | null
         }
         Update: {
+          characteristics?: string | null
           content?: string | null
           created_at?: string
+          dateTime?: string | null
           id?: string
           male_female?: string | null
           members?: string | null
           neutered?: boolean | null
           numbers?: string | null
           position?: Json | null
+          recruiting?: boolean | null
           size?: string | null
           title?: string | null
           user_id?: string | null
