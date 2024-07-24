@@ -17,6 +17,7 @@ interface useAuth {
   setUser: (user: any) => void;
   setError: (error: string | null) => void;
   signInWithGoogle: () => Promise<void>;
+  signInWithKakao: () => Promise<void>;
 }
 
 export const useAuthStore = create<useAuth>((set) => ({
@@ -143,7 +144,23 @@ export const useAuthStore = create<useAuth>((set) => ({
       set({ error: error.message });
     }
   },
-  
+  signInWithKakao : async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'kakao',
+        options: {
+          redirectTo: `${window.location.origin}/kakaoCallback`,
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+     } catch (error: any) {
+        console.error('카카오 로그인 에러', error.message);
+        set({error: error.message});
+      }
+  },
   setUser: (user) => set({ user }),
   setError: (error) => set({ error })
 }));

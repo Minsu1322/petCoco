@@ -9,7 +9,7 @@ const LoginForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn, error, setError, user, signInWithGoogle } = useAuthStore();
+  const { signIn, error, setError, user, signInWithGoogle, signInWithKakao } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +32,10 @@ const LoginForm = () => {
 
   const handleGoogleSignIn = async () => {
     await signInWithGoogle();
+  };
+
+  const handleKakaoSignIn = async () => {
+    await signInWithKakao();
   };
 
   return (
@@ -77,6 +81,7 @@ const LoginForm = () => {
           </div>
         </form>
         <button onClick={handleGoogleSignIn}>구글 로그인</button>
+        <button onClick={handleKakaoSignIn}>카카오 로그인</button>
         {error && <p style={{ color: "red" }}>(error)</p>}
       </div>
     </div>
