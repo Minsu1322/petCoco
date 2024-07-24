@@ -1,11 +1,11 @@
 "use client";
 
-import { Position, locationStore } from "@/zustand/locationStore";
-import { useQuery } from "@tanstack/react-query";
+import { locationStore } from "@/zustand/locationStore";
+
 import { useEffect, useState } from "react";
 //import { useRef, useState } from "react";
 import { Map, MapMarker, MapTypeControl, ZoomControl } from "react-kakao-maps-sdk";
-import { getConvertAddress } from "./getConvertAddress";
+
 
 interface MapComponentProps {
   center: { lat: number; lng: number };
@@ -13,22 +13,6 @@ interface MapComponentProps {
 
 const MapForm = ({ center }: MapComponentProps) => {
   const { position, setPosition} = locationStore();
-
-
-  const {
-    data: addressData,
-    isPending,
-    error
-  } = useQuery({
-    queryKey: ["address", position.center],
-    queryFn: async () => {
-      const response = await getConvertAddress(position.center);
-      return response;
-    }, 
-    enabled: !!position.center,
-  });
-
-  console.log("주소 변환 데이터 확인", addressData);
 
   useEffect(() => {
     if (navigator.geolocation) {
