@@ -15,7 +15,7 @@ const MatePost = ({ params }: { params: { id: string } }) => {
     queryFn: async () => {
       const response = await fetch(`/api/mate/post/${id}`);
       const data = response.json();
-      console.log(data);
+    //  console.log(data);
 
       return data;
     }
