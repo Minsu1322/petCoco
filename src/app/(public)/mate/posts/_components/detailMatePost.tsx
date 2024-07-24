@@ -19,7 +19,7 @@ const DynamicMapEditComponent = dynamic(() => import("@/app/(public)/mate/_compo
 
 const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const queryClient = useQueryClient();
-  const userId = "3841c2cf-d6b6-4d60-8b8d-c483f8d9bac0";
+  const userId = '787f023a-82a3-4850-8e86-b8b76608213f';
   const router = useRouter();
 
   const time = post.dateTime?.split("T")[1].split(":");
@@ -62,6 +62,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   console.log("주소 변환 데이터 확인", addressData);
 
   const updatePost: Omit<MateNextPostType, "recruiting"> = {
+    user_id: userId,
     title,
     content,
     position,

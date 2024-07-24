@@ -50,6 +50,7 @@ const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_component
 // }
 
 const PostForm = () => {
+  const userId = '787f023a-82a3-4850-8e86-b8b76608213f';
   // TODO: state 하나로 관리하도록 변경하기
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -122,6 +123,7 @@ const PostForm = () => {
   });
 
   const nextPost: MateNextPostType = {
+    user_id: userId,
     title,
     content,
     position,
