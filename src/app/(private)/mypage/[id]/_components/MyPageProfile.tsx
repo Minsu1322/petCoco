@@ -7,7 +7,7 @@ const MyPageProfile = () => {
   const params = useParams();
   const id = params.id;
   const getProfileData = async () => {
-    const response = await fetch("/api/mypage", {
+    const response = await fetch(`/api/mypage/${id}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
     });
