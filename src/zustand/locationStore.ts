@@ -12,8 +12,16 @@ export type Position = {
 type UseLocationStore = {
   position: Position;
   address: string;
+  geoData: {
+    center: {
+      lat: number;
+      lng: number;
+    };
+    isLoading: boolean;
+  };
   setPosition: (position: Partial<Position>) => void;
   setAddress: (address: string) => void;
+  setGeoData: (geoData: Omit<Position, 'errMsg'>) => void;
 };
 
 export const locationStore = create<UseLocationStore>((set) => ({
@@ -29,4 +37,13 @@ export const locationStore = create<UseLocationStore>((set) => ({
   },
   address: "서울특별시 중구 삼일대로 231",
   setAddress: (address) => set({ address }),
+  geoData: {
+    center: { lat: 37.5556236021213, lng: 126.992199507869 },
+    isLoading: true
+  },
+  setGeoData: (newGeo) => {
+    return set((state) => ({
+      geoData: { ...state.geoData, ...newGeo }
+    }));
+  }
 }));
