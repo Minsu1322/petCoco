@@ -36,50 +36,23 @@ const MapEdit = ({ center, isEditing, dbPosition }: MapComponentProps) => {
   // }
   console.log("현재 위치 값", position);
 
-  // useEffect(() => {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         setPosition({
-  //           center: {
-  //             lat: position.coords.latitude, // 위도
-  //             lng: position.coords.longitude // 경도
-  //           },
-  //           isLoading: false
-  //         });
-  //       },
-  //       (error) => {
-  //         setPosition({
-  //           center: center,
-  //           errMsg: error.message,
-  //           isLoading: false
-  //         });
-  //       }
-  //     );
-  //   }
+  useEffect(() => {
+    if (isEditing && dbPosition) {
+      setPosition({
+        center: dbPosition,
+        isLoading: false
+      });
+    }
 
-  //   if (!navigator.geolocation) {
-  //     // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용 설정
-  //     setPosition({
-  //       center: center,
-  //       errMsg: "geolocation을 사용할수 없어요..",
-  //       isLoading: false
-  //     });
-  //   }
-  // }, []);
+  }, []);
 
-  // if(isPending) {
-  //   return (<div>주소 찾는 중,,,</div>)
-  // }
-
-  // if(error) {
-  //   return (<div>{error.message}</div>)
-  // }
+  console.log('디비 데이터', dbPosition)
+  console.log('center', center)
 
   return (
     <>
       <Map
-        center={isEditing && dbPosition ? position.center : center}
+        center={position.center}
         style={{ width: "500px", height: "360px" }}
         level={5}
         onClick={(_, mouseEvent) => {
@@ -91,11 +64,9 @@ const MapEdit = ({ center, isEditing, dbPosition }: MapComponentProps) => {
             }
           });
         }}
-        // mapTypeId={mapType === "roadmap" ? "ROADMAP" : "HYBRID"}
-        // ref={mapRef}
       >
         <MapMarker
-          position={isEditing && dbPosition ? position.center : center}
+          position={position.center}
           image={{
             src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU",
             size: {
