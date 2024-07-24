@@ -43,7 +43,9 @@ const Header = () => {
         <Link href={"/community"}>
           <p>커뮤니티</p>
         </Link>
-
+        <Link href={"/mate"}>
+          <p>산책 메이트</p>
+        </Link>
         {isUser ? <LogoutButton /> : <LoginButton />}
       </div>
     </header>

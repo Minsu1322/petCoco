@@ -49,27 +49,29 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
 //   }
 // };
 
-// export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
-//   const supabase = createClient();
-//   const { id } = params;
+export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+  const supabase = createClient();
+  const { id } = params;
 
-//   try {
-//     const { data, error } = await supabase
-//       .from("matePosts")
-//       .update()
-//       .eq('id', id);
+  const updatePost = await request.json();
 
-//     if (error) {
-//       console.error(error);
-//       return NextResponse.json({ error: error.message }, { status: 500 });
-//     }
+  try {
+    const { data, error } = await supabase
+      .from("matePosts")
+      .update(updatePost)
+      .eq('id', id);
 
-//     return NextResponse.json(data);
-//   } catch (err) {
-//     console.error(err);
-//     return NextResponse.json({ err }, { status: 500 });
-//   }
-// };
+    if (error) {
+      console.error(error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ err }, { status: 500 });
+  }
+};
 
 export const DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
   const supabase = createClient();
