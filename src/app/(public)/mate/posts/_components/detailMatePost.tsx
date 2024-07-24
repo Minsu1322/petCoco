@@ -104,7 +104,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     }
   };
 
-  // TODO: 게시글 수정 기능 구현
   const editPost = async (id: string) => {
     if (confirm("현재 게시글을 수정하시겠어요?")) {
       try {
@@ -351,12 +350,21 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               </div>
               <div className="flex flex-row gap-x-2">
                 <p>성격 및 특징 : </p>
-                <input
-                  type="text"
-                  className="border"
+                <select
+                  name="number of animals"
+                  id="number"
+                  className="w-16 border border-black"
                   value={characteristics}
                   onChange={(e) => setCharacteristics(e.target.value)}
-                />
+                >
+                  <option value="온순함">온순함</option>
+                  <option value="활발함">활발함</option>
+                  <option value="소심함">소심함</option>
+                  <option value="적극적">적극적</option>
+                  <option value="외향적">외향적</option>
+                  <option value="내향적">내향적</option>
+                  <option value="낯가림">낯가림</option>
+                </select>
               </div>
               <textarea
                 value={content}
@@ -410,26 +418,28 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               <p>무게 : {post.weight} kg</p>
             </div>
           </div>
-          <div className="mt-5 flex flex-row gap-10">
-            <button
-              className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-              onClick={() => handleDeletePost(post.id)}
-            >
-              삭제
-            </button>
-            <button
-              className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-              onClick={handleEditPost}
-            >
-              수정
-            </button>
-            <button
-              className="mt-3 flex h-10 w-28 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-              onClick={() => handleTogglePost(post.id)}
-            >
-              모집상태 변경
-            </button>
-          </div>
+          {userId === post.user_id && (
+            <div className="mt-5 flex flex-row gap-10">
+              <button
+                className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+                onClick={() => handleDeletePost(post.id)}
+              >
+                삭제
+              </button>
+              <button
+                className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+                onClick={handleEditPost}
+              >
+                수정
+              </button>
+              <button
+                className="mt-3 flex h-10 w-28 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+                onClick={() => handleTogglePost(post.id)}
+              >
+                모집상태 변경
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
