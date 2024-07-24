@@ -1,12 +1,13 @@
 "use client";
 
 import { MateNextPostType, MatePostFullType } from "@/types/mate.type";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { locationStore } from "@/zustand/locationStore";
+import { getConvertAddress } from "../../getConvertAddress";
 
 interface DetailMatePostProps {
   post: MatePostFullType;
@@ -42,6 +43,23 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const [isEditing, setIstEditting] = useState<boolean>(false);
 
   //console.log(post);
+  const {
+    data: addressData,
+    isPending,
+    error
+  } = useQuery({
+    queryKey: ["address", position.center],
+    queryFn: async () => {
+      const response = await getConvertAddress(position.center);
+      return response;
+    },
+    enabled: !!position.center
+  });
+  const address =
+    (addressData && addressData?.documents[0]?.road_address?.address_name) ||
+    addressData?.documents[0]?.address?.address_name ||
+    "주소 정보를 찾을 수 없어요";
+  console.log("주소 변환 데이터 확인", addressData);
 
   const updatePost: Omit<MateNextPostType, "recruiting"> = {
     title,
@@ -187,16 +205,16 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   useEffect(() => {
-      setTitle(post.title || "");
-      setContent(post.content || "");
-      setDateTime(post.dateTime || "");
-      setMale_female(post.male_female || "");
-      setNeutered(post.neutered || null);
-      setNumbers(post.numbers || "");
-      setMembers(post.members || "");
-      setSize(post.size || "");
-      setWeight(post.weight || "");
-      setCharacteristics(post.characteristics || "");
+    setTitle(post.title || "");
+    setContent(post.content || "");
+    setDateTime(post.dateTime || "");
+    setMale_female(post.male_female || "");
+    setNeutered(post.neutered || null);
+    setNumbers(post.numbers || "");
+    setMembers(post.members || "");
+    setSize(post.size || "");
+    setWeight(post.weight || "");
+    setCharacteristics(post.characteristics || "");
   }, []);
 
   return (
@@ -230,6 +248,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                   lng: Number(post.position?.center?.lng)
                 }}
               />
+              <p>클릭한 곳의 주소는 ? {address} </p>
             </div>
             <div className="flex flex-row gap-x-4">
               <label htmlFor="dateTime">산책 날짜 및 시간</label>

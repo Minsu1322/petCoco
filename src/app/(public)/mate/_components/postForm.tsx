@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { locationStore } from "@/zustand/locationStore";
 import { useRouter } from "next/navigation";
 import { MateNextPostType } from "@/types/mate.type";
 import Link from "next/link";
+import { getConvertAddress } from "../getConvertAddress";
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/mapForm"), { ssr: false });
@@ -93,6 +94,25 @@ const PostForm = () => {
     }
   };
 
+  const {
+    data: addressData,
+    isPending,
+    error
+  } = useQuery({
+    queryKey: ["address", position.center],
+    queryFn: async () => {
+      const response = await getConvertAddress(position.center);
+      return response;
+    },
+    enabled: !!position.center
+  });
+  const address =
+    (addressData && addressData?.documents[0]?.road_address?.address_name) ||
+    addressData?.documents[0]?.address?.address_name ||
+    "주소 정보를 찾을 수 없어요";
+
+  console.log("주소 변환 데이터 확인", addressData);
+
   const addMutation = useMutation({
     mutationFn: async (nextPost: MateNextPostType) => await addPost(nextPost),
     onSuccess: () => {
@@ -114,6 +134,8 @@ const PostForm = () => {
     weight,
     recruiting: true,
     characteristics
+    // address
+    // place
     // petsAge,
     // mateAge,
     // mateGender,
@@ -157,8 +179,15 @@ const PostForm = () => {
 
   return (
     <div>
-      <Link href='/mate'>
-        <div className="mt-3 flex h-10 w-20 items-center justify-center rounded-md bg-mainColor p-1 cursor-pointer" onClick={() => setPosition({ center: { lat: 37.5556236021213, lng: 126.992199507869 }, errMsg: null, isLoading: true })}>뒤로가기</div>
+      <Link href="/mate">
+        <div
+          className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+          onClick={() =>
+            setPosition({ center: { lat: 37.5556236021213, lng: 126.992199507869 }, errMsg: null, isLoading: true })
+          }
+        >
+          뒤로가기
+        </div>
       </Link>
       <h1>산책 메이트 구하기 🐾</h1>
       <form onSubmit={handleUploadPost} className="flex flex-col">
@@ -173,9 +202,8 @@ const PostForm = () => {
             className="w-[300px] rounded-md border border-gray-300"
           />
           <div>
-            <DynamicMapComponent
-              center={{ lat: 37.5556236021213, lng: 126.992199507869 }}
-            />
+            <DynamicMapComponent center={{ lat: 37.5556236021213, lng: 126.992199507869 }} />
+            <p>클릭한 곳의 주소는 ? {address} </p>
           </div>
           <div className="flex flex-row gap-x-4">
             <label htmlFor="dateTime">산책 날짜 및 시간</label>
