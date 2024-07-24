@@ -72,6 +72,8 @@ const SignupForm = () => {
                 type="text"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
+                placeholder="닉네임은 8자 이하로 작성해주세요"
+                maxLength={8}
                 required
               />
             </div>
@@ -84,6 +86,7 @@ const SignupForm = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="이메일을 작성해주세요"
                 required
               />
             </div>
@@ -96,6 +99,7 @@ const SignupForm = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호를 작성해주세요"
                 required
               />
             </div>
@@ -109,6 +113,7 @@ const SignupForm = () => {
                 type="password"
                 value={passwordCheck}
                 onChange={(e) => setPasswordCheck(e.target.value)}
+                placeholder="비밀번호를 다시 입력해주세요"
                 required
               />
             </div>
