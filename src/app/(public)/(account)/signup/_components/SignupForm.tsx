@@ -16,7 +16,6 @@ const SignupForm = () => {
     validatePasswords,
     emailCheck,
     validationPasswds,
-    signInWithGoogle,
     passwordError,
     passwordValidateError,
     error,
@@ -57,15 +56,6 @@ const SignupForm = () => {
       router.push("/signin");
     } else {
       alert("회원가입에 실패했습니다.");
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    await signInWithGoogle();
-    if (!error) {
-      alert("구글 로그인이 완료되었습니다!");
-    } else {
-      alert("구글 로그인에 실패했습니다.");
     }
   };
 
@@ -139,7 +129,6 @@ const SignupForm = () => {
             회원가입 하기
           </button>
         </form>
-        <button onClick={handleGoogleSignIn}>구글 로그인</button>
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
