@@ -165,7 +165,6 @@ const MatePage = () => {
       ) : (
         <MatePostList
           posts={sortPosts(isCurrentPosts ? currentPosts : (posts ?? []))}
-          geolocationData={geolocationData?.center}
         />
       )}
     </div>
