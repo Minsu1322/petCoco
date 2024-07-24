@@ -9,7 +9,7 @@ const LoginForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn, error, setError, user } = useAuthStore();
+  const { signIn, error, setError, user, signInWithGoogle } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +29,10 @@ const LoginForm = () => {
       router.push("/");
     }
   }, [user, router]);
+
+  const handleGoogleSignIn = async () => {
+    await signInWithGoogle();
+  };
 
   return (
     <div className="mt-20 w-full">
@@ -72,6 +76,7 @@ const LoginForm = () => {
             </Link>
           </div>
         </form>
+        <button onClick={handleGoogleSignIn}>구글 로그인</button>
         {error && <p style={{ color: "red" }}>(error)</p>}
       </div>
     </div>

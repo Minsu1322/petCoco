@@ -101,10 +101,6 @@ export const useAuthStore = create<useAuth>((set) => ({
     }
   },
   validatePasswords: (password, passwordCheck) => {
-    const passwordRequirements = [
-      {}
-    ]
-
     if (password !== passwordCheck) {
       set({ passwordError: "비밀번호가 일치하지 않습니다" });
     } else {
@@ -132,20 +128,22 @@ export const useAuthStore = create<useAuth>((set) => ({
   },
   signInWithGoogle: async () => {
     try {
-      const {data, error} = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/googleCallback`,
+        }
       });
-
+  
       if (error) {
         throw new Error(error.message);
       }
-
-      window.location.href = data.url;
     } catch (error: any) {
       console.error("구글 로그인 에러", error.message);
-      set({error: error.message});
+      set({ error: error.message });
     }
   },
+  
   setUser: (user) => set({ user }),
   setError: (error) => set({ error })
 }));
