@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchData, setSearchData] = useState<any>([]);
 
-  const handleSearchPosts = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearchPosts = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     try {
       const response = await fetch(`/api/mate/post?query=${searchQuery}`);
       if (!response.ok) {
@@ -16,14 +16,14 @@ const SearchBar = () => {
       }
       const data = await response.json();
       setSearchData(data); 
- 
+  
       return data;
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [searchQuery, setSearchData]);
 
-  console.log('검색결과', searchData);
+  //console.log('검색결과', searchData);
   
 
   return (
