@@ -34,7 +34,7 @@ const Header = () => {
   }, [setSession]);
 
   return (
-    <header className="mb-6 w-full items-center bg-[#1FE476] px-10 py-6 text-white">
+    <header className="mb-6 w-full items-center bg-[#1FE476] px-10 py-6 text-black">
       <div className="flex justify-center gap-6">
         <Link href={"/"}>
           <p>홈(임시 헤더)</p>
