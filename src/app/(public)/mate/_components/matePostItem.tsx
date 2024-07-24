@@ -2,17 +2,33 @@ import { MatePostFullType } from "@/types/mate.type";
 import Link from "next/link";
 import ItemButton from "./itemButton";
 import Image from "next/image";
+import { getDistanceHaversine } from "../getDistanceHaversine";
+import { locationStore } from "@/zustand/locationStore";
 
 interface MatePostItemPorps {
   post: MatePostFullType;
 }
 
 const MatePostItem = ({ post }: MatePostItemPorps) => {
+  const { geoData, setGeoData } = locationStore();
   // 시간 변환 함수로 분리
   const time = post.dateTime?.split("T")[1].split(":");
   const convertPeriod = time && (Number(time[0]) < 12 ? "오전" : "오후");
   const convertHour = time && (Number(time[0]) % 12 || 12);
   const convertMin = time && time[1];
+
+  const calculateDistance = () => {
+    if (geoData && post.position) {
+      const distance = getDistanceHaversine({
+        curPosition: geoData.center,
+        desPosition: post.position.center
+      });
+      return distance.toFixed(2); 
+    }
+    return null;
+  };
+
+  const distance = calculateDistance();
 
   return (
     <Link href={`/mate/posts/${post.id}`} className="mb-5 flex w-10/12 flex-col gap-y-5 rounded-xl bg-gray-200 p-5">
@@ -28,12 +44,13 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
         </div>
         <div className="w-full">
           <div className="flex flex-row justify-between">
-            <p className="w-64 overflow-hidden overflow-ellipsis whitespace-nowrap">{post.title}</p>
-            <p>모집인원 수 {post.members}</p>
+            <p className="w-56 overflow-hidden overflow-ellipsis whitespace-nowrap">{post.title}</p>
+            {distance !== null ? <p>현재 위치에서의 거리: {distance} km</p> : <p></p>}
           </div>
           {/* <p>{post.content}</p> */}
           <p>날짜 : {post.dateTime?.split("T")[0]}</p>
           <p>시간 : {`${convertPeriod} ${convertHour}시 ${convertMin}분`}</p>
+          <p>모집인원 수 {post.members}</p>
           <div className="mt-2 flex flex-row gap-x-2">
             <ItemButton text={post.size} className="flex h-7 w-20 items-center justify-center rounded-full bg-white" />
             <ItemButton
@@ -41,7 +58,10 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
               className="flex h-7 w-20 items-center justify-center rounded-full bg-white px-2"
               p_className="w-17 overflow-hidden overflow-ellipsis whitespace-nowrap"
             />
-            <ItemButton text={Number(post.members) > 1 ? '다인원 산책' : '소인원 산책' } className="flex h-7 w-24 items-center justify-center rounded-full bg-white" />
+            <ItemButton
+              text={Number(post.members) > 1 ? "다인원 산책" : "소인원 산책"}
+              className="flex h-7 w-24 items-center justify-center rounded-full bg-white"
+            />
           </div>
         </div>
       </div>
