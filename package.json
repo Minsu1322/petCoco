@@ -21,7 +21,7 @@
     "react-dom": "^18",
     "react-kakao-maps-sdk": "^1.1.27",
     "react-quill": "^2.0.0",
-    "supabase": "^1.183.5",
+    "supabase": "^1.187.3",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
