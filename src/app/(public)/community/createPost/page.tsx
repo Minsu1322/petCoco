@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import React from "react";
 import { usePostStore } from "@/zustand/post";
 import { supabase } from "@/supabase/userClient";
@@ -122,17 +123,25 @@ const CreatePostPage = () => {
                 type="button"
                 onClick={() => removeImage(index)}
                 className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white"
-              ></button>
+              >
+                x
+              </button>
             </div>
           ))}
         </div>
       </div>
       <button
         type="submit"
-        className="w-full rounded bg-blue-500 p-2 font-semibold text-white transition-colors hover:bg-blue-600"
+        className="mb-4 w-full rounded bg-blue-500 p-2 font-semibold text-white transition-colors hover:bg-blue-600"
       >
         작성완료
       </button>
+      <Link
+        href="/community"
+        className="block w-full rounded bg-gray-500 p-2 text-center font-semibold text-white transition-colors hover:bg-gray-600"
+      >
+        뒤로가기
+      </Link>
     </form>
   );
 };
