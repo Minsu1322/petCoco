@@ -228,6 +228,7 @@ export type Database = {
       }
       users: {
         Row: {
+          age: string | null
           created_at: string
           email: string | null
           id: string
@@ -235,6 +236,7 @@ export type Database = {
           profile_img: string | null
         }
         Insert: {
+          age?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -242,6 +244,7 @@ export type Database = {
           profile_img?: string | null
         }
         Update: {
+          age?: string | null
           created_at?: string
           email?: string | null
           id?: string
