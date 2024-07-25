@@ -1,5 +1,3 @@
-import { error } from "console";
-import { ChangeEvent, useState } from "react";
 import MyPageProfile from "./_components/MyPageProfile";
 import ChangeProfileModalButton from "./_components/ChangeProfileModalButton";
 
@@ -11,9 +9,10 @@ function MyPage() {
   //   router.push("/login");
   // } else {
   return (
-    <div className="pt-[70px] pb-[200px]">
+    <div className="pb-[200px] pt-[70px]">
       <MyPageProfile />
       <ChangeProfileModalButton />
+
       {/* <MyPageList /> */}
     </div>
   );

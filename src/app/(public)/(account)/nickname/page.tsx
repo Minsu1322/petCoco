@@ -70,7 +70,14 @@ const NicknameInfo = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label>닉네임</label>
-          <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} required />
+          <input
+            type="text"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            placeholder="닉네임은 8자 이하로 작성해주세요"
+            maxLength={5}
+            required
+          />
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <button type="submit">완료</button>
