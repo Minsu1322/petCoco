@@ -17,5 +17,10 @@ export type MatePostFullType = MatePostType & {
 
 export type MateNextPostType = Omit<MatePostFullType,  'id' | 'created_at' | 'users'>
 
-export type MateCommentType = Tables<"mateComments">;
-
+export type MatePostPetType = {
+  post_id?: number; // post_id를 추가
+  male_female: string;
+  neutered: boolean | null;
+  weight: string;
+  characteristics: string;
+};
