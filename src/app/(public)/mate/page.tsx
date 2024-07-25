@@ -40,7 +40,7 @@ const MatePage = () => {
     queryFn: async () => {
       const response = await fetch(`/api/mate`);
       const data = response.json();
-
+console.log(data)
       return data;
     }
   });
@@ -116,8 +116,17 @@ const MatePage = () => {
 
   const sortPosts = (posts: MatePostFullType[]) => {
     if (sortBy === "date") {
-      // 마감 임박순 필터
+      return [...posts].sort((a, b) => {
+        const now = new Date().getTime();
+        
+        const deadlineA = new Date(a.recruitment_period ?? '').getTime();
+        const deadlineB = new Date(b.recruitment_period ?? '').getTime();
+  
+        // 현재 시간과 모집 마감일의 차이를 비교
+        return (deadlineA - now) - (deadlineB - now);
+      });
     }
+    
     if (sortBy === "distance") {
       if (geolocationData) {
         return [...posts].sort((a, b) => {
