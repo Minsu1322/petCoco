@@ -9,6 +9,27 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      chats: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          username: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          username: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          username?: string
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           content: string | null
@@ -48,96 +69,95 @@ export type Database = {
           },
         ]
       }
-      mateComments: {
+      matePostPets: {
         Row: {
-          content: string | null
+          age: string | null
+          characteristics: string | null
           created_at: string
           id: string
+          male_female: string | null
+          neutered: boolean | null
           post_id: string | null
-          user_id: string | null
+          weight: string | null
         }
         Insert: {
-          content?: string | null
+          age?: string | null
+          characteristics?: string | null
           created_at?: string
-          id?: string
+          id: string
+          male_female?: string | null
+          neutered?: boolean | null
           post_id?: string | null
-          user_id?: string | null
+          weight?: string | null
         }
         Update: {
-          content?: string | null
+          age?: string | null
+          characteristics?: string | null
           created_at?: string
           id?: string
+          male_female?: string | null
+          neutered?: boolean | null
           post_id?: string | null
-          user_id?: string | null
+          weight?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "mateComments_post_id_fkey"
+            foreignKeyName: "matePostPets_post_id_fkey"
             columns: ["post_id"]
             isOneToOne: false
             referencedRelation: "matePosts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "mateComments_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
       }
       matePosts: {
         Row: {
-          characteristics: string | null
+          address: string | null
           content: string | null
           created_at: string
-          dateTime: string | null
+          date_time: string | null
           id: string
-          male_female: string | null
           members: string | null
-          neutered: boolean | null
-          numbers: string | null
+          placeName: string | null
           position: Json | null
+          preferredRoute: string | null
           recruiting: boolean | null
-          size: string | null
+          recruitment_period: string | null
+          special_requirements: string | null
           title: string | null
           user_id: string | null
-          weight: string | null
         }
         Insert: {
-          characteristics?: string | null
+          address?: string | null
           content?: string | null
           created_at?: string
-          dateTime?: string | null
+          date_time?: string | null
           id?: string
-          male_female?: string | null
           members?: string | null
-          neutered?: boolean | null
-          numbers?: string | null
+          placeName?: string | null
           position?: Json | null
+          preferredRoute?: string | null
           recruiting?: boolean | null
-          size?: string | null
+          recruitment_period?: string | null
+          special_requirements?: string | null
           title?: string | null
           user_id?: string | null
-          weight?: string | null
         }
         Update: {
-          characteristics?: string | null
+          address?: string | null
           content?: string | null
           created_at?: string
-          dateTime?: string | null
+          date_time?: string | null
           id?: string
-          male_female?: string | null
           members?: string | null
-          neutered?: boolean | null
-          numbers?: string | null
+          placeName?: string | null
           position?: Json | null
+          preferredRoute?: string | null
           recruiting?: boolean | null
-          size?: string | null
+          recruitment_period?: string | null
+          special_requirements?: string | null
           title?: string | null
           user_id?: string | null
-          weight?: string | null
         }
         Relationships: [
           {
@@ -151,37 +171,30 @@ export type Database = {
       }
       messages: {
         Row: {
-          content: string | null
           created_at: string
           id: string
-          receiver_id: string | null
-          sender_id: string | null
+          is_edit: boolean | null
+          send_by: string
+          text: string
         }
         Insert: {
-          content?: string | null
           created_at?: string
           id?: string
-          receiver_id?: string | null
-          sender_id?: string | null
+          is_edit?: boolean | null
+          send_by?: string
+          text: string
         }
         Update: {
-          content?: string | null
           created_at?: string
           id?: string
-          receiver_id?: string | null
-          sender_id?: string | null
+          is_edit?: boolean | null
+          send_by?: string
+          text?: string
         }
         Relationships: [
           {
-            foreignKeyName: "messages_receiver_id_fkey"
-            columns: ["receiver_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "messages_sender_id_fkey"
-            columns: ["sender_id"]
+            foreignKeyName: "messages_send_by_fkey"
+            columns: ["send_by"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -266,7 +279,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_mate_post_with_pets: {
+        Args: {
+          post_data: Json
+          pets_data: Json
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
