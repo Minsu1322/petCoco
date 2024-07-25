@@ -1,4 +1,4 @@
-import { createClient } from "@/supabase/client";
+import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
@@ -37,10 +37,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     if (error) {
       return NextResponse.json(error);
     }
-    console.log(id);
-    console.log(data);
-    console.log(error);
-    console.log(newData);
+
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({ error: "프로필 업데이트가 실패했습니다." });

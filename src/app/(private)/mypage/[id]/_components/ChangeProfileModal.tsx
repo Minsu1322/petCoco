@@ -44,24 +44,6 @@ const ChangeProfileModal = ({ clickModal }: ModalProps) => {
     //const { data: result } = await supabase.from("users").update(newData).eq("id", id);
     //return result;
   };
-  const getProfileData = async () => {
-    const response = await fetch(`/api/mypage/${id}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    });
-    const data = response.json();
-    console.log(user);
-    return data;
-  };
-
-  const { data: user, isPending, error } = useQuery({ queryKey: ["user"], queryFn: getProfileData });
-
-  if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
-
-  if (error) {
-    alert("데이터 로딩 실패");
-    return null;
-  }
 
   //let updatingData = user;
 

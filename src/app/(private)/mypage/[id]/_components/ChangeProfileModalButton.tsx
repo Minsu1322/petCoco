@@ -10,9 +10,9 @@ const ChangeProfileModalButton = () => {
   };
 
   return (
-    <div className="flex flex-col my-auto justify-center items-center">
+    <div className="my-auto flex flex-col items-center justify-center">
       <button
-        className="rounded py-2 px-4 bg-[#24CAFF] border-[#00BBF7] text-center text-white font-bold mt-5"
+        className="mt-5 rounded border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
         onClick={clickModal}
       >
         프로필 변경
