@@ -6,6 +6,7 @@ import {
 } from "@/components/community/communityTabAndSortTab/TabAndCategory";
 import PostList from "@/components/community/PostList";
 import React, { useState } from "react";
+import Link from "next/link"; // Link 컴포넌트 추가
 
 const CommunityMainPage = () => {
   const [selectedTab, setSelectedTab] = useState<string>("전체");
@@ -56,9 +57,12 @@ const CommunityMainPage = () => {
 
         <div className="w-1/4">
           {/* 글쓰기 버튼 */}
-          <button className="mb-8 w-full rounded-md bg-[#1FE476] px-4 py-2 text-white hover:bg-[#5AAF3F]">
+          <Link
+            href="/community/createPost"
+            className="mb-8 block w-full rounded-md bg-[#1FE476] px-4 py-2 text-center text-white hover:bg-[#5AAF3F]"
+          >
             글쓰기
-          </button>
+          </Link>
 
           {/* 검색영역 */}
           <form onSubmit={handleSearchSubmit} className="mb-8">
