@@ -151,6 +151,12 @@ export type Database = {
       }
       messages: {
         Row: {
+<<<<<<< HEAD
+          category: string
+          content: string | null
+          created_at: string
+          id: string
+=======
           content: string | null
           created_at: string
           id: string
@@ -194,6 +200,7 @@ export type Database = {
           content: string | null
           created_at: string
           id: string
+>>>>>>> dev
           post_imageURL: string | null
           title: string | null
           user_id: string | null
