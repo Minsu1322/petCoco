@@ -52,33 +52,21 @@ export type Database = {
         Row: {
           content: string | null
           created_at: string
-<<<<<<< HEAD
-          id: number
-=======
           id: string
->>>>>>> dev
           post_id: string | null
           user_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
-<<<<<<< HEAD
-          id?: number
-=======
           id?: string
->>>>>>> dev
           post_id?: string | null
           user_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
-<<<<<<< HEAD
-          id?: number
-=======
           id?: string
->>>>>>> dev
           post_id?: string | null
           user_id?: string | null
         }
@@ -101,62 +89,55 @@ export type Database = {
       }
       matePosts: {
         Row: {
+          characteristics: string | null
           content: string | null
           created_at: string
+          dateTime: string | null
           id: string
-<<<<<<< HEAD
-          title: string | null
-          user_id: string | null
-=======
           male_female: string | null
           members: string | null
           neutered: boolean | null
           numbers: string | null
           position: Json | null
+          recruiting: boolean | null
           size: string | null
           title: string | null
           user_id: string | null
           weight: string | null
->>>>>>> dev
         }
         Insert: {
+          characteristics?: string | null
           content?: string | null
           created_at?: string
-<<<<<<< HEAD
-          id: string
-          title?: string | null
-          user_id?: string | null
-=======
+          dateTime?: string | null
           id?: string
           male_female?: string | null
           members?: string | null
           neutered?: boolean | null
           numbers?: string | null
           position?: Json | null
+          recruiting?: boolean | null
           size?: string | null
           title?: string | null
           user_id?: string | null
           weight?: string | null
->>>>>>> dev
         }
         Update: {
+          characteristics?: string | null
           content?: string | null
           created_at?: string
+          dateTime?: string | null
           id?: string
-<<<<<<< HEAD
-          title?: string | null
-          user_id?: string | null
-=======
           male_female?: string | null
           members?: string | null
           neutered?: boolean | null
           numbers?: string | null
           position?: Json | null
+          recruiting?: boolean | null
           size?: string | null
           title?: string | null
           user_id?: string | null
           weight?: string | null
->>>>>>> dev
         }
         Relationships: [
           {
@@ -168,46 +149,71 @@ export type Database = {
           },
         ]
       }
-      posts: {
+      messages: {
         Row: {
-<<<<<<< HEAD
-=======
-          category: string
->>>>>>> dev
           content: string | null
           created_at: string
           id: string
-          title: string | null
-<<<<<<< HEAD
+          receiver_id: string | null
+          sender_id: string | null
         }
         Insert: {
-=======
+          content?: string | null
+          created_at?: string
+          id?: string
+          receiver_id?: string | null
+          sender_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          receiver_id?: string | null
+          sender_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          category: string
+          content: string | null
+          created_at: string
+          id: string
+          post_imageURL: string | null
+          title: string | null
           user_id: string | null
         }
         Insert: {
           category: string
->>>>>>> dev
           content?: string | null
           created_at?: string
           id?: string
+          post_imageURL?: string | null
           title?: string | null
-<<<<<<< HEAD
-        }
-        Update: {
-=======
           user_id?: string | null
         }
         Update: {
           category?: string
->>>>>>> dev
           content?: string | null
           created_at?: string
           id?: string
+          post_imageURL?: string | null
           title?: string | null
-<<<<<<< HEAD
-        }
-        Relationships: []
-=======
           user_id?: string | null
         }
         Relationships: [
@@ -219,7 +225,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
->>>>>>> dev
       }
       users: {
         Row: {
