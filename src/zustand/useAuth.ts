@@ -31,13 +31,13 @@ export const useAuthStore = create<useAuth>((set) => ({
     try {
       const { data: existingUsers, error: checkError } = await supabase.from("users").select("*").eq("email", email);
       if (checkError) {
-        throw new Error()
+        throw new Error();
       }
 
       if (existingUsers.length > 0) {
-        set({emailError: "중복된 이메일입니다."});
+        set({ emailError: "중복된 이메일입니다." });
       } else {
-        set({emailError: null});
+        set({ emailError: null });
       }
     } catch (error: any) {
       console.error("이메일 체크 에러", error.message);
@@ -70,7 +70,7 @@ export const useAuthStore = create<useAuth>((set) => ({
       set({ error: null });
     } catch (error: any) {
       console.error("회원가입 에러", error.message);
-      set({ error: error.message })
+      set({ error: error.message });
     }
   },
   signIn: async (credentials) => {
@@ -92,14 +92,14 @@ export const useAuthStore = create<useAuth>((set) => ({
   },
   signOut: async () => {
     try {
-      const {error} = await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
       if (error) {
         throw new Error(error.message);
       }
-      set({user: null, error: null});
+      set({ user: null, error: null });
     } catch (error: any) {
       console.error("로그아웃 에러", error.message);
-      set({error: error.message});
+      set({ error: error.message });
     }
   },
   validatePasswords: (password, passwordCheck) => {
@@ -112,18 +112,12 @@ export const useAuthStore = create<useAuth>((set) => ({
   validationPasswds: (password) => {
     const minLength = 8;
     const maxLength = 20;
-    const hasLowerCase =  /[a-z]/.test(password);
-    const hasNumber =  /[0-9]/.test(password);
-    const hasSpecialChar =  /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    if (
-      password.length < minLength ||
-      password.length > maxLength ||
-      !hasLowerCase ||
-      !hasNumber ||
-      !hasSpecialChar
-    ) {
-      set({ passwordValidateError: "영문, 숫자, 특수문자 조합 8-20자" })
+    if (password.length < minLength || password.length > maxLength || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+      set({ passwordValidateError: "영문, 숫자, 특수문자 조합 8-20자" });
     } else {
       set({ passwordValidateError: null });
     }
@@ -131,12 +125,12 @@ export const useAuthStore = create<useAuth>((set) => ({
   signInWithGoogle: async () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/googleCallback`,
+          redirectTo: `${window.location.origin}/googleCallback`
         }
       });
-  
+
       if (error) {
         throw new Error(error.message);
       }
@@ -145,24 +139,24 @@ export const useAuthStore = create<useAuth>((set) => ({
       set({ error: error.message });
     }
   },
-  signInWithKakao : async () => {
+  signInWithKakao: async () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'kakao',
+        provider: "kakao",
         options: {
-          redirectTo: `${window.location.origin}/kakaoCallback`,
+          redirectTo: `${window.location.origin}/kakaoCallback`
         }
       });
 
       if (error) {
         throw new Error(error.message);
       }
-     } catch (error: any) {
-        console.error('카카오 로그인 에러', error.message);
-        set({error: error.message});
-      }
+    } catch (error: any) {
+      console.error("카카오 로그인 에러", error.message);
+      set({ error: error.message });
+    }
   },
   setUser: (user) => set({ user }),
   setError: (error) => set({ error }),
-  setSession: (session) => set({ user: session?.user ?? null }),
+  setSession: (session) => set({ user: session?.user ?? null })
 }));

@@ -60,7 +60,7 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="mt-20 w-full">
+    <div className="mt-10 w-full">
       <h1 className="text-center text-[30px] font-semibold">회원가입</h1>
       <div className="mt-10 flex flex-col items-center">
         <form onSubmit={handleSubmit}>
@@ -68,7 +68,7 @@ const SignupForm = () => {
             <div className="flex h-[60px] w-[550px] items-center border">
               <label className="ml-3 w-[100px] text-center">닉네임</label>
               <input
-                className="ml-5 h-[30px] w-[380px]"
+                className="ml-5 h-[30px] w-[380px] pl-2"
                 type="text"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
@@ -82,7 +82,7 @@ const SignupForm = () => {
             <div className="mt-[30px] flex h-[60px] w-[550px] items-center border">
               <label className="ml-3 w-[100px] text-center">이메일</label>
               <input
-                className="ml-5 h-[30px] w-[380px]"
+                className="ml-5 h-[30px] w-[380px] pl-2"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -95,7 +95,7 @@ const SignupForm = () => {
             <div className="mt-[30px] flex h-[60px] w-[550px] items-center border">
               <label className="ml-3 w-[100px] text-center">비밀번호</label>
               <input
-                className="ml-5 h-[30px] w-[380px]"
+                className="ml-5 h-[30px] w-[380px] pl-2"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -109,7 +109,7 @@ const SignupForm = () => {
             <div className="mt-[30px] flex h-[60px] w-[550px] items-center border">
               <label className="ml-3 w-[100px] text-center">비밀번호 확인</label>
               <input
-                className="ml-5 h-[30px] w-[380px]"
+                className="ml-5 h-[30px] w-[380px] pl-2"
                 type="password"
                 value={passwordCheck}
                 onChange={(e) => setPasswordCheck(e.target.value)}
@@ -120,7 +120,7 @@ const SignupForm = () => {
             {passwordError && <p className="ml-2 mt-1 text-red-500">{passwordError}</p>}
           </div>
 
-          <div className="mt-10 flex items-center">
+          <div className="mt-3 flex items-center">
             <input
               type="checkbox"
               className="mr-3 h-[20px] w-[20px]"
@@ -130,7 +130,7 @@ const SignupForm = () => {
             <label>개인정보 수집 및 이용 동의(필수)</label>
           </div>
 
-          <button className="mt-10 h-[80px] w-[550px] border bg-black text-white" type="submit">
+          <button className="mt-10 h-[70px] w-[550px] border bg-black text-white" type="submit">
             회원가입 하기
           </button>
         </form>
