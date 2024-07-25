@@ -23,7 +23,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           curPosition: geoData.center,
           desPosition: post.position.center
         });
-        return distance.toFixed(2); 
+        return distance.toFixed(1); 
       }
     return null;
   };
@@ -40,11 +40,11 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             width={70}
             height={70}
           />
-          <p className="mt-2 text-center"> {post && post.users?.nickname}</p>
+          <p className="mt-2 text-center w-16 overflow-hidden overflow-ellipsis whitespace-nowrap"> {post && post.users?.nickname}</p>
         </div>
         <div className="w-full">
           <div className="flex flex-row justify-between">
-            <p className="w-56 overflow-hidden overflow-ellipsis whitespace-nowrap">{post.title}</p>
+            <p className="w-52 overflow-hidden overflow-ellipsis whitespace-nowrap">{post.title}</p>
             {distance !== null ? <p>현재 위치에서의 거리: {distance} km</p> : <p></p>}
           </div>
           {/* <p>{post.content}</p> */}
