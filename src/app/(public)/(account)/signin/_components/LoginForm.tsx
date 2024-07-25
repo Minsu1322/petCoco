@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/zustand/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { FcGoogle } from "react-icons/fc";
+import { RiKakaoTalkFill } from "react-icons/ri";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -39,14 +41,14 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="mt-20 w-full">
+    <div className="mt-10 w-full">
       <h1 className="text-center text-[30px] font-semibold">로그인</h1>
       <div className="mt-10 flex flex-col items-center">
         <form onSubmit={handleSubmit}>
-          <div className="flex h-[80px] w-[550px] items-center border">
+          <div className="flex h-[60px] w-[550px] items-center border">
             <label className="ml-5 w-[70px] text-center">이메일</label>
             <input
-              className="ml-5 h-[40px] w-[420px]"
+              className="ml-5 h-[35px] w-[420px] pl-2"
               type="email"
               value={email}
               placeholder="이메일을 입력하세요"
@@ -54,10 +56,10 @@ const LoginForm = () => {
               required
             />
           </div>
-          <div className="mt-[30px] flex h-[80px] w-[550px] items-center border">
+          <div className="mt-[30px] flex h-[60px] w-[550px] items-center border">
             <label className="ml-5 w-[70px] text-center">비밀번호</label>
             <input
-              className="ml-5 h-[40px] w-[420px]"
+              className="ml-5 h-[35px] w-[420px] pl-2"
               type="password"
               value={password}
               placeholder="비밀번호를 입력하세요"
@@ -70,7 +72,7 @@ const LoginForm = () => {
             <p className="float-right ml-2 mr-2">|</p>
             <label className="float-right">아이디 찾기</label>
           </div>
-          <button className="mt-10 h-[80px] w-[550px] border bg-black text-white" type="submit">
+          <button className="mt-[30px] h-[70px] w-[550px] border bg-black text-white" type="submit">
             로그인 하기
           </button>
           <div className="mt-5 flex justify-center">
@@ -80,8 +82,21 @@ const LoginForm = () => {
             </Link>
           </div>
         </form>
-        <button onClick={handleGoogleSignIn}>구글 로그인</button>
-        <button onClick={handleKakaoSignIn}>카카오 로그인</button>
+        <div className="mt-12 flex w-[550px] items-center justify-between">
+          <div className="h-[1px] w-[180px] border"></div>
+          <p>SNS 계정으로 로그인하기</p>
+          <div className="h-[1px] w-[180px] border"></div>
+        </div>
+        <div className="mt-5 flex w-[550px]">
+          <button onClick={handleKakaoSignIn} className="mr-5 flex h-[35px] w-[200px] items-center bg-yellow-500">
+            <RiKakaoTalkFill className="ml-2 mr-7 h-[24px] w-[24px]" />
+            <p>카카오 로그인</p>
+          </button>
+          <button onClick={handleGoogleSignIn} className="flex h-[35px] w-[200px] items-center border">
+            <FcGoogle className="ml-2 mr-2 h-[24px] w-[24px]" />
+            <p>Sign in with Google</p>
+          </button>
+        </div>
         {error && <p style={{ color: "red" }}>(error)</p>}
       </div>
     </div>
