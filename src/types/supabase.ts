@@ -9,23 +9,80 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      chat: {
+      chatmessages: {
         Row: {
-          content: string
-          created_at: string
+          chat_id: string | null
+          content: string | null
+          created_at: string | null
           id: string
+          sender: string | null
         }
         Insert: {
-          content: string
-          created_at?: string
-          id: string
+          chat_id?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          sender?: string | null
         }
         Update: {
-          content?: string
-          created_at?: string
+          chat_id?: string | null
+          content?: string | null
+          created_at?: string | null
           id?: string
+          sender?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "chatmessages_chat_id_fkey"
+            columns: ["chat_id"]
+            isOneToOne: false
+            referencedRelation: "chats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chatmessages_sender_fkey"
+            columns: ["sender"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chats: {
+        Row: {
+          created_at: string | null
+          id: string
+          user1: string | null
+          user2: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          user1?: string | null
+          user2?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          user1?: string | null
+          user2?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chats_user1_fkey"
+            columns: ["user1"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chats_user2_fkey"
+            columns: ["user2"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       comments: {
         Row: {
@@ -66,96 +123,95 @@ export type Database = {
           },
         ]
       }
-      mateComments: {
+      matePostPets: {
         Row: {
-          content: string | null
+          age: string | null
+          characteristics: string | null
           created_at: string
           id: string
+          male_female: string | null
+          neutered: boolean | null
           post_id: string | null
-          user_id: string | null
+          weight: string | null
         }
         Insert: {
-          content?: string | null
+          age?: string | null
+          characteristics?: string | null
           created_at?: string
-          id?: string
+          id: string
+          male_female?: string | null
+          neutered?: boolean | null
           post_id?: string | null
-          user_id?: string | null
+          weight?: string | null
         }
         Update: {
-          content?: string | null
+          age?: string | null
+          characteristics?: string | null
           created_at?: string
           id?: string
+          male_female?: string | null
+          neutered?: boolean | null
           post_id?: string | null
-          user_id?: string | null
+          weight?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "mateComments_post_id_fkey"
+            foreignKeyName: "matePostPets_post_id_fkey"
             columns: ["post_id"]
             isOneToOne: false
             referencedRelation: "matePosts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "mateComments_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
       }
       matePosts: {
         Row: {
-          characteristics: string | null
+          address: string | null
           content: string | null
           created_at: string
-          dateTime: string | null
+          date_time: string | null
           id: string
-          male_female: string | null
           members: string | null
-          neutered: boolean | null
-          numbers: string | null
+          placeName: string | null
           position: Json | null
+          preferredRoute: string | null
           recruiting: boolean | null
-          size: string | null
+          recruitment_period: string | null
+          special_requirements: string | null
           title: string | null
           user_id: string | null
-          weight: string | null
         }
         Insert: {
-          characteristics?: string | null
+          address?: string | null
           content?: string | null
           created_at?: string
-          dateTime?: string | null
+          date_time?: string | null
           id?: string
-          male_female?: string | null
           members?: string | null
-          neutered?: boolean | null
-          numbers?: string | null
+          placeName?: string | null
           position?: Json | null
+          preferredRoute?: string | null
           recruiting?: boolean | null
-          size?: string | null
+          recruitment_period?: string | null
+          special_requirements?: string | null
           title?: string | null
           user_id?: string | null
-          weight?: string | null
         }
         Update: {
-          characteristics?: string | null
+          address?: string | null
           content?: string | null
           created_at?: string
-          dateTime?: string | null
+          date_time?: string | null
           id?: string
-          male_female?: string | null
           members?: string | null
-          neutered?: boolean | null
-          numbers?: string | null
+          placeName?: string | null
           position?: Json | null
+          preferredRoute?: string | null
           recruiting?: boolean | null
-          size?: string | null
+          recruitment_period?: string | null
+          special_requirements?: string | null
           title?: string | null
           user_id?: string | null
-          weight?: string | null
         }
         Relationships: [
           {
