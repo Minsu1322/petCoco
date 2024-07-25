@@ -15,7 +15,7 @@ const MatePost = ({ params }: { params: { id: string } }) => {
     queryFn: async () => {
       const response = await fetch(`/api/mate/post/${id}`);
       const data = response.json();
-      console.log(data);
+    //  console.log(data);
 
       return data;
     }
@@ -30,7 +30,7 @@ const MatePost = ({ params }: { params: { id: string } }) => {
   if (error) {
     return <div>{error.message}</div>;
   }
-  console.log(post);
+  //console.log(post);
 
   return (<div>
     <DetailMatePost post={post} />

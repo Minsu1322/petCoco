@@ -149,12 +149,58 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+<<<<<<< HEAD
+          category: string
+          content: string | null
+          created_at: string
+          id: string
+=======
+          content: string | null
+          created_at: string
+          id: string
+          receiver_id: string | null
+          sender_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          receiver_id?: string | null
+          sender_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          receiver_id?: string | null
+          sender_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           category: string
           content: string | null
           created_at: string
           id: string
+>>>>>>> dev
           post_imageURL: string | null
           title: string | null
           user_id: string | null

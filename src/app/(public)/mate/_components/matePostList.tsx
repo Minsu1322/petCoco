@@ -1,18 +1,20 @@
-import { MatePostType } from "@/types/mate.type"
-import MatePostItem from './matePostItem';
-
-
+import { MatePostFullType } from "@/types/mate.type";
+import MatePostItem from "./matePostItem";
 
 interface MatePostListProps {
-  posts: MatePostType[]
+  posts: MatePostFullType[];
 }
 
-const MatePostList = ({posts}: MatePostListProps) => {
+const MatePostList = ({ posts }: MatePostListProps) => {
   return (
-    <div>
-      {posts.map((post) => <MatePostItem key={post.id} post={post} />)}
+    <div className="mt-5 grid grid-cols-2 justify-items-center">
+      {posts ? (
+        posts.map((post) => <MatePostItem key={post.id} post={post}/>)
+      ) : (
+        <div> 현재 모집 중인 산책 메이트가 없습니다.</div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default MatePostList
+export default MatePostList;
