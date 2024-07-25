@@ -10,6 +10,7 @@ import Link from "next/link";
 import { getConvertAddress } from "../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType } from "@/types/mate.type";
+import { characteristicsArr } from "../array";
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/mapForm"), { ssr: false });
@@ -19,6 +20,7 @@ export type Pets = {
   neutered: null | boolean;
   weight: string;
   characteristics: string;
+  age: string;
 };
 
 const PostForm = () => {
@@ -46,13 +48,14 @@ const PostForm = () => {
     male_female: "",
     neutered: null,
     weight: "",
-    characteristics: ""
+    characteristics: "",
+    age: ""
   };
 
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
   const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
-  console.log(formPets);
+  // console.log(formPets);
 
   // 게시물 등록
   const addPost = async (formAllData: { post: MateNextPostType; pets: Pets[] }) => {
@@ -169,7 +172,9 @@ const PostForm = () => {
             <DynamicMapComponent center={{ lat: 37.5556236021213, lng: 126.992199507869 }} />
             <p>클릭한 곳의 주소는? {address}</p>
           </div>
-          <div className="flex flex-row gap-x-4">
+         <div className="mt-5">
+          <p>🔍 메이트 모집 정보</p>
+         <div className="flex flex-row gap-x-4">
             <label htmlFor="date_time">산책 날짜 및 시간</label>
             <input
               type="datetime-local"
@@ -188,12 +193,6 @@ const PostForm = () => {
             />
             명
           </div>
-          <textarea
-            value={formPosts.content || ""}
-            onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
-            placeholder=" 글을 작성해 주세요."
-            className="mt-5 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
-          ></textarea>
           <div className="flex flex-row gap-x-2">
             <p>모집기간 :</p>
             <input
@@ -213,6 +212,7 @@ const PostForm = () => {
             />
           </div>
           <div className="flex flex-row gap-x-2">
+          
             <p>선호하는 산책 루트</p>
             <input
               type="text"
@@ -230,16 +230,43 @@ const PostForm = () => {
               onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
             />
           </div>
+          <textarea
+            value={formPosts.content || ""}
+            onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
+            placeholder=" 글을 작성해 주세요."
+            className="mt-1 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
+          ></textarea>
+         </div>
+
           {/* 반려동물 정보 */}
           <div className="mt-3 flex flex-col gap-y-5">
             <p>🐶 반려동물 정보</p>
+            <button
+              type="button"
+              className="h-10 w-36 rounded-md bg-gray-300 px-2"
+              onClick={() => {
+                setFormPets([
+                  ...formPets,
+                  {
+                    male_female: "",
+                    neutered: null,
+                    weight: "",
+                    characteristics: "",
+                    age: ""
+                  }
+                ]);
+              }}
+            >
+            반려동물 정보 추가
+            </button>
+            <div className="flex flex-row gap-x-5">
             {formPets.map((pet, index) => (
-              <div key={index} className="mb-2 flex flex-col gap-y-2 border-b border-gray-300 pb-2">
+              <div key={index} className="mb-2 w-3/12 flex flex-col gap-y-2 border-gray-300 px-2 pb-2">
                 <div className="flex flex-row gap-x-2">
                   <p>성별 :</p>
                   <input
                     type="checkbox"
-                    name={`male_female-${index}`}
+                    name="male_female"
                     value="female"
                     checked={pet.male_female === "female"}
                     onChange={() => {
@@ -251,7 +278,7 @@ const PostForm = () => {
                   <label>암컷</label>
                   <input
                     type="checkbox"
-                    name={`male_female-${index}`}
+                    name="male_female"
                     value="male"
                     checked={pet.male_female === "male"}
                     onChange={() => {
@@ -266,7 +293,7 @@ const PostForm = () => {
                   <p>중성화 여부 :</p>
                   <input
                     type="checkbox"
-                    name={`neutered-${index}`}
+                    name="neutered"
                     checked={pet.neutered === true}
                     onChange={() => {
                       const newPets = [...formPets];
@@ -277,7 +304,7 @@ const PostForm = () => {
                   <label>네</label>
                   <input
                     type="checkbox"
-                    name={`neutered-${index}`}
+                    name="neutered"
                     checked={pet.neutered === false}
                     onChange={() => {
                       const newPets = [...formPets];
@@ -288,10 +315,25 @@ const PostForm = () => {
                   <label>아니오</label>
                 </div>
                 <div className="flex flex-row gap-x-2">
+                  <p>나이 :</p>
+                  <input
+                    type="text"
+                    className="border"
+                    name="age"
+                    value={pet.age || ""}
+                    onChange={(e) => {
+                      const newPets = [...formPets];
+                      newPets[index].age = e.target.value;
+                      setFormPets(newPets);
+                    }}
+                  />
+                </div>
+                <div className="flex flex-row gap-x-2">
                   <p>무게 :</p>
                   <input
                     type="text"
                     className="border"
+                    name="age"
                     value={pet.weight || ""}
                     onChange={(e) => {
                       const newPets = [...formPets];
@@ -304,7 +346,7 @@ const PostForm = () => {
                 <div className="flex flex-row gap-x-2">
                   <p>성격 및 특징 :</p>
                   <select
-                    name={`characteristics-${index}`}
+                    name="characteristics"
                     id={`characteristics-${index}`}
                     className="w-16 border border-black"
                     value={pet.characteristics || ""}
@@ -314,7 +356,7 @@ const PostForm = () => {
                       setFormPets(newPets);
                     }}
                   >
-                    {["온순함", "활발함", "소심함", "적극적", "외향적", "내향적", "낯가림"].map((characteristic) => (
+                    {characteristicsArr.map((characteristic) => (
                       <option key={characteristic} value={characteristic}>
                         {characteristic}
                       </option>
@@ -323,7 +365,7 @@ const PostForm = () => {
                 </div>
                 <button
                   type="button"
-                  className="text-red-500"
+                  className="text-red-500 w-20 border-gray-400 border rounded-lg h-8 mt-2"
                   onClick={() => {
                     const newPets = formPets.filter((_, i) => i !== index);
                     setFormPets(newPets);
@@ -333,28 +375,13 @@ const PostForm = () => {
                 </button>
               </div>
             ))}
-            <button
-              type="button"
-              className="mt-2 h-10 w-20 rounded-md bg-mainColor p-1"
-              onClick={() => {
-                setFormPets([
-                  ...formPets,
-                  {
-                    male_female: "",
-                    neutered: null,
-                    weight: "",
-                    characteristics: ""
-                  }
-                ]);
-              }}
-            >
-              반려동물 추가
-            </button>
+              </div>
+            
           </div>
+        </div>
           <button type="submit" className="mt-3 h-10 w-20 rounded-md bg-mainColor p-1">
             등록하기
           </button>
-        </div>
       </form>
     </div>
   );
