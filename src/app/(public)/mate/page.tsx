@@ -11,6 +11,7 @@ import { MatePostFullType } from "@/types/mate.type";
 import { locationStore } from "@/zustand/locationStore";
 import PostListFilterTab from "./_components/postListFilterTab";
 import { getDistanceHaversine } from "./getDistanceHaversine";
+import { useAuthStore } from "@/zustand/useAuth";
 
 export type PositionData = {
   center: {
@@ -23,6 +24,7 @@ export type PositionData = {
 
 const MatePage = () => {
   const { isUseGeo, setIsUseGeo, geoData, setGeoData } = locationStore();
+  const {user, setUser} = useAuthStore();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchData, setSearchData] = useState<MatePostFullType[]>([]);
   const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);

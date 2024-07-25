@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getConvertAddress } from "../../getConvertAddress";
+import { useAuthStore } from "@/zustand/useAuth";
 
 interface DetailMatePostProps {
   post: MatePostFullType;
@@ -19,7 +20,8 @@ const DynamicMapEditComponent = dynamic(() => import("@/app/(public)/mate/_compo
 
 const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const queryClient = useQueryClient();
-  const userId = '787f023a-82a3-4850-8e86-b8b76608213f';
+  const {user, setUser} = useAuthStore();
+  const userId = user.id;
   const router = useRouter();
 
   const time = post.dateTime?.split("T")[1].split(":");
@@ -59,7 +61,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     (addressData && addressData?.documents[0]?.road_address?.address_name) ||
     addressData?.documents[0]?.address?.address_name ||
     "주소 정보를 찾을 수 없어요";
-  console.log("주소 변환 데이터 확인", addressData);
+  //console.log("주소 변환 데이터 확인", addressData);
 
   const updatePost: Omit<MateNextPostType, "recruiting"> = {
     user_id: userId,
@@ -78,15 +80,15 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   // TODO: 작성자에게만 이 버튼이 보이도록 수정
   const deletePost = async (id: string) => {
-    console.log(id, post.id, userId, post.user_id);
-    if (id !== post.id) {
-      return;
-    }
+   // console.log(id, post.id, userId, post.user_id);
+    // if (id !== post.id) {
+    //   return;
+    // }
 
-    if (userId !== post.user_id) {
-      alert("작성자만 접근이 가능합니다.");
-      return;
-    }
+    // if (userId !== post.user_id) {
+    //   alert("작성자만 접근이 가능합니다.");
+    //   return;
+    // }
 
     if (confirm("현재 게시글을 삭제하시겠어요?")) {
       try {
@@ -153,6 +155,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     mutationFn: (id: string) => deletePost(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+      alert("삭제가 완료되었습니다.");
     }
   });
 

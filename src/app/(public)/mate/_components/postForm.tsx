@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { MateNextPostType } from "@/types/mate.type";
 import Link from "next/link";
 import { getConvertAddress } from "../getConvertAddress";
+import { useAuthStore } from "@/zustand/useAuth";
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/mapForm"), { ssr: false });
@@ -50,7 +51,8 @@ const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_component
 // }
 
 const PostForm = () => {
-  const userId = '787f023a-82a3-4850-8e86-b8b76608213f';
+  const {user} = useAuthStore();
+  const userId = user.id;
   // TODO: state 하나로 관리하도록 변경하기
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -112,13 +114,12 @@ const PostForm = () => {
     addressData?.documents[0]?.address?.address_name ||
     "주소 정보를 찾을 수 없어요";
 
-  console.log("주소 변환 데이터 확인", addressData);
+  //console.log("주소 변환 데이터 확인", addressData);
 
   const addMutation = useMutation({
     mutationFn: async (nextPost: MateNextPostType) => await addPost(nextPost),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-      alert("등록되었습니다!");
     }
   });
 
@@ -172,7 +173,7 @@ const PostForm = () => {
       // setMateGender('');
       // setMateType('');
       // setMateInfo('');
-
+      alert("등록되었습니다!");
       router.replace("/mate");
     } catch (err) {
       console.error(err);
