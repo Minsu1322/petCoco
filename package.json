@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "genTypes": "supabase gen types typescript --project-id eoxrihspempkfnxziwzd --schema public > src/types/supabase.ts"
+    "genTypes": "yarn supabase gen types typescript --project-id eoxrihspempkfnxziwzd --schema public > src/types/supabase.ts"
   },
   "dependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",

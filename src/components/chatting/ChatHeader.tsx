@@ -5,7 +5,7 @@ import React from "react";
 const ChatHeader = ({ user }: { user: User | undefined }) => {
   return (
     <div className="h-20">
-      <div className="flex items-center justify-between border-b p-5">
+      <div className="flex h-full items-center justify-between border-b p-5">
         <div>
           <h1 className="text-xl font-bold">Chatting</h1>
           <div className="flex items-center gap-1">
