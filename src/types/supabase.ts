@@ -151,12 +151,6 @@ export type Database = {
       }
       messages: {
         Row: {
-<<<<<<< HEAD
-          category: string
-          content: string | null
-          created_at: string
-          id: string
-=======
           content: string | null
           created_at: string
           id: string
@@ -200,7 +194,6 @@ export type Database = {
           content: string | null
           created_at: string
           id: string
->>>>>>> dev
           post_imageURL: string | null
           title: string | null
           user_id: string | null
@@ -235,6 +228,7 @@ export type Database = {
       }
       users: {
         Row: {
+          age: string | null
           created_at: string
           email: string | null
           id: string
@@ -242,6 +236,7 @@ export type Database = {
           profile_img: string | null
         }
         Insert: {
+          age?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -249,6 +244,7 @@ export type Database = {
           profile_img?: string | null
         }
         Update: {
+          age?: string | null
           created_at?: string
           email?: string | null
           id?: string
