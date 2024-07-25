@@ -1,4 +1,4 @@
-import { MatePostFullType } from "@/types/mate.type";
+import { MatePostAllType } from "@/types/mate.type";
 import Link from "next/link";
 import ItemButton from "./itemButton";
 import Image from "next/image";
@@ -6,7 +6,7 @@ import { getDistanceHaversine } from "../getDistanceHaversine";
 import { locationStore } from "@/zustand/locationStore";
 
 interface MatePostItemPorps {
-  post: MatePostFullType;
+  post: MatePostAllType;
 }
 
 const MatePostItem = ({ post }: MatePostItemPorps) => {
@@ -18,17 +18,23 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   const convertMin = time && time[1];
 
   const calculateDistance = () => {
-      if (isUseGeo && geoData && post.position) {
-        const distance = getDistanceHaversine({
-          curPosition: geoData.center,
-          desPosition: post.position.center
-        });
-        return distance.toFixed(1); 
-      }
+    if (isUseGeo && geoData && post.position) {
+      const distance = getDistanceHaversine({
+        curPosition: geoData.center,
+        desPosition: post.position.center
+      });
+      return distance.toFixed(1);
+    }
     return null;
   };
-
   const distance = calculateDistance();
+
+  const extractDong = (address: string) => {
+    const match = address?.match(/(\S+동)(?=\s|$)/);
+    return match ? match[0] : "";
+  };
+
+  //console.log(post);
 
   return (
     <Link href={`/mate/posts/${post.id}`} className="mb-5 flex w-10/12 flex-col gap-y-5 rounded-xl bg-gray-200 p-5">
@@ -40,11 +46,16 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             width={70}
             height={70}
           />
-          <p className="mt-2 text-center w-16 overflow-hidden overflow-ellipsis whitespace-nowrap"> {post && post.users?.nickname}</p>
+          <p className="mt-2 w-16 overflow-hidden overflow-ellipsis whitespace-nowrap text-center">
+            {" "}
+            {post && post.users?.nickname}
+          </p>
         </div>
         <div className="w-full">
           <div className="flex flex-row justify-between">
-            <p className="w-52 overflow-hidden overflow-ellipsis whitespace-nowrap">{post.title}</p>
+            <p className="w-52 overflow-hidden overflow-ellipsis whitespace-nowrap">
+              {`${extractDong(post.address || "")}, ${post.place_name || ""}`}
+            </p>
             {distance !== null ? <p>현재 위치에서의 거리: {distance} km</p> : <p></p>}
           </div>
           {/* <p>{post.content}</p> */}
@@ -52,9 +63,12 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           <p>시간 : {`${convertPeriod} ${convertHour}시 ${convertMin}분`}</p>
           <p>모집인원 수 {post.members}</p>
           <div className="mt-2 flex flex-row gap-x-2">
-            <ItemButton text={post.size} className="flex h-7 w-20 items-center justify-center rounded-full bg-white" />
             <ItemButton
-              text={post.characteristics}
+              text={`🐶 ${Array.isArray(post.matePostPets) ? post.matePostPets.length : ""}`}
+              className="flex h-7 w-20 items-center justify-center rounded-full bg-white"
+            />
+            <ItemButton
+              text={post.matePostPets[0]?.characteristics}
               className="flex h-7 w-20 items-center justify-center rounded-full bg-white px-2"
               p_className="w-17 overflow-hidden overflow-ellipsis whitespace-nowrap"
             />
