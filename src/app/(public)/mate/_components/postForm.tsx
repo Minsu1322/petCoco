@@ -55,7 +55,7 @@ const PostForm = () => {
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
   const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
-  // console.log(formPets);
+  console.log(formPets);
 
   // 게시물 등록
   const addPost = async (formAllData: { post: MateNextPostType; pets: Pets[] }) => {
@@ -107,15 +107,19 @@ const PostForm = () => {
     enabled: !!position.center
   });
 
-  const address =
+  const roadAddress =
     (addressData && addressData?.documents[0]?.road_address?.address_name) ||
     addressData?.documents[0]?.address?.address_name ||
     "주소 정보를 찾을 수 없어요";
 
+  const address = (addressData && addressData?.documents[0]?.address?.address_name) || "주소 정보를 찾을 수 없어요";
+
   const handleUploadPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!formPosts) {
+    const { title, date_time, members, recruitment_period, place_name, preferred_route, content } = formPosts;
+
+    if (!title || !date_time || !members || !recruitment_period || !place_name || !preferred_route || !content) {
       alert("모든 항목을 입력해 주세요!");
       return;
     }
@@ -130,7 +134,7 @@ const PostForm = () => {
       pets: formPets
     };
 
-    console.log("formAllData 확인", formAllData);
+    // console.log("formAllData 확인", formAllData);
     try {
       addMutation.mutate(formAllData);
       setFormPosts(initialState);
@@ -170,73 +174,72 @@ const PostForm = () => {
           />
           <div>
             <DynamicMapComponent center={{ lat: 37.5556236021213, lng: 126.992199507869 }} />
-            <p>클릭한 곳의 주소는? {address}</p>
+            <p>클릭한 곳의 주소는? {roadAddress}</p>
           </div>
-         <div className="mt-5">
-          <p>🔍 메이트 모집 정보</p>
-         <div className="flex flex-row gap-x-4">
-            <label htmlFor="date_time">산책 날짜 및 시간</label>
-            <input
-              type="datetime-local"
-              id="date_time"
-              value={formPosts.date_time || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
-            />
+          <div className="mt-5">
+            <p>🔍 메이트 모집 정보</p>
+            <div className="flex flex-row gap-x-4">
+              <label htmlFor="date_time">산책 날짜 및 시간</label>
+              <input
+                type="datetime-local"
+                id="date_time"
+                value={formPosts.date_time || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
+              />
+            </div>
+            <div className="flex flex-row gap-x-2">
+              <p>모집인원 수 :</p>
+              <input
+                type="text"
+                className="border"
+                value={formPosts.members || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
+              />
+              명
+            </div>
+            <div className="flex flex-row gap-x-2">
+              <p>모집기간 :</p>
+              <input
+                type="datetime-local"
+                id="recruitment_period"
+                value={formPosts.recruitment_period || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, recruitment_period: e.target.value })}
+              />
+            </div>
+            <div className="flex flex-row gap-x-2">
+              <p>산책 장소</p>
+              <input
+                type="text"
+                className="border"
+                value={formPosts.place_name || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
+              />
+            </div>
+            <div className="flex flex-row gap-x-2">
+              <p>선호하는 산책 루트</p>
+              <input
+                type="text"
+                className="border"
+                value={formPosts.preferred_route || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
+              />
+            </div>
+            <div className="flex flex-row gap-x-2">
+              <p>특별한 요구사항</p>
+              <input
+                type="text"
+                className="border"
+                value={formPosts.special_requirements || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
+              />
+            </div>
+            <textarea
+              value={formPosts.content || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
+              placeholder=" 글을 작성해 주세요."
+              className="mt-1 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
+            ></textarea>
           </div>
-          <div className="flex flex-row gap-x-2">
-            <p>모집인원 수 :</p>
-            <input
-              type="text"
-              className="border"
-              value={formPosts.members || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
-            />
-            명
-          </div>
-          <div className="flex flex-row gap-x-2">
-            <p>모집기간 :</p>
-            <input
-              type="datetime-local"
-              id="recruitment_period"
-              value={formPosts.recruitment_period || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, recruitment_period: e.target.value })}
-            />
-          </div>
-          <div className="flex flex-row gap-x-2">
-            <p>산책 장소</p>
-            <input
-              type="text"
-              className="border"
-              value={formPosts.place_name || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
-            />
-          </div>
-          <div className="flex flex-row gap-x-2">
-          
-            <p>선호하는 산책 루트</p>
-            <input
-              type="text"
-              className="border"
-              value={formPosts.preferred_route || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
-            />
-          </div>
-          <div className="flex flex-row gap-x-2">
-            <p>특별한 요구사항</p>
-            <input
-              type="text"
-              className="border"
-              value={formPosts.special_requirements || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
-            />
-          </div>
-          <textarea
-            value={formPosts.content || ""}
-            onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
-            placeholder=" 글을 작성해 주세요."
-            className="mt-1 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
-          ></textarea>
-         </div>
 
           {/* 반려동물 정보 */}
           <div className="mt-3 flex flex-col gap-y-5">
@@ -257,131 +260,130 @@ const PostForm = () => {
                 ]);
               }}
             >
-            반려동물 정보 추가
+              반려동물 정보 추가
             </button>
             <div className="flex flex-row gap-x-5">
-            {formPets.map((pet, index) => (
-              <div key={index} className="mb-2 w-3/12 flex flex-col gap-y-2 border-gray-300 px-2 pb-2">
-                <div className="flex flex-row gap-x-2">
-                  <p>성별 :</p>
-                  <input
-                    type="checkbox"
-                    name="male_female"
-                    value="female"
-                    checked={pet.male_female === "female"}
-                    onChange={() => {
-                      const newPets = [...formPets];
-                      newPets[index].male_female = newPets[index].male_female === "female" ? "" : "female";
-                      setFormPets(newPets);
-                    }}
-                  />
-                  <label>암컷</label>
-                  <input
-                    type="checkbox"
-                    name="male_female"
-                    value="male"
-                    checked={pet.male_female === "male"}
-                    onChange={() => {
-                      const newPets = [...formPets];
-                      newPets[index].male_female = newPets[index].male_female === "male" ? "" : "male";
-                      setFormPets(newPets);
-                    }}
-                  />
-                  <label>수컷</label>
-                </div>
-                <div className="flex flex-row gap-x-3">
-                  <p>중성화 여부 :</p>
-                  <input
-                    type="checkbox"
-                    name="neutered"
-                    checked={pet.neutered === true}
-                    onChange={() => {
-                      const newPets = [...formPets];
-                      newPets[index].neutered = pet.neutered === true ? null : true;
-                      setFormPets(newPets);
-                    }}
-                  />
-                  <label>네</label>
-                  <input
-                    type="checkbox"
-                    name="neutered"
-                    checked={pet.neutered === false}
-                    onChange={() => {
-                      const newPets = [...formPets];
-                      newPets[index].neutered = pet.neutered === false ? null : false;
-                      setFormPets(newPets);
-                    }}
-                  />
-                  <label>아니오</label>
-                </div>
-                <div className="flex flex-row gap-x-2">
-                  <p>나이 :</p>
-                  <input
-                    type="text"
-                    className="border"
-                    name="age"
-                    value={pet.age || ""}
-                    onChange={(e) => {
-                      const newPets = [...formPets];
-                      newPets[index].age = e.target.value;
-                      setFormPets(newPets);
-                    }}
-                  />
-                </div>
-                <div className="flex flex-row gap-x-2">
-                  <p>무게 :</p>
-                  <input
-                    type="text"
-                    className="border"
-                    name="age"
-                    value={pet.weight || ""}
-                    onChange={(e) => {
-                      const newPets = [...formPets];
-                      newPets[index].weight = e.target.value;
-                      setFormPets(newPets);
-                    }}
-                  />{" "}
-                  kg
-                </div>
-                <div className="flex flex-row gap-x-2">
-                  <p>성격 및 특징 :</p>
-                  <select
-                    name="characteristics"
-                    id={`characteristics-${index}`}
-                    className="w-16 border border-black"
-                    value={pet.characteristics || ""}
-                    onChange={(e) => {
-                      const newPets = [...formPets];
-                      newPets[index].characteristics = e.target.value;
+              {formPets.map((pet, index) => (
+                <div key={index} className="mb-2 flex w-3/12 flex-col gap-y-2 border-gray-300 px-2 pb-2">
+                  <div className="flex flex-row gap-x-2">
+                    <p>성별 :</p>
+                    <input
+                      type="checkbox"
+                      name="male_female"
+                      value="female"
+                      checked={pet.male_female === "female"}
+                      onChange={() => {
+                        const newPets = [...formPets];
+                        newPets[index].male_female = newPets[index].male_female === "female" ? "" : "female";
+                        setFormPets(newPets);
+                      }}
+                    />
+                    <label>암컷</label>
+                    <input
+                      type="checkbox"
+                      name="male_female"
+                      value="male"
+                      checked={pet.male_female === "male"}
+                      onChange={() => {
+                        const newPets = [...formPets];
+                        newPets[index].male_female = newPets[index].male_female === "male" ? "" : "male";
+                        setFormPets(newPets);
+                      }}
+                    />
+                    <label>수컷</label>
+                  </div>
+                  <div className="flex flex-row gap-x-3">
+                    <p>중성화 여부 :</p>
+                    <input
+                      type="checkbox"
+                      name="neutered"
+                      checked={pet.neutered === true}
+                      onChange={() => {
+                        const newPets = [...formPets];
+                        newPets[index].neutered = pet.neutered === true ? null : true;
+                        setFormPets(newPets);
+                      }}
+                    />
+                    <label>네</label>
+                    <input
+                      type="checkbox"
+                      name="neutered"
+                      checked={pet.neutered === false}
+                      onChange={() => {
+                        const newPets = [...formPets];
+                        newPets[index].neutered = pet.neutered === false ? null : false;
+                        setFormPets(newPets);
+                      }}
+                    />
+                    <label>아니오</label>
+                  </div>
+                  <div className="flex flex-row gap-x-2">
+                    <p>나이 :</p>
+                    <input
+                      type="text"
+                      className="border"
+                      name="age"
+                      value={pet.age || ""}
+                      onChange={(e) => {
+                        const newPets = [...formPets];
+                        newPets[index].age = e.target.value;
+                        setFormPets(newPets);
+                      }}
+                    />
+                  </div>
+                  <div className="flex flex-row gap-x-2">
+                    <p>무게 :</p>
+                    <input
+                      type="text"
+                      className="border"
+                      name="age"
+                      value={pet.weight || ""}
+                      onChange={(e) => {
+                        const newPets = [...formPets];
+                        newPets[index].weight = e.target.value;
+                        setFormPets(newPets);
+                      }}
+                    />{" "}
+                    kg
+                  </div>
+                  <div className="flex flex-row gap-x-2">
+                    <p>성격 및 특징 :</p>
+                    <select
+                      name="characteristics"
+                      id={`characteristics-${index}`}
+                      className="w-16 border border-black"
+                      value={pet.characteristics || ""}
+                      onChange={(e) => {
+                        const newPets = [...formPets];
+                        newPets[index].characteristics = e.target.value;
+                        setFormPets(newPets);
+                      }}
+                    >
+                      {characteristicsArr.map((characteristic) => (
+                        <option key={characteristic} value={characteristic}>
+                          {characteristic}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <button
+                    type="button"
+                    className="mt-2 h-8 w-20 rounded-lg border border-gray-400 text-red-500"
+                    onClick={() => {
+                      const newPets = formPets.filter((_, i) => i !== index);
                       setFormPets(newPets);
                     }}
                   >
-                    {characteristicsArr.map((characteristic) => (
-                      <option key={characteristic} value={characteristic}>
-                        {characteristic}
-                      </option>
-                    ))}
-                  </select>
+                    삭제
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="text-red-500 w-20 border-gray-400 border rounded-lg h-8 mt-2"
-                  onClick={() => {
-                    const newPets = formPets.filter((_, i) => i !== index);
-                    setFormPets(newPets);
-                  }}
-                >
-                  삭제
-                </button>
-              </div>
-            ))}
-              </div>
-            
+              ))}
+            </div>
           </div>
         </div>
-          <button type="submit" className="mt-3 h-10 w-20 rounded-md bg-mainColor p-1">
-            등록하기
-          </button>
+        <button type="submit" className="mt-3 h-10 w-20 rounded-md bg-mainColor p-1">
+          등록하기
+        </button>
       </form>
     </div>
   );
