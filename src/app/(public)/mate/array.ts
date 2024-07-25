@@ -1,0 +1,1 @@
+export const characteristicsArr = ["선택", "온순함", "활발함", "소심함", "적극적", "외향적", "내향적", "낯가림"]
