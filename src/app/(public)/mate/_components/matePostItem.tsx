@@ -12,7 +12,7 @@ interface MatePostItemPorps {
 const MatePostItem = ({ post }: MatePostItemPorps) => {
   const { geoData, setGeoData, isUseGeo, setIsUseGeo } = locationStore();
   // 시간 변환 함수로 분리
-  const time = post.dateTime?.split("T")[1].split(":");
+  const time = post.date_time?.split("T")[1].split(":");
   const convertPeriod = time && (Number(time[0]) < 12 ? "오전" : "오후");
   const convertHour = time && (Number(time[0]) % 12 || 12);
   const convertMin = time && time[1];
@@ -48,7 +48,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             {distance !== null ? <p>현재 위치에서의 거리: {distance} km</p> : <p></p>}
           </div>
           {/* <p>{post.content}</p> */}
-          <p>날짜 : {post.dateTime?.split("T")[0]}</p>
+          <p>날짜 : {post.date_time?.split("T")[0]}</p>
           <p>시간 : {`${convertPeriod} ${convertHour}시 ${convertMin}분`}</p>
           <p>모집인원 수 {post.members}</p>
           <div className="mt-2 flex flex-row gap-x-2">
