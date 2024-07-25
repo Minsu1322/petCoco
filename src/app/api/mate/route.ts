@@ -14,7 +14,7 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
   try {
     const { data, error } = await supabase
       .from("matePosts")
-      .select("*,users(nickname)")
+      .select("*,users(nickname),matePostPets(*)")
       .order("created_at", { ascending: false });
     // .limit(10);
     // console.log(data)
@@ -48,8 +48,8 @@ export const POST = async (request: NextRequest, { params }: { params: { id: str
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    console.log("--------------");
-    console.log("RPC Function Result:", data);
+   // console.log("--------------");
+   // console.log("RPC Function Result:", data);
 
     return NextResponse.json(data);
   } catch (err) {
