@@ -28,7 +28,7 @@ export type MatePostAllType = MatePostType & {
   users: {
     nickname: string;
   };
-  matePostPets: MatePostPetType[]; 
+  matePostPets: MatePostPetsType[]; 
 }
 
 export type MateNextPostType = Omit<MatePostFullType,  'id' | 'created_at' | 'users'>
@@ -41,4 +41,10 @@ export type MatePostPetType = {
   characteristics: string;
 };
 
-export type FormState = MatePostFullType & MatePostPetsType
+export type Pets = {
+  male_female: string;
+  neutered: null | boolean;
+  weight: string;
+  characteristics: string;
+  age: string;
+};
