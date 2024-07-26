@@ -5,10 +5,11 @@ import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getConvertAddress } from "../../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
+import { getConvertTime } from "@/app/utils/getConvertTime";
 
 interface DetailMatePostProps {
   post: MatePostAllType;
@@ -23,11 +24,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const { user } = useAuthStore();
   const userId = user.id;
   const router = useRouter();
-
-  const time = post.date_time?.split("T")[1].split(":");
-  const convertPeriod = time && (Number(time[0]) < 12 ? "오전" : "오후");
-  const convertHour = time && (Number(time[0]) % 12 || 12);
-  const convertMin = time && time[1];
 
   const { position, setPosition } = locationStore();
 
@@ -355,17 +351,17 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           <p>{post.title}</p>
           <div className="flex w-4/12 flex-row justify-between">
             <p>{post.content}</p>
-            <p>작성자 {post.users?.nickname}</p>
+            <p>🌱 메이트 {post.users?.nickname}</p>
           </div>
           <br />
           <p>모집인원 수 : {post.members}명</p>
           <p>
-            모집기간 : {post.date_time?.split("T")[0]}~{post.recruitment_period?.split("T")[0]}
+            모집기간 : {post.recruitment_period?.split("T")[0]} {getConvertTime({ date_time: post.recruitment_period || "" })} 까지
           </p>
-          <p className="mt-5">🐾 산책 장소 관련 정보</p>
+          <p className="mt-5 text-xl font-semibold">산책 관련 정보 🐾 </p>
           <p>산책 장소 : {post.place_name}</p>
           <p>산책 날짜 : {post.date_time?.split("T")[0]}</p>
-          <p>산책 시간 : {`${convertPeriod} ${convertHour}시 ${convertMin}분`}</p>
+          <p>산책 시간 : {getConvertTime({ date_time: post.date_time || "" })}</p>
           <div>
             <DynamicMapComponent
               center={{

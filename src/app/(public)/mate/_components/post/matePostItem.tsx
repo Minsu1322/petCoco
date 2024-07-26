@@ -4,18 +4,14 @@ import ItemButton from "../itemButton";
 import Image from "next/image";
 import { getDistanceHaversine } from "../../getDistanceHaversine";
 import { locationStore } from "@/zustand/locationStore";
+import { getConvertTime } from "@/app/utils/getConvertTime";
 
 interface MatePostItemPorps {
   post: MatePostAllType;
 }
 
 const MatePostItem = ({ post }: MatePostItemPorps) => {
-  const { geoData, setGeoData, isUseGeo, setIsUseGeo } = locationStore();
-  // 시간 변환 함수로 분리
-  const time = post.date_time?.split("T")[1].split(":");
-  const convertPeriod = time && (Number(time[0]) < 12 ? "오전" : "오후");
-  const convertHour = time && (Number(time[0]) % 12 || 12);
-  const convertMin = time && time[1];
+  const { geoData, isUseGeo } = locationStore();
 
   const calculateDistance = () => {
     if (isUseGeo && geoData && post.position) {
@@ -60,7 +56,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           </div>
           {/* <p>{post.content}</p> */}
           <p>날짜 : {post.date_time?.split("T")[0]}</p>
-          <p>시간 : {`${convertPeriod} ${convertHour}시 ${convertMin}분`}</p>
+          <p>시간 : {getConvertTime({ date_time: post.date_time || "" })}</p>
           <p>모집인원 수 {post.members}</p>
           <div className="mt-2 flex flex-row gap-x-2">
             <ItemButton
