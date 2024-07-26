@@ -149,7 +149,7 @@ const MatePage = () => {
   const handleDateSort = () => setSortBy("date");
   const handleDistanceSort = () => setSortBy("distance");
 
-  const sortPostItem = () => {};
+  // const sortPostItem = () => {};
 
   if (isGeoPending) {
     return <div>사용자의 현재 위치를 계산하는 중입니다...</div>;
@@ -202,7 +202,6 @@ const MatePage = () => {
               <div>글쓰기 🐾</div>
             </Link>
           </div>
-         
           {/* <PostItemFilterTab /> */}
         </div>
       </div>
