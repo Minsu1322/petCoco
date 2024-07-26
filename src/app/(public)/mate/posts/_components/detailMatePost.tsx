@@ -22,7 +22,7 @@ const DynamicMapEditComponent = dynamic(() => import("@/app/(public)/mate/_compo
 const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
-  const userId = user.id;
+  const userId = user && user.id;
   const router = useRouter();
 
   const { position, setPosition } = locationStore();
