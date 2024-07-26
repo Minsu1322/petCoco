@@ -9,19 +9,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getConvertAddress } from "../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
-import { MateNextPostType } from "@/types/mate.type";
+import { MateNextPostType, Pets } from "@/types/mate.type";
 import { characteristicsArr } from "../array";
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/mapForm"), { ssr: false });
-
-export type Pets = {
-  male_female: string;
-  neutered: null | boolean;
-  weight: string;
-  characteristics: string;
-  age: string;
-};
 
 const PostForm = () => {
   const { user } = useAuthStore();
