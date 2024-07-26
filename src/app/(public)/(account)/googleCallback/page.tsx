@@ -2,8 +2,10 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/supabase/userClient";
+import { createClient } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/useAuth";
+
+const supabase = createClient();
 
 const googleCallback = () => {
   const router = useRouter();
@@ -12,18 +14,20 @@ const googleCallback = () => {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
+        // 세션 가져오기
         const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
         if (sessionError) {
           throw new Error(sessionError.message);
         }
 
         const user = sessionData.session?.user;
-        if (!user) {
-          throw new Error("사용자 세션이 없습니다");
+        if (!user || !user.email) {
+          throw new Error("사용자 세션 또는 이메일이 없습니다");
         }
 
         setUser(user);
 
+        // 사용자 프로필 가져오기
         const { data: userProfile, error: profileError } = await supabase
           .from("users")
           .select("nickname")

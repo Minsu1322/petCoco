@@ -1,6 +1,8 @@
 import { create } from "zustand";
-import { supabase } from "@/supabase/userClient";
+import { createClient } from "@/supabase/client";
 import { UserInfoType } from "@/types/auth.type";
+
+const supabase = createClient();
 
 interface useAuth {
   user: any;
@@ -8,7 +10,9 @@ interface useAuth {
   passwordError: string | null;
   passwordValidateError: string | null;
   emailError: string | null;
-  signUp: (credentials: Omit<UserInfoType, "created_at" | "id" | "profile_img" | "passwordCheck">) => Promise<void>;
+  signUp: (
+    credentials: Omit<UserInfoType, "created_at" | "id" | "profile_img" | "passwordCheck" | "age">
+  ) => Promise<void>;
   signIn: (credentials: Pick<UserInfoType, "email" | "password">) => Promise<void>;
   signOut: () => Promise<void>;
   emailCheck: (email: string) => Promise<void>;
