@@ -1,7 +1,10 @@
+"use client";
+
+import { useAuthStore } from "@/zustand/useAuth";
+
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      ...
-    </main>
-  );
+  const { user } = useAuthStore();
+
+  console.log(user);
+  return <main className="flex min-h-screen flex-col items-center justify-between p-24">...</main>;
 }

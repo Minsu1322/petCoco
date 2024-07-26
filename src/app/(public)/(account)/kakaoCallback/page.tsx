@@ -2,8 +2,10 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/supabase/userClient";
+import { createClient } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/useAuth";
+
+const supabase = createClient();
 
 const KakaoCallback = () => {
   const router = useRouter();
@@ -18,7 +20,7 @@ const KakaoCallback = () => {
         }
 
         const user = sessionData.session?.user;
-        if (!user) {
+        if (!user || !user.email) {
           throw new Error("사용자 세션이 없습니다");
         }
 

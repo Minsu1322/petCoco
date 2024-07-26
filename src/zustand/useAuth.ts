@@ -1,6 +1,8 @@
 import { create } from "zustand";
-import { supabase } from "@/supabase/userClient";
+import { createClient } from "@/supabase/client";
 import { UserInfoType } from "@/types/auth.type";
+
+const supabase = createClient();
 
 interface useAuth {
   user: any;
