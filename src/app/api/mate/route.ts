@@ -47,9 +47,6 @@ export const POST = async (request: NextRequest, { params }: { params: { id: str
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // console.log("--------------");
-    // console.log("RPC Function Result:", data);
-
     return NextResponse.json(data);
   } catch (err) {
     console.error(err);
