@@ -1,8 +1,8 @@
-import { MatePostFullType } from "@/types/mate.type";
+import { MatePostAllType } from "@/types/mate.type";
 import MatePostItem from "./matePostItem";
 
 interface MatePostListProps {
-  posts: MatePostFullType[];
+  posts: MatePostAllType[];
 }
 
 const MatePostList = ({ posts }: MatePostListProps) => {
