@@ -9,27 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      chats: {
-        Row: {
-          content: string
-          created_at: string | null
-          id: string
-          username: string
-        }
-        Insert: {
-          content: string
-          created_at?: string | null
-          id?: string
-          username: string
-        }
-        Update: {
-          content?: string
-          created_at?: string | null
-          id?: string
-          username?: string
-        }
-        Relationships: []
-      }
       comments: {
         Row: {
           content: string | null
@@ -171,30 +150,40 @@ export type Database = {
       }
       messages: {
         Row: {
+          content: string
           created_at: string
           id: string
-          is_edit: boolean | null
-          send_by: string
-          text: string
+          receiver_id: string | null
+          sender_id: string | null
+          subject: string
         }
         Insert: {
+          content: string
           created_at?: string
           id?: string
-          is_edit?: boolean | null
-          send_by?: string
-          text: string
+          receiver_id?: string | null
+          sender_id?: string | null
+          subject: string
         }
         Update: {
+          content?: string
           created_at?: string
           id?: string
-          is_edit?: boolean | null
-          send_by?: string
-          text?: string
+          receiver_id?: string | null
+          sender_id?: string | null
+          subject?: string
         }
         Relationships: [
           {
-            foreignKeyName: "messages_send_by_fkey"
-            columns: ["send_by"]
+            foreignKeyName: "messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
