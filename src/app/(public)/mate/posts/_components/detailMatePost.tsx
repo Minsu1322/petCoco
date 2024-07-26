@@ -33,16 +33,16 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   const initialState: Omit<MateNextPostType, "user_id" | "position"> = {
     title: post.title || "",
-    content: post.content  ||  "",
+    content: post.content || "",
     // position: { center: { lat: 37.5556236021213, lng: 126.992199507869 }, errMsg: null, isLoading: true },
-    date_time: post.date_time  ||  "",
-    members: post.members  ||  "",
+    date_time: post.date_time || "",
+    members: post.members || "",
     recruiting: post.recruiting || true,
-    recruitment_period: post.recruitment_period  ||  "",
-    address: post.address  || "",
-    place_name:  post.place_name  || "",
-    preferred_route:  post.preferred_route  || "",
-    special_requirements:  post.special_requirements  ||  ""
+    recruitment_period: post.recruitment_period || "",
+    address: post.address || "",
+    place_name: post.place_name || "",
+    preferred_route: post.preferred_route || "",
+    special_requirements: post.special_requirements || ""
   };
 
   // const initialPetState: MatePostPetsType = {
@@ -83,7 +83,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const updatePost = {
     ...formPosts,
     address,
-    position,
+    position
   };
 
   // TODO: 작성자에게만 이 버튼이 보이도록 수정 ✅
@@ -232,17 +232,17 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
         </div>
       </Link>
       {isEditing ? (
-       <form onSubmit={handleUpdatePost} className="flex flex-col">
-       <div className="flex flex-col">
-         <input
-           type="text"
-           value={formPosts.title || ""}
-           onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
-           placeholder=" 제목을 입력해 주세요"
-           className="w-[300px] rounded-md border border-gray-300"
-         />
-         <div>
-         <DynamicMapEditComponent
+        <form onSubmit={handleUpdatePost} className="flex flex-col">
+          <div className="flex flex-col">
+            <input
+              type="text"
+              value={formPosts.title || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
+              placeholder=" 제목을 입력해 주세요"
+              className="w-[300px] rounded-md border border-gray-300"
+            />
+            <div>
+              <DynamicMapEditComponent
                 center={{
                   lat: Number(post.position?.center?.lat),
                   lng: Number(post.position?.center?.lng)
@@ -253,102 +253,102 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                   lng: Number(post.position?.center?.lng)
                 }}
               />
-           <p>클릭한 곳의 주소는? {roadAddress}</p>
-         </div>
-         <div className="mt-5">
-           <p>🔍 메이트 모집 정보</p>
-           <div className="flex flex-row gap-x-4">
-             <label htmlFor="date_time">산책 날짜 및 시간</label>
-             <input
-               type="datetime-local"
-               id="date_time"
-               value={formPosts.date_time || ""}
-               onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
-             />
-           </div>
-           <div className="flex flex-row gap-x-2">
-             <p>모집인원 수 :</p>
-             <input
-               type="text"
-               className="border"
-               value={formPosts.members || ""}
-               onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
-             />
-             명
-           </div>
-           <div className="flex flex-row gap-x-2">
-             <p>모집기간 :</p>
-             <input
-               type="datetime-local"
-               id="recruitment_period"
-               value={formPosts.recruitment_period || ""}
-               onChange={(e) => setFormPosts({ ...formPosts, recruitment_period: e.target.value })}
-             />
-           </div>
-           <div className="flex flex-row gap-x-2">
-             <p>산책 장소</p>
-             <input
-               type="text"
-               className="border"
-               value={formPosts.place_name || ""}
-               onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
-             />
-           </div>
-           <div className="flex flex-row gap-x-2">
-             <p>선호하는 산책 루트</p>
-             <input
-               type="text"
-               className="border"
-               value={formPosts.preferred_route || ""}
-               onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
-             />
-           </div>
-           <div className="flex flex-row gap-x-2">
-             <p>특별한 요구사항</p>
-             <input
-               type="text"
-               className="border"
-               value={formPosts.special_requirements || ""}
-               onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
-             />
-           </div>
-           <textarea
-             value={formPosts.content || ""}
-             onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
-             placeholder=" 글을 작성해 주세요."
-             className="mt-1 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
-           ></textarea>
-          </div>
-          <div className="mt-5">
-            <p className="text-xl font-semibold">반려동물 정보 🐶</p>
+              <p>클릭한 곳의 주소는? {roadAddress}</p>
+            </div>
+            <div className="mt-5">
+              <p>🔍 메이트 모집 정보</p>
+              <div className="flex flex-row gap-x-4">
+                <label htmlFor="date_time">산책 날짜 및 시간</label>
+                <input
+                  type="datetime-local"
+                  id="date_time"
+                  value={formPosts.date_time || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
+                />
+              </div>
+              <div className="flex flex-row gap-x-2">
+                <p>모집인원 수 :</p>
+                <input
+                  type="text"
+                  className="border"
+                  value={formPosts.members || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
+                />
+                명
+              </div>
+              <div className="flex flex-row gap-x-2">
+                <p>모집기간 :</p>
+                <input
+                  type="datetime-local"
+                  id="recruitment_period"
+                  value={formPosts.recruitment_period || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, recruitment_period: e.target.value })}
+                />
+              </div>
+              <div className="flex flex-row gap-x-2">
+                <p>산책 장소</p>
+                <input
+                  type="text"
+                  className="border"
+                  value={formPosts.place_name || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
+                />
+              </div>
+              <div className="flex flex-row gap-x-2">
+                <p>선호하는 산책 루트</p>
+                <input
+                  type="text"
+                  className="border"
+                  value={formPosts.preferred_route || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
+                />
+              </div>
+              <div className="flex flex-row gap-x-2">
+                <p>특별한 요구사항</p>
+                <input
+                  type="text"
+                  className="border"
+                  value={formPosts.special_requirements || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
+                />
+              </div>
+              <textarea
+                value={formPosts.content || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
+                placeholder=" 글을 작성해 주세요."
+                className="mt-1 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
+              ></textarea>
+            </div>
+            <div className="mt-5">
+              <p className="text-xl font-semibold">반려동물 정보 🐶</p>
+              <div className="flex flex-row gap-x-3">
+                {post.matePostPets.map((pet) => (
+                  <div className="w-48 rounded-md bg-gray-100 p-2" key={pet.id}>
+                    <p>성별 : {pet.male_female === "male" ? "남" : "여"}</p>
+                    <p>중성화 여부 : {pet.neutered === true ? "예" : "아니오"}</p>
+                    <p>나이 : {pet.age}살</p>
+                    <p>무게 : {pet.weight} kg</p>
+                    <p>성격 : {pet.characteristics}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
             <div className="flex flex-row gap-x-3">
-              {post.matePostPets.map((pet) => (
-                <div className="w-48 rounded-md bg-gray-100 p-2" key={pet.id}>
-                  <p>성별 : {pet.male_female === "male" ? "남" : "여"}</p>
-                  <p>중성화 여부 : {pet.neutered === true ? "예" : "아니오"}</p>
-                  <p>나이 : {pet.age}살</p>
-                  <p>무게 : {pet.weight} kg</p>
-                  <p>성격 : {pet.characteristics}</p>
-                </div>
-              ))}
+              <button
+                className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+                type="submit"
+              >
+                수정 완료
+              </button>
+              <button
+                className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+                type="button"
+                onClick={handleResetEditPost}
+              >
+                수정 취소
+              </button>
             </div>
           </div>
-          <div className="flex flex-row gap-x-3">
-            <button
-              className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-              type="submit"
-            >
-              수정 완료
-            </button>
-            <button
-              className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-              type="button"
-              onClick={handleResetEditPost}
-            >
-              수정 취소
-            </button>
-          </div>
-        </div>
         </form>
       ) : (
         <div className="mt-3">
