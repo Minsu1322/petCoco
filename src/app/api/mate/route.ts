@@ -1,7 +1,7 @@
 import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { MateNextPostType, MatePostPetType } from "@/types/mate.type";
-import { Pets } from "@/app/(public)/mate/_components/postForm";
+import { Pets } from "@/app/(public)/mate/_components/post/postForm";
 
 interface CreateMatePostWithPetsData {
   post_data: MateNextPostType;
@@ -48,8 +48,8 @@ export const POST = async (request: NextRequest, { params }: { params: { id: str
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-   // console.log("--------------");
-   // console.log("RPC Function Result:", data);
+    // console.log("--------------");
+    // console.log("RPC Function Result:", data);
 
     return NextResponse.json(data);
   } catch (err) {

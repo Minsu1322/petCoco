@@ -15,8 +15,8 @@ interface DetailMatePostProps {
 }
 
 // 동적 로딩 설정
-const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/mapDetail"), { ssr: false });
-const DynamicMapEditComponent = dynamic(() => import("@/app/(public)/mate/_components/mapEdit"), { ssr: false });
+const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapDetail"), { ssr: false });
+const DynamicMapEditComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapEdit"), { ssr: false });
 
 const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const queryClient = useQueryClient();

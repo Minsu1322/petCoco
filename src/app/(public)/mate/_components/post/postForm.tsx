@@ -7,13 +7,13 @@ import { locationStore } from "@/zustand/locationStore";
 import { useRouter } from "next/navigation";
 
 import Link from "next/link";
-import { getConvertAddress } from "../getConvertAddress";
+import { getConvertAddress } from "../../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType, Pets } from "@/types/mate.type";
-import { characteristicsArr } from "../array";
+import { characteristicsArr } from "../../array";
 
 // 동적 로딩 설정
-const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/mapForm"), { ssr: false });
+const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapForm"), { ssr: false });
 
 const PostForm = () => {
   const { user } = useAuthStore();

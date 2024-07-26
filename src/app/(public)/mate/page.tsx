@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import Link from "next/link";
-import MatePostList from "./_components/matePostList";
+import MatePostList from "./_components/post/matePostList";
 // import SearchBar from "./_components/searchBar";
 import { useState, useCallback } from "react";
 
@@ -24,7 +24,7 @@ export type PositionData = {
 
 const MatePage = () => {
   const { isUseGeo, setIsUseGeo, geoData, setGeoData } = locationStore();
-  const {user, setUser} = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchData, setSearchData] = useState<MatePostFullType[]>([]);
   const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);
@@ -40,7 +40,7 @@ const MatePage = () => {
     queryFn: async () => {
       const response = await fetch(`/api/mate`);
       const data = response.json();
-console.log(data)
+      console.log(data);
       return data;
     }
   });
@@ -55,7 +55,7 @@ console.log(data)
         resolve(null);
         return;
       }
-  
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const newPosition = {
@@ -90,7 +90,7 @@ console.log(data)
     retry: false
   });
 
- // console.log(geolocationData?.center);
+  // console.log(geolocationData?.center);
   // console.log(geoData)
 
   // 검색 및 필터링
@@ -118,15 +118,15 @@ console.log(data)
     if (sortBy === "date") {
       return [...posts].sort((a, b) => {
         const now = new Date().getTime();
-        
-        const deadlineA = new Date(a.recruitment_period ?? '').getTime();
-        const deadlineB = new Date(b.recruitment_period ?? '').getTime();
-  
+
+        const deadlineA = new Date(a.recruitment_period ?? "").getTime();
+        const deadlineB = new Date(b.recruitment_period ?? "").getTime();
+
         // 현재 시간과 모집 마감일의 차이를 비교
-        return (deadlineA - now) - (deadlineB - now);
+        return deadlineA - now - (deadlineB - now);
       });
     }
-    
+
     if (sortBy === "distance") {
       if (geolocationData) {
         return [...posts].sort((a, b) => {

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 //import { useRef, useState } from "react";
 import { Map, MapMarker, MapTypeControl, ZoomControl } from "react-kakao-maps-sdk";
-import { getConvertAddress } from "../getConvertAddress";
+import { getConvertAddress } from "../../getConvertAddress";
 
 interface MapComponentProps {
   center: { lat: number; lng: number };
@@ -29,12 +29,12 @@ const MapEdit = ({ center, isEditing, dbPosition }: MapComponentProps) => {
     enabled: !!position.center
   });
 
- // console.log("주소 변환 데이터 확인", addressData);
+  // console.log("주소 변환 데이터 확인", addressData);
 
   // if(position.center && addressData) {
   //   setAddress(addressData);
   // }
- // console.log("현재 위치 값", position);
+  // console.log("현재 위치 값", position);
 
   useEffect(() => {
     if (isEditing && dbPosition) {
@@ -43,11 +43,10 @@ const MapEdit = ({ center, isEditing, dbPosition }: MapComponentProps) => {
         isLoading: false
       });
     }
-
   }, []);
 
- // console.log('디비 데이터', dbPosition)
- // console.log('center', center)
+  // console.log('디비 데이터', dbPosition)
+  // console.log('center', center)
 
   return (
     <>

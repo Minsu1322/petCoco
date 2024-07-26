@@ -1,8 +1,8 @@
 import { MatePostAllType } from "@/types/mate.type";
 import Link from "next/link";
-import ItemButton from "./itemButton";
+import ItemButton from "../itemButton";
 import Image from "next/image";
-import { getDistanceHaversine } from "../getDistanceHaversine";
+import { getDistanceHaversine } from "../../getDistanceHaversine";
 import { locationStore } from "@/zustand/locationStore";
 
 interface MatePostItemPorps {
