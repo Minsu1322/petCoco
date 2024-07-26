@@ -7,11 +7,10 @@ import MatePostList from "./_components/post/matePostList";
 // import SearchBar from "./_components/searchBar";
 import { useState, useCallback } from "react";
 
-import { MatePostFullType } from "@/types/mate.type";
+import { MatePostAllType } from "@/types/mate.type";
 import { locationStore } from "@/zustand/locationStore";
 import PostListFilterTab from "./_components/postListFilterTab";
 import { getDistanceHaversine } from "./getDistanceHaversine";
-import { useAuthStore } from "@/zustand/useAuth";
 
 export type PositionData = {
   center: {
@@ -24,9 +23,8 @@ export type PositionData = {
 
 const MatePage = () => {
   const { isUseGeo, setIsUseGeo, geoData, setGeoData } = locationStore();
-  const { user, setUser } = useAuthStore();
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [searchData, setSearchData] = useState<MatePostFullType[]>([]);
+  const [searchData, setSearchData] = useState<MatePostAllType[]>([]);
   const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);
   const [sortBy, setSortBy] = useState("");
 
@@ -35,7 +33,7 @@ const MatePage = () => {
     data: posts,
     isPending,
     error
-  } = useQuery<MatePostFullType[]>({
+  } = useQuery<MatePostAllType[]>({
     queryKey: ["matePosts"],
     queryFn: async () => {
       const response = await fetch(`/api/mate`);
@@ -89,7 +87,6 @@ const MatePage = () => {
     queryFn: getCurrentPosition,
     retry: false
   });
-
   // console.log(geolocationData?.center);
   // console.log(geoData)
 
@@ -114,7 +111,8 @@ const MatePage = () => {
     [searchQuery, setSearchData]
   );
 
-  const sortPosts = (posts: MatePostFullType[]) => {
+  const sortPosts = (posts: MatePostAllType[]) => {
+    // 모집 마감 순 필터
     if (sortBy === "date") {
       return [...posts].sort((a, b) => {
         const now = new Date().getTime();
@@ -126,7 +124,7 @@ const MatePage = () => {
         return deadlineA - now - (deadlineB - now);
       });
     }
-
+    // 가까운 순 필터
     if (sortBy === "distance") {
       if (geolocationData) {
         return [...posts].sort((a, b) => {
@@ -147,11 +145,11 @@ const MatePage = () => {
     return posts;
   };
 
-  const handleToggleAllPosts = () => {
-    setIstCurrentPosts(!isCurrentPosts);
-  };
+  const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
   const handleDateSort = () => setSortBy("date");
   const handleDistanceSort = () => setSortBy("distance");
+
+  const sortPostItem = () => {};
 
   if (isGeoPending) {
     return <div>사용자의 현재 위치를 계산하는 중입니다...</div>;
@@ -172,42 +170,42 @@ const MatePage = () => {
 
   return (
     <div className="mx-8">
-      <h1 className="mb-5 text-center text-2xl">산책 메이트</h1>
-      <div className="mx-12">
-        <div className="mb-5 flex justify-center">
-          <form onSubmit={handleSearchPosts} className="flex w-[300px] flex-row items-center rounded-full border p-1">
-            <input
-              type="text"
-              className="w-[270px]"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+      <h1 className="mb-7 text-3xl p-2">산책 메이트</h1>
+      <div className="flex">
+        {/* 왼쪽 메인 컨텐츠 영역 */}
+        <div className="w-3/4 px-4">
+          <div className="mb-5">
+            <PostListFilterTab
+              isCurrentPosts={isCurrentPosts}
+              handleToggleAllPosts={handleToggleAllPosts}
+              handleDateSort={handleDateSort}
+              handleDistanceSort={handleDistanceSort}
             />
-            <button type="submit" className="ml-2">
-              🔍
-            </button>
-          </form>
+          </div>
+          {!geolocationData && sortBy === "distance" ? (
+            <div className="mt-10 text-center">위치 정보에 동의하셔야 가까운 순 필터를 사용하실 수 있습니다.</div>
+          ) : (
+            <MatePostList
+              posts={
+                searchData && searchData.length > 0
+                  ? searchData
+                  : sortPosts(isCurrentPosts ? currentPosts : (posts ?? []))
+              }
+            />
+          )}
         </div>
-        <div className="flex flex-row justify-end">
-          <Link href="/mate/posts" className="mb-4 h-10 w-[180px] rounded-lg bg-mainColor p-2 text-center">
-            <div>글쓰기 🐾</div>
-          </Link>
+
+        {/* 오른쪽 사이드바 영역 */}
+        <div className="w-1/4 pl-4">
+          <div className="mt-1 flex">
+            <Link href="/mate/posts" className="mb-4 h-10 w-11/12 items-center rounded-lg bg-mainColor p-2 text-center">
+              <div>글쓰기 🐾</div>
+            </Link>
+          </div>
+         
+          {/* <PostItemFilterTab /> */}
         </div>
-        <PostListFilterTab
-          isCurrentPosts={isCurrentPosts}
-          handleToggleAllPosts={handleToggleAllPosts}
-          handleDateSort={handleDateSort}
-          handleDistanceSort={handleDistanceSort}
-        />
       </div>
-      {!geolocationData && sortBy === "distance" ? (
-        <div className="mx-12 mt-10 text-center">위치 정보에 동의하셔야 가까운 순 필터를 사용하실 수 있습니다.</div>
-      ) : (
-        <MatePostList
-          posts={
-            searchData && searchData.length > 0 ? searchData : sortPosts(isCurrentPosts ? currentPosts : (posts ?? []))
-          }
-        />
-      )}
     </div>
   );
 };
