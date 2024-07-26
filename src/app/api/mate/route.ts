@@ -1,7 +1,6 @@
 import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
-import { MateNextPostType, MatePostPetType } from "@/types/mate.type";
-import { Pets } from "@/app/(public)/mate/_components/post/postForm";
+import { MateNextPostType, Pets } from "@/types/mate.type";
 
 interface CreateMatePostWithPetsData {
   post_data: MateNextPostType;
