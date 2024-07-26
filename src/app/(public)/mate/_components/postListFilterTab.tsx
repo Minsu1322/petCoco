@@ -1,8 +1,3 @@
-'use client';
-
-import { MatePostFullType } from "@/types/mate.type";
-import { useState } from "react";
-
 interface PostListFilterTabProps {
   isCurrentPosts: boolean;
   handleToggleAllPosts: () => void;
