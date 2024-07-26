@@ -33,9 +33,9 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   //console.log(post);
 
   return (
-    <Link href={`/mate/posts/${post.id}`} className="mb-5 flex w-10/12 flex-col gap-y-5 rounded-xl bg-gray-200 p-5">
-      <div className="flex flex-row gap-x-10">
-        <div className="ml-3">
+    <Link href={`/mate/posts/${post.id}`} className="mb-5 flex w-11/12 flex-col gap-y-5 rounded-xl bg-gray-200 p-5">
+      <div className="flex flex-row gap-x-5">
+        <div className="ml-1">
           <Image
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU"
             alt="사용자 프로필 이미지"
@@ -60,7 +60,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           <p>모집인원 수 {post.members}</p>
           <div className="mt-2 flex flex-row gap-x-2">
             <ItemButton
-              text={`🐶 ${Array.isArray(post.matePostPets) ? post.matePostPets.length : ""}`}
+              text={`${Array.isArray(post.matePostPets) ?` ${post.matePostPets.length} 마리` : ""}`}
               className="flex h-7 w-20 items-center justify-center rounded-full bg-white"
             />
             <ItemButton
