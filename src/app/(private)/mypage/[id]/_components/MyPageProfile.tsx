@@ -31,8 +31,6 @@ const MyPageProfile = () => {
     return null;
   }
 
-  console.log(user);
-
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="my-auto flex flex-col items-center justify-center px-[15px] text-[24px] sm:text-[48px] lg:px-0">
