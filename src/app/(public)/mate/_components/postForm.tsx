@@ -55,7 +55,7 @@ const PostForm = () => {
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
   const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
-  console.log(formPets);
+  //console.log(formPets);
 
   // 게시물 등록
   const addPost = async (formAllData: { post: MateNextPostType; pets: Pets[] }) => {
