@@ -1,3 +1,5 @@
+// src > zustand > useAuth.ts
+
 import { create } from "zustand";
 import { createClient } from "@/supabase/client";
 import { UserInfoType } from "@/types/auth.type";
@@ -13,7 +15,7 @@ interface useAuth {
   signUp: (
     credentials: Omit<UserInfoType, "created_at" | "id" | "profile_img" | "passwordCheck" | "age">
   ) => Promise<void>;
-  signIn: (credentials: Pick<UserInfoType, "email" | "password">) => Promise<void>;
+  signIn: (credentials: Pick<UserInfoType, "email" | "password">) => Promise<boolean>; // 변경
   signOut: () => Promise<void>;
   emailCheck: (email: string) => Promise<void>;
   validatePasswords: (password: string, passwordCheck: string) => void;
@@ -89,9 +91,11 @@ export const useAuthStore = create<useAuth>((set) => ({
         throw new Error(error.message);
       }
       set({ user, error: null });
+      return true; // 로그인 성공
     } catch (error: any) {
       console.error("로그인 에러", error.message);
       set({ error: error.message });
+      return false; // 로그인 실패
     }
   },
   signOut: async () => {
