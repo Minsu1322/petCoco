@@ -13,6 +13,11 @@ function MyPage() {
   }, [user]);
 
   const router = useRouter();
+
+  function toMyProfile() {
+    router.push(`/mypage/${user.id}/myprofile`);
+  }
+
   if (user === null) {
     return;
   }
@@ -28,7 +33,7 @@ function MyPage() {
           <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">{user.nickname}</span>님 반갑습니다.
           <Link
             className="rounded border border-[#C9C9C9] bg-[#D1D1D1] px-4 py-2 text-center font-bold text-white"
-            href={"/myprofile"}
+            href={`/mypage/${user.id}/myprofile`}
           >
             내 프로필
           </Link>

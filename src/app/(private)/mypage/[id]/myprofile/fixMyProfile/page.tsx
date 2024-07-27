@@ -64,6 +64,10 @@ const FixMyProfile = () => {
     return null;
   }
 
+  function toMyProfile() {
+    router.push(`/mypage/${user.id}/myprofile`);
+  }
+
   const updateProfileWithSupabase = async ({
     nickname,
     profile_img,
@@ -130,7 +134,7 @@ const FixMyProfile = () => {
 
     alert("프로필 변경이 성공적으로 완료되었습니다!");
 
-    router.push("/myprofile");
+    toMyProfile();
   };
   return (
     <div
@@ -184,12 +188,12 @@ const FixMyProfile = () => {
         onChange={handleMbtiChange}
       />
       <div className="mt-5 flex gap-[15px]">
-        <Link
+        <button
           className="rounded border border-[#C9C9C9] bg-[#D1D1D1] px-4 py-2 text-center font-bold text-white"
-          href={"/myprofile"}
+          onClick={toMyProfile}
         >
           뒤로가기
-        </Link>
+        </button>
         <button
           className="rounded border border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
           onClick={submitChange}
@@ -200,3 +204,5 @@ const FixMyProfile = () => {
     </div>
   );
 };
+
+export default FixMyProfile;

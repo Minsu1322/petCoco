@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import Router from "next/router";
 
 const MyProfile = () => {
   const params = useParams();
@@ -32,6 +33,17 @@ const MyProfile = () => {
     alert("데이터 로딩 실패");
     return null;
   }
+  function toMyProfile() {
+    Router.push(`/mypage/${user.id}/myprofile`);
+  }
+
+  function toFixMyProfile() {
+    Router.push(`/mypage/${user.id}/myprofile/fixMyProfile`);
+  }
+
+  function toMypage() {
+    Router.push(`/mypage/${user.id}`);
+  }
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -41,12 +53,21 @@ const MyProfile = () => {
         <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">{user.age}세</span>
         <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">성별:{/*{user.gender}*/}</span>
         <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">MBTI:{/*{user.mbti}*/}</span>
-        <Link
-          className="mt-5 rounded border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
-          href={"/fixMyProfile"}
-        >
-          프로필 변경
-        </Link>
+
+        <div className="mt-5 flex gap-[15px]">
+          <Link
+            className="rounded border border-[#C9C9C9] bg-[#D1D1D1] px-4 py-2 text-center font-bold text-white"
+            href={`/mypage/${user.id}`}
+          >
+            뒤로가기
+          </Link>
+          <Link
+            className="rounded border border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
+            href={`/mypage/${user.id}/myprofile/fixmyprofile`}
+          >
+            변경하기
+          </Link>
+        </div>
       </div>
     </div>
   );
