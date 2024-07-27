@@ -150,11 +150,7 @@ export type Database = {
       }
       messages: {
         Row: {
-<<<<<<< HEAD
-          content: string | null
-=======
           content: string
->>>>>>> afe4e0b266da0f032c3980db0dbdaae3e316f258
           created_at: string
           id: string
           receiver_id: string | null
