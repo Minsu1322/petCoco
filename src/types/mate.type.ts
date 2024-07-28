@@ -1,3 +1,4 @@
+import { UserType } from "./auth.type";
 import { Tables } from "./supabase";
 export type MatePostType = Tables<"matePosts">;
 export type MatePostPetsType = Tables<"matePostPets">;
@@ -11,9 +12,7 @@ export type MatePostFullType = MatePostType & {
     errMsg: string | null;
     isLoading: boolean;
   };
-  users: {
-    nickname: string;
-  }
+  users: UserType;
 }
 
 export type MatePostAllType = MatePostType & {
@@ -25,9 +24,7 @@ export type MatePostAllType = MatePostType & {
     errMsg: string | null;
     isLoading: boolean;
   };
-  users: {
-    nickname: string;
-  };
+  users: UserType;
   matePostPets: MatePostPetsType[]; 
 }
 
@@ -47,4 +44,13 @@ export type Pets = {
   weight: string;
   characteristics: string;
   age: string;
+};
+
+
+export type PostsResponse = {
+  data: MatePostAllType[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
 };
