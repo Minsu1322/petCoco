@@ -33,26 +33,16 @@ const MyProfile = () => {
     alert("데이터 로딩 실패");
     return null;
   }
-  function toMyProfile() {
-    Router.push(`/mypage/${user.id}/myprofile`);
-  }
-
-  function toFixMyProfile() {
-    Router.push(`/mypage/${user.id}/myprofile/fixMyProfile`);
-  }
-
-  function toMypage() {
-    Router.push(`/mypage/${user.id}`);
-  }
 
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="my-auto flex flex-col items-center justify-center px-[15px] text-[24px] sm:text-[48px] lg:px-0">
         <img className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover" src={user.profile_img} alt="" />
         <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">닉네임:{user.nickname}</span>
-        <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">{user.age}세</span>
-        <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">성별:{/*{user.gender}*/}</span>
-        <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">MBTI:{/*{user.mbti}*/}</span>
+        <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">{user.age}</span>
+        <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">성별:{user.gender}</span>
+        <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">MBTI:{user.mbti}</span>
+        <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">자기소개:{user.introduction}</span>
 
         <div className="mt-5 flex gap-[15px]">
           <Link
@@ -63,7 +53,7 @@ const MyProfile = () => {
           </Link>
           <Link
             className="rounded border border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
-            href={`/mypage/${user.id}/myprofile/fixmyprofile`}
+            href={`/mypage/${user.id}/myprofile/fixMyProfile`}
           >
             변경하기
           </Link>

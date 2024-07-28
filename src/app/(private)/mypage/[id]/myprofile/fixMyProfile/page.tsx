@@ -14,6 +14,7 @@ const FixMyProfile = () => {
   const [age, setAge] = useState("");
   const [mbti, setMbti] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
+  const [introduction, setIntroduction] = useState("");
   const [profileImage, setProfileImage] = useState<File | null>(); //서버에 반영될 이미지 파일
   const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
   const params = useParams();
@@ -33,10 +34,15 @@ const FixMyProfile = () => {
   //   return result;
   // };
 
-  const genderOptions = [
-    { value: "null", label: "성별 선택" },
-    { value: "male", label: "남" },
-    { value: "female", label: "여" }
+  const ageOptions = [
+    { value: "null", label: "연령대 선택" },
+    { value: "10대", label: "10대" },
+    { value: "20대", label: "20대" },
+    { value: "30대", label: "30대" },
+    { value: "40대", label: "40대" },
+    { value: "50대", label: "50대" },
+    { value: "60대", label: "60대" },
+    { value: "70대 이상", label: "70대 이상" }
   ];
 
   const getProfileData = async () => {
@@ -71,14 +77,16 @@ const FixMyProfile = () => {
   const updateProfileWithSupabase = async ({
     nickname,
     profile_img,
-    age
-  }: Pick<UserType, "nickname" | "profile_img" | "age">) => {
+    age,
+    mbti,
+    gender,
+    introduction
+  }: Pick<UserType, "nickname" | "profile_img" | "age" | "gender" | "mbti" | "introduction">) => {
     const response = await fetch(`/api/mypage/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nickname, profile_img, age })
+      body: JSON.stringify({ nickname, profile_img, age, mbti, gender, introduction })
     });
-    console.log({ nickname, profile_img });
     return response.json();
   };
 
@@ -97,11 +105,18 @@ const FixMyProfile = () => {
   };
 
   const handleNickNameChange = (e: ChangeEvent<HTMLInputElement>) => setNickName(e.target.value);
-  const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
+
   const handleMbtiChange = (e: ChangeEvent<HTMLInputElement>) => setMbti(e.target.value);
-  const handleGenderChange = (e: ChangeEvent<HTMLSelectElement>) => {
+
+  const handleGenderChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedGender(e.currentTarget.value);
   };
+
+  const handleAgeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setAge(e.currentTarget.value);
+  };
+
+  const handleIntroductionChange = (e: ChangeEvent<HTMLInputElement>) => setIntroduction(e.target.value);
 
   const submitChange = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -130,7 +145,14 @@ const FixMyProfile = () => {
       profileImageUrl = imgUrl.data.publicUrl;
     }
 
-    updateMutate.mutate({ nickname: nickName, profile_img: profileImageUrl, age: age });
+    updateMutate.mutate({
+      nickname: nickName,
+      profile_img: profileImageUrl,
+      age: age,
+      mbti: mbti,
+      gender: selectedGender,
+      introduction: introduction
+    });
 
     alert("프로필 변경이 성공적으로 완료되었습니다!");
 
@@ -166,26 +188,31 @@ const FixMyProfile = () => {
         defaultValue={user.nickname}
         onChange={handleNickNameChange}
       />
-      <input
-        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="나이"
-        defaultValue={user.age}
-        onChange={handleAgeChange}
-      />
-      <select onChange={handleGenderChange} value={selectedGender}>
-        {genderOptions.map((option) => (
+      <select onChange={handleAgeChange} value={age}>
+        {ageOptions.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </select>
+      <div>
+        <input type="checkbox" name="gender" value="남" onChange={handleGenderChange} /> 남
+        <br />
+        <input type="checkbox" name="gender" value="여" onChange={handleGenderChange} /> 여
+      </div>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="MBTI"
-        /*defaultValue = {user.mbti}*/
+        defaultValue={user.mbti}
         onChange={handleMbtiChange}
+      />
+      <input
+        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
+        type="text"
+        placeholder="한줄 소개"
+        defaultValue={user.introduction}
+        onChange={handleIntroductionChange}
       />
       <div className="mt-5 flex gap-[15px]">
         <button
