@@ -7,7 +7,7 @@ interface MatePostListProps {
 
 const MatePostList = ({ posts }: MatePostListProps) => {
   return (
-    <div className="mt-5 grid grid-cols-2 justify-items-center">
+    <div className="mt-5 grid grid-cols-2 ml-1">
       {posts ? (
         posts.map((post) => <MatePostItem key={post.id} post={post}/>)
       ) : (
