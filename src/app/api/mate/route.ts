@@ -15,56 +15,41 @@ export const GET = async (request: NextRequest) => {
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "8");
   const isCurrentPosts = searchParams.get("current");
-  //const filters = searchParams.get("filters");
-  // console.log('----------------');
-  //console.log(filters);
+  const filter = Object.fromEntries(searchParams.entries());
+  //console.log(filter);
+  
+
   try {
     let query = supabase
       .from("matePosts")
-      .select(`*,users(*),matePostPets(*)`, { count: "exact" })
+      .select(`*,users("*"),matePostPets("*")`, { count: "exact" })
       .order("created_at", { ascending: false });
 
     if (search) {
       query = query.ilike("content", `%${search}%`);
     }
 
-    // false인 경우 전체 글을 보이게 수정 필요
     if (isCurrentPosts === "true") {
       query = query.eq("recruiting", true);
     }
 
-    // if (filters) {
-    //   try {
-    //     const filterValue = JSON.parse(decodeURIComponent(filters));
-    //     Object.entries(filterValue).forEach(([key, value]) => {
-    //       switch(key) {
-    //         case 'gender':
-    //           query = query.filter('users.gender', 'eq', value);
-    //           break;
-    //         case 'age':
-    //           query = query.filter('users.age', 'eq', value);
-    //           break;
-    //         case 'male_female':
-    //           query = query.filter('matePostPets.male_female', 'eq', value);
-    //           break;
-    //         case 'weight':
-    //           query = query.filter('matePostPets.weight', 'eq', value);
-    //           break;
-    //         // case 'date_time':
-    //         // case 'position':
-    //         //   query = query.eq(key, value);
-    //         //   break;
-    //         default:
-    //           console.log(`Unhandled filter key: ${key}`);
-    //       }
-    //     });
-    //   } catch (error) {
-    //     console.error("Failed to parse filters", error);
-    //   }
-    // }
+  if(filter.gender) {
+    query.eq("users.gender", filter.gender)
+   }
+
+   if(filter.age) {
+    query.eq("users.age", filter.age )
+   }
+
+   if(filter.male_female) {
+    query.eq("matePostPets.male_female", filter.male_female)   
+   }
+
+   query.not("users", "is", null)
+   query.not("matePostPets", "is", null)
 
     const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
-    //console.log(data);
+    console.log(data);
     // .limit(10);
     // console.log(data)
     if (error) {
