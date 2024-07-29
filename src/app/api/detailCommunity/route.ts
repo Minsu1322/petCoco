@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/supabase/client";
+import { createClient } from "@/supabase/server";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -12,8 +12,8 @@ export async function GET(request: Request) {
   const supabase = createClient();
 
   const { data, error } = await supabase
-  .from("posts")
-  .select(
+    .from("posts")
+    .select(
       `
     *,
     users (
