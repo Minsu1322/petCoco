@@ -164,6 +164,17 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
   const sortedAndFilteredPosts = filterPosts(data?.data || []);
 console.log(sortedAndFilteredPosts)
 
+if(isPending) {
+  return (
+    <div className="flex h-full items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-green-500"></div>
+          <p className="text-lg font-semibold text-green-600">로딩 중...</p>
+        </div>
+      </div>
+  )
+}
+
   return (
     <div>
       <div className="ml-1 mt-5 grid grid-cols-2">
