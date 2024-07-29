@@ -1,16 +1,21 @@
-import {DatePicker, Input} from "@nextui-org/react";
+import { DatePicker, DateValue, Input } from "@nextui-org/react";
 
 interface FilterDateChipProps {
   label: string;
+  selectedDate: DateValue | null;
+  onDateChange: (value: DateValue | null) => void;
 }
 
-const FilterDateChip = ({ label }: FilterDateChipProps) => {
+const FilterDateChip = ({ label, selectedDate, onDateChange }: FilterDateChipProps) => {
   return (
-    <DatePicker label={label} className="max-w-xs mt-5 w-full" radius="full" />
-    //  <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-5">
-    //   <Input type="date" label={label} size="sm" radius="full"/>
-    // </div>
-  )
+    <DatePicker
+      label={label}
+      className="mt-5 w-full max-w-xs"
+      radius="full"
+      value={selectedDate}
+      onChange={onDateChange}
+    />
+  );
 };
 
 export default FilterDateChip;
