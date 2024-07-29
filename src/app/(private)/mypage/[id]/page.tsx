@@ -44,7 +44,7 @@ function MyPage() {
 
   if (user === null) {
     alert("로그인되어야 마이페이지를 확인 할 수 있습니다.");
-    router.push("/signin");
+    //   router.push("/signin");
   } else {
     return (
       <div className="pb-[200px] pt-[70px]">
