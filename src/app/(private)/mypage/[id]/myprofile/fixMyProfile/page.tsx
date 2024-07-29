@@ -5,7 +5,7 @@
 // import { createClient } from "@/supabase/client";
 // import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // import { UserInfoType } from "@/types/auth.type";
-
+import React from "react";
 // type UserType = UserInfoType;
 
 const FixMyProfile = () => {
@@ -159,7 +159,6 @@ const FixMyProfile = () => {
   //   };
 
   return (
-    <>FixMyProfile</>
     //     <div
     //       className="my-auto flex h-[700px] w-[500px] flex-col items-center justify-center rounded-[30px] bg-white"
     //       onClick={(e) => e.stopPropagation()}
@@ -225,6 +224,7 @@ const FixMyProfile = () => {
     //         </button>
     //       </div>
     //     </div>
+    <div>FixMyProfile</div>
   );
 };
 
