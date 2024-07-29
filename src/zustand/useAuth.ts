@@ -28,7 +28,7 @@ interface useAuth {
   setSession: (session: any) => void;
 }
 
-export const useAuthStore = create<useAuth>((set) => ({
+export const useAuthStore = create<useAuth>((set, get) => ({
   user: null,
   error: null,
   passwordError: null,
@@ -89,6 +89,11 @@ export const useAuthStore = create<useAuth>((set) => ({
         throw new Error(error.message);
       }
       set({ user, error: null });
+
+      setTimeout(() => {
+        console.log("user signin: ", get().user);
+      }, 0);
+
       return true;
     } catch (error: any) {
       console.error("로그인 에러", error.message);
