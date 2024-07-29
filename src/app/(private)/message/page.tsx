@@ -75,14 +75,13 @@ export default function MessagePage() {
 
   const groupedMessages: GroupedMessages = messages
     ? messages.reduce((acc, message) => {
-        // 현재 사용자가 sender_id와 동일하면 receiver_id, 그렇지 않으면 sender_id 사용
         const userId = message.sender_id === user?.id ? message.receiver_id : message.sender_id;
         const nickname = message.sender_id === user?.id ? message.receiver_nickname : message.sender_nickname;
 
         if (!acc[userId]) {
           acc[userId] = [];
         }
-        acc[userId].push({ ...message, nickname }); // nickname 추가
+        acc[userId].push({ ...message, nickname });
         return acc;
       }, {} as GroupedMessages)
     : {};
@@ -105,7 +104,7 @@ export default function MessagePage() {
                 }`}
                 onClick={() => setSelectedUser(userId)}
               >
-                {userMessages[0].nickname} {/* 대화 상대의 닉네임 표시 */}
+                {userMessages[0].nickname}
               </li>
             ))}
           </ul>
