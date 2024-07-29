@@ -11,13 +11,12 @@ interface PostItemFilterTabProps {
   updateFilter: (filterName: string, value: any) => void;
   filters: {
     gender: string | null,
-    date_time: string | null,
-    position: string | null,
+    date_time: DateValue | null,
+    // position: string | null,
     male_female: string | null,
     age: string | null,
     weight: string | null,
   };
-  handleDistanceFilter: () => void;
 }
 
 const PostItemFilterTab = ({ updateFilter, filters }: PostItemFilterTabProps) => {
@@ -41,15 +40,15 @@ const PostItemFilterTab = ({ updateFilter, filters }: PostItemFilterTabProps) =>
         />
         <FilterDateChip 
           label="산책일" 
-          selectedDate={date_time} 
-          onDateChange={setDate_time} 
+          selected={filters.date_time} 
+          onSelect={(items) => updateFilter("date_time", items)} 
         />  
-        <FilterSelectChip
+        {/* <FilterSelectChip
           label="거리"
           array={position}
           selected={filters.position}
           onSelect={(items) => updateFilter("position", items)}
-        />
+        /> */}
       </div>
       <div className="mt-5">
         <p className="text-lg">반려견 정보 필터</p>
