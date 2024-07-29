@@ -159,7 +159,6 @@ export type Database = {
           id: string
           receiver_id: string | null
           sender_id: string | null
-          subject: string
         }
         Insert: {
           content: string
@@ -167,7 +166,6 @@ export type Database = {
           id?: string
           receiver_id?: string | null
           sender_id?: string | null
-          subject: string
         }
         Update: {
           content?: string
@@ -175,7 +173,6 @@ export type Database = {
           id?: string
           receiver_id?: string | null
           sender_id?: string | null
-          subject?: string
         }
         Relationships: [
           {
@@ -237,7 +234,10 @@ export type Database = {
           age: string | null
           created_at: string
           email: string | null
+          gender: string | null
           id: string
+          introduction: string | null
+          mbti: string | null
           nickname: string | null
           profile_img: string | null
         }
@@ -245,7 +245,10 @@ export type Database = {
           age?: string | null
           created_at?: string
           email?: string | null
+          gender?: string | null
           id?: string
+          introduction?: string | null
+          mbti?: string | null
           nickname?: string | null
           profile_img?: string | null
         }
@@ -253,7 +256,10 @@ export type Database = {
           age?: string | null
           created_at?: string
           email?: string | null
+          gender?: string | null
           id?: string
+          introduction?: string | null
+          mbti?: string | null
           nickname?: string | null
           profile_img?: string | null
         }
