@@ -12,7 +12,7 @@ export const age = [
   {key: "40대", label: "40대"},
   {key: "50대", label: "50대"},
   {key: "60대", label: "60대"},
-  {key: "70대", label: "70대"},
+  {key: "70대", label: "70대이상"},
 ];
 
 export const position = [
