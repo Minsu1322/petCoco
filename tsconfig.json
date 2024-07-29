@@ -27,8 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/types/app/(public)/(account)/GoogleCallback/page.tsx",
-    ".next/types/app/(public)/(account)/KakaoCallback/page.tsx"
+    ".next/types/app/(public)/(account)/GCallback/page.tsx",
+    ".next/types/app/(public)/(account)/KCallback/page.tsx"
   ],
   "exclude": ["node_modules"]
 }
