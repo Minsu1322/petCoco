@@ -11,7 +11,10 @@ interface useAuth {
   passwordValidateError: string | null;
   emailError: string | null;
   signUp: (
-    credentials: Omit<UserInfoType, "created_at" | "id" | "profile_img" | "passwordCheck" | "age">
+    credentials: Omit<
+      UserInfoType,
+      "created_at" | "id" | "profile_img" | "passwordCheck" | "age" | "gender" | "mbti" | "introduction"
+    >
   ) => Promise<void>;
   signIn: (credentials: Pick<UserInfoType, "email" | "password">) => Promise<boolean>; // 변경
   signOut: () => Promise<void>;
