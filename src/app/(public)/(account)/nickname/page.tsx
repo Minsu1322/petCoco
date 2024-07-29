@@ -1,9 +1,11 @@
 "use client";
 
-import { supabase } from "@/supabase/userClient";
+import { createClient } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/useAuth";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+
+const supabase = createClient();
 
 const NicknameInfo = () => {
   const router = useRouter();
