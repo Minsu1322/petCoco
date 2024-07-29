@@ -7,14 +7,64 @@ interface CreateMatePostWithPetsData {
   pets_data: Pets[];
 }
 
-export const GET = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET = async (request: NextRequest) => {
   const supabase = createClient();
 
+  const { searchParams } = request.nextUrl;
+  const search = searchParams.get("search");
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "8");
+  const isCurrentPosts = searchParams.get("current");
+  //const filters = searchParams.get("filters");
+  // console.log('----------------');
+  //console.log(filters);
   try {
-    const { data, error } = await supabase
+    let query = supabase
       .from("matePosts")
-      .select("*,users(nickname),matePostPets(*)")
+      .select(`*,users(*),matePostPets(*)`, { count: "exact" })
       .order("created_at", { ascending: false });
+
+    if (search) {
+      query = query.ilike("content", `%${search}%`);
+    }
+
+    // false인 경우 전체 글을 보이게 수정 필요
+    if (isCurrentPosts === "true") {
+      query = query.eq("recruiting", true);
+    }
+
+    // if (filters) {
+    //   try {
+    //     const filterValue = JSON.parse(decodeURIComponent(filters));
+    //     Object.entries(filterValue).forEach(([key, value]) => {
+    //       switch(key) {
+    //         case 'gender':
+    //           query = query.filter('users.gender', 'eq', value);
+    //           break;
+    //         case 'age':
+    //           query = query.filter('users.age', 'eq', value);
+    //           break;
+    //         case 'male_female':
+    //           query = query.filter('matePostPets.male_female', 'eq', value);
+    //           break;
+    //         case 'weight':
+    //           query = query.filter('matePostPets.weight', 'eq', value);
+    //           break;
+    //         // case 'date_time':
+    //         // case 'position':
+    //         //   query = query.eq(key, value);
+    //         //   break;
+    //         default:
+    //           console.log(`Unhandled filter key: ${key}`);
+    //       }
+    //     });
+    //   } catch (error) {
+    //     console.error("Failed to parse filters", error);
+    //   }
+    // }
+
+    const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
+    //console.log(data);
     // .limit(10);
     // console.log(data)
     if (error) {
@@ -22,7 +72,13 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json({
+      data,
+      page,
+      limit,
+      total: count,
+      totalPages: Math.ceil(count! / limit)
+    });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ err }, { status: 500 });
