@@ -4,6 +4,8 @@ import "./globals.css";
 import QueryProvider from "./provider";
 import Header from "@/components/Header";
 import Script from "next/script";
+// import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { supabase } from "@/supabase/userClient";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        {/* <SessionContextProvider supabaseClient={supabase}> */}
         <QueryProvider>
           <Header />
           {children}
         </QueryProvider>
+        {/* </SessionContextProvider> */}
         <Script
           strategy="beforeInteractive"
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAO_MAPS_API}&autoload=false`}
