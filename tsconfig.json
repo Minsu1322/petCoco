@@ -23,6 +23,13 @@
     },
     "types": ["kakao.maps.d.ts"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/types/app/(public)/(account)/GCallback/page.tsx",
+    ".next/types/app/(public)/(account)/KCallback/page.tsx"
+  ],
   "exclude": ["node_modules"]
 }
