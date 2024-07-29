@@ -11,6 +11,7 @@ const SignupForm = () => {
   const [passwordCheck, setPasswordCheck] = useState("");
   const [nickname, setNickname] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const [isEmailChecked, setIsEmailChecked] = useState(false);
   const {
     signUp,
     validatePasswords,
@@ -23,17 +24,19 @@ const SignupForm = () => {
   } = useAuthStore();
 
   useEffect(() => {
-    const checkEmail = async () => {
-      await emailCheck(email);
-    };
-
-    checkEmail();
-  }, [email, emailCheck]);
-
-  useEffect(() => {
     validatePasswords(password, passwordCheck);
     validationPasswds(password);
   }, [password, passwordCheck, validatePasswords, validationPasswds]);
+
+  const handleEmailCheck = async () => {
+    try {
+      await emailCheck(email);
+      setIsEmailChecked(true);
+    } catch (err) {
+      console.error("이메일 검사의 에러", err);
+      setIsEmailChecked(true);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,11 +47,6 @@ const SignupForm = () => {
     if (passwordError || passwordValidateError) {
       return;
     }
-    if (emailError) {
-      alert("중복된 이메일입니다.");
-      return;
-    }
-
     await signUp({ email, password, nickname });
 
     if (!error) {
@@ -89,7 +87,11 @@ const SignupForm = () => {
                 placeholder="이메일을 작성해주세요"
                 required
               />
+              <button type="button" className="ml-3 h-[30px] bg-gray-300 px-3 text-black" onClick={handleEmailCheck}>
+                중복 확인
+              </button>
             </div>
+            {isEmailChecked && emailError && <p className="ml-5 mt-1 text-red-500">{emailError}</p>}
           </div>
           <div className="h-[70px]">
             <div className="mt-[30px] flex h-[60px] w-[550px] items-center border">

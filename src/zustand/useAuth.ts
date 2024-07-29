@@ -1,5 +1,3 @@
-// src > zustand > useAuth.ts
-
 import { create } from "zustand";
 import { createClient } from "@/supabase/client";
 import { UserInfoType } from "@/types/auth.type";
@@ -36,18 +34,15 @@ export const useAuthStore = create<useAuth>((set) => ({
   emailCheck: async (email) => {
     try {
       const { data: existingUsers, error: checkError } = await supabase.from("users").select("*").eq("email", email);
-      if (checkError) {
-        throw new Error();
-      }
 
-      if (existingUsers.length > 0) {
+      if (existingUsers && existingUsers.length > 0) {
         set({ emailError: "중복된 이메일입니다." });
       } else {
-        set({ emailError: null });
+        set({ emailError: "사용 가능한 이메일입니다." });
       }
     } catch (error: any) {
       console.error("이메일 체크 에러", error.message);
-      set({ emailError: error.message });
+      set({ emailError: "이메일 검사 중 오류가 발생했습니다." });
     }
   },
   signUp: async (credentials) => {
@@ -91,11 +86,11 @@ export const useAuthStore = create<useAuth>((set) => ({
         throw new Error(error.message);
       }
       set({ user, error: null });
-      return true; // 로그인 성공
+      return true;
     } catch (error: any) {
       console.error("로그인 에러", error.message);
       set({ error: error.message });
-      return false; // 로그인 실패
+      return false;
     }
   },
   signOut: async () => {
