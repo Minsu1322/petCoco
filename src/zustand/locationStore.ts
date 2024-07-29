@@ -19,9 +19,11 @@ type UseLocationStore = {
     };
     isLoading: boolean;
   };
+  isUseGeo: boolean;
   setPosition: (position: Partial<Position>) => void;
   setAddress: (address: string) => void;
-  setGeoData: (geoData: Omit<Position, 'errMsg'>) => void;
+  setGeoData: (geoData: Omit<Position, "errMsg">) => void;
+  setIsUseGeo: (isUseGeo: boolean) => void;
 };
 
 export const locationStore = create<UseLocationStore>((set) => ({
@@ -45,5 +47,7 @@ export const locationStore = create<UseLocationStore>((set) => ({
     return set((state) => ({
       geoData: { ...state.geoData, ...newGeo }
     }));
-  }
+  },
+  isUseGeo: true,
+  setIsUseGeo: (isUseGeo) => set({ isUseGeo }),
 }));
