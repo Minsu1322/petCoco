@@ -22,7 +22,7 @@ const CreatePostPage = () => {
     const files = Array.from(e.target.files || []);
     files.forEach((file) => {
       if (file.size > 5000000) {
-        alert("파일 크기가 5MB를 초과합니다.");
+        alert("파일 크기가 5MB를 초과합니다!!!.");
         return;
       }
       const reader = new FileReader();
