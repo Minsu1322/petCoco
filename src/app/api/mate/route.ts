@@ -17,7 +17,6 @@ export const GET = async (request: NextRequest) => {
   const isCurrentPosts = searchParams.get("current");
   const filter = Object.fromEntries(searchParams.entries());
   //console.log(filter);
-  
 
   try {
     let query = supabase
@@ -33,20 +32,20 @@ export const GET = async (request: NextRequest) => {
       query = query.eq("recruiting", true);
     }
 
-  if(filter.gender) {
-    query.eq("users.gender", filter.gender)
-   }
+    if (filter.gender) {
+      query.eq("users.gender", filter.gender);
+    }
 
-   if(filter.age) {
-    query.eq("users.age", filter.age )
-   }
+    if (filter.age) {
+      query.eq("users.age", filter.age);
+    }
 
-   if(filter.male_female) {
-    query.eq("matePostPets.male_female", filter.male_female)   
-   }
+    if (filter.male_female) {
+      query.eq("matePostPets.male_female", filter.male_female);
+    }
 
-   query.not("users", "is", null)
-   query.not("matePostPets", "is", null)
+    query.not("users", "is", null);
+    query.not("matePostPets", "is", null);
 
     const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
     console.log(data);
