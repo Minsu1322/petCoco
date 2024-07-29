@@ -60,7 +60,7 @@ const SignupForm = () => {
   return (
     <div className="mt-10 w-full">
       <h1 className="text-center text-[30px] font-semibold">회원가입</h1>
-      <div className="mt-10 flex flex-col items-center">
+      <div className="ml-[103px] mt-10 flex flex-col items-center">
         <form onSubmit={handleSubmit}>
           <div className="h-[70px]">
             <div className="flex h-[60px] w-[550px] items-center border">
@@ -76,18 +76,24 @@ const SignupForm = () => {
               />
             </div>
           </div>
-          <div className="h-[70px]">
-            <div className="mt-[30px] flex h-[60px] w-[550px] items-center border">
-              <label className="ml-3 w-[100px] text-center">이메일</label>
-              <input
-                className="ml-5 h-[30px] w-[380px] pl-2"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="이메일을 작성해주세요"
-                required
-              />
-              <button type="button" className="ml-3 h-[30px] bg-gray-300 px-3 text-black" onClick={handleEmailCheck}>
+          <div className="mt-[30px] h-[70px]">
+            <div className="flex items-center">
+              <div className="flex h-[60px] w-[550px] items-center border">
+                <label className="ml-3 w-[100px] text-center">이메일</label>
+                <input
+                  className="ml-5 h-[30px] w-[380px] pl-2"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="이메일을 작성해주세요"
+                  required
+                />
+              </div>
+              <button
+                type="button"
+                className="ml-3 h-[60px] w-[100px] rounded-md border border-[#05CA7E] text-[#767676]"
+                onClick={handleEmailCheck}
+              >
                 중복 확인
               </button>
             </div>
