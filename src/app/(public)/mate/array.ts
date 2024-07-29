@@ -5,17 +5,17 @@ export const gender = [
   {key: "여", label: "여"},
 ];
 
-export const ageRange = [
-  {key: "10", label: "10"},
-  {key: "20", label: "20"},
-  {key: "30", label: "30"},
-  {key: "40", label: "40"},
-  {key: "50", label: "50"},
-  {key: "60", label: "60"},
-  {key: "70", label: "70"},
+export const age = [
+  {key: "10대", label: "10대"},
+  {key: "20대", label: "20대"},
+  {key: "30대", label: "30대"},
+  {key: "40대", label: "40대"},
+  {key: "50대", label: "50대"},
+  {key: "60대", label: "60대"},
+  {key: "70대", label: "70대"},
 ];
 
-export const location = [
+export const position = [
   {key: "0", label: "0"},
   {key: "5", label: "5"},
   {key: "10", label: "10"},
@@ -25,7 +25,8 @@ export const location = [
   {key: "100", label: "100"},
 ];
 
-export const petGender = [
-  {key: "남", label: "남"},
-  {key: "여", label: "여"},
+export const male_female = [
+  {key: "male", label: "남"},
+  {key: "female", label: "여"},
 ];
+
