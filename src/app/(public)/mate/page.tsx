@@ -1,16 +1,21 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import Link from "next/link";
-import MatePostList from "./_components/matePostList";
-import SearchBar from "./_components/searchBar";
-import { useState } from "react";
-
-import { MatePostFullType } from "@/types/mate.type";
-import { locationStore } from "@/zustand/locationStore";
+import MatePostList from "./_components/post/matePostList";
 import PostListFilterTab from "./_components/postListFilterTab";
-import { getDistanceHaversine } from "./getDistanceHaversine";
+import PostItemFilterTab from "./_components/postItemFilterTab";
+// import SearchBar from "./_components/searchBar";
+import FilterSelectChip from "./_components/filterSelectChip";
+import FilterDateChip from "./_components/filterDateChip";
+
+import { useAuthStore } from "@/zustand/useAuth";
+import NotLogInView from "./_components/notLogInView";
+import FilterWeightChip from "./_components/filterWeightChip";
+import { age, gender, male_female, position } from "./array";
+import { DateValue } from "@nextui-org/react";
 
 export type PositionData = {
   center: {
@@ -19,154 +24,172 @@ export type PositionData = {
   };
   errMsg?: string;
   isLoading: boolean;
-};
+} | null;
 
 const MatePage = () => {
-  const { position, setPosition, geoData, setGeoData } = locationStore();
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);
+  const [activeSearchTerm, setActiveSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState("");
+  const [filterBy, setFilterBy] = useState("");
 
-  // 커스텀 훅으로 빼기
-  const {
-    data: posts,
-    isPending,
-    error
-  } = useQuery<MatePostFullType[]>({
-    queryKey: ["matePosts"],
-    queryFn: async () => {
-      const response = await fetch(`/api/mate`);
-      const data = response.json();
+  const { user } = useAuthStore();
 
-      return data;
-    }
+  const [filters, setFilters] = useState({
+    gender: null,
+    age: null,
+    date_time: null,
+    // position: null,
+    male_female: null,
+    weight: null
   });
 
-  const currentPosts = posts?.filter((post) => post.recruiting === true) || [];
-// const sortPosts = isCurrentPosts ? currentPosts : (posts ?? []);
+  // const [selectedGender, setSelectedGender] = useState("");
+  // const [selectedAge, setSelectedAge] = useState("");
+  // const [selectedPostion, setSelectedPostion] = useState("");
+  // const [selectedDate, setSelectedDate] = useState<DateValue | undefined>(undefined);
+  // const [selectedMale_female, setSelectedMale_female] = useState("");
+  // const [selectedWeight, setSelectedWeight] = useState("");
 
-  const getCurrentPosition = (): Promise<PositionData> => {
-    return new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const newPosition = {
-              center: {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-              },
-              isLoading: false
-            };
-            setGeoData(newPosition);
-            resolve(newPosition);
-          },
-          (error) => {
-            const defaultPosition = {
-              center: { lat: 37.5556236021213, lng: 126.992199507869 },
-              errMsg: error.message,
-              isLoading: false
-            };
-            setGeoData(defaultPosition);
-            reject(error);
-          }
-        );
-      } 
-      if(!navigator.geolocation) {
-        const noGeoPosition = {
-          center: { lat: 37.5556236021213, lng: 126.992199507869 },
-          errMsg: "Geolocation is not supported by this browser.",
-          isLoading: false
-        };
-        setGeoData(noGeoPosition);
-        reject(new Error("Geolocation is not supported by this browser."));
-      }
-    });
+  const updateFilter = (filterName: string, value: string) => {
+    // console.log(value);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterName]: value
+    }));
   };
 
-  const {
-    data: geolocationData,
-    isPending: isGeoPending,
-    error: geoError
-  } = useQuery<PositionData, Error>({
-    queryKey: ["geoData"],
-    queryFn: getCurrentPosition,
-    retry: false
-  });
-
-  // console.log(geolocationData?.center);
-  // console.log(geoData)
-  const sortPosts = (posts: MatePostFullType[]) => {
-    if (sortBy === "date") {
-      // 마감 임박순 필터
-    }
-    if (sortBy === "distance") {
-      if (geolocationData) {
-        return [...posts].sort((a, b) => {
-          const distanceA = getDistanceHaversine({
-            curPosition: geolocationData.center,
-            desPosition: a.position.center
-          });
-          const distanceB = getDistanceHaversine({
-            curPosition: geolocationData.center,
-            desPosition: b.position.center
-          });
-          return distanceA - distanceB;
-        });
-      }
-      return posts;
-    }
-    // 둘다 아닐때 원본 배열 반환
-    return posts;
+  const handleSearchPosts = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setActiveSearchTerm(searchQuery);
   };
 
-  const handleToggleAllPosts = () => {
-    setIstCurrentPosts(!isCurrentPosts);
-  };
+  const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
   const handleDateSort = () => setSortBy("date");
   const handleDistanceSort = () => setSortBy("distance");
+  
+  // const handleGenderSelect = (value: string) => {
+  //   updateFilter("gender", value);
+  // };
+  
+  // const handleAgeSelect = (value: string) => {
+  //   updateFilter("age", value);
+  // };
+  
+  // const handleDistanceFilter = (value: string) => {
+  //   updateFilter("position", value);
+  // };
 
-  if (isGeoPending) {
-    return <div>사용자의 현재 위치를 계산하는 중입니다...</div>;
+  // const handleDateFilter = (value: DateValue | undefined) => {
+  //   setSelectedDate(value);
+  //   // DateValue를 문자열로 변환하여 filters 상태에 저장
+  //   updateFilter("date_time", value);
+  // };
+
+  // const handleMale_femaleSelect =  (value: string) => {
+  //   updateFilter("male_female", value);
+  // };
+
+  // const handledWeightSelect =  (value: string) => {
+  //   updateFilter("weight", value);
+  // };
+
+  // const handleResetFilter = () => {
+  //   setFilters({
+  //     gender: null,
+  //     age: null,
+  //     date_time: null,
+  //     // position: null,
+  //     male_female: null,
+  //     weight: null
+  //   });
+  //   setSelectedGender("");
+  //   setSelectedAge("");
+  //   setFilterBy("");
+  // };
+
+  if (user === null) {
+    return <NotLogInView />;
   }
-
-  // if (geoError) {
-  //   console.error(error);
-  // }
-
-  if (isPending) {
-    return <div>산책 메이트 모으는 중,,,</div>;
-  }
-
-  if (error) {
-    console.error(error.message);
-  }
-  // console.log('d',posts);
 
   return (
     <div className="mx-8">
-      <h1 className="mb-5 text-center text-2xl">산책 메이트</h1>
-      <div className="mx-12">
-        <SearchBar />
-        <div className="flex flex-row justify-end">
-          <Link href="/mate/posts" className="mb-4 h-10 w-[180px] rounded-lg bg-mainColor p-2 text-center">
-            <div>글쓰기 🐾</div>
-          </Link>
+      <h1 className="mb-7 p-2 text-3xl">산책 메이트</h1>
+      <div className="flex flex-row gap-x-5">
+        {/* 왼쪽 메인 컨텐츠 영역 */}
+        <div className="w-3/4">
+          <div className="mb-5">
+            <PostListFilterTab
+              isCurrentPosts={isCurrentPosts}
+              handleToggleAllPosts={handleToggleAllPosts}
+              handleDateSort={handleDateSort}
+              handleDistanceSort={handleDistanceSort}
+            />
+          </div>
+          <MatePostList
+            activeSearchTerm={activeSearchTerm}
+            isCurrentPosts={isCurrentPosts}
+            sortBy={sortBy}
+            filters={filters}
+            filterBy={filterBy}
+          />
         </div>
-        <PostListFilterTab
-          isCurrentPosts={isCurrentPosts}
-          handleToggleAllPosts={handleToggleAllPosts}
-          handleDateSort={handleDateSort}
-          handleDistanceSort={handleDistanceSort}
-        />
+
+        {/* 오른쪽 사이드바 영역 */}
+        <div className="w-1/4 pl-5">
+          <div className="mt-1 flex">
+            <Link href="/mate/posts" className="mb-4 h-10 w-full items-center rounded-lg bg-mainColor p-2 text-center">
+              <div>글쓰기 🐾</div>
+            </Link>
+          </div>
+          <div className="mb-5 flex">
+            <form onSubmit={handleSearchPosts} className="flex w-full flex-row items-center rounded-full border p-1">
+              <input
+                type="text"
+                className="w-full"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button type="submit" className="ml-2">
+                🔍
+              </button>
+            </form>
+          </div>
+          <PostItemFilterTab updateFilter={updateFilter} filters={filters} />
+          {/* <PostItemFilterTab handleDistanceFilter={handleDistanceFilter}  updateFilter={updateFilter} filters={filters}  /> */}
+          {/* <div className="w-full">
+            <div>
+              <p className="text-lg">메이트 상세 필터</p>
+              <FilterSelectChip label="성별" array={gender} onSelect={handleGenderSelect} selected={selectedGender} />
+              <FilterSelectChip label="연령대" array={age} onSelect={handleAgeSelect} selected={selectedAge} />
+              <FilterSelectChip label="거리" array={position} selected={selectedPostion} onSelect={handleDistanceFilter} />
+              {/* <FilterDateChip 
+                label="산책일" 
+                selectedDate={selectedDate} 
+      onDateChange={handleDateFilter} 
+              />   */}
+            {/* </div>
+            <div className="mt-5">
+              <p className="text-lg">반려견 정보 필터</p>
+              <FilterWeightChip label="반려견 몸무게" />
+              <FilterSelectChip
+              label="성별"
+              array={male_female}
+              selected={selectedMale_female}
+              onSelect={handleMale_femaleSelect}
+            />
+            </div>
+          </div>  */}
+          <div className="mt-5 flex">
+            <div
+              className="mb-4 h-10 w-full cursor-pointer items-center rounded-lg bg-gray-300 p-2 text-center"
+              // onClick={handleResetFilter}
+            >
+              초기화
+            </div>
+          </div>
+        </div>
       </div>
-      {!geolocationData && sortBy === "distance" ? (
-        <div className="mx-12 mt-10 text-center">
-          위치 정보에 동의하셔야 가까운 순 필터를 사용하실 수 있습니다.
-        </div>
-      ) : (
-        <MatePostList
-          posts={sortPosts(isCurrentPosts ? currentPosts : (posts ?? []))}
-        />
-      )}
     </div>
   );
 };

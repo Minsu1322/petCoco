@@ -1,5 +1,4 @@
 export const getConvertAddress = async (center: { lng: number; lat: number }) => {
-  console.log('getConvertAddress')
   try {
     const response = await fetch(`/api/mapApi/getConvertPosition?x=${center.lng}&y=${center.lat}`);
     if (!response.ok) {

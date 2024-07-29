@@ -1,5 +1,7 @@
+import { UserType } from "./auth.type";
 import { Tables } from "./supabase";
 export type MatePostType = Tables<"matePosts">;
+export type MatePostPetsType = Tables<"matePostPets">;
 
 export type MatePostFullType = MatePostType & {
   position: {
@@ -10,12 +12,45 @@ export type MatePostFullType = MatePostType & {
     errMsg: string | null;
     isLoading: boolean;
   };
-  users: {
-    nickname: string;
-  }
+  users: UserType;
 }
 
-export type MateNextPostType = Omit<MatePostFullType, 'user_id' | 'id' | 'created_at' | 'users'>
+export type MatePostAllType = MatePostType & {
+  position: {
+    center: {
+      lat: number;
+      lng: number;
+    };
+    errMsg: string | null;
+    isLoading: boolean;
+  };
+  users: UserType;
+  matePostPets: MatePostPetsType[]; 
+}
 
-export type MateCommentType = Tables<"mateComments">;
+export type MateNextPostType = Omit<MatePostFullType,  'id' | 'created_at' | 'users'>
 
+export type MatePostPetType = {
+  post_id?: number; // post_id를 추가
+  male_female: string;
+  neutered: boolean | null;
+  weight: string;
+  characteristics: string;
+};
+
+export type Pets = {
+  male_female: string;
+  neutered: null | boolean;
+  weight: string;
+  characteristics: string;
+  age: string;
+};
+
+
+export type PostsResponse = {
+  data: MatePostAllType[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};

@@ -8,7 +8,7 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
   try {
     const { data, error } = await supabase
       .from("matePosts")
-      .select("*")
+      .select("*,users(nickname),matePostPets(*)")
       .eq('id', id)
       .single();
 
