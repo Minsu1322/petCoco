@@ -1,44 +1,56 @@
 "use client";
 
-import { MateNextPostType, MatePostFullType } from "@/types/mate.type";
+import { MateNextPostType, MatePostAllType, MatePostFullType, MatePostPetsType } from "@/types/mate.type";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getConvertAddress } from "../../getConvertAddress";
+import { useAuthStore } from "@/zustand/useAuth";
+import { getConvertTime } from "@/app/utils/getConvertTime";
 
 interface DetailMatePostProps {
-  post: MatePostFullType;
+  post: MatePostAllType;
 }
 
 // 동적 로딩 설정
-const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/mapDetail"), { ssr: false });
-const DynamicMapEditComponent = dynamic(() => import("@/app/(public)/mate/_components/mapEdit"), { ssr: false });
+const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapDetail"), { ssr: false });
+const DynamicMapEditComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapEdit"), { ssr: false });
 
 const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const queryClient = useQueryClient();
-  const userId = "3841c2cf-d6b6-4d60-8b8d-c483f8d9bac0";
+  const { user } = useAuthStore();
+  const userId = user && user.id;
   const router = useRouter();
-
-  const time = post.dateTime?.split("T")[1].split(":");
-  const convertPeriod = time && (Number(time[0]) < 12 ? "오전" : "오후");
-  const convertHour = time && (Number(time[0]) % 12 || 12);
-  const convertMin = time && time[1];
 
   const { position, setPosition } = locationStore();
 
-  const [title, setTitle] = useState<string>("");
-  const [content, setContent] = useState<string>("");
-  const [dateTime, setDateTime] = useState<string>("");
-  const [male_female, setMale_female] = useState<string>("");
-  const [neutered, setNeutered] = useState<boolean | null>(null);
-  const [numbers, setNumbers] = useState<string>("");
-  const [members, setMembers] = useState<string>("");
-  const [size, setSize] = useState<string>("");
-  const [weight, setWeight] = useState<string>("");
-  const [characteristics, setCharacteristics] = useState<string>("");
+  const initialState: Omit<MateNextPostType, "user_id" | "position"> = {
+    title: post.title || "",
+    content: post.content || "",
+    // position: { center: { lat: 37.5556236021213, lng: 126.992199507869 }, errMsg: null, isLoading: true },
+    date_time: post.date_time || "",
+    members: post.members || "",
+    recruiting: post.recruiting || true,
+    recruitment_period: post.recruitment_period || "",
+    address: post.address || "",
+    place_name: post.place_name || "",
+    preferred_route: post.preferred_route || "",
+    special_requirements: post.special_requirements || ""
+  };
+
+  // const initialPetState: MatePostPetsType = {
+  //   male_female: "",
+  //   neutered: null,
+  //   weight: "",
+  //   characteristics: "",
+  //   age: ""
+  // };
+
+  const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id" | "position">>(initialState);
+  // const [formPets, setFormPets] = useState<MatePostPetsType[]>([initialPetState]);
 
   const [isEditing, setIstEditting] = useState<boolean>(false);
 
@@ -55,38 +67,23 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     },
     enabled: !!position.center
   });
-  const address =
+  const roadAddress =
     (addressData && addressData?.documents[0]?.road_address?.address_name) ||
     addressData?.documents[0]?.address?.address_name ||
     "주소 정보를 찾을 수 없어요";
-  console.log("주소 변환 데이터 확인", addressData);
 
-  const updatePost: Omit<MateNextPostType, "recruiting"> = {
-    title,
-    content,
-    position,
-    dateTime,
-    numbers,
-    neutered,
-    male_female,
-    members,
-    size,
-    weight,
-    characteristics
+  const address = (addressData && addressData?.documents[0]?.address?.address_name) || "주소 정보를 찾을 수 없어요";
+
+  //console.log("주소 변환 데이터 확인", addressData);
+
+  const updatePost = {
+    ...formPosts,
+    address,
+    position
   };
 
-  // TODO: 작성자에게만 이 버튼이 보이도록 수정
+  // TODO: 작성자에게만 이 버튼이 보이도록 수정 ✅
   const deletePost = async (id: string) => {
-    console.log(id, post.id, userId, post.user_id);
-    if (id !== post.id) {
-      return;
-    }
-
-    if (userId !== post.user_id) {
-      alert("작성자만 접근이 가능합니다.");
-      return;
-    }
-
     if (confirm("현재 게시글을 삭제하시겠어요?")) {
       try {
         const response = await fetch(`/api/mate/post/${post.id}`, {
@@ -104,7 +101,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     }
   };
 
-  // TODO: 게시글 수정 기능 구현
   const editPost = async (id: string) => {
     if (confirm("현재 게시글을 수정하시겠어요?")) {
       try {
@@ -153,6 +149,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     mutationFn: (id: string) => deletePost(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+      alert("삭제가 완료되었습니다.");
     }
   });
 
@@ -204,23 +201,29 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     });
   };
 
-  useEffect(() => {
-    setTitle(post.title || "");
-    setContent(post.content || "");
-    setDateTime(post.dateTime || "");
-    setMale_female(post.male_female || "");
-    setNeutered(post.neutered || null);
-    setNumbers(post.numbers || "");
-    setMembers(post.members || "");
-    setSize(post.size || "");
-    setWeight(post.weight || "");
-    setCharacteristics(post.characteristics || "");
-  }, []);
+  // useEffect(() => {
+  //   setFormPosts((prev) => ({
+  //     ...prev,
+  //     title: post.title || "",
+  //     content: post.content || "",
+  //     date_time: post.date_time || "",
+  //     members: post.members || "",
+
+  //   }));
+  //   setFormPets((prev) => ({
+  //     ...prev,
+  //     male_female: post.matePostPets.male_female || "",
+  //     neutered: post.matePostPets.neutered || null,
+  //     age: post.matePostPets.age || "",
+  //     weight: post.matePostPets.weight || "",
+  //     characteristics: post.matePostPets.characteristics || ""
+  //   }))
+  // }, []);
 
   return (
-    <div>
+    <div className="px-5 pb-5">
       <Link href="/mate">
-        <div className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1">
+        <div className="flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1">
           뒤로가기
         </div>
       </Link>
@@ -229,10 +232,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           <div className="flex flex-col">
             <input
               type="text"
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
+              value={formPosts.title || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
               placeholder=" 제목을 입력해 주세요"
               className="w-[300px] rounded-md border border-gray-300"
             />
@@ -248,150 +249,119 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                   lng: Number(post.position?.center?.lng)
                 }}
               />
-              <p>클릭한 곳의 주소는 ? {address} </p>
+              <p>클릭한 곳의 주소는? {roadAddress}</p>
             </div>
-            <div className="flex flex-row gap-x-4">
-              <label htmlFor="dateTime">산책 날짜 및 시간</label>
-              <input
-                type="datetime-local"
-                id="dateTime"
-                value={dateTime}
-                onChange={(e) => setDateTime(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-row gap-x-2">
-              <p>모집인원 수 : </p>
-              <input type="text" className="border" value={members} onChange={(e) => setMembers(e.target.value)} />명
-            </div>
-            <div className="mt-3 flex flex-col gap-x-5">
-              <div className="flex flex-row gap-x-2">
-                <label htmlFor="number">반려동물 수</label>
-                <select
-                  name="number of animals"
-                  id="number"
-                  className="w-12 border border-black"
-                  value={numbers}
-                  onChange={(e) => setNumbers(e.target.value)}
-                >
-                  <option value="0">0</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                </select>
+            <div className="mt-5">
+              <p>🔍 메이트 모집 정보</p>
+              <div className="flex flex-row gap-x-4">
+                <label htmlFor="date_time">산책 날짜 및 시간</label>
+                <input
+                  type="datetime-local"
+                  id="date_time"
+                  value={formPosts.date_time || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
+                />
               </div>
               <div className="flex flex-row gap-x-2">
-                <p>성별 : </p>
-                <input
-                  type="checkbox"
-                  name="male_female"
-                  value="female"
-                  onChange={(e) => setMale_female(e.target.value)}
-                  checked={male_female === "female"}
-                />
-                <label htmlFor="male_female">암컷</label>
-                <input
-                  type="checkbox"
-                  name="male_female"
-                  value="male"
-                  onChange={(e) => setMale_female(e.target.value)}
-                  checked={male_female === "male"}
-                />
-                <label htmlFor="male_female">수컷</label>
-              </div>
-              <div className="flex flex-row gap-x-3">
-                <p>중성화 여부 : </p>
-                <input
-                  type="checkbox"
-                  name="neutered"
-                  value="true"
-                  onChange={() => setNeutered(true)}
-                  checked={neutered === true}
-                />
-                <label>네</label>
-                <input
-                  type="checkbox"
-                  name="neutered"
-                  value="false"
-                  onChange={() => setNeutered(false)}
-                  checked={neutered === false}
-                />
-                <label>아니오</label>
-              </div>
-              <div className="flex flex-row gap-x-2">
-                <p>크기 : </p>
-                {/* TODO: 적당한 이름 찾기,, */}
-                <input
-                  type="checkbox"
-                  name="size"
-                  value="소형견"
-                  onChange={(e) => setSize(e.target.value)}
-                  checked={size === "소형견"}
-                />
-                <label htmlFor="size">소형견</label>
-                <input
-                  type="checkbox"
-                  name="size"
-                  value="중형견"
-                  onChange={(e) => setSize(e.target.value)}
-                  checked={size === "중형견"}
-                />
-                <label htmlFor="size">중형견</label>
-                <input
-                  type="checkbox"
-                  name="size"
-                  value="대형견"
-                  onChange={(e) => setSize(e.target.value)}
-                  checked={size === "대형견"}
-                />
-                <label htmlFor="size">대형견</label>
-              </div>
-              <div className="flex flex-row gap-x-2">
-                <p>무게 : </p>
-                <input type="text" className="border" value={weight} onChange={(e) => setWeight(e.target.value)} /> kg
-              </div>
-              <div className="flex flex-row gap-x-2">
-                <p>성격 및 특징 : </p>
+                <p>모집인원 수 :</p>
                 <input
                   type="text"
                   className="border"
-                  value={characteristics}
-                  onChange={(e) => setCharacteristics(e.target.value)}
+                  value={formPosts.members || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
+                />
+                명
+              </div>
+              <div className="flex flex-row gap-x-2">
+                <p>모집기간 :</p>
+                <input
+                  type="datetime-local"
+                  id="recruitment_period"
+                  value={formPosts.recruitment_period || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, recruitment_period: e.target.value })}
+                />
+              </div>
+              <div className="flex flex-row gap-x-2">
+                <p>산책 장소</p>
+                <input
+                  type="text"
+                  className="border"
+                  value={formPosts.place_name || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
+                />
+              </div>
+              <div className="flex flex-row gap-x-2">
+                <p>선호하는 산책 루트</p>
+                <input
+                  type="text"
+                  className="border"
+                  value={formPosts.preferred_route || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
+                />
+              </div>
+              <div className="flex flex-row gap-x-2">
+                <p>특별한 요구사항</p>
+                <input
+                  type="text"
+                  className="border"
+                  value={formPosts.special_requirements || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
                 />
               </div>
               <textarea
-                value={content}
-                onChange={(e) => {
-                  setContent(e.target.value);
-                }}
+                value={formPosts.content || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
                 placeholder=" 글을 작성해 주세요."
-                className="mt-5 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
+                className="mt-1 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
               ></textarea>
-              <p className="mt-1">🐾 반려동물이 2마리 이상인 경우 본문에 추가로 정보를 기재해 주세요.</p>
             </div>
-          </div>
-          <div className="flex flex-row gap-x-3">
-            <button
-              className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-              type="submit"
-            >
-              수정 완료
-            </button>
-            <button
-              className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-              type="button"
-              onClick={handleResetEditPost}
-            >
-              수정 취소
-            </button>
+            <div className="mt-5">
+              <p className="text-xl font-semibold">반려동물 정보 🐶</p>
+              <div className="flex flex-row gap-x-3">
+                {post.matePostPets.map((pet) => (
+                  <div className="w-48 rounded-md bg-gray-100 p-2" key={pet.id}>
+                    <p>성별 : {pet.male_female === "male" ? "남" : "여"}</p>
+                    <p>중성화 여부 : {pet.neutered === true ? "예" : "아니오"}</p>
+                    <p>나이 : {pet.age}살</p>
+                    <p>무게 : {pet.weight} kg</p>
+                    <p>성격 : {pet.characteristics}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-row gap-x-3">
+              <button
+                className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+                type="submit"
+              >
+                수정 완료
+              </button>
+              <button
+                className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+                type="button"
+                onClick={handleResetEditPost}
+              >
+                수정 취소
+              </button>
+            </div>
           </div>
         </form>
       ) : (
-        <div>
+        <div className="mt-3">
           <p>{post.title}</p>
-          <p>{post.content}</p>
+          <div className="flex w-4/12 flex-row justify-between">
+            <p>{post.content}</p>
+            <p>🌱 메이트 {post.users?.nickname}</p>
+          </div>
+          <br />
           <p>모집인원 수 : {post.members}명</p>
-          <p>날짜 : {post.dateTime?.split("T")[0]}</p>
-          <p>시간 : {`${convertPeriod} ${convertHour}시 ${convertMin}분`}</p>
+          <p>
+            모집기간 : {post.recruitment_period?.split("T")[0]} {getConvertTime({ date_time: post.recruitment_period || "" })} 까지
+          </p>
+          <p className="mt-5 text-xl font-semibold">산책 관련 정보 🐾 </p>
+          <p>산책 장소 : {post.place_name}</p>
+          <p>산책 날짜 : {post.date_time?.split("T")[0]}</p>
+          <p>산책 시간 : {getConvertTime({ date_time: post.date_time || "" })}</p>
           <div>
             <DynamicMapComponent
               center={{
@@ -402,34 +372,40 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           </div>
           <div className="mt-5">
             <p className="text-xl font-semibold">반려동물 정보 🐶</p>
-            <div className="w-48 rounded-md bg-gray-100 p-2">
-              <p>반려동물 수 : {post.numbers}</p>
-              <p>성별 : {post.male_female}</p>
-              <p>중성화 여부 : {post.neutered === true ? "예" : "아니오"}</p>
-              <p>크기 : {post.size}</p>
-              <p>무게 : {post.weight} kg</p>
+            <div className="flex flex-row gap-x-3">
+              {post.matePostPets.map((pet) => (
+                <div className="w-48 rounded-md bg-gray-100 p-2" key={pet.id}>
+                  <p>성별 : {pet.male_female === "male" ? "남" : "여"}</p>
+                  <p>중성화 여부 : {pet.neutered === true ? "예" : "아니오"}</p>
+                  <p>나이 : {pet.age}살</p>
+                  <p>무게 : {pet.weight} kg</p>
+                  <p>성격 : {pet.characteristics}</p>
+                </div>
+              ))}
             </div>
           </div>
-          <div className="mt-5 flex flex-row gap-10">
-            <button
-              className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-              onClick={() => handleDeletePost(post.id)}
-            >
-              삭제
-            </button>
-            <button
-              className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-              onClick={handleEditPost}
-            >
-              수정
-            </button>
-            <button
-              className="mt-3 flex h-10 w-28 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-              onClick={() => handleTogglePost(post.id)}
-            >
-              모집상태 변경
-            </button>
-          </div>
+          {userId === post.user_id && (
+            <div className="mt-5 flex flex-row gap-10">
+              <button
+                className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+                onClick={() => handleDeletePost(post.id)}
+              >
+                삭제
+              </button>
+              <button
+                className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+                onClick={handleEditPost}
+              >
+                수정
+              </button>
+              <button
+                className="mt-3 flex h-10 w-28 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
+                onClick={() => handleTogglePost(post.id)}
+              >
+                모집상태 변경
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

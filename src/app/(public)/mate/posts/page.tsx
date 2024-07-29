@@ -1,7 +1,6 @@
+import PostForm from "../_components/post/postForm";
 
-import PostForm from "../_components/postForm";
-
-const MatePost = ({ params }: { params: { id: string } }) => {
+const MatePost = () => {
   return (
     <div className="px-2">
       <PostForm />
