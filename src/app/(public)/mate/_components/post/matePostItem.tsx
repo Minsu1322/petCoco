@@ -69,7 +69,9 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             </div>
           </div>
           {/* <p>{post.content}</p> */}
-          <p>{post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })}</p>
+          <p>
+            {post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })}
+          </p>
           <p>{post.members}명 모집</p>
         </div>
       </div>

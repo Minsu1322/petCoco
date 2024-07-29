@@ -6,13 +6,12 @@ import { useEffect, useState } from "react";
 //import { useRef, useState } from "react";
 import { Map, MapMarker, MapTypeControl, ZoomControl } from "react-kakao-maps-sdk";
 
-
 interface MapComponentProps {
   center: { lat: number; lng: number };
 }
 
 const MapForm = ({ center }: MapComponentProps) => {
-  const { position, setPosition} = locationStore();
+  const { position, setPosition } = locationStore();
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -43,8 +42,6 @@ const MapForm = ({ center }: MapComponentProps) => {
       });
     }
     // console.log('geo',navigator);
-
-  
   }, []);
 
   return (
@@ -70,12 +67,12 @@ const MapForm = ({ center }: MapComponentProps) => {
             size: {
               width: 64,
               height: 69
-            }, 
+            },
             options: {
               offset: {
                 x: 27,
                 y: 69
-              } 
+              }
             }
           }}
         >
