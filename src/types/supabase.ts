@@ -9,27 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      chats: {
-        Row: {
-          content: string
-          created_at: string | null
-          id: string
-          username: string
-        }
-        Insert: {
-          content: string
-          created_at?: string | null
-          id?: string
-          username: string
-        }
-        Update: {
-          content?: string
-          created_at?: string | null
-          id?: string
-          username?: string
-        }
-        Relationships: []
-      }
       comments: {
         Row: {
           content: string | null
@@ -118,9 +97,9 @@ export type Database = {
           date_time: string | null
           id: string
           members: string | null
-          placeName: string | null
+          place_name: string | null
           position: Json | null
-          preferredRoute: string | null
+          preferred_route: string | null
           recruiting: boolean | null
           recruitment_period: string | null
           special_requirements: string | null
@@ -134,9 +113,9 @@ export type Database = {
           date_time?: string | null
           id?: string
           members?: string | null
-          placeName?: string | null
+          place_name?: string | null
           position?: Json | null
-          preferredRoute?: string | null
+          preferred_route?: string | null
           recruiting?: boolean | null
           recruitment_period?: string | null
           special_requirements?: string | null
@@ -150,9 +129,9 @@ export type Database = {
           date_time?: string | null
           id?: string
           members?: string | null
-          placeName?: string | null
+          place_name?: string | null
           position?: Json | null
-          preferredRoute?: string | null
+          preferred_route?: string | null
           recruiting?: boolean | null
           recruitment_period?: string | null
           special_requirements?: string | null
@@ -171,30 +150,40 @@ export type Database = {
       }
       messages: {
         Row: {
+          content: string
           created_at: string
           id: string
-          is_edit: boolean | null
-          send_by: string
-          text: string
+          receiver_id: string | null
+          sender_id: string | null
+          subject: string
         }
         Insert: {
+          content: string
           created_at?: string
           id?: string
-          is_edit?: boolean | null
-          send_by?: string
-          text: string
+          receiver_id?: string | null
+          sender_id?: string | null
+          subject: string
         }
         Update: {
+          content?: string
           created_at?: string
           id?: string
-          is_edit?: boolean | null
-          send_by?: string
-          text?: string
+          receiver_id?: string | null
+          sender_id?: string | null
+          subject?: string
         }
         Relationships: [
           {
-            foreignKeyName: "messages_send_by_fkey"
-            columns: ["send_by"]
+            foreignKeyName: "messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -244,7 +233,10 @@ export type Database = {
           age: string | null
           created_at: string
           email: string | null
+          gender: string | null
           id: string
+          introduction: string | null
+          mbti: string | null
           nickname: string | null
           profile_img: string | null
         }
@@ -252,7 +244,10 @@ export type Database = {
           age?: string | null
           created_at?: string
           email?: string | null
+          gender?: string | null
           id?: string
+          introduction?: string | null
+          mbti?: string | null
           nickname?: string | null
           profile_img?: string | null
         }
@@ -260,7 +255,10 @@ export type Database = {
           age?: string | null
           created_at?: string
           email?: string | null
+          gender?: string | null
           id?: string
+          introduction?: string | null
+          mbti?: string | null
           nickname?: string | null
           profile_img?: string | null
         }
