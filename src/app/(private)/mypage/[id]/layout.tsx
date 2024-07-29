@@ -23,7 +23,7 @@ const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
       </Link>
       <Link
         className="rounded border border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
-        href={`/mypage/${id}/myprofile/fixmyprofile`}
+        href={`/mypage/${id}/myprofile/fixMyProfile`}
       >
         프로필 변경
       </Link>

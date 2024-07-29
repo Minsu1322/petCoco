@@ -81,13 +81,20 @@ const FixMyProfile = () => {
     gender,
     introduction
   }: Pick<UserType, "nickname" | "profile_img" | "age" | "gender" | "mbti" | "introduction">) => {
-    const response = await fetch(`/api/mypage/${id}`, {
+    const response = await fetch(`/api/mypage/${id}/myprofile`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nickname, profile_img, age, mbti, gender, introduction })
     });
     return response.json();
   };
+
+  const updateMutate = useMutation({
+    mutationFn: updateProfileWithSupabase,
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ["user"] });
+    }
+  });
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
@@ -137,13 +144,6 @@ const FixMyProfile = () => {
       profileImageUrl = imgUrl.data.publicUrl;
     }
 
-    const updateMutate = useMutation({
-      mutationFn: updateProfileWithSupabase,
-      onSuccess: () => {
-        queryClient.refetchQueries({ queryKey: ["user"] });
-      }
-    });
-
     updateMutate.mutate({
       nickname: nickName,
       profile_img: profileImageUrl,
@@ -157,6 +157,7 @@ const FixMyProfile = () => {
 
     toMyProfile();
   };
+
   return (
     <div
       className="my-auto flex h-[700px] w-[500px] flex-col items-center justify-center rounded-[30px] bg-white"

@@ -53,7 +53,7 @@ const MyProfile = () => {
           </Link>
           <Link
             className="rounded border border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
-            href={`/mypage/${user.id}/myprofile/fixmyprofile`}
+            href={`/mypage/${user.id}/myprofile/fixMyProfile`}
           >
             변경하기
           </Link>
