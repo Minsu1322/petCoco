@@ -38,7 +38,7 @@ const CreatePostPage = () => {
 
     try {
       const { data, error } = await supabase.from("posts").insert({
-        user_id: "a078faa7-0067-4a42-a792-00c5eba79607",
+        user_id: "4ee5538f-4e1c-4ffc-83eb-a7d43e63ad8d",
         title,
         content,
         category
