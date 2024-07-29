@@ -7,7 +7,7 @@ import { useAuthStore } from "@/zustand/useAuth";
 
 const supabase = createClient();
 
-const googleCallback = () => {
+const GoogleCallback = () => {
   const router = useRouter();
   const { setUser, setError } = useAuthStore();
 
@@ -56,4 +56,4 @@ const googleCallback = () => {
   return <div>Loading...</div>;
 };
 
-export default googleCallback;
+export default GoogleCallback;
