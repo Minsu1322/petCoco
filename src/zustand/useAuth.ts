@@ -16,7 +16,7 @@ interface useAuth {
       "created_at" | "id" | "profile_img" | "passwordCheck" | "age" | "gender" | "mbti" | "introduction"
     >
   ) => Promise<void>;
-  signIn: (credentials: Pick<UserInfoType, "email" | "password">) => Promise<void>;
+  signIn: (credentials: Pick<UserInfoType, "email" | "password">) => Promise<boolean>; // 변경
   signOut: () => Promise<void>;
   emailCheck: (email: string) => Promise<void>;
   validatePasswords: (password: string, passwordCheck: string) => void;
@@ -37,18 +37,15 @@ export const useAuthStore = create<useAuth>((set) => ({
   emailCheck: async (email) => {
     try {
       const { data: existingUsers, error: checkError } = await supabase.from("users").select("*").eq("email", email);
-      if (checkError) {
-        throw new Error();
-      }
 
-      if (existingUsers.length > 0) {
+      if (existingUsers && existingUsers.length > 0) {
         set({ emailError: "중복된 이메일입니다." });
       } else {
-        set({ emailError: null });
+        set({ emailError: "사용 가능한 이메일입니다." });
       }
     } catch (error: any) {
       console.error("이메일 체크 에러", error.message);
-      set({ emailError: error.message });
+      set({ emailError: "이메일 검사 중 오류가 발생했습니다." });
     }
   },
   signUp: async (credentials) => {
@@ -92,9 +89,11 @@ export const useAuthStore = create<useAuth>((set) => ({
         throw new Error(error.message);
       }
       set({ user, error: null });
+      return true;
     } catch (error: any) {
       console.error("로그인 에러", error.message);
       set({ error: error.message });
+      return false;
     }
   },
   signOut: async () => {

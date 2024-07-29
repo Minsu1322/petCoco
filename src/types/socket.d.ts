@@ -1,5 +1,4 @@
 import { Socket } from "socket.io-client";
-
 import { IMessage } from "./chat";
 
 export interface ServerToClientEvents {

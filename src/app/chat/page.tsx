@@ -1,3 +1,4 @@
+// src > app > chat > page.tsx
 "use client";
 
 import { Box, Button, Slide, Stack, TextField, Typography } from "@mui/material";
@@ -32,7 +33,7 @@ const Chat = () => {
             username,
             userId,
             content: currentMessage
-          }) // Ensure this is a JSON string
+          })
         });
 
         if (!res.ok) {

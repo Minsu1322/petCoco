@@ -1,8 +1,5 @@
-// src > app > api > auth > [...nextauth] > route.ts
-
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import KakaoProvider from "next-auth/providers/kakao";
 
 const handler = NextAuth({
   secret: process.env.AUTH_SECRET,
@@ -29,10 +26,6 @@ const handler = NextAuth({
 
         return null;
       }
-    }),
-    KakaoProvider({
-      clientId: process.env.KAKAO_MAPS_API!,
-      clientSecret: process.env.KAKAO_MAPS_CONVERT_API_KEY!
     })
   ],
   callbacks: {
@@ -40,8 +33,6 @@ const handler = NextAuth({
       if (user) {
         token.id = (user as any).id;
         token.name = user.name;
-        token.email = user.email;
-        token.image = user.image;
       }
       return token;
     },
@@ -49,8 +40,6 @@ const handler = NextAuth({
       if (token) {
         session.user.id = token.id as string;
         session.user.name = token.name as string;
-        session.user.email = token.email as string;
-        session.user.image = token.image as string;
       }
       return session;
     }
