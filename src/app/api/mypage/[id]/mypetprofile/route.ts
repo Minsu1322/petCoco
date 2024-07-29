@@ -1,5 +1,5 @@
-// import { createClient } from "@/supabase/server";
-// import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@/supabase/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
 //   try {
