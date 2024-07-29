@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserInfoType } from "@/types/auth.type";
-import Link from "next/link";
 
 type UserType = UserInfoType;
 
@@ -46,7 +45,7 @@ const FixMyProfile = () => {
   ];
 
   const getProfileData = async () => {
-    const response = await fetch(`/api/mypage/${id}`, {
+    const response = await fetch(`/api/mypage/${id}/myprofile`, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
     });
@@ -89,13 +88,6 @@ const FixMyProfile = () => {
     });
     return response.json();
   };
-
-  const updateMutate = useMutation({
-    mutationFn: updateProfileWithSupabase,
-    onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ["user"] });
-    }
-  });
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
@@ -145,6 +137,13 @@ const FixMyProfile = () => {
       profileImageUrl = imgUrl.data.publicUrl;
     }
 
+    const updateMutate = useMutation({
+      mutationFn: updateProfileWithSupabase,
+      onSuccess: () => {
+        queryClient.refetchQueries({ queryKey: ["user"] });
+      }
+    });
+
     updateMutate.mutate({
       nickname: nickName,
       profile_img: profileImageUrl,
@@ -165,12 +164,7 @@ const FixMyProfile = () => {
     >
       <h1 className="mt-5 text-2xl font-bold">프로필 수정</h1>
       <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
-        <img
-          className="max-h-[200px] max-w-[200px] object-cover"
-          src={previewImage}
-          onError={user.profile_img}
-          alt="profile_img"
-        />
+        <img className="max-h-[200px] max-w-[200px] object-cover" src={previewImage} alt="profile_img" />
         <br></br>
         <button
           className="rounded border border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
