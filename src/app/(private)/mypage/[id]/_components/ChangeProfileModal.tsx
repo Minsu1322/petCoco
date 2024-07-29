@@ -13,6 +13,7 @@ type UserType = UserInfoType;
 
 const ChangeProfileModal = ({ clickModal }: ModalProps) => {
   const [nickName, setNickName] = useState("");
+  const [age, setAge] = useState("");
   const [profileImage, setProfileImage] = useState<File | null>(); //서버에 반영될 이미지 파일
   const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
   //const [profileImageUrl, setProfileImageUrl] = useState("");
@@ -32,11 +33,15 @@ const ChangeProfileModal = ({ clickModal }: ModalProps) => {
   //   return result;
   // };
 
-  const updateProfileWithSupabase = async ({ nickname, profile_img }: Pick<UserType, "nickname" | "profile_img">) => {
+  const updateProfileWithSupabase = async ({
+    nickname,
+    profile_img,
+    age
+  }: Pick<UserType, "nickname" | "profile_img" | "age">) => {
     const response = await fetch(`/api/mypage/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nickname, profile_img })
+      body: JSON.stringify({ nickname, profile_img, age })
     });
     console.log({ nickname, profile_img });
     return response.json();
@@ -62,6 +67,7 @@ const ChangeProfileModal = ({ clickModal }: ModalProps) => {
   };
 
   const handleNickNameChange = (e: ChangeEvent<HTMLInputElement>) => setNickName(e.target.value);
+  const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
 
   const submitChange = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -89,10 +95,8 @@ const ChangeProfileModal = ({ clickModal }: ModalProps) => {
       const imgUrl = supabase.storage.from("profile_img").getPublicUrl(imgData.data!.path);
       profileImageUrl = imgUrl.data.publicUrl;
     }
-    console.log(nickName);
-    console.log(profileImageUrl);
 
-    updateMutate.mutate({ nickname: nickName, profile_img: profileImageUrl });
+    updateMutate.mutate({ nickname: nickName, profile_img: profileImageUrl, age: age });
 
     alert("프로필 변경이 성공적으로 완료되었습니다!");
 
@@ -126,6 +130,12 @@ const ChangeProfileModal = ({ clickModal }: ModalProps) => {
           type="text"
           placeholder="변경할 닉네임"
           onChange={handleNickNameChange}
+        />
+        <input
+          className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
+          type="text"
+          placeholder="나이"
+          onChange={handleAgeChange}
         />
         <div className="mt-5 flex gap-[15px]">
           <button
