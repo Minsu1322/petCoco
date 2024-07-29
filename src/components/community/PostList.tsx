@@ -77,7 +77,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
 
       <div className="space-y-6">
         {sortedPosts.map((post) => (
-          <Link key={post.id} href={`http://localhost:3000/community/${post.id}`}>
+          <Link key={post.id} href={`${process.env.NEXT_PUBLIC_SITE_URL}/community/${post.id}`}>
             <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-[#1FE476] shadow-sm">
               <div className="flex flex-grow flex-col justify-between p-4">
                 <div>
