@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/supabase/userClient";
 import { useAuthStore } from "@/zustand/useAuth";
+import { createClient } from "@/supabase/server";
+
+const supabase = createClient();
 
 interface MessageFormProps {
   receiverId: string;
