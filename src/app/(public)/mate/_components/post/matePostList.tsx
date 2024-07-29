@@ -23,34 +23,39 @@ interface MatePostListProps {
   filters: {
     gender: string | null,
     date_time: string | null,
-    position: string | null,
+    // position: string | null,
     male_female: string | null,
     age: string | null,
     weight: string | null,
   }
+  filterBy: string;
 }
 
 
-const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: MatePostListProps) => {
+const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters, filterBy }: MatePostListProps) => {
   const { setIsUseGeo, setGeoData } = locationStore();
-
   const [page, setPage] = useState(1);
 
   const { data, isPending, error } = useQuery<PostsResponse>({
-    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm],
+    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, filters],
     queryFn: async () => {
-      // console.log('filter값 확인', filters);
-      // const getValidFilters = Object.fromEntries(
-      //   Object.entries(filters).filter(([_, value]) => value !== null && value !== "")
-      // );
-      // console.log(getValidFilters);
+      //console.log('filter값 확인', filters);
+      const getValidFilters = Object.fromEntries(
+        Object.entries(filters).filter(([_, value]) => value !== null && value !== "")
+      );
+      //console.log(getValidFilters);
       // const filtersString = encodeURIComponent(JSON.stringify(getValidFilters));
-      // console.log(filtersString);
+      let query = "";
+      query = Object.keys(getValidFilters).map((key) => {
+        const value = getValidFilters[key];
+        return value != null ? `${encodeURIComponent(key)}=${encodeURIComponent(value)}` : '';
+      }) .join("&");
+
       const response = await fetch(
-        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=4&search=${activeSearchTerm}`
+        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=4&search=${activeSearchTerm}&${query}`
       );
       const data = response.json();
-      console.log(data);
+      //console.log(data);
       return data;
     }
   });
@@ -135,34 +140,25 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
   const sortedPosts = sortPosts(data?.data || []);
 
+//   const filterPosts = (posts: MatePostAllType[]) => {
+//     return posts.filter(post => {
+//       if (filters.gender && post.users.gender !== filters.gender) {
+//         return false;
+//       }
 
-  const filterPosts = (posts: MatePostAllType[]) => {
-    return posts.filter(post => {
-      // 각 필터 조건을 개별적으로 확인
-      const genderMatch = !filters.gender || post.users.gender === filters.gender;
-      const ageMatch = !filters.age || post.users.age === filters.age;
-      const dateTimeMatch = !filters.date_time || post.date_time === filters.date_time;
-      const positionMatch = !filters.position || post.position === filters.position;
-      const maleFemaleMatch = !filters.male_female || post.matePostPets.some(pet => pet.male_female === filters.male_female);
-      const weightMatch = !filters.weight || post.matePostPets.some(pet => pet.weight === filters.weight);
-  
-      // 디버깅을 위한 로그
-      // console.log('Post:', post.id, {
-      //   genderMatch,
-      //   ageMatch,
-      //   dateTimeMatch,
-      //   positionMatch,
-      //   maleFemaleMatch,
-      //   weightMatch
-      // });
-  
-      // 모든 조건이 true일 때만 true 반환
-      return genderMatch && ageMatch && dateTimeMatch && positionMatch && maleFemaleMatch && weightMatch;
-    });
-  };
+//       if(filters.age && post.users.age !== filters.age){
+//         return false;
+//       }
+      
+//       if (filters.male_female && !post.matePostPets.some(pet => pet.male_female === filters.male_female)) {
+//         return false;
+//       }
+//       return true;
+//     });
+//   };
 
-  const sortedAndFilteredPosts = filterPosts(data?.data || []);
-console.log(sortedAndFilteredPosts)
+//   const sortedAndFilteredPosts = filterPosts(sortPosts(data?.data || []));
+ 
 
 if(isPending) {
   return (
@@ -178,8 +174,8 @@ if(isPending) {
   return (
     <div>
       <div className="ml-1 mt-5 grid grid-cols-2">
-      {sortedAndFilteredPosts.length > 0 ? (
-          sortedAndFilteredPosts.map((post) => <MatePostItem key={post.id} post={post} />)
+      {sortedPosts.length > 0 ? (
+          sortedPosts.map((post) => <MatePostItem key={post.id} post={post} />)
         ) : (
           <div>현재 모집 중인 산책 메이트가 없습니다.</div>
         )}
