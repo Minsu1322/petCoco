@@ -1,11 +1,11 @@
 "use client";
 
 import FilterSelectChip from "./filterSelectChip";
-import FilterDateChip from "./filterDateChip";
+// import FilterDateChip from "./filterDateChip";
+// import FilterWeightChip from "./filterWeightChip";
 import { gender, age, position, male_female } from "../array";
 import { DateValue } from "@nextui-org/react";
 import { useState } from "react";
-import FilterWeightChip from "./filterWeightChip";
 
 interface PostItemFilterTabProps {
   updateFilter: (filterName: string, value: any) => void;
@@ -38,11 +38,11 @@ const PostItemFilterTab = ({ updateFilter, filters }: PostItemFilterTabProps) =>
           selected={filters.age}
           onSelect={(items) => updateFilter("age", items)}
         />
-        <FilterDateChip 
+        {/* <FilterDateChip 
           label="산책일" 
           selected={filters.date_time} 
           onSelect={(items) => updateFilter("date_time", items)} 
-        />  
+        />   */}
         {/* <FilterSelectChip
           label="거리"
           array={position}
@@ -52,7 +52,7 @@ const PostItemFilterTab = ({ updateFilter, filters }: PostItemFilterTabProps) =>
       </div>
       <div className="mt-5">
         <p className="text-lg">반려견 정보 필터</p>
-        <FilterWeightChip label="반려견 몸무게" />
+        {/* <FilterWeightChip label="반려견 몸무게" /> */}
         <FilterSelectChip
           label="성별"
           array={male_female}
