@@ -6,7 +6,9 @@ import LogoutButton from "./auth/LogoutBtn";
 import { useAuthStore } from "@/zustand/useAuth";
 import LoginButton from "./auth/LoginBtn";
 import { useEffect, useState } from "react";
-import { supabase } from "@/supabase/userClient";
+import { createClient } from "@/supabase/client";
+
+const supabase = createClient();
 
 const Header = () => {
   const [isUser, setIsUser] = useState(false);

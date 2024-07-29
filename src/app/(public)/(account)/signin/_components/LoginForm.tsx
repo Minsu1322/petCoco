@@ -15,7 +15,11 @@ const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await signIn({ email, password });
+    const success = await signIn({ email, password });
+    if (success) {
+      alert("로그인이 완료되었습니다!");
+      router.push("/");
+    }
   };
 
   useEffect(() => {
@@ -24,13 +28,6 @@ const LoginForm = () => {
       setError(null);
     }
   }, [error, setError]);
-
-  useEffect(() => {
-    if (user) {
-      alert("로그인이 완료되었습니다!");
-      router.push("/");
-    }
-  }, [user, router]);
 
   const handleGoogleSignIn = async () => {
     await signInWithGoogle();
