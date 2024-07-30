@@ -357,13 +357,13 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
                 onClick={() => handleDeletePost(post.id)}
               >
-                삭제
+                수정
               </button>
               <button
                 className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
                 onClick={handleEditPost}
               >
-                수정
+                삭제
               </button>
               <button
                 className="flex h-8  cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
@@ -382,6 +382,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             alt="사용자 프로필 이미지"
             width={50}
             height={50}
+            className="rounded-full"
           />
         </div>
             <div className="flex flex-col gap-y-2 text-gray-400">
