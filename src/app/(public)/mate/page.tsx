@@ -14,8 +14,7 @@ import FilterDateChip from "./_components/filterDateChip";
 import { useAuthStore } from "@/zustand/useAuth";
 import NotLogInView from "./_components/notLogInView";
 import FilterWeightChip from "./_components/filterWeightChip";
-import { age, gender, male_female, position } from "./array";
-import { DateValue } from "@nextui-org/react";
+import { age, gender, male_female } from "./array";
 
 export type PositionData = {
   center: {
@@ -31,25 +30,16 @@ const MatePage = () => {
   const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);
   const [activeSearchTerm, setActiveSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState("");
-  const [filterBy, setFilterBy] = useState("");
 
   const { user } = useAuthStore();
 
   const [filters, setFilters] = useState({
     gender: null,
     age: null,
-    date_time: null,
-    // position: null,
+    date_time: undefined,
     male_female: null,
     weight: null
   });
-
-  // const [selectedGender, setSelectedGender] = useState("");
-  // const [selectedAge, setSelectedAge] = useState("");
-  // const [selectedPostion, setSelectedPostion] = useState("");
-  // const [selectedDate, setSelectedDate] = useState<DateValue | undefined>(undefined);
-  // const [selectedMale_female, setSelectedMale_female] = useState("");
-  // const [selectedWeight, setSelectedWeight] = useState("");
 
   const updateFilter = (filterName: string, value: string) => {
     // console.log(value);
@@ -68,32 +58,6 @@ const MatePage = () => {
   const handleDateSort = () => setSortBy("date");
   const handleDistanceSort = () => setSortBy("distance");
   
-  // const handleGenderSelect = (value: string) => {
-  //   updateFilter("gender", value);
-  // };
-  
-  // const handleAgeSelect = (value: string) => {
-  //   updateFilter("age", value);
-  // };
-  
-  // const handleDistanceFilter = (value: string) => {
-  //   updateFilter("position", value);
-  // };
-
-  // const handleDateFilter = (value: DateValue | undefined) => {
-  //   setSelectedDate(value);
-  //   // DateValue를 문자열로 변환하여 filters 상태에 저장
-  //   updateFilter("date_time", value);
-  // };
-
-  // const handleMale_femaleSelect =  (value: string) => {
-  //   updateFilter("male_female", value);
-  // };
-
-  // const handledWeightSelect =  (value: string) => {
-  //   updateFilter("weight", value);
-  // };
-
   // const handleResetFilter = () => {
   //   setFilters({
   //     gender: null,
@@ -131,7 +95,6 @@ const MatePage = () => {
             isCurrentPosts={isCurrentPosts}
             sortBy={sortBy}
             filters={filters}
-            filterBy={filterBy}
           />
         </div>
 
@@ -156,30 +119,6 @@ const MatePage = () => {
             </form>
           </div>
           <PostItemFilterTab updateFilter={updateFilter} filters={filters} />
-          {/* <PostItemFilterTab handleDistanceFilter={handleDistanceFilter}  updateFilter={updateFilter} filters={filters}  /> */}
-          {/* <div className="w-full">
-            <div>
-              <p className="text-lg">메이트 상세 필터</p>
-              <FilterSelectChip label="성별" array={gender} onSelect={handleGenderSelect} selected={selectedGender} />
-              <FilterSelectChip label="연령대" array={age} onSelect={handleAgeSelect} selected={selectedAge} />
-              <FilterSelectChip label="거리" array={position} selected={selectedPostion} onSelect={handleDistanceFilter} />
-              {/* <FilterDateChip 
-                label="산책일" 
-                selectedDate={selectedDate} 
-      onDateChange={handleDateFilter} 
-              />   */}
-            {/* </div>
-            <div className="mt-5">
-              <p className="text-lg">반려견 정보 필터</p>
-              <FilterWeightChip label="반려견 몸무게" />
-              <FilterSelectChip
-              label="성별"
-              array={male_female}
-              selected={selectedMale_female}
-              onSelect={handleMale_femaleSelect}
-            />
-            </div>
-          </div>  */}
           <div className="mt-5 flex">
             <div
               className="mb-4 h-10 w-full cursor-pointer items-center rounded-lg bg-gray-300 p-2 text-center"
