@@ -16,6 +16,7 @@ export const GET = async (request: NextRequest) => {
   const limit = parseInt(searchParams.get("limit") || "8");
   const isCurrentPosts = searchParams.get("current");
   const filter = Object.fromEntries(searchParams.entries());
+  const sort = searchParams.get("sort");
   //console.log(filter);
 
   try {
@@ -27,22 +28,31 @@ export const GET = async (request: NextRequest) => {
     if (search) {
       query = query.ilike("content", `%${search}%`);
     }
-// 
+    //
     if (isCurrentPosts === "true") {
       query = query.eq("recruiting", true);
     }
+
+    // if (sort === "recruitment_period") {
+    //   query = query
+    // }
 
     if (filter.gender && filter.gender !== "전체") {
       query = query.eq("users.gender", filter.gender);
     }
 
     if (filter.age && filter.age !== "전체") {
-    query = query.eq("users.age", filter.age);
+      query = query.eq("users.age", filter.age);
     }
 
-    if(filter.date_time) {
-      query = query.ilike('date_time', `%${filter.date_time}%`);
+    if (filter.date_time) {
+      query = query.ilike("date_time", `%${filter.date_time}%`);
       // console.log(filter.date_time);
+    }
+
+    if (filter.weight) {
+      const wigthtVale = parseFloat(filter.weight)
+      query.gte("matePostPets.weight", wigthtVale);
     }
 
     if (filter.male_female && filter.male_female !== "전체") {
@@ -53,7 +63,7 @@ export const GET = async (request: NextRequest) => {
     query.not("matePostPets", "is", null);
 
     const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
-    // console.log(data);
+    console.log(data);
 
     if (error) {
       console.error(error);
