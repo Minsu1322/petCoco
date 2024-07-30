@@ -31,7 +31,7 @@ const MatePage = () => {
     age: null,
     date_time: undefined,
     male_female: null,
-    weight: null
+    weight: null,
   });
 
   const updateFilter = (filterName: string, value: string) => {
@@ -47,7 +47,7 @@ const MatePage = () => {
   };
 
   const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
-  const handleDateSort = () => setSortBy("date");
+  const handleDateSort = () =>setSortBy("recruitment_period");
   const handleDistanceSort = () => setSortBy("distance");
   
   // const handleResetFilter = () => {
@@ -69,7 +69,7 @@ const MatePage = () => {
   }
 
   return (
-    <div className="mx-8">
+    <div className="mx-8 min-h-screen ">
       <h1 className="mb-7 p-2 text-3xl">산책 메이트</h1>
       <div className="flex flex-row gap-x-5">
         {/* 왼쪽 메인 컨텐츠 영역 */}
@@ -89,7 +89,8 @@ const MatePage = () => {
             filters={filters}
           />
         </div>
-
+        {/* 가운데 사이드 선 */}
+        <div className="border-l-2 border-gray-100 h-screen"><br /></div>
         {/* 오른쪽 사이드바 영역 */}
         <div className="w-1/4 pl-5">
           <div className="mt-1 flex">
