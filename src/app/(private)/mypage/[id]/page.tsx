@@ -55,10 +55,13 @@ function MyPage() {
               src={userProfile.profile_img}
               alt=""
             />
-            <span className="text-[24px] font-bold text-[#24CAFF] sm:text-[48px]">{userProfile.nickname}</span>님
-            반갑습니다.
+            <span className="font-bold text-[#42E68A] sm:text-[48px]">
+              {userProfile.nickname}
+              <div className="text-[36px] text-black">님 반갑습니다.</div>
+            </span>
+
             <Link
-              className="rounded border border-[#C9C9C9] bg-[#D1D1D1] px-4 py-2 text-center text-[20px] font-bold text-white"
+              className="rounded border bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
               href={`/mypage/${userProfile.id}/myprofile`}
             >
               내 프로필
