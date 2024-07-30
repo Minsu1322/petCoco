@@ -5,6 +5,7 @@ import { MessageForm } from "@/components/message/MessageForm";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 const supabase = createClient();
 
@@ -18,6 +19,7 @@ interface Message {
   sender_nickname: string;
   receiver_nickname: string;
   nickname: string;
+  profile_img: string;
 }
 
 interface GroupedMessages {
@@ -31,6 +33,8 @@ export default function MessagePage() {
   const { user, setUser } = useAuthStore();
   const messageEndRef = useRef<HTMLDivElement>(null);
 
+  const [isUserLoading, setIsUserLoading] = useState(true);
+
   useEffect(() => {
     const checkUser = async () => {
       const {
@@ -39,6 +43,7 @@ export default function MessagePage() {
       if (user) {
         setUser(user);
       }
+      setIsUserLoading(false);
     };
     checkUser();
   }, [setUser]);
@@ -50,7 +55,7 @@ export default function MessagePage() {
   } = useQuery({
     queryKey: ["messages", user?.id],
     queryFn: async () => {
-      if (!user) throw new Error("User not authenticated");
+      if (!user) return []; // 사용자가 없으면 빈 배열 반환
       const { data, error } = await supabase
         .from("messages")
         .select(
@@ -70,12 +75,18 @@ export default function MessagePage() {
         receiver_nickname: message.receiver.nickname
       }));
     },
-    enabled: !!user
+    enabled: !!user && !isUserLoading
   });
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (messages && selectedUser) {
+      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, selectedUser]);
 
   const groupedMessages: GroupedMessages = messages
     ? messages.reduce((acc, message) => {
@@ -90,25 +101,26 @@ export default function MessagePage() {
       }, {} as GroupedMessages)
     : {};
 
+  if (isUserLoading) return <div className="p-4 text-center">사용자 정보를 불러오는 중...</div>;
   if (!user) return <div className="p-4 text-center">로그인이 필요합니다.</div>;
-  if (isLoading) return <div className="p-4 text-center">로딩 중...</div>;
+  if (isLoading) return <div className="p-4 text-center">메시지를 불러오는 중...</div>;
   if (error) return <div className="p-4 text-center text-red-500">에러 발생: {(error as Error).message}</div>;
-
   return (
-    <div className="container mx-auto flex h-[calc(100vh-4rem)] flex-col p-4">
-      <h1 className="mb-2 text-center text-xl font-bold">쪽지함</h1>
+    <div className="container mx-auto flex h-[calc(100vh-4rem)] max-w-4xl flex-col p-4">
       <div className="flex flex-grow overflow-hidden rounded-lg border border-[#1FE476]">
         <div className="w-1/3 overflow-y-auto border-r border-[#1FE476]">
+          <div className="h-16 border-b border-[#1FE476]"></div>
           <ul>
             {Object.entries(groupedMessages).map(([userId, userMessages]) => (
               <li
                 key={userId}
                 className={`cursor-pointer p-4 hover:bg-gray-100 ${
                   selectedUser === userId ? "bg-[#1FE476] text-white" : ""
-                }`}
+                } border-b border-[#1FE476]`}
                 onClick={() => setSelectedUser(userId)}
               >
-                {userMessages[0].nickname}
+                <div className="font-bold">{userMessages[0].nickname}</div>
+                <div className="truncate text-sm text-gray-600">{userMessages[userMessages.length - 1].content}</div>
               </li>
             ))}
           </ul>
@@ -116,23 +128,47 @@ export default function MessagePage() {
         <div className="flex w-2/3 flex-col">
           {selectedUser && (
             <>
-              <div className="flex-grow overflow-y-auto p-3">
-                {groupedMessages[selectedUser].map((message) => (
-                  <div
-                    key={message.id}
-                    className={`mb-4 ${message.sender_id === user.id ? "text-right" : "text-left"}`}
-                  >
-                    <div
-                      className={`inline-block rounded-lg p-2 ${
-                        message.sender_id === user.id ? "bg-[#1FE476] text-white" : "bg-gray-200"
-                      }`}
-                    >
-                      <p className="text-sm">{message.content}</p>
-                      <p className="mt-1 text-xs text-gray-500">{new Date(message.created_at).toLocaleString()}</p>
+              <div className="flex h-16 flex-col justify-center border-b border-[#1FE476] bg-[#f0fff5] p-3">
+                <h1 className="text-lg font-bold">쪽지함</h1>
+                <span className="text-sm text-gray-500">매너있는 대화 부탁드립니다</span>
+              </div>
+              <div className="relative flex-grow overflow-y-auto">
+                <div className="sticky top-0 z-10 flex items-center border-b border-[#1FE476] bg-white bg-opacity-80 p-3">
+                  {groupedMessages[selectedUser][0].profile_img ? (
+                    <Image
+                      src={groupedMessages[selectedUser][0].profile_img}
+                      alt="Profile"
+                      width={40}
+                      height={40}
+                      className="mr-3 rounded-full"
+                    />
+                  ) : (
+                    <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#1FE476]">
+                      <span className="text-lg font-bold text-white">
+                        {groupedMessages[selectedUser][0].nickname.charAt(0).toUpperCase()}
+                      </span>
                     </div>
-                  </div>
-                ))}
-                <div ref={messageEndRef} />
+                  )}
+                  <span className="font-bold">{groupedMessages[selectedUser][0].nickname}</span>
+                </div>
+                <div className="p-3">
+                  {groupedMessages[selectedUser].map((message) => (
+                    <div
+                      key={message.id}
+                      className={`mb-4 ${message.sender_id === user.id ? "text-right" : "text-left"}`}
+                    >
+                      <div
+                        className={`inline-block rounded-lg p-2 ${
+                          message.sender_id === user.id ? "bg-[#1FE476] text-white" : "bg-gray-200"
+                        }`}
+                      >
+                        <p className="text-sm">{message.content}</p>
+                        <p className="mt-1 text-xs text-gray-500">{new Date(message.created_at).toLocaleString()}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <div ref={messageEndRef} />
+                </div>
               </div>
               <MessageForm receiverId={selectedUser} />
             </>
