@@ -25,7 +25,7 @@ const CreatePostPage = () => {
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const router = useRouter();
   const { user } = useAuthStore();
-  const user_id = user && user.id;
+  // const user_id = user && user.id;
 
   useEffect(() => {
     initPost(); // 이미지 초기화
@@ -78,13 +78,15 @@ const CreatePostPage = () => {
       const { data: postData, error: postError } = await supabase
         .from("posts")
         .insert({
-          user_id,
+          user_id: user.id,
           title,
           content,
           category,
           post_imageURL: imageUrls.join(",")
         })
         .select("*");
+
+      console.log("postData : ", postData);
 
       console.log("게시글이 성공적으로 저장되었습니다.");
       router.push("/community");
