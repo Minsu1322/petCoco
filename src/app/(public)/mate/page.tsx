@@ -1,20 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useAuthStore } from "@/zustand/useAuth";
 
 import Link from "next/link";
 import MatePostList from "./_components/post/matePostList";
 import PostListFilterTab from "./_components/postListFilterTab";
 import PostItemFilterTab from "./_components/postItemFilterTab";
-// import SearchBar from "./_components/searchBar";
-import FilterSelectChip from "./_components/filterSelectChip";
-import FilterDateChip from "./_components/filterDateChip";
-
-import { useAuthStore } from "@/zustand/useAuth";
 import NotLogInView from "./_components/notLogInView";
-import FilterWeightChip from "./_components/filterWeightChip";
-import { age, gender, male_female } from "./array";
 
 export type PositionData = {
   center: {
