@@ -1,4 +1,4 @@
-import { createClient } from "@/supabase/client";
+import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request: NextRequest, { params }: { params: { id: string } }) => {
@@ -7,12 +7,8 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
   const { searchParams } = request.nextUrl;
   const query = searchParams.get("query");
 
-
   try {
-    const { data, error } = await supabase
-      .from("matePosts")
-      .select()
-      .like('content', `%${query}%`);
+    const { data, error } = await supabase.from("matePosts").select().like("content", `%${query}%`);
 
     if (error) {
       console.error(error);

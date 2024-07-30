@@ -1,10 +1,11 @@
-"use client";
-
+"use client"
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { MessageForm } from "@/components/message/MessageForm";
 import { useAuthStore } from "@/zustand/useAuth";
-import { supabase } from "@/supabase/userClient";
+import { createClient } from "@/supabase/client";
+
+const supabase = createClient();
 
 interface Message {
   id: string;
@@ -60,7 +61,7 @@ export default function MessagePage() {
         .order("created_at", { ascending: true });
 
       if (error) throw error;
-      return data.map((message) => ({
+      return data.map((message: any) => ({
         ...message,
         sender_nickname: message.sender.nickname,
         receiver_nickname: message.receiver.nickname

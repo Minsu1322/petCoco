@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/supabase/client";
+import { createClient } from "@/supabase/server";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -39,7 +39,6 @@ export async function GET(request: Request) {
 
     const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
     console.log(data);
-
 
     if (error) {
       throw error;
