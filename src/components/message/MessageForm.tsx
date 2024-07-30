@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/zustand/useAuth";
-import { createClient } from "@/supabase/server";
+import { createClient } from "@/supabase/client";
 
 const supabase = createClient();
 
