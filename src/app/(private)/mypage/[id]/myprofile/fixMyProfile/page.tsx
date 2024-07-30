@@ -159,15 +159,15 @@ const FixMyProfile = () => {
   }
   return (
     <div
-      className="my-auto flex h-[700px] w-[500px] flex-col items-center justify-center rounded-[30px] bg-white"
+      className="my-auto flex flex-col items-center justify-center rounded-[30px] bg-white"
       onClick={(e) => e.stopPropagation()}
     >
       <h1 className="mt-5 text-2xl font-bold">프로필 수정</h1>
       <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
-        <img className="max-h-[200px] max-w-[200px] object-cover" src={previewImage} alt="profile_img" />
+        <img className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover" src={previewImage} alt="" />
         <br></br>
         <button
-          className="rounded border border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
+          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
           type={"button"}
           onClick={() => document.getElementById("fileInput")?.click()}
         >
@@ -182,14 +182,16 @@ const FixMyProfile = () => {
         defaultValue={user.nickname}
         onChange={handleNickNameChange}
       />
-      <select onChange={handleAgeChange} value={age}>
+      <br />
+      <select className="border border-[#D2D2D2]" onChange={handleAgeChange} value={age}>
         {ageOptions.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </select>
-      <div>
+      <br />
+      <div className="flex gap-[20px]">
         <input type="checkbox" name="gender" value="남" onChange={handleGenderChange} /> 남
         <br />
         <input type="checkbox" name="gender" value="여" onChange={handleGenderChange} /> 여
@@ -210,13 +212,13 @@ const FixMyProfile = () => {
       />
       <div className="mt-5 flex gap-[15px]">
         <button
-          className="rounded border border-[#C9C9C9] bg-[#D1D1D1] px-4 py-2 text-center font-bold text-white"
+          className="rounded border border-[#C9C9C9] bg-[#D1D1D1] px-4 py-2 text-center font-bold text-black"
           onClick={toMyProfile}
         >
           뒤로가기
         </button>
         <button
-          className="rounded border border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
+          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
           onClick={submitChange}
         >
           변경하기
