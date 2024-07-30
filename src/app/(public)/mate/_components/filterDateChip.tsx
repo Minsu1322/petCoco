@@ -11,14 +11,7 @@ const FilterDateChip = ({ label, onSelect, selected }: FilterDateChipProps) => {
     onSelect(e.target.value);
   };
   return (
-    // <DatePicker
-    //   label={label}
-    //   className="mt-5 w-full max-w-xs"
-    //   radius="full"
-    //   value={selected}
-    //   onChange={onSelect}
-    // />
-    <Input type="date" label={label} value={selected} onChange={handleChange} />
+    <Input type="date" label={label} value={selected}  radius="full" onChange={handleChange}  className="mt-5 w-full max-w-xs" />
   );
 };
 
