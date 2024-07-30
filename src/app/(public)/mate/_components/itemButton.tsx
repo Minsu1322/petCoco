@@ -4,12 +4,12 @@ interface ItemButtonProps {
   p_className?: string;
 }
 
-const ItemButton = ({text, className, p_className}: ItemButtonProps) => {
+const ItemButton = ({ text, className, p_className }: ItemButtonProps) => {
   return (
-    <div className={className}>
+    <button className={className}>
       <p className={p_className}>{text}</p>
-    </div>
-  )
-}
+    </button>
+  );
+};
 
-export default ItemButton
+export default ItemButton;
