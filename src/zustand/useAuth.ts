@@ -10,6 +10,7 @@ interface useAuth {
   passwordError: string | null;
   passwordValidateError: string | null;
   emailError: string | null;
+
   signUp: (
     credentials: Omit<
       UserInfoType,
@@ -138,7 +139,7 @@ export const useAuthStore = create<useAuth>((set, get) => ({
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/googleCallback`
+          redirectTo: `${window.location.origin}/GCallback`
         }
       });
 
@@ -155,7 +156,7 @@ export const useAuthStore = create<useAuth>((set, get) => ({
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "kakao",
         options: {
-          redirectTo: `${window.location.origin}/kakaoCallback`
+          redirectTo: `${window.location.origin}/KCallback`
         }
       });
 

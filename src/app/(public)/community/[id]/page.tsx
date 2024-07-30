@@ -17,7 +17,7 @@ interface Post {
 }
 
 const fetchPost = async (postId: string): Promise<Post> => {
-  const response = await fetch(`http://localhost:3000/api/detailCommunity?id=${postId}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/detailCommunity?id=${postId}`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

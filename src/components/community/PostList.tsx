@@ -71,13 +71,14 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
   }
   const sortedPosts = sortPosts(data?.data || [], selectedSort);
 
+  console.log(sortedPosts);
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-4 text-2xl font-bold">게시글 목록</h1>
 
       <div className="space-y-6">
         {sortedPosts.map((post) => (
-          <Link key={post.id} href={`http://localhost:3000/community/${post.id}`}>
+          <Link key={post.id} href={`${process.env.NEXT_PUBLIC_SITE_URL}/community/${post.id}`}>
             <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-[#1FE476] shadow-sm">
               <div className="flex flex-grow flex-col justify-between p-4">
                 <div>
@@ -92,9 +93,11 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
                   <p className="text-xs text-gray-500">댓글 {post.comments.length}개</p>
                 </div>
               </div>
-              <div className="h-[180px] w-[120px] flex-shrink-0">
-                {post.post_imageURL && (
-                  <img src={post.post_imageURL} alt="게시글 이미지" className="h-full w-full object-cover" />
+              <div className="flex">
+                {post.post_imageURL && post.post_imageURL.length && post.post_imageURL[0] && (
+                  <div className="h-[180px] w-[120px] flex-shrink-0">
+                    <img src={post.post_imageURL[0]} alt={`게시글 이미지 `} className="h-full w-full object-cover" />
+                  </div>
                 )}
               </div>
             </div>
