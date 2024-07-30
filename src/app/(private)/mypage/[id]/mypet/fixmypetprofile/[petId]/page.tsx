@@ -8,7 +8,7 @@ import { UsersPetType } from "@/types/auth.type";
 
 type PetType = UsersPetType;
 
-const addmypetprofile = () => {
+const fixmypetprofile = () => {
   const [petName, setPetNickName] = useState("");
   const [age, setAge] = useState("");
   const [majorClass, setMajorClass] = useState("");
@@ -21,6 +21,7 @@ const addmypetprofile = () => {
   const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
   const params = useParams();
   const id = params.id;
+  const petId = params.petId;
   const supabase = createClient();
   const queryClient = useQueryClient();
 
@@ -39,25 +40,6 @@ const addmypetprofile = () => {
   //   const { data: result } = await supabase.from("users").update({ profile_img: newImg }).eq("id", id);
   //   return result;
   // };
-
-  // const getProfileData = async () => {
-  //   const response = await fetch(`/api/mypage/${id}/myprofile`, {
-  //     method: "GET",
-  //     headers: { "Content-Type": "application/json" }
-  //   });
-  //   const data = response.json();
-
-  //   return data;
-  // };
-
-  // const {
-  //   data: user,
-  //   isPending,
-  //   isError
-  // } = useQuery({
-  //   queryKey: ["user"],
-  //   queryFn: getProfileData
-  // });
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
@@ -105,8 +87,8 @@ const addmypetprofile = () => {
     | "neutralized"
     | "introduction"
   >) => {
-    const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
-      method: "POST",
+    const response = await fetch(`/api/mypage/${petId}/mypetprofile`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         petName,
@@ -166,17 +148,45 @@ const addmypetprofile = () => {
       introduction: introduction
     });
 
-    alert("프로필 등록이 성공적으로 완료되었습니다!");
+    alert("프로필 변경이 성공적으로 완료되었습니다!");
 
     toMyPet();
   };
+
+  const getPetData = async () => {
+    const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = response.json();
+
+    return data;
+  };
+
+  const {
+    data: pet,
+    isPending,
+    isError
+  } = useQuery<UsersPetType[]>({
+    queryKey: ["pet"],
+    queryFn: getPetData
+  });
+  if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
+
+  if (isError) {
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  }
+
+  const filteredProfile = pet.filter((profile) => {
+    return profile.id === petId;
+  });
 
   return (
     <div
       className="my-auto flex flex-col items-center justify-center rounded-[30px] bg-white"
       onClick={(e) => e.stopPropagation()}
     >
-      <h1 className="mt-5 text-2xl font-bold">애완동물 추가하기</h1>
+      <h1 className="mt-5 text-2xl font-bold">팻 정보 변경하기</h1>
       <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
         <img className="max-h-[200px] max-w-[200px] object-cover" src={previewImage} alt="profile_img" />
         <br></br>
@@ -194,8 +204,8 @@ const addmypetprofile = () => {
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
-        placeholder="애완동물의 이름"
-        defaultValue={petName}
+        placeholder="변경할 이름"
+        defaultValue={filteredProfile[0].petName || ""}
         onChange={handlePetNameChange}
       />
       <br />
@@ -204,7 +214,7 @@ const addmypetprofile = () => {
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="개, 고양이, 물고기 등등"
-        defaultValue={majorClass}
+        defaultValue={filteredProfile[0].majorClass || ""}
         onChange={handleMajorClassChange}
       />
       <br />
@@ -213,7 +223,7 @@ const addmypetprofile = () => {
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="치와와, 랙돌, 금붕어 등등"
-        defaultValue={minorClass}
+        defaultValue={filteredProfile[0].minorClass || ""}
         onChange={handleMinorClassChange}
       />
       <br />
@@ -222,7 +232,7 @@ const addmypetprofile = () => {
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="나이"
-        defaultValue={age}
+        defaultValue={filteredProfile[0].age || ""}
         onChange={handleAgeChange}
       />
       <br />
@@ -240,7 +250,7 @@ const addmypetprofile = () => {
         className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="예방접종 및 기타 의료 기록"
-        defaultValue={medicalRecords}
+        defaultValue={filteredProfile[0].medicalRecords || ""}
         onChange={handleMedicalRecords}
       />
       <br />
@@ -249,7 +259,7 @@ const addmypetprofile = () => {
         className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="좋아하는 것, 싫어하는 것 등등"
-        defaultValue={introduction}
+        defaultValue={filteredProfile[0].introduction || ""}
         onChange={handleIntroductionChange}
       />
       <div className="mt-5 flex gap-[15px]">
@@ -270,4 +280,4 @@ const addmypetprofile = () => {
   );
 };
 
-export default addmypetprofile;
+export default fixmypetprofile;

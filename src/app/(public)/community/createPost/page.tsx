@@ -2,12 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { usePostStore } from "@/zustand/post";
 import { createClient } from "@/supabase/client";
+import Image from "next/image";
+import { useAuthStore } from "@/zustand/useAuth";
 
 const supabase = createClient();
 
+// 카테고리 옵션 정의
 const CATEGORIES = [
   { value: "자유게시판", label: "자유게시판" },
   { value: "희귀동물", label: "희귀동물" },
@@ -15,11 +18,21 @@ const CATEGORIES = [
   { value: "고민있어요", label: "고민있어요" }
 ];
 
+// Zustand store에서 필요한 상태와 함수들을 가져옵니다.
 const CreatePostPage = () => {
-  const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage } = usePostStore();
-
+  const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage, initPost } =
+    usePostStore();
+  const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const router = useRouter();
+  const { user } = useAuthStore();
+  // const user_id = user && user.id;
 
+  useEffect(() => {
+    initPost(); // 이미지 초기화
+    setUploadFiles([]); // 업로드 파일 초기화
+  }, []);
+
+  // 이미지 업로드 처리 함수
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     files.forEach((file) => {
@@ -29,27 +42,53 @@ const CreatePostPage = () => {
       }
       const reader = new FileReader();
       reader.onloadend = () => {
-        addImage(reader.result as string);
+        addImage(reader.result as string); // data URL 형태로 저장
+        setUploadFiles((prev) => [...prev, file]);
       };
       reader.readAsDataURL(file);
     });
   };
 
+  const handleImageRemove = (index: number) => {
+    removeImage(index);
+    setUploadFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // 폼 제출 처리 함수
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const { data, error } = await supabase.from("posts").insert({
-        user_id: "4ee5538f-4e1c-4ffc-83eb-a7d43e63ad8d",
-        title,
-        content,
-        category
-      });
+      // 이미지 업로드 및 URL 저장
+      const imageUrls: string[] = [];
+      for (const image of uploadFiles) {
+        // 0123456
+        // aaa.png
+        // bbb.png
+        const ext = image.name.substring(image.name.lastIndexOf(".") + 1);
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
+        const { error: uploadError } = await supabase.storage.from("post_image").upload(fileName, image);
+        if (uploadError) throw uploadError;
+        const { data: urlData } = supabase.storage.from("post_image").getPublicUrl(fileName);
+        imageUrls.push(urlData.publicUrl);
+      }
 
-      if (error) throw error;
+      // arr.join(',') : [aaa.png, bbb.png, ccc.png] -> "aaa.png,bbb.png,ccc.png"
+      // arr.split(',') : "aaa.png,bbb.png,ccc.png" -> [aaa.png, bbb.png, ccc.png]
+      const { data: postData, error: postError } = await supabase
+        .from("posts")
+        .insert({
+          user_id: user.id,
+          title,
+          content,
+          category,
+          post_imageURL: imageUrls.join(",")
+        })
+        .select("*");
 
-      console.log("게시글이 성공적으로 저장되었습니다:", data);
+      console.log("postData : ", postData);
 
+      console.log("게시글이 성공적으로 저장되었습니다.");
       router.push("/community");
     } catch (error) {
       console.error("게시글 저장 중 오류 발생:", error);
@@ -60,6 +99,7 @@ const CreatePostPage = () => {
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl p-4">
       <h1 className="mb-4 text-2xl font-bold">글 작성하기</h1>
+      {/* 카테고리 선택 UI */}
       <div className="mb-4">
         <label htmlFor="category" className="mb-2 block font-semibold">
           카테고리 선택
@@ -78,6 +118,7 @@ const CreatePostPage = () => {
           ))}
         </div>
       </div>
+      {/* 제목 입력 필드 */}
       <div className="mb-4">
         <label htmlFor="title" className="mb-2 block font-semibold">
           제목
@@ -91,6 +132,7 @@ const CreatePostPage = () => {
           required
         />
       </div>
+      {/* 내용 입력 필드 */}
       <div className="mb-4">
         <label htmlFor="content" className="mb-2 block font-semibold">
           내용
@@ -103,6 +145,7 @@ const CreatePostPage = () => {
           required
         ></textarea>
       </div>
+      {/* 이미지 업로드 UI */}
       <div className="mb-4">
         <label htmlFor="images" className="mb-2 block font-semibold">
           이미지 첨부
@@ -111,9 +154,11 @@ const CreatePostPage = () => {
         <div className="mt-2 flex flex-wrap gap-2">
           {images.map((image, index) => (
             <div key={index} className="relative">
-              <img
+              <Image
                 src={image}
                 alt={`attachment-${index}`}
+                width={96}
+                height={96}
                 className={`h-24 w-24 rounded object-cover ${index === 0 ? "border-4 border-blue-500" : ""}`}
               />
               {index === 0 && (
@@ -123,7 +168,7 @@ const CreatePostPage = () => {
               )}
               <button
                 type="button"
-                onClick={() => removeImage(index)}
+                onClick={() => handleImageRemove(index)}
                 className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-sm text-white"
               >
                 x
@@ -132,12 +177,14 @@ const CreatePostPage = () => {
           ))}
         </div>
       </div>
+      {/* 제출 버튼 */}
       <button
         type="submit"
         className="mb-4 w-full rounded bg-blue-500 p-2 font-semibold text-white transition-colors hover:bg-blue-600"
       >
         작성완료
       </button>
+      {/* 뒤로가기 링크 */}
       <Link
         href="/community"
         className="block w-full rounded bg-gray-500 p-2 text-center font-semibold text-white transition-colors hover:bg-gray-600"
