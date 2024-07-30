@@ -27,20 +27,25 @@ export const GET = async (request: NextRequest) => {
     if (search) {
       query = query.ilike("content", `%${search}%`);
     }
-
+// 
     if (isCurrentPosts === "true") {
       query = query.eq("recruiting", true);
     }
 
-    if (filter.gender) {
-      query.eq("users.gender", filter.gender);
+    if (filter.gender && filter.gender !== "전체") {
+      query = query.eq("users.gender", filter.gender);
     }
 
-    if (filter.age) {
-      query.eq("users.age", filter.age);
+    if (filter.age && filter.age !== "전체") {
+    query = query.eq("users.age", filter.age);
     }
 
-    if (filter.male_female) {
+    if(filter.date_time) {
+      query = query.ilike('date_time', `%${filter.date_time}%`);
+      // console.log(filter.date_time);
+    }
+
+    if (filter.male_female && filter.male_female !== "전체") {
       query.eq("matePostPets.male_female", filter.male_female);
     }
 
@@ -48,9 +53,8 @@ export const GET = async (request: NextRequest) => {
     query.not("matePostPets", "is", null);
 
     const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
-    console.log(data);
-    // .limit(10);
-    // console.log(data)
+    // console.log(data);
+
     if (error) {
       console.error(error);
       return NextResponse.json({ error: error.message }, { status: 500 });
