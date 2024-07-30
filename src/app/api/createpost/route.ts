@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/supabase/client";
+import { createClient } from "@/supabase/server";
 
 export async function POST(request: Request) {
   const supabase = createClient();
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
 export function OPTIONS() {
   const headers = {
-    Allow: "POST, OPTIONS",
+    Allow: "POST, OPTIONS"
   };
   return NextResponse.json(null, { headers });
 }

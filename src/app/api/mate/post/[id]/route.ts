@@ -1,4 +1,4 @@
-import { createClient } from "@/supabase/client";
+import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request: NextRequest, { params }: { params: { id: string } }) => {
@@ -9,7 +9,7 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
     const { data, error } = await supabase
       .from("matePosts")
       .select("*,users(nickname),matePostPets(*)")
-      .eq('id', id)
+      .eq("id", id)
       .single();
 
     if (error) {
@@ -30,7 +30,7 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
 
 //   const newPost = await request.json();
 //   console.log(newPost);
-  
+
 //   try {
 //     const { data, error } = await supabase
 //       .from("matePosts")
@@ -56,10 +56,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   const updatePost = await request.json();
 
   try {
-    const { data, error } = await supabase
-      .from("matePosts")
-      .update(updatePost)
-      .eq('id', id);
+    const { data, error } = await supabase.from("matePosts").update(updatePost).eq("id", id);
 
     if (error) {
       console.error(error);
@@ -78,10 +75,7 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
   const { id } = params;
 
   try {
-    const { data, error } = await supabase
-      .from("matePosts")
-      .delete()
-      .eq('id', id);
+    const { data, error } = await supabase.from("matePosts").delete().eq("id", id);
 
     if (error) {
       console.error(error);

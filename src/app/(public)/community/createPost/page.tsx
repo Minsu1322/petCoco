@@ -4,7 +4,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import React from "react";
 import { usePostStore } from "@/zustand/post";
-import { supabase } from "@/supabase/userClient";
+import { createClient } from "@/supabase/client";
+
+const supabase = createClient();
 
 const CATEGORIES = [
   { value: "자유게시판", label: "자유게시판" },
