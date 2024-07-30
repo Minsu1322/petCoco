@@ -33,6 +33,8 @@ export default function MessagePage() {
   const { user, setUser } = useAuthStore();
   const messageEndRef = useRef<HTMLDivElement>(null);
 
+  const [isUserLoading, setIsUserLoading] = useState(true);
+
   useEffect(() => {
     const checkUser = async () => {
       const {
@@ -41,6 +43,7 @@ export default function MessagePage() {
       if (user) {
         setUser(user);
       }
+      setIsUserLoading(false);
     };
     checkUser();
   }, [setUser]);
@@ -52,7 +55,7 @@ export default function MessagePage() {
   } = useQuery({
     queryKey: ["messages", user?.id],
     queryFn: async () => {
-      if (!user) throw new Error("User not authenticated");
+      if (!user) return []; // 사용자가 없으면 빈 배열 반환
       const { data, error } = await supabase
         .from("messages")
         .select(
@@ -72,20 +75,16 @@ export default function MessagePage() {
         receiver_nickname: message.receiver.nickname
       }));
     },
-    enabled: !!user
+    enabled: !!user && !isUserLoading
   });
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const scrollToBottom = () => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   useEffect(() => {
     if (messages && selectedUser) {
-      scrollToBottom();
+      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, selectedUser]);
 
@@ -102,10 +101,10 @@ export default function MessagePage() {
       }, {} as GroupedMessages)
     : {};
 
+  if (isUserLoading) return <div className="p-4 text-center">사용자 정보를 불러오는 중...</div>;
   if (!user) return <div className="p-4 text-center">로그인이 필요합니다.</div>;
-  if (isLoading) return <div className="p-4 text-center">로딩 중...</div>;
+  if (isLoading) return <div className="p-4 text-center">메시지를 불러오는 중...</div>;
   if (error) return <div className="p-4 text-center text-red-500">에러 발생: {(error as Error).message}</div>;
-
   return (
     <div className="container mx-auto flex h-[calc(100vh-4rem)] max-w-4xl flex-col p-4">
       <div className="flex flex-grow overflow-hidden rounded-lg border border-[#1FE476]">
