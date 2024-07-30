@@ -17,7 +17,7 @@ const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_component
 
 const PostForm = () => {
   const { user } = useAuthStore();
-  const userId: string = user?.id;
+  const userId: string = user && user.id;
   const queryClient = useQueryClient();
   const router = useRouter();
   const { position, setPosition } = locationStore();
@@ -39,7 +39,7 @@ const PostForm = () => {
   const initialPetState: Pets = {
     male_female: "",
     neutered: null,
-    weight: "",
+    weight: null,
     characteristics: "",
     age: ""
   };
@@ -121,9 +121,12 @@ const PostForm = () => {
         ...formPosts,
         address,
         position,
-        user_id: userId // 포스트 데이터에 userId 포함
+        user_id: userId
       },
-      pets: formPets
+      pets: formPets.map((pet) => ({
+        ...pet,
+        weight: pet.weight === null ? null : Number(pet.weight)
+      }))
     };
 
     // console.log("formAllData 확인", formAllData);
@@ -245,7 +248,7 @@ const PostForm = () => {
                   {
                     male_female: "",
                     neutered: null,
-                    weight: "",
+                    weight: null,
                     characteristics: "",
                     age: ""
                   }
@@ -326,17 +329,17 @@ const PostForm = () => {
                   <div className="flex flex-row gap-x-2">
                     <p>무게 :</p>
                     <input
-                      type="text"
+                      type="number"
+                      step="0.1"
                       className="border"
-                      name="age"
-                      value={pet.weight || ""}
+                      name="weight"
+                      value={pet.weight === null ? "" : pet.weight}
                       onChange={(e) => {
                         const newPets = [...formPets];
-                        newPets[index].weight = e.target.value;
+                        newPets[index].weight = (e.target.value === "") ? null : Number(e.target.value);
                         setFormPets(newPets);
                       }}
-                    />{" "}
-                    kg
+                    />
                   </div>
                   <div className="flex flex-row gap-x-2">
                     <p>성격 및 특징 :</p>
