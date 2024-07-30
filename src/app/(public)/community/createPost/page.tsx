@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { usePostStore } from "@/zustand/post";
 import { createClient } from "@/supabase/client";
 import Image from "next/image";
+import { useAuthStore } from "@/zustand/useAuth";
 
 const supabase = createClient();
 
@@ -23,6 +24,8 @@ const CreatePostPage = () => {
     usePostStore();
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const router = useRouter();
+  const { user } = useAuthStore();
+  const user_id = user && user.id;
 
   useEffect(() => {
     initPost(); // 이미지 초기화
@@ -75,7 +78,7 @@ const CreatePostPage = () => {
       const { data: postData, error: postError } = await supabase
         .from("posts")
         .insert({
-          user_id: "4ee5538f-4e1c-4ffc-83eb-a7d43e63ad8d", // 실제 사용자 ID로 교체 필요
+          user_id,
           title,
           content,
           category,
