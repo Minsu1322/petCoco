@@ -41,7 +41,7 @@ export type MatePostPetType = {
 export type Pets = {
   male_female: string;
   neutered: null | boolean;
-  weight: string;
+  weight: number | null;
   characteristics: string;
   age: string;
 };
