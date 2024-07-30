@@ -10,6 +10,7 @@ interface useAuth {
   passwordError: string | null;
   passwordValidateError: string | null;
   emailError: string | null;
+
   signUp: (
     credentials: Omit<
       UserInfoType,

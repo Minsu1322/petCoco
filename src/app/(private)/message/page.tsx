@@ -1,10 +1,10 @@
 "use client";
-
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { MessageForm } from "@/components/message/MessageForm";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
+import { useSearchParams } from "next/navigation";
 
 const supabase = createClient();
 
@@ -25,7 +25,9 @@ interface GroupedMessages {
 }
 
 export default function MessagePage() {
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const initialSelectedUser = searchParams.get("selectedUser");
+  const [selectedUser, setSelectedUser] = useState<string | null>(initialSelectedUser);
   const { user, setUser } = useAuthStore();
   const messageEndRef = useRef<HTMLDivElement>(null);
 
@@ -93,8 +95,8 @@ export default function MessagePage() {
   if (error) return <div className="p-4 text-center text-red-500">에러 발생: {(error as Error).message}</div>;
 
   return (
-    <div className="container mx-auto flex h-screen flex-col p-4">
-      <h1 className="mb-4 text-center text-2xl font-bold">쪽지함</h1>
+    <div className="container mx-auto flex h-[calc(100vh-4rem)] flex-col p-4">
+      <h1 className="mb-2 text-center text-xl font-bold">쪽지함</h1>
       <div className="flex flex-grow overflow-hidden rounded-lg border border-[#1FE476]">
         <div className="w-1/3 overflow-y-auto border-r border-[#1FE476]">
           <ul>
@@ -114,7 +116,7 @@ export default function MessagePage() {
         <div className="flex w-2/3 flex-col">
           {selectedUser && (
             <>
-              <div className="flex-grow overflow-y-auto p-4">
+              <div className="flex-grow overflow-y-auto p-3">
                 {groupedMessages[selectedUser].map((message) => (
                   <div
                     key={message.id}
@@ -125,7 +127,7 @@ export default function MessagePage() {
                         message.sender_id === user.id ? "bg-[#1FE476] text-white" : "bg-gray-200"
                       }`}
                     >
-                      <p>{message.content}</p>
+                      <p className="text-sm">{message.content}</p>
                       <p className="mt-1 text-xs text-gray-500">{new Date(message.created_at).toLocaleString()}</p>
                     </div>
                   </div>
