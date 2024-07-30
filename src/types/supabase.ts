@@ -269,6 +269,59 @@ export type Database = {
           },
         ]
       }
+      usersPet: {
+        Row: {
+          age: string | null
+          created_at: string
+          id: string
+          introduction: string | null
+          majorClass: string | null
+          male_female: string | null
+          medicalRecords: string | null
+          minorClass: string | null
+          neutralized: string | null
+          petImage: string | null
+          petName: string | null
+          users_id: string
+        }
+        Insert: {
+          age?: string | null
+          created_at?: string
+          id?: string
+          introduction?: string | null
+          majorClass?: string | null
+          male_female?: string | null
+          medicalRecords?: string | null
+          minorClass?: string | null
+          neutralized?: string | null
+          petImage?: string | null
+          petName?: string | null
+          users_id?: string
+        }
+        Update: {
+          age?: string | null
+          created_at?: string
+          id?: string
+          introduction?: string | null
+          majorClass?: string | null
+          male_female?: string | null
+          medicalRecords?: string | null
+          minorClass?: string | null
+          neutralized?: string | null
+          petImage?: string | null
+          petName?: string | null
+          users_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "usersPet_users_id_fkey"
+            columns: ["users_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

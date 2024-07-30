@@ -36,23 +36,32 @@ const MyProfile = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="my-auto flex flex-col items-center justify-center px-[15px] lg:px-0">
-        <img className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover" src={user.profile_img} alt="" />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">닉네임:{user.nickname}</span>
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">{user.age}</span>
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">성별:{user.gender}</span>
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">MBTI:{user.mbti}</span>
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">자기소개:{user.introduction}</span>
+      <img
+        className="h-[170px] w-[170px] items-center justify-center rounded-full bg-lime-300 object-cover"
+        src={user.profile_img}
+        alt=""
+      />
+      <div className="my-auto flex flex-col items-start justify-center rounded-lg px-[15px] lg:px-0">
+        <br />
+        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">닉네임: {user.nickname}</span>
+        <br />
+        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">연령대: {user.age}</span>
+        <br />
+        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">성별: {user.gender}</span>
+        <br />
+        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">MBTI: {user.mbti}</span>
+        <br />
+        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">자기소개: {user.introduction}</span>
 
         <div className="mt-5 flex gap-[15px]">
           <Link
-            className="rounded border border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
+            className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
             href={`/mypage/${user.id}`}
           >
             뒤로가기
           </Link>
           <Link
-            className="rounded border border-[#00BBF7] bg-[#24CAFF] px-4 py-2 text-center font-bold text-white"
+            className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
             href={`/mypage/${user.id}/myprofile/fixMyProfile`}
           >
             변경하기
