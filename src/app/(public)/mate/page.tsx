@@ -35,7 +35,6 @@ const MatePage = () => {
   });
 
   const updateFilter = (filterName: string, value: string) => {
-    // console.log(value);
     setFilters((prevFilters) => ({
       ...prevFilters,
       [filterName]: value
@@ -113,10 +112,7 @@ const MatePage = () => {
           </div>
           <PostItemFilterTab updateFilter={updateFilter} filters={filters} />
           <div className="mt-5 flex">
-            <div
-              className="mb-4 h-10 w-full cursor-pointer items-center rounded-lg bg-gray-300 p-2 text-center"
-              // onClick={handleResetFilter}
-            >
+            <div className="mb-4 h-10 w-full cursor-pointer items-center rounded-lg bg-gray-300 p-2 text-center">
               초기화
             </div>
           </div>

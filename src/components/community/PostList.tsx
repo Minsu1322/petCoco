@@ -92,10 +92,17 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
                   <p className="text-xs text-gray-500">댓글 {post.comments.length}개</p>
                 </div>
               </div>
-              <div className="h-[180px] w-[120px] flex-shrink-0">
-                {post.post_imageURL && (
-                  <img src={post.post_imageURL} alt="게시글 이미지" className="h-full w-full object-cover" />
-                )}
+              <div className="flex">
+                {post.post_imageURL &&
+                  post.post_imageURL.split(",").map((imageURL: any, index: any) => (
+                    <div key={index} className="h-[180px] w-[120px] flex-shrink-0">
+                      <img
+                        src={imageURL.trim()}
+                        alt={`게시글 이미지 ${index + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ))}
               </div>
             </div>
           </Link>
