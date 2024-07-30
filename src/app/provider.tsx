@@ -16,7 +16,7 @@ const QueryProvider = ({ children }: React.PropsWithChildren) => {
         <SocketProvider>
           <QueryClientProvider client={queryClient}>
             {children}
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           </QueryClientProvider>
         </SocketProvider>
       </NextAuthProvider>
