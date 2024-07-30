@@ -71,6 +71,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
   }
   const sortedPosts = sortPosts(data?.data || [], selectedSort);
 
+  console.log(sortedPosts);
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-4 text-2xl font-bold">게시글 목록</h1>
@@ -92,9 +93,11 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
                   <p className="text-xs text-gray-500">댓글 {post.comments.length}개</p>
                 </div>
               </div>
-              <div className="h-[180px] w-[120px] flex-shrink-0">
-                {post.post_imageURL && (
-                  <img src={post.post_imageURL} alt="게시글 이미지" className="h-full w-full object-cover" />
+              <div className="flex">
+                {post.post_imageURL && post.post_imageURL.length && post.post_imageURL[0] && (
+                  <div className="h-[180px] w-[120px] flex-shrink-0">
+                    <img src={post.post_imageURL[0]} alt={`게시글 이미지 `} className="h-full w-full object-cover" />
+                  </div>
                 )}
               </div>
             </div>
