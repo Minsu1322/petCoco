@@ -32,9 +32,9 @@ const MatePost = ({ params }: { params: { id: string } }) => {
   }
   //console.log(post);
 
-  return (<div>
+  return (<>
     <DetailMatePost post={post} />
-  </div>);
+  </>);
 };
 
 export default MatePost;

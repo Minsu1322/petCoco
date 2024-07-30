@@ -5,6 +5,7 @@ import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getConvertAddress } from "../../getConvertAddress";
@@ -221,12 +222,12 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   // }, []);
 
   return (
-    <div className="px-5 pb-5">
-      <Link href="/mate">
+    <div className="container mx-auto pb-5">
+      {/* <Link href="/mate">
         <div className="flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1">
           뒤로가기
         </div>
-      </Link>
+      </Link> */}
       {isEditing ? (
         <form onSubmit={handleUpdatePost} className="flex flex-col">
           <div className="flex flex-col">
@@ -347,18 +348,54 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           </div>
         </form>
       ) : (
-        <div className="mt-3">
-          <p>{post.title}</p>
-          <div className="flex w-4/12 flex-row justify-between">
-            <p>{post.content}</p>
-            <p>🌱 메이트 {post.users?.nickname}</p>
+        <div className="mt-10">
+          <div className="flex flex-row justify-between items-center mb-5">
+          <p className="text-2xl font-semibold">{post.title}</p>
+          {userId === post.user_id && (
+            <div className="flex flex-row gap-x-5">
+              <button
+                className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
+                onClick={() => handleDeletePost(post.id)}
+              >
+                삭제
+              </button>
+              <button
+                className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
+                onClick={handleEditPost}
+              >
+                수정
+              </button>
+              <button
+                className="flex h-8  cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
+                onClick={() => handleTogglePost(post.id)}
+              >
+                모집상태 변경
+              </button>
+            </div>
+          )}
           </div>
-          <br />
-          <p>모집인원 수 : {post.members}명</p>
+          <div className="flex flex-col gap-y-5">
+          <div className="flex flex-row gap-x-3 items-center">
+          <div>
+          <Image
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU"
+            alt="사용자 프로필 이미지"
+            width={50}
+            height={50}
+          />
+        </div>
+            <div className="flex flex-col gap-y-2 text-gray-400">
+            <p>{post.users?.nickname}</p>
+            <p>{new Date(post.created_at).toLocaleString()}</p>
+            </div>
+          </div>
+
+          <div className="flex flex-row justify-between w-4/6">
           <p>
             모집기간 : {post.recruitment_period?.split("T")[0]} {getConvertTime({ date_time: post.recruitment_period || "" })} 까지
           </p>
-          <p className="mt-5 text-xl font-semibold">산책 관련 정보 🐾 </p>
+          <p>모집 인원 수 : {post.members}명</p>
+          </div>
           <p>산책 장소 : {post.place_name}</p>
           <p>산책 날짜 : {post.date_time?.split("T")[0]}</p>
           <p>산책 시간 : {getConvertTime({ date_time: post.date_time || "" })}</p>
@@ -369,9 +406,14 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 lng: Number(post.position?.center?.lng)
               }}
             />
-          </div>
+          </div> 
+          <div className="flex flex-row items-center gap-x-2"><p>선호하는 산책 루트 : </p>{post.preferred_route}</div>
+          <div className="flex flex-row items-center gap-x-2"><p>특별한 요구 사항 : </p>{post.special_requirements}</div>
+          <div className="flex flex-row items-center gap-x-2">
+            <p>내용 : </p>
+            {post.content}</div>
           <div className="mt-5">
-            <p className="text-xl font-semibold">반려동물 정보 🐶</p>
+            <p className="text-xl font-semibold mb-5">반려동물 정보 🐶</p>
             <div className="flex flex-row gap-x-3">
               {post.matePostPets.map((pet) => (
                 <div className="w-48 rounded-md bg-gray-100 p-2" key={pet.id}>
@@ -384,31 +426,11 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               ))}
             </div>
           </div>
-          {userId === post.user_id && (
-            <div className="mt-5 flex flex-row gap-10">
-              <button
-                className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-                onClick={() => handleDeletePost(post.id)}
-              >
-                삭제
-              </button>
-              <button
-                className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-                onClick={handleEditPost}
-              >
-                수정
-              </button>
-              <button
-                className="mt-3 flex h-10 w-28 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-                onClick={() => handleTogglePost(post.id)}
-              >
-                모집상태 변경
-              </button>
-            </div>
-          )}
+          </div>
         </div>
       )}
-    </div>
+    
+          </div>
   );
 };
 

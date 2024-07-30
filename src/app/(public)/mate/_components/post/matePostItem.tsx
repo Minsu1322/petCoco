@@ -81,67 +81,50 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   return (
-    <>
-      <div className="mb-5 mr-2 flex flex-col rounded-xl bg-gray-200 p-5">
-        <Link href={`/mate/posts/${post.id}`}>
-          <div className="flex flex-row gap-x-5">
-            <div className="ml-1">
-              <Image
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU"
-                alt="사용자 프로필 이미지"
-                width={125}
-                height={125}
-              />
-              {/* users 이미지 구현되면, users의 profileUrl 받아와야 함 */}
-            </div>
-            <div className="w-full">
-              <div className="flex flex-col justify-between">
-                <div className="mb-1 flex flex-row gap-x-2">
-                  <ItemButton
-                    text={`${Array.isArray(post.matePostPets) ? ` ${post.matePostPets.length} 마리` : ""}`}
-                    className="flex h-7 w-20 items-center justify-center rounded-full bg-white"
-                  />
-                  <ItemButton
-                    text={post.users?.mbti}
-                    className="flex h-7 w-20 items-center justify-center rounded-full bg-white px-2"
-                    p_className="w-17 overflow-hidden overflow-ellipsis whitespace-nowrap"
-                  />
-                  <ItemButton
-                    text={Number(post.members) > 1 ? "다인원 산책" : "소인원 산책"}
-                    className="flex h-7 w-24 items-center justify-center rounded-full bg-white"
-                  />
-                </div>
-                <div className="mt-1">
-                  {distance !== null ? (
-                    <p className="text-gray-700">🎡 현재 위치에서의 거리: {distance} km</p>
-                  ) : (
-                    <p></p>
-                  )}
-                  <p className="w-52 overflow-hidden overflow-ellipsis whitespace-nowrap">
-                    {`${extractDong(post.address || "")}, ${post.place_name || ""}`}
-                  </p>
-                </div>
-              </div>
-              {/* <p>{post.content}</p> */}
+    <div className="mb-5 rounded-xl border border-gray-300 p-5">
+      <div className="mb-3 flex w-5/6 items-center justify-between">
+        <div className="flex gap-x-2">
+          <ItemButton
+            text={post.recruiting ? "모집 중" : "모집 완료"}
+            className={`${post.recruiting ? "bg-mainColor" : "bg-gray-300"} w-24 rounded-full px-4 py-2`}
+          />
+          <button
+            className="flex h-11 w-24 items-center justify-center rounded-full border border-gray-400 p-3 text-center"
+            onClick={startChat}
+          >
+            1:1 대화
+          </button>
+        </div>
+        {distance !== null && <p className="mr-5 text-gray-500">현위치에서 {distance}km 거리</p>}
+      </div>
+
+      <Link href={`/mate/posts/${post.id}`} className="ml-3 mt-5 flex">
+        <div className="flex-grow pr-5">
+          <p className="mb-3 text-xl font-semibold">{post.title}</p>
+          <p className="mb-3 h-24 overflow-hidden overflow-ellipsis whitespace-nowrap">{post.content}</p>
+          <div className="mt-3 flex flex-row justify-between">
+            <p>{post && post.users.nickname}</p>
+            <div className="flex flex-row gap-x-5">
+            <p className="w-28 overflow-hidden text-ellipsis whitespace-nowrap text-end">
+                {`${extractDong(post.address || "")}, ${post.place_name || ""}`}
+              </p>
               <p>
                 {post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })}
               </p>
               <p>{post.members}명 모집</p>
             </div>
           </div>
-        </Link>
-
-        <div className="mt-2 flex flex-row justify-end gap-x-3">
-          <ItemButton
-            text={post.recruiting ? "모집 중" : "모집 완료"}
-            className="w-24 rounded-full bg-white p-3 text-center"
-          />
-          <button className="w-24 rounded-full bg-white p-3 text-center" onClick={startChat}>
-            1:1 대화
-          </button>
         </div>
-      </div>
-    </>
+        <div>
+          <Image
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU"
+            alt="사용자 프로필 이미지"
+            width={140}
+            height={140}
+          />
+        </div>
+      </Link>
+    </div>
   );
 };
 

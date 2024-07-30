@@ -33,6 +33,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
   const { setIsUseGeo, setGeoData } = locationStore();
   const [page, setPage] = useState(1);
 
+
   const { data, isPending, error } = useQuery<PostsResponse>({
     queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, filters],
     queryFn: async () => {
@@ -40,8 +41,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
       const getValidFilters = Object.fromEntries(
         Object.entries(filters).filter(([_, value]) => value !== null && value !== "" && value !== undefined)
       );
-      //console.log(getValidFilters);
-      // const filtersString = encodeURIComponent(JSON.stringify(getValidFilters));
+
       let query = "";
       query = Object.keys(getValidFilters)
         .map((key) => {
@@ -51,10 +51,10 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         .join("&");
 
       const response = await fetch(
-        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=4&search=${activeSearchTerm}&${query}`
+        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=3&search=${activeSearchTerm}&sort=${sortBy}&${query}`
       );
       const data = response.json();
-      //console.log(data);
+      console.log(data);
       return data;
     }
   });
@@ -142,8 +142,8 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
     return (
       <div className="flex h-full items-center justify-center">
         <div className="flex flex-col items-center">
-          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-green-500"></div>
-          <p className="text-lg font-semibold text-green-600">로딩 중...</p>
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-blue-500"></div>
+          <p className="text-lg font-semibold text-blue-600">로딩 중...</p>
         </div>
       </div>
     );
@@ -151,7 +151,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
   return (
     <div>
-      <div className="ml-1 mt-5 grid grid-cols-2">
+      <div className="ml-1 mt-5 flex flex-col">
         {sortedPosts.length > 0 ? (
           sortedPosts.map((post) => <MatePostItem key={post.id} post={post} />)
         ) : (
@@ -168,12 +168,10 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         >
           이전
         </button>
-
         <span className="px-4 py-2">
-          페이지 {page} / {data?.totalPages}
+        페이지 {!data || data.data.length === 0 ? "0" : `${page}`} / {data?.totalPages ?? "0"}
         </span>
-
-        <button
+        <button 
           onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
           disabled={data?.totalPages !== undefined && page === data.totalPages}
           className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-mainColor"

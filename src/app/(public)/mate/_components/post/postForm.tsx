@@ -142,102 +142,108 @@ const PostForm = () => {
     }
   };
   return (
-    <div>
-      <Link href="/mate">
-        <div
-          className="mt-3 flex h-10 w-20 cursor-pointer items-center justify-center rounded-md bg-mainColor p-1"
-          onClick={() =>
-            setPosition({
-              center: { lat: 37.5556236021213, lng: 126.992199507869 },
-              errMsg: null,
-              isLoading: true
-            })
-          }
-        >
-          뒤로가기
-        </div>
-      </Link>
-      <h1>산책 메이트 구하기 🐾</h1>
+    <div className="container mx-auto mb-5 mt-10">
+      <div className="mb-5 flex flex-row items-center justify-between">
+        <h1 className="text-2xl font-semibold">산책 메이트 모집 글 작성하기</h1>
+        <button type="submit" className="mt-3 h-10 w-20 rounded-md bg-mainColor p-1">
+          작성완료
+        </button>
+      </div>
       <form onSubmit={handleUploadPost} className="flex flex-col">
-        <div className="flex flex-col">
-          <input
-            type="text"
-            value={formPosts.title || ""}
-            onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
-            placeholder=" 제목을 입력해 주세요"
-            className="w-[300px] rounded-md border border-gray-300"
-          />
-          <div>
-            <DynamicMapComponent center={{ lat: 37.5556236021213, lng: 126.992199507869 }} />
-            <p>클릭한 곳의 주소는? {roadAddress}</p>
+        <div className="flex flex-col gap-y-5">
+          <div className="flex flex-row items-center gap-x-3 ">
+            <label htmlFor="title">제목</label>
+            <input
+              type="text"
+              value={formPosts.title || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
+              placeholder=" 제목을 입력해 주세요"
+              className="h-10 w-3/6  rounded-md border border-gray-300"
+              id="title"
+            />
           </div>
-          <div className="mt-5">
-            <p>🔍 메이트 모집 정보</p>
-            <div className="flex flex-row gap-x-4">
-              <label htmlFor="date_time">산책 날짜 및 시간</label>
-              <input
-                type="datetime-local"
-                id="date_time"
-                value={formPosts.date_time || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
-              />
-            </div>
-            <div className="flex flex-row gap-x-2">
-              <p>모집인원 수 :</p>
+          <div className="flex flex-row gap-x-4">
+            <label htmlFor="date_time">희망 날짜 및 시간</label>
+            <input
+              type="datetime-local"
+              id="date_time"
+              value={formPosts.date_time || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
+            />
+          </div>
+          <div className="flex flex-row w-3/6 justify-between">
+          <div className="flex flex-row gap-x-2">
+            <label htmlFor="recruitment_period">모집기간</label>
+            <input
+              type="datetime-local"
+              id="recruitment_period"
+              value={formPosts.recruitment_period || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, recruitment_period: e.target.value })}
+            />
+          </div>
+          <div className="flex flex-row items-center gap-x-2">
+            <label htmlFor="members">모집 인원 수</label>
+            <input
+              type="text"
+              id="members"
+              className="h-10 rounded-md border border-gray-300"
+              value={formPosts.members || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
+            />
+            명
+          </div>
+          </div>
+          <div className="flex flex-row gap-x-3 w-4/6">
+            <label>산책 장소</label>
+            <div>
+              <div className="mt-1">
+                <DynamicMapComponent center={{ lat: 37.5556236021213, lng: 126.992199507869 }} />
+                <p className="my-2">클릭한 곳의 주소는? {roadAddress}</p>
+              </div>
               <input
                 type="text"
-                className="border"
-                value={formPosts.members || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
-              />
-              명
-            </div>
-            <div className="flex flex-row gap-x-2">
-              <p>모집기간 :</p>
-              <input
-                type="datetime-local"
-                id="recruitment_period"
-                value={formPosts.recruitment_period || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, recruitment_period: e.target.value })}
-              />
-            </div>
-            <div className="flex flex-row gap-x-2">
-              <p>산책 장소</p>
-              <input
-                type="text"
-                className="border"
+                className="h-10 w-5/6 rounded-md border border-gray-300"
                 value={formPosts.place_name || ""}
                 onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
+                placeholder=" 장소 정보를 추가로 기입해 주세요"
               />
             </div>
-            <div className="flex flex-row gap-x-2">
-              <p>선호하는 산책 루트</p>
-              <input
-                type="text"
-                className="border"
-                value={formPosts.preferred_route || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
-              />
-            </div>
-            <div className="flex flex-row gap-x-2">
-              <p>특별한 요구사항</p>
-              <input
-                type="text"
-                className="border"
-                value={formPosts.special_requirements || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
-              />
-            </div>
+          </div>
+          <div className="flex flex-row items-center gap-x-2">
+            <label htmlFor="preferred_route">선호하는 산책 루트</label>
+            <input
+              type="text"
+              id="preferred_route"
+              className="h-10 rounded-md border border-gray-300 w-2/6"
+              placeholder=" 선호하는 산책 루트가 있다면 적어주세요!"
+              value={formPosts.preferred_route || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
+            />
+          </div>
+          <div className="flex flex-row items-center gap-x-2">
+            <label htmlFor="special_requirements">특별한 요구사항</label>
+            <input
+              type="text"
+              id="special_requirements"
+              className="h-10 rounded-md border border-gray-300 w-2/6"
+              placeholder=" 메이트에게 원하는 특별한 사항이 있다면 적어주세요!"
+              value={formPosts.special_requirements || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
+            />
+          </div>
+          <div className="flex w-4/6 items-start gap-x-2">
+            <label htmlFor="content" className="mt-2">내용</label>
             <textarea
               value={formPosts.content || ""}
               onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
               placeholder=" 글을 작성해 주세요."
-              className="mt-1 h-full w-[500px] resize-none rounded-md border border-gray-300 p-1"
+              className="mt-1 h-40 w-5/6 resize-none rounded-md border border-gray-300 p-1"
+              id="content"
             ></textarea>
           </div>
 
           {/* 반려동물 정보 */}
-          <div className="mt-3 flex flex-col gap-y-5">
+          <div className="mt-3 flex w-full flex-col gap-y-5">
             <p>🐶 반려동물 정보</p>
             <button
               type="button"
@@ -336,7 +342,7 @@ const PostForm = () => {
                       value={pet.weight === null ? "" : pet.weight}
                       onChange={(e) => {
                         const newPets = [...formPets];
-                        newPets[index].weight = (e.target.value === "") ? null : Number(e.target.value);
+                        newPets[index].weight = e.target.value === "" ? null : Number(e.target.value);
                         setFormPets(newPets);
                       }}
                     />
@@ -376,9 +382,6 @@ const PostForm = () => {
             </div>
           </div>
         </div>
-        <button type="submit" className="mt-3 h-10 w-20 rounded-md bg-mainColor p-1">
-          등록하기
-        </button>
       </form>
     </div>
   );

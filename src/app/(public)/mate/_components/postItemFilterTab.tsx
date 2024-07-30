@@ -14,14 +14,15 @@ interface PostItemFilterTabProps {
     age: string | null,
     weight: string | null,
   };
+  onClick: () => void;
 }
 
-const PostItemFilterTab = ({ updateFilter, filters }: PostItemFilterTabProps) => {
+const PostItemFilterTab = ({ updateFilter, filters, onClick }: PostItemFilterTabProps) => {
 
   return (
     <div className="w-full">
       <div className="w-full">
-        <p className="text-lg">메이트 상세 필터</p>
+        <p className="text-lg text-gray-500">메이트 상세 필터</p>
         <FilterSelectChip
           label="성별"
           array={gender}
@@ -41,7 +42,7 @@ const PostItemFilterTab = ({ updateFilter, filters }: PostItemFilterTabProps) =>
         />  
       </div>
       <div className="mt-5">
-        <p className="text-lg">반려견 정보 필터</p>
+        <p className="text-lg text-gray-500">반려견 정보 필터</p>
         <FilterWeightChip label="반려견 몸무게" selected={filters.weight} 
           onSelect={(items) => updateFilter("weight", items)}  />
         <FilterSelectChip
@@ -51,6 +52,11 @@ const PostItemFilterTab = ({ updateFilter, filters }: PostItemFilterTabProps) =>
           onSelect={(items) => updateFilter("male_female", items)}
         />
       </div>
+      <div className="mt-7 flex">
+            <div className="mb-4 h-12 w-full cursor-pointer items-center rounded-lg border-2 border-mainColor p-2 text-center" onClick={onClick}>
+              초기화
+            </div>
+          </div>
     </div>
   );
 };
