@@ -1,9 +1,7 @@
 "use client";
 
 import { locationStore } from "@/zustand/locationStore";
-
-import { useEffect, useState } from "react";
-//import { useRef, useState } from "react";
+import { useEffect } from "react";
 import { Map, MapMarker, MapTypeControl, ZoomControl } from "react-kakao-maps-sdk";
 
 interface MapComponentProps {

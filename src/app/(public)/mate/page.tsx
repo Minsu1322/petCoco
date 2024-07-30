@@ -1,21 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useAuthStore } from "@/zustand/useAuth";
 
 import Link from "next/link";
 import MatePostList from "./_components/post/matePostList";
 import PostListFilterTab from "./_components/postListFilterTab";
 import PostItemFilterTab from "./_components/postItemFilterTab";
-// import SearchBar from "./_components/searchBar";
-import FilterSelectChip from "./_components/filterSelectChip";
-import FilterDateChip from "./_components/filterDateChip";
-
-import { useAuthStore } from "@/zustand/useAuth";
 import NotLogInView from "./_components/notLogInView";
-import FilterWeightChip from "./_components/filterWeightChip";
-import { age, gender, male_female, position } from "./array";
-import { DateValue } from "@nextui-org/react";
 
 export type PositionData = {
   center: {
@@ -31,16 +23,15 @@ const MatePage = () => {
   const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);
   const [activeSearchTerm, setActiveSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState("");
-  const [filterBy, setFilterBy] = useState("");
 
   const { user } = useAuthStore();
 
   const [filters, setFilters] = useState({
     gender: null,
     age: null,
-    date_time: null,
+    date_time: undefined,
     male_female: null,
-    weight: null
+    weight: null,
   });
 
   const updateFilter = (filterName: string, value: string) => {
@@ -53,36 +44,33 @@ const MatePage = () => {
   const handleSearchPosts = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setActiveSearchTerm(searchQuery);
+    setSearchQuery("");
   };
 
   const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
-  const handleDateSort = () => setSortBy("date");
+  const handleDateSort = () =>setSortBy("recruitment_period");
   const handleDistanceSort = () => setSortBy("distance");
-
-  // const handleResetFilter = () => {
-  //   setFilters({
-  //     gender: null,
-  //     age: null,
-  //     date_time: null,
-  //     // position: null,
-  //     male_female: null,
-  //     weight: null
-  //   });
-  //   setSelectedGender("");
-  //   setSelectedAge("");
-  //   setFilterBy("");
-  // };
+  
+  const handleResetFilter = () => {
+    setFilters({
+      gender: null,
+      age: null,
+      date_time: undefined,
+      male_female: null,
+      weight: null
+    });
+  };
 
   if (user === null) {
     return <NotLogInView />;
   }
 
   return (
-    <div className="mx-8">
-      <h1 className="mb-7 p-2 text-3xl">산책 메이트</h1>
+    <div className="min-h-screen mb-10 container mx-auto ">
+      <h1 className="mb-7 p-2 text-3xl font-semibold">산책 메이트</h1>
       <div className="flex flex-row gap-x-5">
         {/* 왼쪽 메인 컨텐츠 영역 */}
-        <div className="w-3/4">
+        <div className="w-3/4  mx-3">
           <div className="mb-5">
             <PostListFilterTab
               isCurrentPosts={isCurrentPosts}
@@ -96,37 +84,33 @@ const MatePage = () => {
             isCurrentPosts={isCurrentPosts}
             sortBy={sortBy}
             filters={filters}
-            filterBy={filterBy}
           />
         </div>
-
+        {/* 가운데 사이드 선 */}
+        <div className="border-l-2 border-gray-100 h-screen mx-3"><br /></div>
         {/* 오른쪽 사이드바 영역 */}
-        <div className="w-1/4 pl-5">
+        <div className="w-1/4 pl-5 mr-8">
           <div className="mt-1 flex">
             <Link href="/mate/posts" className="mb-4 h-10 w-full items-center rounded-lg bg-mainColor p-2 text-center">
-              <div>글쓰기 🐾</div>
+              <div>글쓰기</div>
             </Link>
           </div>
-          <div className="mb-5 flex">
-            <form onSubmit={handleSearchPosts} className="flex w-full flex-row items-center rounded-full border p-1">
+          <div className="mb-5 flex flex-col">
+            <p className="text-lg mt-3 text-gray-500">검색</p>
+            <form onSubmit={handleSearchPosts} className="flex w-full flex-row items-center rounded-full border p-1 mt-3 h-12">
               <input
                 type="text"
-                className="w-full"
+                className="w-full ml-3"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <button type="submit" className="ml-2">
+              <button type="submit" className="mx-4">
                 🔍
               </button>
             </form>
           </div>
-          <PostItemFilterTab updateFilter={updateFilter} filters={filters} />
-
-          <div className="mt-5 flex">
-            <div className="mb-4 h-10 w-full cursor-pointer items-center rounded-lg bg-gray-300 p-2 text-center">
-              초기화
-            </div>
-          </div>
+          <PostItemFilterTab updateFilter={updateFilter} filters={filters} onClick={handleResetFilter} />
+          
         </div>
       </div>
     </div>

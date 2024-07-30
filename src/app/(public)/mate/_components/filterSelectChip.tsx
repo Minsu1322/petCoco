@@ -9,13 +9,13 @@ interface FilterSelectChipProps {
 
 const FilterSelectChip = ({ label, array, onSelect, selected }: FilterSelectChipProps) => {
   return (
-    <div className="mt-5 flex w-full">
+    <div className="mt-5 w-full">
       <Select
         size="sm"
         radius="full"
         label={label}
         color="default"
-        className="w-full max-w-xs"
+        className="w-full"
         value={selected || ""}
         onChange={(e) => onSelect(e.target.value || "")}
       >
