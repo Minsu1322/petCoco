@@ -20,7 +20,7 @@ const PostItemFilterTab = ({ updateFilter, filters }: PostItemFilterTabProps) =>
 
   return (
     <div className="w-full">
-      <div>
+      <div className="w-full">
         <p className="text-lg">메이트 상세 필터</p>
         <FilterSelectChip
           label="성별"

@@ -17,7 +17,7 @@ const FilterWeightChip = ({ label, selected, onSelect}: FilterWeightChipProps) =
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-md mt-5">
+    <div className="flex flex-col gap-6 w-full mt-5">
       <Slider
         color="foreground"
         step={2}
@@ -27,7 +27,7 @@ const FilterWeightChip = ({ label, selected, onSelect}: FilterWeightChipProps) =
         value={selectedValue}
         label={label}
         aria-label={label}
-        className="max-w-md"
+        className="w-full"
         onChange={handleChange}
       />
   </div>
