@@ -143,7 +143,6 @@ const PostForm = () => {
   };
   return (
     <div className="container mx-auto mb-5 mt-10">
-      
       <form onSubmit={handleUploadPost} className="flex flex-col">
       <div className="mb-5 flex flex-row items-center justify-between">
         <h1 className="text-2xl font-semibold">산책 메이트 모집 글 작성하기</h1>
