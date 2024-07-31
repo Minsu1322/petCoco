@@ -51,7 +51,7 @@ export const GET = async (request: NextRequest) => {
     }
 
     if (filter.weight) {
-      const wigthtVale = parseFloat(filter.weight)
+      const wigthtVale = parseFloat(filter.weight);
       query.gte("matePostPets.weight", wigthtVale);
     }
 
