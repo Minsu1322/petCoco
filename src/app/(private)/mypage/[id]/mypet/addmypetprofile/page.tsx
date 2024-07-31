@@ -15,6 +15,7 @@ const addmypetprofile = () => {
   const [minorClass, setMinorClass] = useState("");
   const [maleFemale, setMaleFemale] = useState("");
   const [neutralized, setNeutralized] = useState("");
+  const [weight, setWeight] = useState(0);
   const [medicalRecords, setMedicalRecords] = useState("");
   const [introduction, setIntroduction] = useState("");
   const [petImage, setPetImage] = useState<File | null>(); //서버에 반영될 이미지 파일
@@ -84,6 +85,7 @@ const addmypetprofile = () => {
   };
 
   const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
+  const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
   const handleMedicalRecords = (e: ChangeEvent<HTMLInputElement>) => setMedicalRecords(e.target.value);
   const handleIntroductionChange = (e: ChangeEvent<HTMLInputElement>) => setIntroduction(e.target.value);
 
@@ -95,6 +97,7 @@ const addmypetprofile = () => {
     neutralized,
     majorClass,
     minorClass,
+    weight,
     medicalRecords,
     introduction
   }: Pick<
@@ -105,6 +108,7 @@ const addmypetprofile = () => {
     | "male_female"
     | "majorClass"
     | "minorClass"
+    | "weight"
     | "medicalRecords"
     | "neutralized"
     | "introduction"
@@ -120,6 +124,7 @@ const addmypetprofile = () => {
         male_female,
         majorClass,
         minorClass,
+        weight,
         medicalRecords,
         introduction
       })
@@ -166,6 +171,7 @@ const addmypetprofile = () => {
       minorClass: minorClass,
       male_female: maleFemale,
       neutralized: neutralized,
+      weight: weight,
       medicalRecords: medicalRecords,
       introduction: introduction
     });
@@ -239,6 +245,17 @@ const addmypetprofile = () => {
       <br /> 중성화
       <input type="checkbox" name="neutralize" value="YES" onChange={handleNeutralize} />
       <br />
+      무게(kg) :
+      <input
+        type="number"
+        step="0.1"
+        placeholder="1kg 미만은 소수점으로 표기"
+        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
+        name="weight"
+        //value={weight === null ? "" : weight}
+        onChange={handleWeight}
+      />
+      <br />
       의료기록
       <input
         className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
@@ -267,7 +284,7 @@ const addmypetprofile = () => {
           className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
           onClick={submitChange}
         >
-          변경하기
+          등록하기
         </button>
       </div>
     </div>

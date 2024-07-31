@@ -6,7 +6,7 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
   const { id } = params;
 
   try {
-    const { data, error } = await supabase.from("matePosts").select("*").eq("user_id", id);
+    const { data, error } = await supabase.from("matePosts").select("*,users(*)").eq("user_id", id);
 
     if (error) {
       console.error(error);

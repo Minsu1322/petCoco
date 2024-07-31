@@ -3,17 +3,22 @@
 import { UsersPetType } from "@/types/auth.type";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import Router from "next/router";
+import { useParams, useRouter } from "next/navigation";
 
 const MyPetProfile = () => {
   const queryClient = useQueryClient();
   const params = useParams();
+  const router = useRouter();
+
   if (params === null) {
     return;
   }
   const id = params.id;
   const petId = params.petId;
+
+  function toMyPet() {
+    router.push(`/mypage/${id}/mypet`);
+  }
 
   const getProfileData = async () => {
     const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
@@ -52,12 +57,18 @@ const MyPetProfile = () => {
   });
 
   const handleDelte = async (id: string) => {
-    try {
-      deleteMutation(id);
-    } catch (error) {
-      console.log("삭제에 실패했습니다.", error);
+    if (confirm("정말 삭제하시겠습니까?")) {
+      try {
+        deleteMutation(id);
+      } catch (error) {
+        console.log("삭제에 실패했습니다.", error);
+      }
+      alert("삭제가 완료되었습니다.");
+
+      toMyPet();
+    } else {
+      return;
     }
-    alert("삭제가 완료되었습니다.");
   };
 
   if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
@@ -98,6 +109,10 @@ const MyPetProfile = () => {
         <br />
         <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
           중성화 여부: {filteredProfile[0].neutralized}
+        </span>
+        <br />
+        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
+          무게: {filteredProfile[0].weight} kg
         </span>
         <br />
         <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
