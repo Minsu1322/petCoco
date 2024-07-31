@@ -101,7 +101,8 @@ export type Database = {
           position: Json | null
           preferred_route: string | null
           recruiting: boolean | null
-          recruitment_period: string | null
+          recruitment_end: string | null
+          recruitment_start: string | null
           special_requirements: string | null
           title: string | null
           user_id: string | null
@@ -117,7 +118,8 @@ export type Database = {
           position?: Json | null
           preferred_route?: string | null
           recruiting?: boolean | null
-          recruitment_period?: string | null
+          recruitment_end?: string | null
+          recruitment_start?: string | null
           special_requirements?: string | null
           title?: string | null
           user_id?: string | null
@@ -133,7 +135,8 @@ export type Database = {
           position?: Json | null
           preferred_route?: string | null
           recruiting?: boolean | null
-          recruitment_period?: string | null
+          recruitment_end?: string | null
+          recruitment_start?: string | null
           special_requirements?: string | null
           title?: string | null
           user_id?: string | null
@@ -283,6 +286,7 @@ export type Database = {
           petImage: string | null
           petName: string | null
           users_id: string
+          weight: number | null
         }
         Insert: {
           age?: string | null
@@ -297,6 +301,7 @@ export type Database = {
           petImage?: string | null
           petName?: string | null
           users_id?: string
+          weight?: number | null
         }
         Update: {
           age?: string | null
@@ -311,6 +316,7 @@ export type Database = {
           petImage?: string | null
           petName?: string | null
           users_id?: string
+          weight?: number | null
         }
         Relationships: [
           {
