@@ -16,26 +16,34 @@ export const GET = async (request: NextRequest) => {
   const limit = parseInt(searchParams.get("limit") || "8");
   const isCurrentPosts = searchParams.get("current");
   const filter = Object.fromEntries(searchParams.entries());
-  const sort = searchParams.get("sort");
-  //console.log(filter);
+  // console.log(filter);
+
+  // 모집 마감 순 정렬
+  const date = new Date();
+  const currentTime = new Date(date.getTime() + (9 * 60 * 60 * 1000));
+  const formattedDate = currentTime.toISOString();
+  // console.log(formattedDate); 
 
   try {
-    let query = supabase
-      .from("matePosts")
-      .select(`*,users("*"),matePostPets("*")`, { count: "exact" })
-      .order("created_at", { ascending: false });
+    let query = supabase.from("matePosts").select(`*,users("*"),matePostPets("*") `, { count: "exact" });
+    // .order("created_at", { ascending: false });
 
     if (search) {
       query = query.ilike("content", `%${search}%`);
     }
-    //
+
     if (isCurrentPosts === "true") {
       query = query.eq("recruiting", true);
     }
 
-    // if (sort === "recruitment_period") {
-    //   query = query
-    // }
+    
+
+    if (filter.sort === "recruitment_end") {
+      query = query.gte("recruitment_end", formattedDate).order("recruitment_end", { ascending: true });
+    } else {
+      // 기본 정렬 조건 (created_at 기준 내림차순)
+      query = query.order("created_at", { ascending: false });
+    }
 
     if (filter.gender && filter.gender !== "전체") {
       query = query.eq("users.gender", filter.gender);

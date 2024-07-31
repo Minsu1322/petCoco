@@ -95,6 +95,8 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             1:1 대화
           </button>
         </div>
+        <p>모집 마감일 : {post.recruitment_end}</p>
+        {/* 모집 마감 필터 임시 코드 */}
         {distance !== null && <p className="mr-5 text-gray-500">현위치에서 {distance}km 거리</p>}
       </div>
 

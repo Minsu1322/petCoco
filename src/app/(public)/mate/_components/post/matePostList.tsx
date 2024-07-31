@@ -35,9 +35,9 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
 
   const { data, isPending, error } = useQuery<PostsResponse>({
-    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, filters],
+    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, sortBy, filters],
     queryFn: async () => {
-      //console.log('filter값 확인', filters);
+      //console.log('sortBy값 확인', sortBy);
       const getValidFilters = Object.fromEntries(
         Object.entries(filters).filter(([_, value]) => value !== null && value !== "" && value !== undefined)
       );
@@ -54,7 +54,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         `/api/mate?current=${isCurrentPosts}&page=${page}&limit=3&search=${activeSearchTerm}&sort=${sortBy}&${query}`
       );
       const data = response.json();
-      console.log(data);
+      //console.log(data);
       return data;
     }
   });
@@ -101,42 +101,29 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
     retry: false
   });
 
-  const sortPosts = (posts: MatePostAllType[]) => {
-    // 모집 마감 순 필터
-    if (sortBy === "date") {
-      return [...posts].sort((a, b) => {
-        const now = new Date().getTime();
-        // 오늘 날짜 기준 지난 건 맨 뒤로 가게끔 바꿔야 할 듯. 지난 것도 정렬에 포함됨
+  // const sortPosts = (posts: MatePostAllType[]) => {
+  //   // 가까운 순 필터
+  //   if (sortBy === "distance") {
+  //     if (geolocationData) {
+  //       return [...posts].sort((a, b) => {
+  //         const distanceA = getDistanceHaversine({
+  //           curPosition: geolocationData.center,
+  //           desPosition: a.position.center
+  //         });
+  //         const distanceB = getDistanceHaversine({
+  //           curPosition: geolocationData.center,
+  //           desPosition: b.position.center
+  //         });
+  //         return distanceA - distanceB;
+  //       });
+  //     }
+  //     return posts;
+  //   }
+  //   // 둘다 아닐때 원본 배열 반환
+  //   return posts;
+  // };
 
-        const deadlineA = new Date(a.recruitment_period ?? "").getTime();
-        const deadlineB = new Date(b.recruitment_period ?? "").getTime();
-
-        // 현재 시간과 모집 마감일의 차이를 비교
-        return deadlineA - now - (deadlineB - now);
-      });
-    }
-    // 가까운 순 필터
-    if (sortBy === "distance") {
-      if (geolocationData) {
-        return [...posts].sort((a, b) => {
-          const distanceA = getDistanceHaversine({
-            curPosition: geolocationData.center,
-            desPosition: a.position.center
-          });
-          const distanceB = getDistanceHaversine({
-            curPosition: geolocationData.center,
-            desPosition: b.position.center
-          });
-          return distanceA - distanceB;
-        });
-      }
-      return posts;
-    }
-    // 둘다 아닐때 원본 배열 반환
-    return posts;
-  };
-
-  const sortedPosts = sortPosts(data?.data || []);
+  const posts = data?.data ?? []
 
   if (isPending) {
     return (
@@ -151,13 +138,15 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
   return (
     <div>
-      <div className="ml-1 mt-5 flex flex-col">
-        {sortedPosts.length > 0 ? (
-          sortedPosts.map((post) => <MatePostItem key={post.id} post={post} />)
-        ) : (
-          <div>현재 모집 중인 산책 메이트가 없습니다.</div>
-        )}
-      </div>
+       <div className="ml-1 mt-5 flex flex-col">
+      {posts.length > 0 ? (
+        posts.map((post) => (
+          <MatePostItem key={post.id} post={post} />
+        ))
+      ) : (
+        <div>현재 모집 중인 산책 메이트가 없습니다.</div>
+      )}
+    </div>
 
       {/* pagination*/}
       <div className="mt-8 flex justify-center space-x-2">
@@ -169,7 +158,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
           이전
         </button>
         <span className="px-4 py-2">
-        페이지 {!data || data.data.length === 0 ? "0" : `${page}`} / {data?.totalPages ?? "0"}
+        페이지 {!data || data.data?.length === 0 ? "0" : `${page}`} / {data?.totalPages ?? "0"}
         </span>
         <button 
           onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
