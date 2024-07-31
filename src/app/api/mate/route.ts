@@ -48,7 +48,7 @@ export const GET = async (request: NextRequest) => {
     query.not("matePostPets", "is", null);
 
     const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
-    console.log(data);
+    // console.log(data);
     // .limit(10);
     // console.log(data)
     if (error) {
