@@ -85,42 +85,38 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   // TODO: 작성자에게만 이 버튼이 보이도록 수정 ✅
   const deletePost = async (id: string) => {
-    if (confirm("현재 게시글을 삭제하시겠어요?")) {
-      try {
-        const response = await fetch(`/api/mate/post/${post.id}`, {
-          method: "DELETE"
-        });
+    try {
+      const response = await fetch(`/api/mate/post/${post.id}`, {
+        method: "DELETE"
+      });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        router.replace("/mate");
-      } catch (err) {
-        console.error(err);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      router.replace("/mate");
+    } catch (err) {
+      console.error(err);
     }
   };
 
   const editPost = async (id: string) => {
-    if (confirm("현재 게시글을 수정하시겠어요?")) {
-      try {
-        const response = await fetch(`/api/mate/post/${post.id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(updatePost)
-        });
+    try {
+      const response = await fetch(`/api/mate/post/${post.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatePost)
+      });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        router.replace("/mate");
-      } catch (err) {
-        console.error(err);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      router.replace("/mate");
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -175,7 +171,9 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   });
 
   const handleDeletePost = (id: string) => {
-    deleteMutation.mutate(id);
+    if (confirm("현재 게시글을 삭제하시겠어요?")) {
+      deleteMutation.mutate(id);
+    }
   };
 
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
@@ -184,7 +182,9 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   const handleEditPost = () => {
-    setIstEditting(true);
+    if (confirm("현재 게시글을 수정하시겠어요?")) {
+      setIstEditting(true);
+    }
   };
 
   const handleTogglePost = (id: string) => {

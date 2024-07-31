@@ -15,11 +15,15 @@ const fixmypetprofile = () => {
   const [minorClass, setMinorClass] = useState("");
   const [maleFemale, setMaleFemale] = useState("");
   const [neutralized, setNeutralized] = useState("");
+  const [weight, setWeight] = useState(0);
   const [medicalRecords, setMedicalRecords] = useState("");
   const [introduction, setIntroduction] = useState("");
   const [petImage, setPetImage] = useState<File | null>(); //서버에 반영될 이미지 파일
   const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
   const params = useParams();
+  if (params === null) {
+    return;
+  }
   const id = params.id;
   const petId = params.petId;
   const supabase = createClient();
@@ -28,7 +32,7 @@ const fixmypetprofile = () => {
   const router = useRouter();
 
   function toMyPet() {
-    router.push(`/mypage/${id}/mypet`);
+    router.push(`/mypage/${id}/mypet/mypetprofile/${petId}`);
   }
 
   // const updateProfileNickNameWithSupabase = async (newName: string, id: string) => {
@@ -62,6 +66,7 @@ const fixmypetprofile = () => {
   };
 
   const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
+  const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
   const handleMedicalRecords = (e: ChangeEvent<HTMLInputElement>) => setMedicalRecords(e.target.value);
   const handleIntroductionChange = (e: ChangeEvent<HTMLInputElement>) => setIntroduction(e.target.value);
 
@@ -73,6 +78,7 @@ const fixmypetprofile = () => {
     neutralized,
     majorClass,
     minorClass,
+    weight,
     medicalRecords,
     introduction
   }: Pick<
@@ -83,6 +89,7 @@ const fixmypetprofile = () => {
     | "male_female"
     | "majorClass"
     | "minorClass"
+    | "weight"
     | "medicalRecords"
     | "neutralized"
     | "introduction"
@@ -98,6 +105,7 @@ const fixmypetprofile = () => {
         male_female,
         majorClass,
         minorClass,
+        weight,
         medicalRecords,
         introduction
       })
@@ -144,6 +152,7 @@ const fixmypetprofile = () => {
       minorClass: minorClass,
       male_female: maleFemale,
       neutralized: neutralized,
+      weight: weight,
       medicalRecords: medicalRecords,
       introduction: introduction
     });
@@ -171,6 +180,7 @@ const fixmypetprofile = () => {
     queryKey: ["pet"],
     queryFn: getPetData
   });
+
   if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
   if (isError) {
@@ -244,6 +254,17 @@ const fixmypetprofile = () => {
       </div>
       <br /> 중성화
       <input type="checkbox" name="neutralize" value="YES" onChange={handleNeutralize} />
+      <br />
+      무게(kg) :
+      <input
+        type="number"
+        step="0.1"
+        placeholder="1kg 미만은 소수점으로 표기"
+        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
+        name="weight"
+        //value={weight === null ? "" : weight}
+        onChange={handleWeight}
+      />
       <br />
       의료기록
       <input

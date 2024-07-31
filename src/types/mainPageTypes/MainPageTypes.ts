@@ -1,20 +1,12 @@
-export type Comment = {
-  id: string;
-  content: string;
-  created_at: string;
-  user_id: string;
-  users: {
-    id: string;
-    nickname: string;
-  };
-};
+import { MatePostType } from "../mate.type";
+
 export type Post = {
   id: string;
   title: string;
   content: string;
   created_at: string;
   user_id: string;
-  comments: string;
+  comments: { id: string }[];
   users: {
     id: string;
     nickname: string;
@@ -23,8 +15,12 @@ export type Post = {
 
 export type PostsResponse = {
   data: Post[];
+  total: number;
   page: number;
   limit: number;
-  total: number;
   totalPages: number;
+};
+
+export type MatePostsResponse = {
+  data: MatePostType[];
 };

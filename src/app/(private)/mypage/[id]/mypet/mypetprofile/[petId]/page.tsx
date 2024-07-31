@@ -1,15 +1,24 @@
 "use client";
 
 import { UsersPetType } from "@/types/auth.type";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import Router from "next/router";
+import { useParams, useRouter } from "next/navigation";
 
 const MyPetProfile = () => {
+  const queryClient = useQueryClient();
   const params = useParams();
+  const router = useRouter();
+
+  if (params === null) {
+    return;
+  }
   const id = params.id;
   const petId = params.petId;
+
+  function toMyPet() {
+    router.push(`/mypage/${id}/mypet`);
+  }
 
   const getProfileData = async () => {
     const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
@@ -20,7 +29,6 @@ const MyPetProfile = () => {
 
     return data;
   };
-
   const {
     data: pet,
     isPending,
@@ -29,6 +37,40 @@ const MyPetProfile = () => {
     queryKey: ["pet"],
     queryFn: getProfileData
   });
+
+  const deleteProfile = async (id: string) => {
+    const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(id)
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  };
+
+  const { mutate: deleteMutation } = useMutation<UsersPetType, Error, string>({
+    mutationFn: (id) => deleteProfile(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pet"] })
+  });
+
+  const handleDelte = async (id: string) => {
+    if (confirm("정말 삭제하시겠습니까?")) {
+      try {
+        deleteMutation(id);
+      } catch (error) {
+        console.log("삭제에 실패했습니다.", error);
+      }
+      alert("삭제가 완료되었습니다.");
+
+      toMyPet();
+    } else {
+      return;
+    }
+  };
+
   if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
   if (isError) {
@@ -39,8 +81,6 @@ const MyPetProfile = () => {
   const filteredProfile = pet.filter((profile) => {
     return profile.id === petId;
   });
-
-  console.log(filteredProfile);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -72,6 +112,10 @@ const MyPetProfile = () => {
         </span>
         <br />
         <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
+          무게: {filteredProfile[0].weight} kg
+        </span>
+        <br />
+        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
           의료기록: {filteredProfile[0].medicalRecords}
         </span>
         <br />
@@ -92,6 +136,12 @@ const MyPetProfile = () => {
         >
           변경하기
         </Link>
+        <button
+          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
+          onClick={() => handleDelte(filteredProfile[0].id)}
+        >
+          삭제하기
+        </button>
       </div>
     </div>
   );
