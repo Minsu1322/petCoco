@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { IMessage } from '@/types/chat';
-import { useSocket } from '../provider/SocketProvider';
-import useMounted from '@/hooks/useMounted';
-import { useAuthStore } from '@/zustand/useAuth';
-import { RiCloseLine } from 'react-icons/ri';
+import React, { useEffect, useRef, useState } from "react";
+import { IMessage } from "@/types/chat";
+import { useSocket } from "../provider/SocketProvider";
+import useMounted from "@/hooks/useMounted";
+import { useAuthStore } from "@/zustand/useAuth";
+import { RiCloseLine } from "react-icons/ri";
 
 interface ChatProps {
   isOpen: boolean;
@@ -84,21 +84,23 @@ const Chat: React.FC<ChatProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 bg-white border border-gray-300 shadow-lg rounded-lg w-80 h-96 flex flex-col">
-      <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-900">
+    <div className="fixed bottom-4 right-4 flex h-96 w-80 flex-col rounded-lg border border-gray-300 bg-white shadow-lg">
+      <button onClick={onClose} className="absolute right-2 top-2 text-gray-600 hover:text-gray-900">
         <RiCloseLine />
       </button>
       <div className="flex-1 overflow-y-auto p-2">
         {messages.map((message, index) => (
-          <div key={index} className={`mb-2 ${message.userId === user?.id ? 'text-right' : 'text-left'}`}>
-            <div className={`inline-block px-3 py-2 rounded-lg ${message.userId === user?.id ? 'bg-green-200 text-black' : 'bg-gray-700 text-white'}`}>
+          <div key={index} className={`mb-2 ${message.userId === user?.id ? "text-right" : "text-left"}`}>
+            <div
+              className={`inline-block rounded-lg px-3 py-2 ${message.userId === user?.id ? "bg-green-200 text-black" : "bg-gray-700 text-white"}`}
+            >
               {message.content}
             </div>
           </div>
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="p-2 bg-gray-100 border-t border-gray-300">
+      <div className="border-t border-gray-300 bg-gray-100 p-2">
         <div className="flex">
           <input
             type="text"
@@ -106,12 +108,12 @@ const Chat: React.FC<ChatProps> = ({ isOpen, onClose }) => {
             placeholder={isLogin ? "Type message..." : "Login first"}
             value={currentMessage}
             onChange={(e) => setCurrentMessage(e.target.value)}
-            className="flex-1 border border-gray-300 rounded-lg px-3 py-1 mr-2"
+            className="mr-2 flex-1 rounded-lg border border-gray-300 px-3 py-1"
           />
           <button
             onClick={sendMessage}
             disabled={!isLogin}
-            className={`px-4 py-1 rounded-lg ${isLogin ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+            className={`rounded-lg px-4 py-1 ${isLogin ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"}`}
           >
             Send
           </button>
