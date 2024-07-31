@@ -48,7 +48,7 @@ const MatePage = () => {
   };
 
   const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
-  const handleDateSort = () =>setSortBy("recruitment_period");
+  const handleDateSort = () => setSortBy("recruitment_end");
   const handleDistanceSort = () => setSortBy("distance");
   
   const handleResetFilter = () => {
@@ -59,6 +59,7 @@ const MatePage = () => {
       male_female: null,
       weight: null
     });
+    setSortBy("");
   };
 
   if (user === null) {
@@ -110,7 +111,6 @@ const MatePage = () => {
             </form>
           </div>
           <PostItemFilterTab updateFilter={updateFilter} filters={filters} onClick={handleResetFilter} />
-          
         </div>
       </div>
     </div>
