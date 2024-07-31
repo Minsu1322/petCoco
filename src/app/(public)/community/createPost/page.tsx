@@ -25,7 +25,6 @@ const CreatePostPage = () => {
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const router = useRouter();
   const { user } = useAuthStore();
-  const user_id = user && user.id;
 
   useEffect(() => {
     initPost(); // 이미지 초기화
@@ -78,7 +77,7 @@ const CreatePostPage = () => {
       const { data: postData, error: postError } = await supabase
         .from("posts")
         .insert({
-          user_id,
+          user_id: user.id,
           title,
           content,
           category,
