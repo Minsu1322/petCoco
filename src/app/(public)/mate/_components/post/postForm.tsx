@@ -20,7 +20,7 @@ const PostForm = () => {
   const userId: string = user && user.id;
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { position, setPosition } = locationStore();
+  const { position } = locationStore();
 
   const initialState: Omit<MateNextPostType, "user_id"> = {
     title: "",
@@ -29,7 +29,8 @@ const PostForm = () => {
     date_time: "",
     members: "",
     recruiting: true,
-    recruitment_period: "",
+    recruitment_start: "",
+    recruitment_end: "",
     address: "",
     place_name: "",
     preferred_route: "",
@@ -47,7 +48,7 @@ const PostForm = () => {
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
   const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
-  //console.log(formPets);
+  console.log(formPosts);
 
   // 게시물 등록
   const addPost = async (formAllData: { post: MateNextPostType; pets: Pets[] }) => {
@@ -109,9 +110,19 @@ const PostForm = () => {
   const handleUploadPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { title, date_time, members, recruitment_period, place_name, preferred_route, content } = formPosts;
+    const { title, date_time, members, recruitment_start, recruitment_end, place_name, preferred_route, content } =
+      formPosts;
 
-    if (!title || !date_time || !members || !recruitment_period || !place_name || !preferred_route || !content) {
+    if (
+      !title ||
+      !date_time ||
+      !members ||
+      !recruitment_start ||
+      !recruitment_end ||
+      !place_name ||
+      !preferred_route ||
+      !content
+    ) {
       alert("모든 항목을 입력해 주세요!");
       return;
     }
@@ -144,21 +155,21 @@ const PostForm = () => {
   return (
     <div className="container mx-auto mb-5 mt-10">
       <form onSubmit={handleUploadPost} className="flex flex-col">
-      <div className="mb-5 flex flex-row items-center justify-between">
-        <h1 className="text-2xl font-semibold">산책 메이트 모집 글 작성하기</h1>
-        <button type="submit" className="mt-3 h-10 w-20 rounded-md bg-mainColor p-1">
-          작성완료
-        </button>
-      </div>
-        <div className="flex flex-col gap-y-5">
-          <div className="flex flex-row items-center gap-x-3 ">
+        <div className="mb-5 flex flex-row items-center justify-between">
+          <h1 className="text-2xl font-semibold">산책 메이트 모집 글 작성하기</h1>
+          <button type="submit" className="mt-3 h-10 w-20 rounded-md bg-mainColor p-1">
+            작성완료
+          </button>
+        </div>
+        <div className="flex w-5/6 flex-col gap-y-5">
+          <div className="flex flex-row items-center gap-x-3">
             <label htmlFor="title">제목</label>
             <input
               type="text"
               value={formPosts.title || ""}
               onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
               placeholder=" 제목을 입력해 주세요"
-              className="h-10 w-3/6  rounded-md border border-gray-300"
+              className="h-10 w-3/4 rounded-md border border-gray-300"
               id="title"
             />
           </div>
@@ -169,31 +180,41 @@ const PostForm = () => {
               id="date_time"
               value={formPosts.date_time || ""}
               onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
+              className="h-10 w-1/4 rounded-md border border-gray-300"
             />
           </div>
-          <div className="flex flex-row w-3/6 justify-between">
-          <div className="flex flex-row gap-x-2">
-            <label htmlFor="recruitment_period">모집기간</label>
-            <input
-              type="datetime-local"
-              id="recruitment_period"
-              value={formPosts.recruitment_period || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, recruitment_period: e.target.value })}
-            />
+          <div className="flex flex-row justify-between">
+            <div className="flex flex-row gap-x-2">
+              <label htmlFor="recruitment_period">모집기간</label>
+              <input
+                type="datetime-local"
+                id="recruitment_start"
+                value={formPosts.recruitment_start || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, recruitment_start: e.target.value })}
+                className="h-10 w-3/4 rounded-md border border-gray-300"
+              />
+              <span>~</span>
+              <input
+                type="datetime-local"
+                id="recruitment_end"
+                value={formPosts.recruitment_end || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, recruitment_end: e.target.value })}
+                className="h-10 w-3/4 rounded-md border border-gray-300"
+              />
+            </div>
+            <div className="flex flex-row items-center gap-x-2">
+              <label htmlFor="members">모집 인원 수</label>
+              <input
+                type="text"
+                id="members"
+                className="h-10 rounded-md border border-gray-300"
+                value={formPosts.members || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
+              />
+              명
+            </div>
           </div>
-          <div className="flex flex-row items-center gap-x-2">
-            <label htmlFor="members">모집 인원 수</label>
-            <input
-              type="text"
-              id="members"
-              className="h-10 rounded-md border border-gray-300"
-              value={formPosts.members || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
-            />
-            명
-          </div>
-          </div>
-          <div className="flex flex-row gap-x-3 w-4/6">
+          <div className="flex w-4/6 flex-row gap-x-3">
             <label>산책 장소</label>
             <div>
               <div className="mt-1">
@@ -214,7 +235,7 @@ const PostForm = () => {
             <input
               type="text"
               id="preferred_route"
-              className="h-10 rounded-md border border-gray-300 w-2/6"
+              className="h-10 w-2/6 rounded-md border border-gray-300"
               placeholder=" 선호하는 산책 루트가 있다면 적어주세요!"
               value={formPosts.preferred_route || ""}
               onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
@@ -225,14 +246,16 @@ const PostForm = () => {
             <input
               type="text"
               id="special_requirements"
-              className="h-10 rounded-md border border-gray-300 w-2/6"
+              className="h-10 w-2/6 rounded-md border border-gray-300"
               placeholder=" 메이트에게 원하는 특별한 사항이 있다면 적어주세요!"
               value={formPosts.special_requirements || ""}
               onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
             />
           </div>
           <div className="flex w-4/6 items-start gap-x-2">
-            <label htmlFor="content" className="mt-2">내용</label>
+            <label htmlFor="content" className="mt-2">
+              내용
+            </label>
             <textarea
               value={formPosts.content || ""}
               onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
