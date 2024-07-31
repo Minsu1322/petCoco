@@ -85,7 +85,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   // TODO: 작성자에게만 이 버튼이 보이도록 수정 ✅
   const deletePost = async (id: string) => {
-    if (confirm("현재 게시글을 삭제하시겠어요?")) {
+
       try {
         const response = await fetch(`/api/mate/post/${post.id}`, {
           method: "DELETE"
@@ -99,11 +99,10 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       } catch (err) {
         console.error(err);
       }
-    }
+    
   };
 
   const editPost = async (id: string) => {
-    if (confirm("현재 게시글을 수정하시겠어요?")) {
       try {
         const response = await fetch(`/api/mate/post/${post.id}`, {
           method: "PUT",
@@ -121,7 +120,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       } catch (err) {
         console.error(err);
       }
-    }
   };
 
   const togglePost = async (id: string) => {
@@ -175,7 +173,9 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   });
 
   const handleDeletePost = (id: string) => {
-    deleteMutation.mutate(id);
+    if (confirm("현재 게시글을 삭제하시겠어요?")) {
+      deleteMutation.mutate(id);
+    }
   };
 
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
@@ -184,7 +184,9 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   const handleEditPost = () => {
-    setIstEditting(true);
+    if (confirm("현재 게시글을 수정하시겠어요?")) {
+      setIstEditting(true);
+    }
   };
 
   const handleTogglePost = (id: string) => {
@@ -353,15 +355,16 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           <p className="text-2xl font-semibold">{post.title}</p>
           {userId === post.user_id && (
             <div className="flex flex-row gap-x-5">
+              
               <button
                 className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
-                onClick={() => handleDeletePost(post.id)}
+                onClick={handleEditPost}
               >
                 수정
               </button>
               <button
                 className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
-                onClick={handleEditPost}
+                onClick={() => handleDeletePost(post.id)}
               >
                 삭제
               </button>
