@@ -4,9 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (request: NextRequest, { params }: { params: { id: string } }) => {
   const supabase = createClient();
   const { id } = params;
+  const user_id = id;
 
   try {
-    const { data, error } = await supabase.from("matePosts").select("*").eq("id", id);
+    const { data, error } = await supabase.from("matePosts").select("*").eq("user_id", user_id);
+
 
     if (error) {
       console.error(error);
