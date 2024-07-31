@@ -7,6 +7,9 @@ import Router from "next/router";
 
 const MyProfile = () => {
   const params = useParams();
+  if (params === null) {
+    return;
+  }
   const id = params.id;
 
   const getProfileData = async () => {

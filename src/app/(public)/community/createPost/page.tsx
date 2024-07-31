@@ -25,6 +25,10 @@ const CreatePostPage = () => {
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const router = useRouter();
   const { user } = useAuthStore();
+<<<<<<< HEAD
+=======
+  // const user_id = user && user.id;
+>>>>>>> dev
 
   useEffect(() => {
     initPost(); // 이미지 초기화
@@ -84,6 +88,8 @@ const CreatePostPage = () => {
           post_imageURL: imageUrls.join(",")
         })
         .select("*");
+
+      console.log("postData : ", postData);
 
       console.log("게시글이 성공적으로 저장되었습니다.");
       router.push("/community");

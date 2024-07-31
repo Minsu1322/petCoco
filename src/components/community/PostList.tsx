@@ -88,7 +88,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
 
                 <div className="flex items-end justify-between">
                   <p className="text-xs text-gray-500">
-                    {post.users.nickname} | {new Date(post.created_at).toLocaleDateString()}
+                    {post.users?.nickname} | {new Date(post.created_at).toLocaleDateString()}
                   </p>
                   <p className="text-xs text-gray-500">댓글 {post.comments.length}개</p>
                 </div>
