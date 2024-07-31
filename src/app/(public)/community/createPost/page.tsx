@@ -25,10 +25,7 @@ const CreatePostPage = () => {
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const router = useRouter();
   const { user } = useAuthStore();
-<<<<<<< HEAD
-=======
   // const user_id = user && user.id;
->>>>>>> dev
 
   useEffect(() => {
     initPost(); // 이미지 초기화
