@@ -9,17 +9,18 @@ const MatePost = ({ params }: { params: { id: string } }) => {
   const {
     data: post,
     isPending,
-    error
+    error,
   } = useQuery({
     queryKey: ["matePosts", id],
     queryFn: async () => {
       const response = await fetch(`/api/mate/post/${id}`);
       const data = response.json();
     //  console.log(data);
-
       return data;
     }
   });
+  //console.log(post);
+
 
   if(!post) return;
 
@@ -30,10 +31,9 @@ const MatePost = ({ params }: { params: { id: string } }) => {
   if (error) {
     return <div>{error.message}</div>;
   }
-  //console.log(post);
 
   return (<>
-    <DetailMatePost post={post} />
+    <DetailMatePost post={post}/>
   </>);
 };
 

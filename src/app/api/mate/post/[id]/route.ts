@@ -13,14 +13,22 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
       .single();
 
     if (error) {
+      if (error.code === 'PGRST116') {
+        // PGRST116는 Supabase에서 결과가 없을 때 발생하는 에러 코드입니다.
+        return NextResponse.json({ error: "Post not found" }, { status: 404 });
+      }
       console.error(error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json(data);
+    if (!data) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(data, { status: 200 });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ err }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 };
 
