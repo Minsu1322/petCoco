@@ -7,16 +7,11 @@ import { usePostStore } from "@/zustand/post";
 import { createClient } from "@/supabase/client";
 import Image from "next/image";
 import { useAuthStore } from "@/zustand/useAuth";
+import { tabs } from "@/components/community/communityTabAndSortTab/TabAndCategory";
 
 const supabase = createClient();
 
-// 카테고리 옵션 정의
-const CATEGORIES = [
-  { value: "자유게시판", label: "자유게시판" },
-  { value: "희귀동물", label: "희귀동물" },
-  { value: "자랑하기", label: "자랑하기" },
-  { value: "고민있어요", label: "고민있어요" }
-];
+const CATEGORIES = tabs.filter((tab) => tab !== "전체" && tab !== "인기글").map((tab) => ({ value: tab, label: tab })); // "전체"와 "인기글" 제외
 
 // Zustand store에서 필요한 상태와 함수들을 가져옵니다.
 const CreatePostPage = () => {
@@ -72,7 +67,6 @@ const CreatePostPage = () => {
         const { data: urlData } = supabase.storage.from("post_image").getPublicUrl(fileName);
         imageUrls.push(urlData.publicUrl);
       }
-
       // arr.join(',') : [aaa.png, bbb.png, ccc.png] -> "aaa.png,bbb.png,ccc.png"
       // arr.split(',') : "aaa.png,bbb.png,ccc.png" -> [aaa.png, bbb.png, ccc.png]
       const { data: postData, error: postError } = await supabase

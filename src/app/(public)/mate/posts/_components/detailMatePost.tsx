@@ -239,13 +239,13 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             <h1 className="text-2xl font-semibold">산책 메이트 모집 글 작성하기</h1>
             <div className="flex flex-row gap-x-3">
               <button
-                className="flex h-8 cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-3"
+                className="bg-editBtnColor flex h-8 cursor-pointer items-center justify-center rounded-md px-3"
                 type="submit"
               >
                 수정 완료
               </button>
               <button
-                className="flex h-8 cursor-pointer items-center justify-center rounded-md bg-delBtnColor px-3"
+                className="bg-delBtnColor flex h-8 cursor-pointer items-center justify-center rounded-md px-3"
                 type="button"
                 onClick={handleResetEditPost}
               >
@@ -391,13 +391,13 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             {userId === post.user_id && (
               <div className="flex flex-row gap-x-5">
                 <button
-                  className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
+                  className="bg-editBtnColor flex h-8 w-16 cursor-pointer items-center justify-center rounded-md p-2"
                   onClick={handleEditPost}
                 >
                   수정
                 </button>
                 <button
-                  className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
+                  className="bg-delBtnColor flex h-8 w-16 cursor-pointer items-center justify-center rounded-md p-2"
                   onClick={() => handleDeletePost(post.id)}
                 >
                   삭제
