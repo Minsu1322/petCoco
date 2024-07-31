@@ -5,6 +5,9 @@ import React from "react";
 
 const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
   const params = useParams();
+  if (params === null) {
+    return;
+  }
   const id = params.id;
   return (
     <div className="ml-[100px] flex flex-wrap">
@@ -22,6 +25,12 @@ const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
         </Link>
         <Link className="px-4 py-2 text-center font-bold text-black" href={`/mypage/${id}/mypet`}>
           팻 프로필
+        </Link>
+        <Link className="px-4 py-2 text-center font-bold text-black" href={`/mypage/${id}/myposts`}>
+          내 포스트
+        </Link>
+        <Link className="px-4 py-2 text-center font-bold text-black" href={`/mypage/${id}/mymateposts`}>
+          내 산책 메이트
         </Link>
       </div>
 

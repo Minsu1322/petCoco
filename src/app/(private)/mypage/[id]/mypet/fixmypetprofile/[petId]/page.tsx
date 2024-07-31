@@ -20,6 +20,9 @@ const fixmypetprofile = () => {
   const [petImage, setPetImage] = useState<File | null>(); //서버에 반영될 이미지 파일
   const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
   const params = useParams();
+  if (params === null) {
+    return;
+  }
   const id = params.id;
   const petId = params.petId;
   const supabase = createClient();
@@ -171,6 +174,7 @@ const fixmypetprofile = () => {
     queryKey: ["pet"],
     queryFn: getPetData
   });
+
   if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
   if (isError) {
