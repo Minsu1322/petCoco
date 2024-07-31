@@ -57,3 +57,17 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     return NextResponse.json({ error: "프로필 업데이트가 실패했습니다." });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const info = await request.json();
+    const supabase = createClient();
+    const { data, error } = await supabase.from("usersPet").delete().eq("id", info);
+    if (error) {
+      return alert(`${error.message}`);
+    }
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json({ error: "삭제에 실패했습니다." });
+  }
+}

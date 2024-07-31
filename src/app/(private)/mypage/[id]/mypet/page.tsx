@@ -8,6 +8,9 @@ import Router from "next/router";
 type PetType = UsersPetType;
 const mypet = () => {
   const params = useParams();
+  if (params === null) {
+    return;
+  }
   const id = params.id;
   console.log(id);
 

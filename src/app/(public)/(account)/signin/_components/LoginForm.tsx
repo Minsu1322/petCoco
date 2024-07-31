@@ -42,7 +42,7 @@ const LoginForm = () => {
       <h1 className="text-center text-[30px] font-semibold">로그인</h1>
       <div className="mt-10 flex flex-col items-center">
         <form onSubmit={handleSubmit}>
-          <div className="flex h-[60px] w-[550px] items-center border">
+          <div className="flex h-[60px] w-[550px] items-center rounded-[10px] border">
             <label className="ml-5 w-[70px] text-center">이메일</label>
             <input
               className="ml-5 h-[35px] w-[420px] pl-2"
@@ -53,7 +53,7 @@ const LoginForm = () => {
               required
             />
           </div>
-          <div className="mt-[30px] flex h-[60px] w-[550px] items-center border">
+          <div className="mt-[30px] flex h-[60px] w-[550px] items-center rounded-[10px] border">
             <label className="ml-5 w-[70px] text-center">비밀번호</label>
             <input
               className="ml-5 h-[35px] w-[420px] pl-2"
