@@ -1,6 +1,5 @@
 "use client";
-import MyPageProfile from "./_components/MyPageProfile";
-import ChangeProfileModalButton from "./_components/ChangeProfileModalButton";
+
 import { useAuthStore } from "@/zustand/useAuth";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";

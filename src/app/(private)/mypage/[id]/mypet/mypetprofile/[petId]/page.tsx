@@ -115,13 +115,13 @@ const MyPetProfile = () => {
           무게: {filteredProfile[0].weight} kg
         </span>
         <br />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
+        <div className="max-w-[300px] break-words text-[24px] font-bold text-[#000000] sm:text-[20px]">
           의료기록: {filteredProfile[0].medicalRecords}
-        </span>
+        </div>
         <br />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
+        <div className="max-w-[300px] break-words text-[24px] font-bold text-[#000000] sm:text-[20px]">
           자기소개: {filteredProfile[0].introduction}
-        </span>
+        </div>
       </div>
       <div className="mt-5 flex gap-[15px]">
         <Link

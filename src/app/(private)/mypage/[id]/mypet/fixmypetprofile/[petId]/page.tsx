@@ -1,6 +1,6 @@
 "use client";
 import { v4 as uuidv4 } from "uuid";
-import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,18 +9,21 @@ import { UsersPetType } from "@/types/auth.type";
 type PetType = UsersPetType;
 
 const fixmypetprofile = () => {
-  const [petName, setPetNickName] = useState("");
-  const [age, setAge] = useState("");
-  const [majorClass, setMajorClass] = useState("");
-  const [minorClass, setMinorClass] = useState("");
-  const [maleFemale, setMaleFemale] = useState("");
-  const [neutralized, setNeutralized] = useState("");
-  const [weight, setWeight] = useState(0);
-  const [medicalRecords, setMedicalRecords] = useState("");
-  const [introduction, setIntroduction] = useState("");
+  const [petName, setPetNickName] = useState<string | null>("");
+  const [age, setAge] = useState<string | null>("");
+  const [majorClass, setMajorClass] = useState<string | null>("");
+  const [minorClass, setMinorClass] = useState<string | null>("");
+  const [maleFemale, setMaleFemale] = useState<string | null>("");
+  const [neutralized, setNeutralized] = useState<string | null>("");
+  const [weight, setWeight] = useState<number | null>(0);
+  const [medicalRecords, setMedicalRecords] = useState<string | null>("");
+  const [introduction, setIntroduction] = useState<string | null>("");
   const [petImage, setPetImage] = useState<File | null>(); //서버에 반영될 이미지 파일
-  const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
+  const [previewImage, setPreviewImage] = useState<string | null>(); // 이미지 변경 확인을 위해 보여줄 임시 url
+  const [petImageUrl, setPetImageUrl] = useState<string | null>();
+  const [filteredProfile, setFilteredProfile] = useState<PetType[]>([]);
   const params = useParams();
+
   if (params === null) {
     return;
   }
@@ -34,16 +37,6 @@ const fixmypetprofile = () => {
   function toMyPet() {
     router.push(`/mypage/${id}/mypet/mypetprofile/${petId}`);
   }
-
-  // const updateProfileNickNameWithSupabase = async (newName: string, id: string) => {
-  //   const { data: result } = await supabase.from("users").update({ nickname: newName }).eq("id", id);
-  //   return result;
-  // };
-
-  // const updateProfileImgWithSupabase = async (newImg: string, id: string) => {
-  //   const { data: result } = await supabase.from("users").update({ profile_img: newImg }).eq("id", id);
-  //   return result;
-  // };
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
@@ -67,8 +60,27 @@ const fixmypetprofile = () => {
 
   const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
   const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
-  const handleMedicalRecords = (e: ChangeEvent<HTMLInputElement>) => setMedicalRecords(e.target.value);
-  const handleIntroductionChange = (e: ChangeEvent<HTMLInputElement>) => setIntroduction(e.target.value);
+  const handleMedicalRecords = (e: ChangeEvent<HTMLTextAreaElement>) => setMedicalRecords(e.target.value);
+  const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
+
+  const getPetData = async () => {
+    const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = response.json();
+
+    return data;
+  };
+
+  const {
+    data: pet,
+    isPending,
+    isError
+  } = useQuery<UsersPetType[]>({
+    queryKey: ["pet"],
+    queryFn: getPetData
+  });
 
   const updateProfileWithSupabase = async ({
     petName,
@@ -123,30 +135,20 @@ const fixmypetprofile = () => {
     const FILE_NAME = "profile_image";
     const fileUrl = `${FILE_NAME}_${imageId}`;
 
-    // await updateProfileNickNameWithSupabase(nickName, user.id);
-    // //유저 닉네임 변경
-    // if (profileImage === null) {
-    //   return;
-    // } else if (profileImage) {
-    //   const { data, error } = await supabase.storage.from("profile_img").upload(fileUrl, profileImage);
-    //   const publicUrl = supabase.storage.from("profile_img").getPublicUrl(`${data!.path}`);
-
-    //   await updateProfileImgWithSupabase(publicUrl.data.publicUrl, user.id);
-    // } //유저 프로필 사진 변경
-
-    // if (nickName !== user.nickname) {
-    //   updatingData.nickname = nickName;
-    // }
-    let petImageUrl = "";
+    let uploadUrl = null;
     if (petImage) {
       const imgData = await supabase.storage.from("pet_image").upload(fileUrl, petImage);
       const imgUrl = supabase.storage.from("pet_image").getPublicUrl(imgData.data!.path);
-      petImageUrl = imgUrl.data.publicUrl;
+      setPetImageUrl(imgUrl.data.publicUrl);
+      uploadUrl = imgUrl.data.publicUrl;
+    } else {
+      setPetImageUrl(filteredProfile![0].petImage);
+      uploadUrl = filteredProfile![0].petImage;
     }
 
     updateMutate.mutate({
       petName: petName,
-      petImage: petImageUrl,
+      petImage: uploadUrl,
       age: age,
       majorClass: majorClass,
       minorClass: minorClass,
@@ -162,34 +164,43 @@ const fixmypetprofile = () => {
     toMyPet();
   };
 
-  const getPetData = async () => {
-    const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    });
-    const data = response.json();
-
-    return data;
+  const setDefaultProfile = () => {
+    if (!filteredProfile || filteredProfile.length === 0) {
+      return;
+    }
+    setPetNickName(filteredProfile[0].petName);
+    setMajorClass(filteredProfile[0].majorClass);
+    setMinorClass(filteredProfile[0].minorClass);
+    setAge(filteredProfile[0].age);
+    setMaleFemale(filteredProfile[0].male_female);
+    setNeutralized(filteredProfile[0].neutralized);
+    setWeight(filteredProfile[0].weight);
+    setMedicalRecords(filteredProfile[0].medicalRecords);
+    setIntroduction(filteredProfile[0].introduction);
+    setPreviewImage(filteredProfile[0].petImage);
+    setPetImageUrl(filteredProfile[0].petImage);
   };
 
-  const {
-    data: pet,
-    isPending,
-    isError
-  } = useQuery<UsersPetType[]>({
-    queryKey: ["pet"],
-    queryFn: getPetData
-  });
+  useEffect(() => {
+    if (!pet) {
+      return;
+    }
+    const filtered = pet.filter((profile) => {
+      return profile.id === petId;
+    });
+    setFilteredProfile(filtered);
+  }, [pet]);
 
-  if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  useEffect(() => {
+    setDefaultProfile();
+  }, [filteredProfile]);
+
+  if (isPending || filteredProfile.length === 0)
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
   if (isError) {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
-
-  const filteredProfile = pet.filter((profile) => {
-    return profile.id === petId;
-  });
 
   return (
     <div
@@ -198,7 +209,11 @@ const fixmypetprofile = () => {
     >
       <h1 className="mt-5 text-2xl font-bold">팻 정보 변경하기</h1>
       <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
-        <img className="max-h-[200px] max-w-[200px] object-cover" src={previewImage} alt="profile_img" />
+        <img
+          className="max-h-[200px] max-w-[200px] object-cover"
+          src={previewImage ? previewImage : ""}
+          alt="profile_img"
+        />
         <br></br>
         <button
           className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
@@ -210,77 +225,86 @@ const fixmypetprofile = () => {
         <input id="fileInput" type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
       </div>
       <br />
-      이름
+      <p className="font-bold">이름</p>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
-        placeholder="변경할 이름"
-        defaultValue={filteredProfile[0].petName || ""}
+        placeholder="변경할 이름(최대 8자)"
+        maxLength={8}
+        defaultValue={filteredProfile![0].petName || ""}
         onChange={handlePetNameChange}
       />
       <br />
-      대분류
+      <p className="font-bold">대분류</p>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="개, 고양이, 물고기 등등"
-        defaultValue={filteredProfile[0].majorClass || ""}
+        maxLength={20}
+        defaultValue={filteredProfile![0].majorClass || ""}
         onChange={handleMajorClassChange}
       />
       <br />
-      소분류
+      <p className="font-bold">소분류</p>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="치와와, 랙돌, 금붕어 등등"
-        defaultValue={filteredProfile[0].minorClass || ""}
+        maxLength={20}
+        defaultValue={filteredProfile![0].minorClass || ""}
         onChange={handleMinorClassChange}
       />
       <br />
-      나이
+      <p className="font-bold">나이</p>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="나이"
-        defaultValue={filteredProfile[0].age || ""}
+        maxLength={100}
+        defaultValue={filteredProfile![0].age || ""}
         onChange={handleAgeChange}
       />
       <br />
-      성별
-      <div>
+      <p className="font-bold">성별</p>
+      <div className="flex flex-row">
+        <input type="checkbox" name="gender" value="암" onChange={handleMaleFemaleChange} /> 암&nbsp;
         <input type="checkbox" name="gender" value="수" onChange={handleMaleFemaleChange} /> 수
-        <br />
-        <input type="checkbox" name="gender" value="암" onChange={handleMaleFemaleChange} /> 암
       </div>
-      <br /> 중성화
-      <input type="checkbox" name="neutralize" value="YES" onChange={handleNeutralize} />
       <br />
-      무게(kg) :
+      <p className="font-bold">중성화 여부</p>
+      <div className="flex flex-row">
+        <input type="checkbox" name="neutralize" value="YES" onChange={handleNeutralize} /> YES &nbsp;
+        <input type="checkbox" name="neutralize" value="No" onChange={handleNeutralize} /> No
+      </div>
+      <br />
+      <p className="font-bold">무게(kg)</p>
       <input
         type="number"
         step="0.1"
         placeholder="1kg 미만은 소수점으로 표기"
+        maxLength={100}
+        defaultValue={filteredProfile![0].weight || ""}
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         name="weight"
         //value={weight === null ? "" : weight}
         onChange={handleWeight}
       />
       <br />
-      의료기록
-      <input
+      <p className="font-bold">의료기록(최대 200자)</p>
+      <textarea
         className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="예방접종 및 기타 의료 기록"
-        defaultValue={filteredProfile[0].medicalRecords || ""}
+        placeholder="예방접종 및 기타 의료 기록(최대 200자)"
+        maxLength={200}
+        defaultValue={filteredProfile![0].medicalRecords || ""}
         onChange={handleMedicalRecords}
       />
       <br />
-      특징
-      <input
+      <p className="font-bold">특징(최대 200자)</p>
+      <textarea
         className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="좋아하는 것, 싫어하는 것 등등"
-        defaultValue={filteredProfile[0].introduction || ""}
+        placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
+        maxLength={200}
+        defaultValue={filteredProfile![0].introduction || ""}
         onChange={handleIntroductionChange}
       />
       <div className="mt-5 flex gap-[15px]">
