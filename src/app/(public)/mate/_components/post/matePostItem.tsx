@@ -122,8 +122,8 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
         </div>
       </Link>
       <div className="mt-3 flex flex-col justify-between sm:flex-row">
-        <div className="flex flex-row items-center gap-x-1 rounded-lg px-1 hover:bg-sky-200">
-          <p className="mb-2 sm:mb-0">{post.users?.nickname}</p>
+        <div className="flex flex-row items-center gap-x-1 rounded-lg px-1 hover:bg-sky-200" onClick={startChat}>
+          <p className="mb-2 sm:mb-0">{post.users[0]?.nickname}</p>
           <img src="/assets/svg/mail-alt.svg" className="h-6 w-6" />
         </div>
         <div className="flex flex-col items-center gap-y-1 sm:flex-row sm:gap-x-5">

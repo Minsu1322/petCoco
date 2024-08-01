@@ -3,9 +3,15 @@ import React from "react";
 
 const LoginButton = () => {
   return (
-    <Link href={"/signin"}>
-      <button>로그인</button>
-    </Link>
+    <div className="flex">
+      <Link href={"/signin"}>
+        <button className="mr-2">로그인</button>
+      </Link>
+      <p>|</p>
+      <Link href={"/signup"}>
+        <button className="ml-2">회원가입</button>
+      </Link>
+    </div>
   );
 };
 
