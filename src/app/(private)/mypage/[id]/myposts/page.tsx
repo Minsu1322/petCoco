@@ -1,26 +1,14 @@
 import Comments from "@/components/community/[id]/Comment";
 import { createClient } from "@/supabase/server";
-import { Tables } from "@/types/supabase";
+import { MatePostAllType } from "@/types/mate.type";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import React from "react";
 
 interface PageProps {
   params: { id: string };
 }
 
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-  created_at: string;
-  users: {
-    nickname: string;
-  };
-  // 필요한 다른 필드들을 여기에 추가하세요
-}
-
-const fetchMyPosts = async (userId: string): Promise<Tables<"posts">[] | null> => {
+const fetchMyPosts = async (userId: string): Promise<MatePostAllType[] | null> => {
   const supabase = createClient();
   console.log("id", userId);
 

@@ -35,35 +35,6 @@ const addmypetprofile = () => {
     router.push(`/mypage/${id}/mypet`);
   }
 
-  // const updateProfileNickNameWithSupabase = async (newName: string, id: string) => {
-  //   const { data: result } = await supabase.from("users").update({ nickname: newName }).eq("id", id);
-  //   return result;
-  // };
-
-  // const updateProfileImgWithSupabase = async (newImg: string, id: string) => {
-  //   const { data: result } = await supabase.from("users").update({ profile_img: newImg }).eq("id", id);
-  //   return result;
-  // };
-
-  // const getProfileData = async () => {
-  //   const response = await fetch(`/api/mypage/${id}/myprofile`, {
-  //     method: "GET",
-  //     headers: { "Content-Type": "application/json" }
-  //   });
-  //   const data = response.json();
-
-  //   return data;
-  // };
-
-  // const {
-  //   data: user,
-  //   isPending,
-  //   isError
-  // } = useQuery({
-  //   queryKey: ["user"],
-  //   queryFn: getProfileData
-  // });
-
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
     let image = window.URL.createObjectURL(file);
@@ -142,20 +113,6 @@ const addmypetprofile = () => {
     const FILE_NAME = "profile_image";
     const fileUrl = `${FILE_NAME}_${imageId}`;
 
-    // await updateProfileNickNameWithSupabase(nickName, user.id);
-    // //유저 닉네임 변경
-    // if (profileImage === null) {
-    //   return;
-    // } else if (profileImage) {
-    //   const { data, error } = await supabase.storage.from("profile_img").upload(fileUrl, profileImage);
-    //   const publicUrl = supabase.storage.from("profile_img").getPublicUrl(`${data!.path}`);
-
-    //   await updateProfileImgWithSupabase(publicUrl.data.publicUrl, user.id);
-    // } //유저 프로필 사진 변경
-
-    // if (nickName !== user.nickname) {
-    //   updatingData.nickname = nickName;
-    // }
     let petImageUrl = "";
     if (petImage) {
       const imgData = await supabase.storage.from("pet_image").upload(fileUrl, petImage);
@@ -260,7 +217,6 @@ const addmypetprofile = () => {
         maxLength={100}
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         name="weight"
-        //value={weight === null ? "" : weight}
         onChange={handleWeight}
       />
       <br />

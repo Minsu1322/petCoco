@@ -17,6 +17,7 @@ const FixMyProfile = () => {
   const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
   const [profileImageUrl, setProfileImageUrl] = useState(""); //서버에 반영될 이미지 URL
   const params = useParams();
+
   if (params === null) {
     return;
   }
@@ -60,21 +61,22 @@ const FixMyProfile = () => {
     queryFn: getProfileData
   });
 
-  // const setDefaultProfile = () => {
-  //   setNickName(user.nickname);
-  //   setMbti(user.mbti);
-  //   setAge(user.age);
-  //   setSelectedGender(user.gender);
-  //   setIntroduction(user.introduction);
-  //   setPreviewImage(user.profile_img);
-  //   setProfileImageUrl(user.profile_img);
-  // };
+  const setDefaultProfile = () => {
+    if (!user) {
+      return;
+    }
+    setNickName(user.nickname);
+    setMbti(user.mbti);
+    setAge(user.age);
+    setSelectedGender(user.gender);
+    setIntroduction(user.introduction);
+    setPreviewImage(user.profile_img);
+    setProfileImageUrl(user.profile_img);
+  };
 
-  // if (user) {
-  //   useEffect(() => {
-  //     setDefaultProfile();
-  //   }, []);
-  // }
+  useEffect(() => {
+    setDefaultProfile();
+  }, [user]);
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
@@ -125,16 +127,18 @@ const FixMyProfile = () => {
     const imageId = uuidv4();
     const FILE_NAME = "profile_image";
     const fileUrl = `${FILE_NAME}_${imageId}`;
-
+    let uploadimgUrl = "";
     if (profileImage) {
       const imgData = await supabase.storage.from("profile_img").upload(fileUrl, profileImage);
       const imgUrl = supabase.storage.from("profile_img").getPublicUrl(imgData.data!.path);
-      setProfileImageUrl(imgUrl.data.publicUrl);
+      uploadimgUrl = imgUrl.data.publicUrl;
+    } else {
+      uploadimgUrl = user.profile_img;
     }
-
+    setProfileImageUrl(uploadimgUrl);
     updateMutate.mutate({
       nickname: nickName,
-      profile_img: profileImageUrl,
+      profile_img: uploadimgUrl,
       age: age,
       mbti: mbti,
       gender: selectedGender,

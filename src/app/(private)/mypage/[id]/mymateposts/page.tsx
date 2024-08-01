@@ -29,8 +29,6 @@ const MyMate = () => {
   if (isPending) return <div>로딩 중...</div>;
   if (error) return <div>에러 발생: {error.message}</div>;
 
-  console.log(data);
-
   return (
     <div>
       {data.map((data) => (

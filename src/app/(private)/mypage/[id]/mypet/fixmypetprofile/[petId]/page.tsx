@@ -1,6 +1,6 @@
 "use client";
 import { v4 as uuidv4 } from "uuid";
-import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -20,7 +20,10 @@ const fixmypetprofile = () => {
   const [introduction, setIntroduction] = useState("");
   const [petImage, setPetImage] = useState<File | null>(); //서버에 반영될 이미지 파일
   const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
+  const [petImageUrl, setPetImageUrl] = useState("");
+  const [filteredProfile, setFilteredProfile] = useState<PetType>([]);
   const params = useParams();
+
   if (params === null) {
     return;
   }
@@ -34,16 +37,6 @@ const fixmypetprofile = () => {
   function toMyPet() {
     router.push(`/mypage/${id}/mypet/mypetprofile/${petId}`);
   }
-
-  // const updateProfileNickNameWithSupabase = async (newName: string, id: string) => {
-  //   const { data: result } = await supabase.from("users").update({ nickname: newName }).eq("id", id);
-  //   return result;
-  // };
-
-  // const updateProfileImgWithSupabase = async (newImg: string, id: string) => {
-  //   const { data: result } = await supabase.from("users").update({ profile_img: newImg }).eq("id", id);
-  //   return result;
-  // };
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
@@ -69,6 +62,25 @@ const fixmypetprofile = () => {
   const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
   const handleMedicalRecords = (e: ChangeEvent<HTMLTextAreaElement>) => setMedicalRecords(e.target.value);
   const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
+
+  const getPetData = async () => {
+    const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = response.json();
+
+    return data;
+  };
+
+  const {
+    data: pet,
+    isPending,
+    isError
+  } = useQuery<UsersPetType[]>({
+    queryKey: ["pet"],
+    queryFn: getPetData
+  });
 
   const updateProfileWithSupabase = async ({
     petName,
@@ -123,30 +135,20 @@ const fixmypetprofile = () => {
     const FILE_NAME = "profile_image";
     const fileUrl = `${FILE_NAME}_${imageId}`;
 
-    // await updateProfileNickNameWithSupabase(nickName, user.id);
-    // //유저 닉네임 변경
-    // if (profileImage === null) {
-    //   return;
-    // } else if (profileImage) {
-    //   const { data, error } = await supabase.storage.from("profile_img").upload(fileUrl, profileImage);
-    //   const publicUrl = supabase.storage.from("profile_img").getPublicUrl(`${data!.path}`);
-
-    //   await updateProfileImgWithSupabase(publicUrl.data.publicUrl, user.id);
-    // } //유저 프로필 사진 변경
-
-    // if (nickName !== user.nickname) {
-    //   updatingData.nickname = nickName;
-    // }
-    let petImageUrl = "";
+    let uploadUrl = "";
     if (petImage) {
       const imgData = await supabase.storage.from("pet_image").upload(fileUrl, petImage);
       const imgUrl = supabase.storage.from("pet_image").getPublicUrl(imgData.data!.path);
-      petImageUrl = imgUrl.data.publicUrl;
+      setPetImageUrl(imgUrl.data.publicUrl);
+      uploadUrl = imgUrl.data.publicUrl;
+    } else {
+      setPetImageUrl(filteredProfile![0].petImage);
+      uploadUrl = filteredProfile![0].petImage;
     }
 
     updateMutate.mutate({
       petName: petName,
-      petImage: petImageUrl,
+      petImage: uploadUrl,
       age: age,
       majorClass: majorClass,
       minorClass: minorClass,
@@ -162,34 +164,43 @@ const fixmypetprofile = () => {
     toMyPet();
   };
 
-  const getPetData = async () => {
-    const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    });
-    const data = response.json();
-
-    return data;
+  const setDefaultProfile = () => {
+    if (!filteredProfile || filteredProfile.length === 0) {
+      return;
+    }
+    setPetNickName(filteredProfile[0].petName);
+    setMajorClass(filteredProfile[0].majorClass);
+    setMinorClass(filteredProfile[0].minorClass);
+    setAge(filteredProfile[0].age);
+    setMaleFemale(filteredProfile[0].male_female);
+    setNeutralized(filteredProfile[0].neutralized);
+    setWeight(filteredProfile[0].weight);
+    setMedicalRecords(filteredProfile[0].medicalRecords);
+    setIntroduction(filteredProfile[0].introduction);
+    setPreviewImage(filteredProfile[0].petImage);
+    setPetImageUrl(filteredProfile[0].petImage);
   };
 
-  const {
-    data: pet,
-    isPending,
-    isError
-  } = useQuery<UsersPetType[]>({
-    queryKey: ["pet"],
-    queryFn: getPetData
-  });
+  useEffect(() => {
+    if (!pet) {
+      return;
+    }
+    const filtered = pet.filter((profile) => {
+      return profile.id === petId;
+    });
+    setFilteredProfile(filtered);
+  }, [pet]);
 
-  if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  useEffect(() => {
+    setDefaultProfile();
+  }, [filteredProfile]);
+
+  if (isPending || filteredProfile.length === 0)
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
   if (isError) {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
-
-  const filteredProfile = pet.filter((profile) => {
-    return profile.id === petId;
-  });
 
   return (
     <div
@@ -216,7 +227,7 @@ const fixmypetprofile = () => {
         type="text"
         placeholder="변경할 이름(최대 8자)"
         maxLength={8}
-        defaultValue={filteredProfile[0].petName || ""}
+        defaultValue={filteredProfile![0].petName || ""}
         onChange={handlePetNameChange}
       />
       <br />
@@ -226,7 +237,7 @@ const fixmypetprofile = () => {
         type="text"
         placeholder="개, 고양이, 물고기 등등"
         maxLength={20}
-        defaultValue={filteredProfile[0].majorClass || ""}
+        defaultValue={filteredProfile![0].majorClass || ""}
         onChange={handleMajorClassChange}
       />
       <br />
@@ -236,7 +247,7 @@ const fixmypetprofile = () => {
         type="text"
         placeholder="치와와, 랙돌, 금붕어 등등"
         maxLength={20}
-        defaultValue={filteredProfile[0].minorClass || ""}
+        defaultValue={filteredProfile![0].minorClass || ""}
         onChange={handleMinorClassChange}
       />
       <br />
@@ -246,7 +257,7 @@ const fixmypetprofile = () => {
         type="text"
         placeholder="나이"
         maxLength={100}
-        defaultValue={filteredProfile[0].age || ""}
+        defaultValue={filteredProfile![0].age || ""}
         onChange={handleAgeChange}
       />
       <br />
@@ -268,6 +279,7 @@ const fixmypetprofile = () => {
         step="0.1"
         placeholder="1kg 미만은 소수점으로 표기"
         maxLength={100}
+        defaultValue={filteredProfile![0].weight || ""}
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         name="weight"
         //value={weight === null ? "" : weight}
@@ -279,7 +291,7 @@ const fixmypetprofile = () => {
         className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         placeholder="예방접종 및 기타 의료 기록(최대 200자)"
         maxLength={200}
-        defaultValue={filteredProfile[0].medicalRecords || ""}
+        defaultValue={filteredProfile![0].medicalRecords || ""}
         onChange={handleMedicalRecords}
       />
       <br />
@@ -288,7 +300,7 @@ const fixmypetprofile = () => {
         className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
         maxLength={200}
-        defaultValue={filteredProfile[0].introduction || ""}
+        defaultValue={filteredProfile![0].introduction || ""}
         onChange={handleIntroductionChange}
       />
       <div className="mt-5 flex gap-[15px]">
