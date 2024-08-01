@@ -109,13 +109,14 @@
 }
 
 .embla__dot__selected:after {
-  background-color: #b4e85f;
+  background-color: mainColor;
 }
 
 .toggleContainer {
   display: flex;
   justify-content: center;
   margin-bottom: 5px;
+  gap: 12px;
 }
 
 .toggleButton {
@@ -123,6 +124,7 @@
   border: none;
   background-color: #f0f0f0;
   cursor: pointer;
+  border-radius: 8px;
 }
 
 .toggleButton.active {
