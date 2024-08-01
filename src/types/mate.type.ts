@@ -1,7 +1,7 @@
 import { UserType } from "./auth.type";
 import { Tables } from "./supabase";
 export type MatePostType = Tables<"matePosts">;
-export type MatePostPetsType = Tables<"matePostPets">;
+export type MatePostPetsType = Tables<"matepostpets">;
 
 export type MatePostFullType = MatePostType & {
   position: {
@@ -13,7 +13,7 @@ export type MatePostFullType = MatePostType & {
     isLoading: boolean;
   };
   users: UserType;
-}
+};
 
 export type MatePostAllType = MatePostType & {
   position: {
@@ -25,10 +25,10 @@ export type MatePostAllType = MatePostType & {
     isLoading: boolean;
   };
   users: UserType;
-  matePostPets: MatePostPetsType[]; 
-}
+  matepostpets: MatePostPetsType[];
+};
 
-export type MateNextPostType = Omit<MatePostFullType,  'id' | 'created_at' | 'users'>
+export type MateNextPostType = Omit<MatePostFullType, "id" | "created_at" | "users">;
 
 export type MatePostPetType = {
   post_id?: number; // post_id를 추가
