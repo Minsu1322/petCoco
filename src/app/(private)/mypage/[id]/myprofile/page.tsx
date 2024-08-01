@@ -54,7 +54,9 @@ const MyProfile = () => {
         <br />
         <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">MBTI: {user.mbti}</span>
         <br />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">자기소개: {user.introduction}</span>
+        <div className="max-w-[300px] break-words text-[24px] font-bold text-[#000000] sm:text-[20px]">
+          자기소개: {user.introduction}
+        </div>
 
         <div className="mt-5 flex gap-[15px]">
           <Link
