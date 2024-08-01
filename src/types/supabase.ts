@@ -48,7 +48,7 @@ export type Database = {
           },
         ]
       }
-      matePostPets: {
+      matepostpets: {
         Row: {
           age: string | null
           characteristics: string | null
@@ -336,12 +336,71 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_distance_km: {
+        Args: {
+          lat1: number
+          lng1: number
+          lat2: number
+          lng2: number
+        }
+        Returns: number
+      }
       create_mate_post_with_pets: {
         Args: {
           post_data: Json
           pets_data: Json
         }
         Returns: Json
+      }
+      get_mate_posts_with_distance: {
+        Args: {
+          lat: number
+          lng: number
+        }
+        Returns: {
+          id: string
+          created_at: string
+          title: string
+          content: string
+          user_id: string
+          position: Json
+          members: string
+          date_time: string
+          recruiting: boolean
+          recruitment_start: string
+          recruitment_end: string
+          address: string
+          place_name: string
+          preferred_route: string
+          special_requirements: string
+          location: unknown
+          users: Json
+          matepostpets: Json
+          distance: number
+        }[]
+      }
+      get_mate_posts_with_location: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          created_at: string
+          title: string
+          content: string
+          user_id: string
+          POSITION: Json
+          members: string
+          date_time: string
+          recruiting: boolean
+          recruitment_start: string
+          recruitment_end: string
+          address: string
+          place_name: string
+          preferred_route: string
+          special_requirements: string
+          location: unknown
+          users: Json
+          matepostpets: Json
+        }[]
       }
     }
     Enums: {
