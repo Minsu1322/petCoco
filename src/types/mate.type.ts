@@ -1,7 +1,7 @@
 import { UserType } from "./auth.type";
 import { Tables } from "./supabase";
 export type MatePostType = Tables<"matePosts">;
-export type matepostpetsType = Tables<"matepostpets">;
+export type matepostpetsType = Tables<"matePostPets">;
 
 export type MatePostFullType = MatePostType & {
   position: {
