@@ -57,7 +57,7 @@ export default function Home() {
         배너영역
       </div>
 
-      <div className="w-8/12 rounded-lg border border-gray-300 bg-white p-6 shadow-md">
+      <div className="w-8/12 rounded-lg border border-[#B4E85F] bg-white p-6 shadow-md">
         <h2 className="mb-4 text-xl font-semibold">주인님을 기다리고 있어요😥</h2>
         <AnimalCarousel slides={SLIDES} options={OPTIONS} />
       </div>

@@ -94,30 +94,30 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
           className={`${styles.toggleButton} ${animalType === "dog" ? styles.active : ""}`}
           onClick={() => setAnimalType("dog")}
         >
-          강아지
+          🐶 강아지
         </button>
         <button
           className={`${styles.toggleButton} ${animalType === "cat" ? styles.active : ""}`}
           onClick={() => setAnimalType("cat")}
         >
-          고양이
+          😺 고양이
         </button>
       </div>
 
-      <div className={styles.embla}>
+      <div className={`${styles.embla} ${styles.shrink}`}>
         <div className={styles.embla__viewport} ref={emblaRef}>
           <div className={styles.embla__container}>
             {randomAnimals.map((animal, index) => (
               <div className={styles.embla__slide} key={index}>
-                <div className="m-4 rounded-lg bg-white p-6 shadow-md">
-                  <h2 className="mb-4 text-center text-xl font-semibold">{animal.careAddr}</h2>
-                  <div className="mb-4 flex justify-center">
+                <div className="m-4 rounded-lg bg-white p-4 shadow-md">
+                  <h2 className="mb-2 text-center text-lg font-semibold">{animal.careAddr}</h2>
+                  <div className="mb-2 flex justify-center text-sm">
                     <span className="font-medium">{animal.careNm} 📞</span>
                     <span>{animal.officetel}</span>
                   </div>
                   <div className="flex">
-                    <img src={animal.popfile} alt={animal.kindCd} className="h-48 w-1/2 rounded-lg object-cover" />
-                    <div className="w-1/2 space-y-2 pl-4">
+                    <img src={animal.popfile} alt={animal.kindCd} className="h-40 w-1/2 rounded-lg object-cover" />
+                    <div className="w-1/2 space-y-1 pl-2 text-sm">
                       <p>
                         <span className="font-medium">나이:</span> {animal.age}
                       </p>
@@ -135,7 +135,7 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
                       </p>
                     </div>
                   </div>
-                  <p className="mt-4">
+                  <p className="mt-2 text-sm">
                     <span className="font-medium">특징:</span> {animal.specialMark}
                   </p>
                 </div>
@@ -143,10 +143,8 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
             ))}
           </div>
         </div>
-
         <PrevButton className={styles.embla__prev} onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
         <NextButton className={styles.embla__next} onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-
         <div className={styles.embla__dots}>
           {scrollSnaps.map((_, index) => (
             <DotButton
