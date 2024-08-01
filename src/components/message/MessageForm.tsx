@@ -51,19 +51,19 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex border-t border-mainColor p-2">
+    <form onSubmit={handleSubmit} className="flex border-t border-[#1FE476] p-2">
       <input
         type="text"
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="메시지를 입력하세요"
-        className="flex-grow rounded-l-md border border-mainColor px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1FE476]"
+        className="flex-grow rounded-l-md border border-[#1FE476] px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1FE476]"
       />
       <button
         type="submit"
         disabled={sendMessage.isPending}
         className={`rounded-r-md px-4 py-2 text-white ${
-          sendMessage.isPending ? "bg-gray-400" : "bg-mainColor hover:bg-[#1AD065]"
+          sendMessage.isPending ? "bg-gray-400" : "bg-[#1FE476] hover:bg-[#1AD065]"
         }`}
       >
         전송
