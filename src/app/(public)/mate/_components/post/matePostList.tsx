@@ -106,27 +106,6 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
     retry: false
   });
 
-  // const sortPosts = (posts: MatePostAllType[]) => {
-  //   // 가까운 순 필터
-  //   if (sortBy === "distance") {
-  //     if (geolocationData) {
-  //       return [...posts].sort((a, b) => {
-  //         const distanceA = getDistanceHaversine({
-  //           curPosition: geolocationData.center,
-  //           desPosition: a.position.center
-  //         });
-  //         const distanceB = getDistanceHaversine({
-  //           curPosition: geolocationData.center,
-  //           desPosition: b.position.center
-  //         });
-  //         return distanceA - distanceB;
-  //       });
-  //     }
-  //     return posts;
-  //   }
-  //   // 둘다 아닐때 원본 배열 반환
-  //   return posts;
-  // };
 
   const posts = data?.data ?? []
 
