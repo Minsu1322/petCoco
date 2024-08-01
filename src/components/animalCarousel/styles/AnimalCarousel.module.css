@@ -109,7 +109,7 @@
 }
 
 .embla__dot__selected:after {
-  background-color: mainColor;
+  background-color: #b4e85f;
 }
 
 .toggleContainer {
