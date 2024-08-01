@@ -32,6 +32,7 @@ const MatePage = () => {
     date_time: undefined,
     male_female: null,
     weight: null,
+    regions: null,
   });
 
   const updateFilter = (filterName: string, value: string) => {
@@ -57,7 +58,8 @@ const MatePage = () => {
       age: null,
       date_time: undefined,
       male_female: null,
-      weight: null
+      weight: null,
+      regions: null,
     });
     setSortBy("");
   };
@@ -67,11 +69,11 @@ const MatePage = () => {
   }
 
   return (
-    <div className="min-h-screen mb-10 container mx-auto ">
-      <h1 className="mb-7 p-2 text-3xl font-semibold">산책 메이트</h1>
-      <div className="flex flex-row gap-x-5">
+    <div className="min-h-screen mb-10 container mx-auto px-4">
+      <h1 className="mb-7 p-2 text-2xl md:text-3xl font-semibold">산책 메이트</h1>
+      <div className="flex flex-col lg:flex-row gap-y-5 lg:gap-x-5">
         {/* 왼쪽 메인 컨텐츠 영역 */}
-        <div className="w-3/4  mx-3">
+        <div className="w-full lg:w-3/4 mx-0 lg:mx-3">
           <div className="mb-5">
             <PostListFilterTab
               isCurrentPosts={isCurrentPosts}
@@ -88,9 +90,9 @@ const MatePage = () => {
           />
         </div>
         {/* 가운데 사이드 선 */}
-        <div className="border-l-2 border-gray-100 h-screen mx-3"><br /></div>
+        <div className="hidden lg:block border-l-2 border-gray-100 h-screen mx-3"><br /></div>
         {/* 오른쪽 사이드바 영역 */}
-        <div className="w-1/4 pl-5 mr-8">
+        <div className="w-full lg:w-1/4 pl-0 lg:pl-5 mr-0 lg:mr-8">
           <div className="mt-1 flex">
             <Link href="/mate/posts" className="mb-4 h-10 w-full items-center rounded-lg bg-mainColor p-2 text-center">
               <div>글쓰기</div>
