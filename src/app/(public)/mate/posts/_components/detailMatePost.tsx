@@ -1,10 +1,9 @@
 "use client";
 
-import { MateNextPostType, MatePostAllType, MatePostFullType, matepostpetsType } from "@/types/mate.type";
+import { MateNextPostType, MatePostAllType } from "@/types/mate.type";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { locationStore } from "@/zustand/locationStore";
@@ -212,7 +211,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   return (
     <div className="container mx-auto px-4 pb-5 sm:px-6 lg:px-8">
       {isEditing ? (
-        <form onSubmit={handleUpdatePost} className="space-y-6">
+        <form onSubmit={handleUpdatePost} className="space-y-6 mt-10">
           <div className="flex flex-col items-center justify-between sm:flex-row">
             <h1 className="mb-4 text-2xl font-semibold sm:mb-0">산책 메이트 모집 글 작성하기</h1>
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -242,7 +241,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 value={formPosts.title || ""}
                 onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
                 placeholder="제목을 입력해 주세요"
-                className="h-10 w-full rounded-md border border-gray-300 px-3"
+                className="h-10 w-3/4 rounded-md border border-gray-300 px-3"
                 id="title"
               />
             </div>
@@ -257,7 +256,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                   id="date_time"
                   value={formPosts.date_time || ""}
                   onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
-                  className="h-10 w-full rounded-md border border-gray-300 px-3"
+                  className="h-10 w-3/4 rounded-md border border-gray-300 px-3"
                 />
               </div>
               <div className="flex flex-grow flex-col space-y-2">
@@ -268,7 +267,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                   <input
                     type="text"
                     id="members"
-                    className="h-10 w-full rounded-md border border-gray-300 px-3"
+                    className="h-10 w-1/4 rounded-md border border-gray-300 px-3"
                     value={formPosts.members || ""}
                     onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
                   />
@@ -287,7 +286,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                   id="recruitment_start"
                   value={formPosts.recruitment_start || ""}
                   onChange={(e) => setFormPosts({ ...formPosts, recruitment_start: e.target.value })}
-                  className="h-10 w-full rounded-md border border-gray-300 px-3"
+                  className="h-10 w-2/6 rounded-md border border-gray-300 px-3"
                 />
                 <span className="self-center">~</span>
                 <input
@@ -295,7 +294,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                   id="recruitment_end"
                   value={formPosts.recruitment_end || ""}
                   onChange={(e) => setFormPosts({ ...formPosts, recruitment_end: e.target.value })}
-                  className="h-10 w-full rounded-md border border-gray-300 px-3"
+                  className="h-10 w-2/6 rounded-md border border-gray-300 px-3"
                 />
               </div>
             </div>
@@ -316,7 +315,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               <p className="text-sm text-gray-600">클릭한 곳의 주소는? {roadAddress}</p>
               <input
                 type="text"
-                className="h-10 w-full rounded-md border border-gray-300 px-3"
+                className="h-10 w-3/4 rounded-md border border-gray-300 px-3"
                 value={formPosts.place_name || ""}
                 onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
                 placeholder="장소 정보를 추가로 기입해 주세요"
@@ -330,7 +329,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               <input
                 type="text"
                 id="preferred_route"
-                className="h-10 w-full rounded-md border border-gray-300 px-3"
+                className="h-10 w-3/4 rounded-md border border-gray-300 px-3"
                 placeholder="선호하는 산책 루트가 있다면 적어주세요!"
                 value={formPosts.preferred_route || ""}
                 onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
@@ -344,7 +343,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               <input
                 type="text"
                 id="special_requirements"
-                className="h-10 w-full rounded-md border border-gray-300 px-3"
+                className="h-10 w-3/4 rounded-md border border-gray-300 px-3"
                 placeholder="메이트에게 원하는 특별한 사항이 있다면 적어주세요!"
                 value={formPosts.special_requirements || ""}
                 onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
@@ -359,7 +358,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 value={formPosts.content || ""}
                 onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
                 placeholder="글을 작성해 주세요."
-                className="h-40 w-full resize-none rounded-md border border-gray-300 p-3"
+                className="h-40 w-3/4 resize-none rounded-md border border-gray-300 p-3"
                 id="content"
               ></textarea>
             </div>

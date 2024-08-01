@@ -6,9 +6,9 @@ interface ItemButtonProps {
 
 const ItemButton = ({ text, className, p_className }: ItemButtonProps) => {
   return (
-    <button className={className}>
+    <div className={className}>
       <p className={p_className}>{text}</p>
-    </button>
+    </div>
   );
 };
 
