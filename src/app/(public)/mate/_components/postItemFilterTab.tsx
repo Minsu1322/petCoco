@@ -3,7 +3,7 @@
 import FilterSelectChip from "./filterSelectChip";
 import FilterDateChip from "./filterDateChip";
 import FilterWeightChip from "./filterWeightChip";
-import { gender, age, male_female } from "../array";
+import { gender, age, male_female, regions } from "../array";
 
 interface PostItemFilterTabProps {
   updateFilter: (filterName: string, value: any) => void;
@@ -13,6 +13,7 @@ interface PostItemFilterTabProps {
     male_female: string | null,
     age: string | null,
     weight: string | null,
+    regions: string | null,
   };
   onClick: () => void;
 }
@@ -39,7 +40,13 @@ const PostItemFilterTab = ({ updateFilter, filters, onClick }: PostItemFilterTab
           label="산책일" 
           selected={filters.date_time} 
           onSelect={(items) => updateFilter("date_time", items)} 
-        />  
+        /> 
+         <FilterSelectChip
+          label="지역별" 
+          array={regions}
+          selected={filters.regions} 
+          onSelect={(items) => updateFilter("regions", items)} 
+        />   
       </div>
       <div className="mt-5">
         <p className="text-lg text-gray-500">반려견 정보 필터</p>
