@@ -29,8 +29,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   const { position, setPosition } = locationStore();
 
-  
-
   const initialState: Omit<MateNextPostType, "user_id" | "position"> = {
     title: post.title || "",
     content: post.content || "",
@@ -61,7 +59,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const [isEditing, setIstEditting] = useState<boolean>(false);
 
   // console.log(post);
-
 
   const {
     data: addressData,
@@ -216,17 +213,17 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     <div className="container mx-auto px-4 pb-5 sm:px-6 lg:px-8">
       {isEditing ? (
         <form onSubmit={handleUpdatePost} className="space-y-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between">
-            <h1 className="text-2xl font-semibold mb-4 sm:mb-0">산책 메이트 모집 글 작성하기</h1>
-            <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col items-center justify-between sm:flex-row">
+            <h1 className="mb-4 text-2xl font-semibold sm:mb-0">산책 메이트 모집 글 작성하기</h1>
+            <div className="flex flex-col gap-3 sm:flex-row">
               <button
-                className="w-full sm:w-auto flex h-10 cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-4"
+                className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-4 sm:w-auto"
                 type="submit"
               >
                 수정 완료
               </button>
               <button
-                className="w-full sm:w-auto flex h-10 cursor-pointer items-center justify-center rounded-md bg-delBtnColor px-4"
+                className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md bg-delBtnColor px-4 sm:w-auto"
                 type="button"
                 onClick={handleResetEditPost}
               >
@@ -234,10 +231,12 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               </button>
             </div>
           </div>
-  
+
           <div className="space-y-6">
             <div className="flex flex-col space-y-2">
-              <label htmlFor="title" className="text-sm font-medium text-gray-700">제목</label>
+              <label htmlFor="title" className="text-sm font-medium text-gray-700">
+                제목
+              </label>
               <input
                 type="text"
                 value={formPosts.title || ""}
@@ -247,10 +246,12 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 id="title"
               />
             </div>
-  
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-              <div className="flex flex-col flex-grow space-y-2">
-                <label htmlFor="date_time" className="text-sm font-medium text-gray-700">희망 날짜 및 시간</label>
+
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+              <div className="flex flex-grow flex-col space-y-2">
+                <label htmlFor="date_time" className="text-sm font-medium text-gray-700">
+                  희망 날짜 및 시간
+                </label>
                 <input
                   type="datetime-local"
                   id="date_time"
@@ -259,8 +260,10 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                   className="h-10 w-full rounded-md border border-gray-300 px-3"
                 />
               </div>
-              <div className="flex flex-col flex-grow space-y-2">
-                <label htmlFor="members" className="text-sm font-medium text-gray-700">모집 인원 수</label>
+              <div className="flex flex-grow flex-col space-y-2">
+                <label htmlFor="members" className="text-sm font-medium text-gray-700">
+                  모집 인원 수
+                </label>
                 <div className="flex items-center">
                   <input
                     type="text"
@@ -273,10 +276,12 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 </div>
               </div>
             </div>
-  
+
             <div className="flex flex-col space-y-2">
-              <label htmlFor="recruitment_period" className="text-sm font-medium text-gray-700">모집기간</label>
-              <div className="flex flex-col sm:flex-row gap-2">
+              <label htmlFor="recruitment_period" className="text-sm font-medium text-gray-700">
+                모집기간
+              </label>
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <input
                   type="datetime-local"
                   id="recruitment_start"
@@ -294,7 +299,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 />
               </div>
             </div>
-  
+
             <div className="flex flex-col space-y-2">
               <label className="text-sm font-medium text-gray-700">산책 장소</label>
               <DynamicMapEditComponent
@@ -317,9 +322,11 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 placeholder="장소 정보를 추가로 기입해 주세요"
               />
             </div>
-  
+
             <div className="flex flex-col space-y-2">
-              <label htmlFor="preferred_route" className="text-sm font-medium text-gray-700">선호하는 산책 루트</label>
+              <label htmlFor="preferred_route" className="text-sm font-medium text-gray-700">
+                선호하는 산책 루트
+              </label>
               <input
                 type="text"
                 id="preferred_route"
@@ -329,9 +336,11 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
               />
             </div>
-  
+
             <div className="flex flex-col space-y-2">
-              <label htmlFor="special_requirements" className="text-sm font-medium text-gray-700">특별한 요구사항</label>
+              <label htmlFor="special_requirements" className="text-sm font-medium text-gray-700">
+                특별한 요구사항
+              </label>
               <input
                 type="text"
                 id="special_requirements"
@@ -341,9 +350,11 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
               />
             </div>
-  
+
             <div className="flex flex-col space-y-2">
-              <label htmlFor="content" className="text-sm font-medium text-gray-700">내용</label>
+              <label htmlFor="content" className="text-sm font-medium text-gray-700">
+                내용
+              </label>
               <textarea
                 value={formPosts.content || ""}
                 onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
@@ -352,11 +363,11 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 id="content"
               ></textarea>
             </div>
-  
+
             <div className="space-y-2">
               <p className="text-xl font-semibold">반려동물 정보 🐶</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {post.matePostPets.map((pet) => (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                {post.matepostpets.map((pet) => (
                   <div className="rounded-md bg-gray-100 p-4" key={pet.id}>
                     <p>성별 : {pet.male_female === "male" ? "남" : "여"}</p>
                     <p>중성화 여부 : {pet.neutered === true ? "예" : "아니오"}</p>
@@ -371,24 +382,24 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
         </form>
       ) : (
         <div className="mt-10 space-y-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
-            <p className="text-2xl font-semibold mb-4 sm:mb-0">{post.title}</p>
+          <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
+            <p className="mb-4 text-2xl font-semibold sm:mb-0">{post.title}</p>
             {userId === post.user_id && (
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row">
                 <button
-                  className="w-full sm:w-auto flex h-10 cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-4"
+                  className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-4 sm:w-auto"
                   onClick={handleEditPost}
                 >
                   수정
                 </button>
                 <button
-                  className="w-full sm:w-auto flex h-10 cursor-pointer items-center justify-center rounded-md bg-delBtnColor px-4"
+                  className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md bg-delBtnColor px-4 sm:w-auto"
                   onClick={() => handleDeletePost(post.id)}
                 >
                   삭제
                 </button>
                 <button
-                  className="w-full sm:w-auto flex h-10 cursor-pointer items-center justify-center rounded-md bg-gray-200 px-4"
+                  className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md bg-gray-200 px-4 sm:w-auto"
                   onClick={() => handleTogglePost(post.id)}
                 >
                   모집상태 변경
@@ -396,7 +407,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               </div>
             )}
           </div>
-  
+
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <Image
@@ -411,31 +422,35 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 <p>{new Date(post.created_at).toLocaleString()}</p>
               </div>
             </div>
-  
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <p>모집기간 : {post.recruitment_start?.split("T")[0]} {getConvertTime({ date_time: post.recruitment_start || "" })} ~ {post.recruitment_end?.split("T")[0]} {getConvertTime({ date_time: post.recruitment_end || "" })}</p>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <p>
+                모집기간 : {post.recruitment_start?.split("T")[0]}{" "}
+                {getConvertTime({ date_time: post.recruitment_start || "" })} ~ {post.recruitment_end?.split("T")[0]}{" "}
+                {getConvertTime({ date_time: post.recruitment_end || "" })}
+              </p>
               <p>모집 인원 수 : {post.members}명</p>
               <p>산책 장소 : {post.place_name}</p>
               <p>산책 날짜 : {post.date_time?.split("T")[0]}</p>
               <p>산책 시간 : {getConvertTime({ date_time: post.date_time || "" })}</p>
             </div>
-  
+
             <DynamicMapComponent
               center={{
                 lat: Number(post.position?.center?.lat),
                 lng: Number(post.position?.center?.lng)
               }}
             />
-  
+
             <p>선호하는 산책 루트 : {post.preferred_route}</p>
             <p>특별한 요구 사항 : {post.special_requirements}</p>
             <p>내용 : {post.content}</p>
-  
+
             <div className="space-y-4">
               <p className="text-xl font-semibold">반려동물 정보 🐶</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {post.matePostPets && post.matePostPets.length > 0 ? (
-                  post.matePostPets.map((pet) => (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                {post.matepostpets && post.matepostpets.length > 0 ? (
+                  post.matepostpets.map((pet) => (
                     <div className="rounded-md border border-gray-200 bg-gray-100 p-4 shadow-lg" key={pet.id}>
                       <p>성별: {pet.male_female === "male" ? "남" : pet.male_female === "female" ? "여" : ""}</p>
                       <p>중성화 여부: {pet.neutered ? "예" : pet.neutered === false ? "아니오" : ""}</p>
