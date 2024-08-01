@@ -96,6 +96,7 @@ export type Database = {
           created_at: string
           date_time: string | null
           id: string
+          location: unknown | null
           members: string | null
           place_name: string | null
           position: Json | null
@@ -113,6 +114,7 @@ export type Database = {
           created_at?: string
           date_time?: string | null
           id?: string
+          location?: unknown | null
           members?: string | null
           place_name?: string | null
           position?: Json | null
@@ -130,6 +132,7 @@ export type Database = {
           created_at?: string
           date_time?: string | null
           id?: string
+          location?: unknown | null
           members?: string | null
           place_name?: string | null
           position?: Json | null

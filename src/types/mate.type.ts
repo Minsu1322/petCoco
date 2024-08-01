@@ -46,7 +46,6 @@ export type Pets = {
   age: string;
 };
 
-
 export type PostsResponse = {
   data: MatePostAllType[];
   page: number;
