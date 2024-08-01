@@ -1,36 +1,85 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { usePostStore } from "@/zustand/post";
 import { createClient } from "@/supabase/client";
 import Image from "next/image";
 import { useAuthStore } from "@/zustand/useAuth";
+import { tabs } from "@/components/community/communityTabAndSortTab/TabAndCategory";
+import { NextRequest } from "next/server";
 
 const supabase = createClient();
 
-// 카테고리 옵션 정의
-const CATEGORIES = [
-  { value: "자유게시판", label: "자유게시판" },
-  { value: "희귀동물", label: "희귀동물" },
-  { value: "자랑하기", label: "자랑하기" },
-  { value: "고민있어요", label: "고민있어요" }
-];
+const CATEGORIES = tabs.filter((tab) => tab !== "전체" && tab !== "인기글").map((tab) => ({ value: tab, label: tab })); // "전체"와 "인기글" 제외
 
 // Zustand store에서 필요한 상태와 함수들을 가져옵니다.
 const CreatePostPage = () => {
   const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage, initPost } =
     usePostStore();
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
+  const [deleteFiles, setDeleteFiles] = useState<string[]>([]);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const postId = searchParams.get("id");
   const { user } = useAuthStore();
   // const user_id = user && user.id;
 
   useEffect(() => {
-    initPost(); // 이미지 초기화
-    setUploadFiles([]); // 업로드 파일 초기화
-  }, []);
+    let ignore = false;
+    const fetchPost = async (postId: string | null) => {
+      if (postId) {
+        const { data: postData, error: postError } = await supabase
+          .from("posts")
+          .select(`*, users (*)`)
+          .eq("id", postId)
+          .single();
+        if (postError) {
+          console.error("게시글을 불러오는 중 오류가 발생했습니다:", postError);
+          return;
+        }
+        setTitle(postData?.title ? postData.title : "");
+        setContent(postData?.content ? postData.content : "");
+        setCategory(postData.category);
+        //supabase에서 이미지 URL을 가져와서 이미지로 변환
+        if (!ignore) {
+          await fetchPostImages(postData as { post_imageURL: string });
+        }
+      } else {
+        initPost(); // 이미지 초기화
+        setUploadFiles([]); // 업로드 파일 초기화
+      }
+    };
+
+    fetchPost(postId);
+
+    return () => {
+      ignore = true;
+    };
+  }, [postId]);
+
+  const fetchPostImages = async (postData: { post_imageURL: string }) => {
+    if (postData?.post_imageURL) {
+      setUploadFiles([]); // 업로드 파일 초기화
+      const urls = postData.post_imageURL.split(",");
+      urls.forEach((url) => {
+        // 이미지 URL을 data url 형태로 변환
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.responseType = "blob";
+        xhr.onload = function () {
+          const reader = new FileReader();
+          reader.onload = function () {
+            addImage(reader.result as string);
+            setUploadFiles((prev) => [...prev, new File([xhr.response], url as string)]);
+          };
+          reader.readAsDataURL(xhr.response);
+        };
+        xhr.send();
+      });
+    }
+  };
 
   // 이미지 업로드 처리 함수
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +98,13 @@ const CreatePostPage = () => {
     });
   };
 
-  const handleImageRemove = (index: number) => {
+  const handleImageRemove = async (index: number) => {
+    const imageLocationArray = uploadFiles[index].name.split("/storage/v1/object/public/post_image/");
+    if (imageLocationArray.length > 1) {
+      const imageLocation = imageLocationArray[1];
+
+      setDeleteFiles((prev) => [...prev, imageLocation]);
+    }
     removeImage(index);
     setUploadFiles((prev) => prev.filter((_, i) => i !== index));
   };
@@ -61,38 +116,69 @@ const CreatePostPage = () => {
     try {
       // 이미지 업로드 및 URL 저장
       const imageUrls: string[] = [];
+      for (const deleteImage of deleteFiles) {
+        const { error: deleteError } = await supabase.storage.from("post_image").remove([deleteImage]);
+        if (deleteError) throw deleteError;
+      }
+
       for (const image of uploadFiles) {
         // 0123456
         // aaa.png
         // bbb.png
-        const ext = image.name.substring(image.name.lastIndexOf(".") + 1);
-        const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
-        const { error: uploadError } = await supabase.storage.from("post_image").upload(fileName, image);
-        if (uploadError) throw uploadError;
-        const { data: urlData } = supabase.storage.from("post_image").getPublicUrl(fileName);
-        imageUrls.push(urlData.publicUrl);
+        const imageLocationArray = image.name.split("/storage/v1/object/public/post_image/");
+        if (imageLocationArray.length > 1) {
+          imageUrls.push(image.name);
+        } else {
+          const ext = image.name.substring(image.name.lastIndexOf(".") + 1);
+          const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
+          const { error: uploadError } = await supabase.storage.from("post_image").upload(fileName, image);
+          if (uploadError) throw uploadError;
+          const { data: urlData } = supabase.storage.from("post_image").getPublicUrl(fileName);
+          imageUrls.push(urlData.publicUrl);
+        }
       }
-
       // arr.join(',') : [aaa.png, bbb.png, ccc.png] -> "aaa.png,bbb.png,ccc.png"
       // arr.split(',') : "aaa.png,bbb.png,ccc.png" -> [aaa.png, bbb.png, ccc.png]
-      const { data: postData, error: postError } = await supabase
-        .from("posts")
-        .insert({
-          user_id: user.id,
-          title,
-          content,
-          category,
-          post_imageURL: imageUrls.join(",")
-        })
-        .select("*");
 
-      console.log("postData : ", postData);
+      // useEffect(() => {
+      //   if (data?.fetchBoard.images?.length) {
+      //     setImgUrl([...data?.fetchBoard.images]);
+      //   }
+      // }, [data]);
+
+      // 게시글 수정이라면 업데이트, 아니라면 새로 생성
+      if (postId) {
+        const { data: postData, error: postError } = await supabase
+          .from("posts")
+          .update({
+            title,
+            content,
+            category,
+            post_imageURL: imageUrls.join(",")
+          })
+          .eq("id", postId);
+
+        if (postError) throw postError;
+      } else {
+        const { data: postData, error: postError } = await supabase
+          .from("posts")
+          .insert({
+            user_id: user.id,
+            title,
+            content,
+            category,
+            post_imageURL: imageUrls.join(",")
+          })
+          .select("*");
+
+        if (postError) throw postError;
+      }
 
       console.log("게시글이 성공적으로 저장되었습니다.");
-      router.push("/community");
+      router.push(postId ? `/community/${postId}` : "/community");
     } catch (error) {
-      console.error("게시글 저장 중 오류 발생:", error);
-      alert("게시글 저장에 실패했습니다. 다시 시도해 주세요.");
+      console.error("게시글 처리 중 오류가 발생했습니다:", error);
+      alert("게시글 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
     }
   };
 
@@ -182,7 +268,7 @@ const CreatePostPage = () => {
         type="submit"
         className="mb-4 w-full rounded bg-blue-500 p-2 font-semibold text-white transition-colors hover:bg-blue-600"
       >
-        작성완료
+        {postId ? "수정하기" : "작성하기"}
       </button>
       {/* 뒤로가기 링크 */}
       <Link
