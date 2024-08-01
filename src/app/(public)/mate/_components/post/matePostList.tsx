@@ -154,11 +154,11 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
       </div>
   
       {/* pagination */}
-      <div className="mt-8 flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-2">
+      <div className="mt-8 flex flex-row justify-center items-center">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
-          className="w-full sm:w-auto rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
+          className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
         >
           이전
         </button>
@@ -168,7 +168,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         <button 
           onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
           disabled={data?.totalPages !== undefined && page === data.totalPages}
-          className="w-full sm:w-auto rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
+          className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
         >
           다음
         </button>
