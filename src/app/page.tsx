@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { MatePostType } from "@/types/mate.type";
 import { MatePostsResponse, PostsResponse } from "@/types/mainPageTypes/MainPageTypes";
+import AnimalCarousel from "@/components/animalCarousel/AnimalCarousel";
+import { EmblaOptionsType } from "embla-carousel";
 
 export default function Home() {
   //메이트정보
@@ -44,6 +46,10 @@ export default function Home() {
   if (isLoading || isMateLoading) return <div>Loading...</div>;
   if (error || mateError) return <div>Error: {error?.message || mateError?.message}</div>;
 
+  const OPTIONS: EmblaOptionsType = { align: "start", dragFree: true, loop: true };
+  const SLIDE_COUNT = 5;
+  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+
   return (
     <div className="flex min-h-screen flex-col items-center gap-10 bg-gray-100 p-10">
       {/* 배너 영역 */}
@@ -51,10 +57,9 @@ export default function Home() {
         배너영역
       </div>
 
-      {/* 장소 추천 영역 */}
-      <div className="h-40 w-8/12 rounded-lg border border-gray-300 bg-white p-6 shadow-md">
-        <h2 className="mb-4 text-xl font-semibold">장소추천영역</h2>
-        {/* 장소 추천 내용 */}
+      <div className="w-8/12 rounded-lg border border-gray-300 bg-white p-6 shadow-md">
+        <h2 className="mb-4 text-xl font-semibold">주인님을 기다리고 있어요😥</h2>
+        <AnimalCarousel slides={SLIDES} options={OPTIONS} />
       </div>
 
       {/* 게시글 영역 */}
