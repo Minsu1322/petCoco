@@ -26,16 +26,17 @@ interface MatePostListProps {
     male_female: string | null;
     age: string | null;
     weight: string | null;
+    regions: string | null;
   };
 }
 
 const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: MatePostListProps) => {
-  const { setIsUseGeo, setGeoData } = locationStore();
+  const { geoData,  setIsUseGeo, setGeoData } = locationStore();
   const [page, setPage] = useState(1);
-
+//console.log(geoData)
 
   const { data, isPending, error } = useQuery<PostsResponse>({
-    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, sortBy, filters],
+    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, sortBy, filters, geoData],
     queryFn: async () => {
       //console.log('sortBy값 확인', sortBy);
       const getValidFilters = Object.fromEntries(
@@ -50,8 +51,12 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         })
         .join("&");
 
+      const userLat = geoData?.center.lat || 0;
+      const userLng = geoData?.center.lng || 0;
+
+      // TODO: query안에 userLat, userLng 넣으면 좋을 거 같은데
       const response = await fetch(
-        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=3&search=${activeSearchTerm}&sort=${sortBy}&${query}`
+        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=3&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
       );
       const data = response.json();
       //console.log(data);
@@ -137,33 +142,33 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
   }
 
   return (
-    <div>
-       <div className="ml-1 mt-5 flex flex-col">
-      {posts.length > 0 ? (
-        posts.map((post) => (
-          <MatePostItem key={post.id} post={post} />
-        ))
-      ) : (
-        <div>현재 모집 중인 산책 메이트가 없습니다.</div>
-      )}
-    </div>
-
-      {/* pagination*/}
-      <div className="mt-8 flex justify-center space-x-2">
+    <div className="w-full">
+      <div className="ml-1 mt-5 flex flex-col space-y-4">
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <MatePostItem key={post.id} post={post} />
+          ))
+        ) : (
+          <div className="text-center py-4">현재 모집 중인 산책 메이트가 없습니다.</div>
+        )}
+      </div>
+  
+      {/* pagination */}
+      <div className="mt-8 flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-2">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
-          className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-mainColor"
+          className="w-full sm:w-auto rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
         >
           이전
         </button>
         <span className="px-4 py-2">
-        페이지 {!data || data.data?.length === 0 ? "0" : `${page}`} / {data?.totalPages ?? "0"}
+          페이지 {!data || data.data?.length === 0 ? "0" : `${page}`} / {data?.totalPages ?? "0"}
         </span>
         <button 
           onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
           disabled={data?.totalPages !== undefined && page === data.totalPages}
-          className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-mainColor"
+          className="w-full sm:w-auto rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
         >
           다음
         </button>
