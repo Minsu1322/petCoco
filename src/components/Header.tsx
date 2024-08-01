@@ -36,26 +36,26 @@ const Header = () => {
   }, [setSession]);
 
   return (
-    <header className="mb-6 w-full items-center bg-mainColor px-10 py-6 text-black">
+    <header className="w-full items-center bg-mainColor px-10 py-6 text-black">
       <div className="flex justify-center gap-6">
         <Link href={"/"}>
-          <p>홈(임시 헤더)</p>
+          <p>홈</p>
         </Link>
 
         <Link href={"/community"}>
           <p>커뮤니티</p>
         </Link>
+
+        {isUser ? (
+          <Link href={"/message"}>
+            <p>대화함</p>
+          </Link>
+        ) : null}
+
         <Link href={"/mate"}>
           <p>산책 메이트</p>
         </Link>
         {isUser ? <LogoutButton /> : <LoginButton />}
-        {isUser ? (
-          <Link href={"/message"}>
-            <p>메시지(미완성)</p>
-          </Link>
-        ) : (
-          <p>쪽지함로그인필요</p>
-        )}
       </div>
     </header>
   );
