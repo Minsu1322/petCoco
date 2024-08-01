@@ -1,6 +1,6 @@
 "use client";
 
-import { MateNextPostType, MatePostAllType, MatePostFullType, MatePostPetsType } from "@/types/mate.type";
+import { MateNextPostType, MatePostAllType, MatePostFullType, matepostpetsType } from "@/types/mate.type";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -45,7 +45,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     location: post.location || ""
   };
 
-  // const initialPetState: MatePostPetsType = {
+  // const initialPetState: matepostpetsType = {
   //   male_female: "",
   //   neutered: null,
   //   weight: "",
@@ -54,7 +54,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   // };
 
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id" | "position">>(initialState);
-  // const [formPets, setFormPets] = useState<MatePostPetsType[]>([initialPetState]);
+  // const [formPets, setFormPets] = useState<matepostpetsType[]>([initialPetState]);
 
   const [isEditing, setIstEditting] = useState<boolean>(false);
 

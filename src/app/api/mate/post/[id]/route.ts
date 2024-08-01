@@ -9,6 +9,7 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
     const { data, error } = await supabase
       .from("matePosts")
       .select("*,users(nickname),matepostpets(*)")
+      .select("*,users(nickname),matepostpets(*)")
       .eq("id", id)
       .single();
 

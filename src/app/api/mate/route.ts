@@ -21,7 +21,7 @@ export const GET = async (request: NextRequest) => {
 
   // 모집 마감 순 정렬
   const date = new Date();
-  const currentTime = new Date(date.getTime() + (9 * 60 * 60 * 1000));
+  const currentTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
   const formattedDate = currentTime.toISOString();
 
 try {
