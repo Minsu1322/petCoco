@@ -1,6 +1,6 @@
 "use client";
 
-import { MateNextPostType, MatePostAllType, MatePostFullType, MatePostPetsType } from "@/types/mate.type";
+import { MateNextPostType, MatePostAllType, MatePostFullType, matepostpetsType } from "@/types/mate.type";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -43,7 +43,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     special_requirements: post.special_requirements || ""
   };
 
-  // const initialPetState: MatePostPetsType = {
+  // const initialPetState: matepostpetsType = {
   //   male_female: "",
   //   neutered: null,
   //   weight: "",
@@ -52,7 +52,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   // };
 
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id" | "position">>(initialState);
-  // const [formPets, setFormPets] = useState<MatePostPetsType[]>([initialPetState]);
+  // const [formPets, setFormPets] = useState<matepostpetsType[]>([initialPetState]);
 
   const [isEditing, setIstEditting] = useState<boolean>(false);
 
@@ -218,11 +218,11 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   //   }));
   //   setFormPets((prev) => ({
   //     ...prev,
-  //     male_female: post.matePostPets.male_female || "",
-  //     neutered: post.matePostPets.neutered || null,
-  //     age: post.matePostPets.age || "",
-  //     weight: post.matePostPets.weight || "",
-  //     characteristics: post.matePostPets.characteristics || ""
+  //     male_female: post.matepostpets.male_female || "",
+  //     neutered: post.matepostpets.neutered || null,
+  //     age: post.matepostpets.age || "",
+  //     weight: post.matepostpets.weight || "",
+  //     characteristics: post.matepostpets.characteristics || ""
   //   }))
   // }, []);
 
@@ -239,13 +239,13 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             <h1 className="text-2xl font-semibold">산책 메이트 모집 글 작성하기</h1>
             <div className="flex flex-row gap-x-3">
               <button
-                className="bg-editBtnColor flex h-8 cursor-pointer items-center justify-center rounded-md px-3"
+                className="flex h-8 cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-3"
                 type="submit"
               >
                 수정 완료
               </button>
               <button
-                className="bg-delBtnColor flex h-8 cursor-pointer items-center justify-center rounded-md px-3"
+                className="flex h-8 cursor-pointer items-center justify-center rounded-md bg-delBtnColor px-3"
                 type="button"
                 onClick={handleResetEditPost}
               >
@@ -371,7 +371,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             <div className="mt-5">
               <p className="text-xl font-semibold">반려동물 정보 🐶</p>
               <div className="flex flex-row gap-x-3">
-                {post.matePostPets.map((pet) => (
+                {post.matepostpets.map((pet) => (
                   <div className="w-48 rounded-md bg-gray-100 p-2" key={pet.id}>
                     <p>성별 : {pet.male_female === "male" ? "남" : "여"}</p>
                     <p>중성화 여부 : {pet.neutered === true ? "예" : "아니오"}</p>
@@ -391,13 +391,13 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             {userId === post.user_id && (
               <div className="flex flex-row gap-x-5">
                 <button
-                  className="bg-editBtnColor flex h-8 w-16 cursor-pointer items-center justify-center rounded-md p-2"
+                  className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
                   onClick={handleEditPost}
                 >
                   수정
                 </button>
                 <button
-                  className="bg-delBtnColor flex h-8 w-16 cursor-pointer items-center justify-center rounded-md p-2"
+                  className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
                   onClick={() => handleDeletePost(post.id)}
                 >
                   삭제
@@ -462,8 +462,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             <div className="mt-5">
               <p className="mb-5 text-xl font-semibold">반려동물 정보 🐶</p>
               <div className="flex flex-row gap-x-3">
-                {post.matePostPets && post.matePostPets.length > 0 ? (
-                  post.matePostPets.map((pet) => (
+                {post.matepostpets && post.matepostpets.length > 0 ? (
+                  post.matepostpets.map((pet) => (
                     <div className="w-48 rounded-md border border-gray-200 bg-gray-100 p-4 shadow-lg" key={pet.id}>
                       <p>성별: {pet.male_female === "male" ? "남" : pet.male_female === "female" ? "여" : ""}</p>
                       <p>중성화 여부: {pet.neutered ? "예" : pet.neutered === false ? "아니오" : ""}</p>
