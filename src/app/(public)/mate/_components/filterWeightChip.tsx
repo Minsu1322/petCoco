@@ -20,7 +20,7 @@ const FilterWeightChip = ({ label, selected, onSelect }: FilterWeightChipProps) 
     <div className="mt-5 flex w-full flex-col gap-6">
       <Slider
         color="foreground"
-        step={2}
+        step={1}
         maxValue={20}
         minValue={0}
         defaultValue={0}
