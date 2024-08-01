@@ -94,15 +94,18 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
       </div>
       <h1 className="mb-4 text-3xl font-bold">{post.title}</h1>
       <div className="mb-4 flex">
-        {post.users.profile_img && (
+        {
           <Image
-            src={post.users.profile_img}
+            src={
+              post.users.profile_img ||
+              "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/post_image/1722324396777_xo2ka9.jpg"
+            }
             alt={post.users.nickname}
             width={74}
             height={74}
             className="rounded-full"
           />
-        )}
+        }
         <div className="ml-2 flex flex-col justify-center">
           <p className="text-gray-600">작성자: {post.users.nickname}</p>
           <p className="text-gray-600">작성일: {new Date(post.created_at).toLocaleString()}</p>
@@ -112,13 +115,13 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
         <div className="mb-4 flex flex-row gap-x-5">
           <button
             onClick={handleEdit}
-            className="bg-editBtnColor flex h-8 w-16 cursor-pointer items-center justify-center rounded-md p-2"
+            className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
           >
             수정
           </button>
           <button
             onClick={() => handleDelete(id)}
-            className="bg-delBtnColor flex h-8 w-16 cursor-pointer items-center justify-center rounded-md p-2"
+            className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
           >
             삭제
           </button>

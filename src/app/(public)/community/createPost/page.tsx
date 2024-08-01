@@ -39,11 +39,15 @@ const CreatePostPage = () => {
           console.error("게시글을 불러오는 중 오류가 발생했습니다:", postError);
           return;
         }
-        setTitle(postData?.title ? postData.title : "");
-        setContent(postData?.content ? postData.content : "");
-        setCategory(postData.category);
         //supabase에서 이미지 URL을 가져와서 이미지로 변환
         if (!ignore) {
+          //useEffect가 두번 실행되는것을 방지
+          initPost(); // Zustand 초기화 함수 호출
+          setTitle(postData?.title || "");
+          setContent(postData?.content || "");
+          setCategory(postData?.category || "");
+
+          setUploadFiles([]); // 업로드 파일 초기화
           await fetchPostImages(postData as { post_imageURL: string });
         }
       } else {
@@ -57,27 +61,35 @@ const CreatePostPage = () => {
     return () => {
       ignore = true;
     };
-  }, [postId]);
+  }, [postId, initPost, setTitle, setContent, setCategory]);
 
   const fetchPostImages = async (postData: { post_imageURL: string }) => {
     if (postData?.post_imageURL) {
-      setUploadFiles([]); // 업로드 파일 초기화
       const urls = postData.post_imageURL.split(",");
-      urls.forEach((url) => {
-        // 이미지 URL을 data url 형태로 변환
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
-        xhr.responseType = "blob";
-        xhr.onload = function () {
-          const reader = new FileReader();
-          reader.onload = function () {
-            addImage(reader.result as string);
-            setUploadFiles((prev) => [...prev, new File([xhr.response], url as string)]);
+      const existingUrls = new Set(uploadFiles.map((file) => file.name)); // 이미 업로드된 이미지 이름 추적
+
+      for (const url of urls) {
+        if (!existingUrls.has(url)) {
+          // 중복된 이미지 URL이 아닌 경우에만 처리
+          // 이미지 URL을 data url 형태로 변환
+          const xhr = new XMLHttpRequest();
+          xhr.open("GET", url, true);
+          xhr.responseType = "blob";
+          xhr.onload = function () {
+            const reader = new FileReader();
+            reader.onload = function () {
+              const dataUrl = reader.result as string;
+              if (!uploadFiles.some((file) => file.name === url)) {
+                // 중복 체크
+                addImage(dataUrl); // 상태에 이미지 추가
+                setUploadFiles((prev) => [...prev, new File([xhr.response], url)]); // 업로드 파일 상태 업데이트
+              }
+            };
+            reader.readAsDataURL(xhr.response);
           };
-          reader.readAsDataURL(xhr.response);
-        };
-        xhr.send();
-      });
+          xhr.send();
+        }
+      }
     }
   };
 
@@ -268,7 +280,7 @@ const CreatePostPage = () => {
         type="submit"
         className="mb-4 w-full rounded bg-blue-500 p-2 font-semibold text-white transition-colors hover:bg-blue-600"
       >
-        {postId ? "수정하기" : "작성하기"}
+        {postId ? "수정" : "작성"}하기
       </button>
       {/* 뒤로가기 링크 */}
       <Link
