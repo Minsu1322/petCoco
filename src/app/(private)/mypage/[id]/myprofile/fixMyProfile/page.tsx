@@ -1,6 +1,6 @@
 "use client";
 import { v4 as uuidv4 } from "uuid";
-import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,6 +15,7 @@ const FixMyProfile = () => {
   const [introduction, setIntroduction] = useState("");
   const [profileImage, setProfileImage] = useState<File | null>(); //서버에 반영될 이미지 파일
   const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
+  const [profileImageUrl, setProfileImageUrl] = useState(""); //서버에 반영될 이미지 URL
   const params = useParams();
   if (params === null) {
     return;
@@ -28,16 +29,6 @@ const FixMyProfile = () => {
   function toMyProfile() {
     router.push(`/mypage/${user.id}/myprofile`);
   }
-
-  // const updateProfileNickNameWithSupabase = async (newName: string, id: string) => {
-  //   const { data: result } = await supabase.from("users").update({ nickname: newName }).eq("id", id);
-  //   return result;
-  // };
-
-  // const updateProfileImgWithSupabase = async (newImg: string, id: string) => {
-  //   const { data: result } = await supabase.from("users").update({ profile_img: newImg }).eq("id", id);
-  //   return result;
-  // };
 
   const ageOptions = [
     { value: "null", label: "연령대 선택" },
@@ -69,6 +60,22 @@ const FixMyProfile = () => {
     queryFn: getProfileData
   });
 
+  // const setDefaultProfile = () => {
+  //   setNickName(user.nickname);
+  //   setMbti(user.mbti);
+  //   setAge(user.age);
+  //   setSelectedGender(user.gender);
+  //   setIntroduction(user.introduction);
+  //   setPreviewImage(user.profile_img);
+  //   setProfileImageUrl(user.profile_img);
+  // };
+
+  // if (user) {
+  //   useEffect(() => {
+  //     setDefaultProfile();
+  //   }, []);
+  // }
+
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
     let image = window.URL.createObjectURL(file);
@@ -88,7 +95,7 @@ const FixMyProfile = () => {
     setAge(e.currentTarget.value);
   };
 
-  const handleIntroductionChange = (e: ChangeEvent<HTMLInputElement>) => setIntroduction(e.target.value);
+  const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
 
   const updateProfileWithSupabase = async ({
     nickname,
@@ -119,25 +126,10 @@ const FixMyProfile = () => {
     const FILE_NAME = "profile_image";
     const fileUrl = `${FILE_NAME}_${imageId}`;
 
-    // await updateProfileNickNameWithSupabase(nickName, user.id);
-    // //유저 닉네임 변경
-    // if (profileImage === null) {
-    //   return;
-    // } else if (profileImage) {
-    //   const { data, error } = await supabase.storage.from("profile_img").upload(fileUrl, profileImage);
-    //   const publicUrl = supabase.storage.from("profile_img").getPublicUrl(`${data!.path}`);
-
-    //   await updateProfileImgWithSupabase(publicUrl.data.publicUrl, user.id);
-    // } //유저 프로필 사진 변경
-
-    // if (nickName !== user.nickname) {
-    //   updatingData.nickname = nickName;
-    // }
-    let profileImageUrl = "";
     if (profileImage) {
       const imgData = await supabase.storage.from("profile_img").upload(fileUrl, profileImage);
       const imgUrl = supabase.storage.from("profile_img").getPublicUrl(imgData.data!.path);
-      profileImageUrl = imgUrl.data.publicUrl;
+      setProfileImageUrl(imgUrl.data.publicUrl);
     }
 
     updateMutate.mutate({
@@ -153,6 +145,7 @@ const FixMyProfile = () => {
 
     toMyProfile();
   };
+
   if (isPending) {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
@@ -160,6 +153,7 @@ const FixMyProfile = () => {
   if (isError) {
     return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
   }
+
   return (
     <div
       className="my-auto flex flex-col items-center justify-center rounded-[30px] bg-white"
@@ -178,14 +172,18 @@ const FixMyProfile = () => {
         </button>
         <input id="fileInput" type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
       </div>
+      <br />
+      <p className="font-bold">닉네임</p>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
-        placeholder="변경할 닉네임"
+        placeholder="변경할 닉네임(최대 8자)"
+        maxLength={8}
         defaultValue={user.nickname}
         onChange={handleNickNameChange}
       />
       <br />
+      <p className="font-bold">연령대</p>
       <select className="border border-[#D2D2D2]" onChange={handleAgeChange} value={age}>
         {ageOptions.map((option) => (
           <option key={option.value} value={option.value}>
@@ -194,22 +192,28 @@ const FixMyProfile = () => {
         ))}
       </select>
       <br />
+      <p className="font-bold">성별</p>
       <div className="flex gap-[20px]">
         <input type="checkbox" name="gender" value="남" onChange={handleGenderChange} /> 남
         <br />
         <input type="checkbox" name="gender" value="여" onChange={handleGenderChange} /> 여
       </div>
+      <br />
+      <p className="font-bold">MBTI</p>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="MBTI"
+        maxLength={4}
         defaultValue={user.mbti}
         onChange={handleMbtiChange}
       />
-      <input
+      <br />
+      <p className="font-bold">자기소개</p>
+      <textarea
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="한줄 소개"
+        placeholder="자기소개(최대 200자)"
+        maxLength={200}
         defaultValue={user.introduction}
         onChange={handleIntroductionChange}
       />

@@ -86,8 +86,8 @@ const addmypetprofile = () => {
 
   const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
   const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
-  const handleMedicalRecords = (e: ChangeEvent<HTMLInputElement>) => setMedicalRecords(e.target.value);
-  const handleIntroductionChange = (e: ChangeEvent<HTMLInputElement>) => setIntroduction(e.target.value);
+  const handleMedicalRecords = (e: ChangeEvent<HTMLTextAreaElement>) => setMedicalRecords(e.target.value);
+  const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
 
   const updateProfileWithSupabase = async ({
     petName,
@@ -195,81 +195,89 @@ const addmypetprofile = () => {
           type={"button"}
           onClick={() => document.getElementById("fileInput")?.click()}
         >
-          이미지 변경하기
+          이미지 추가하기
         </button>
         <input id="fileInput" type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
       </div>
       <br />
-      이름
+      <p className="font-bold">이름(최대 8자)</p>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
-        placeholder="애완동물의 이름"
+        placeholder="애완동물의 이름(최대 8자)"
+        maxLength={8}
         defaultValue={petName}
         onChange={handlePetNameChange}
       />
       <br />
-      대분류
+      <p className="font-bold">대분류</p>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="개, 고양이, 물고기 등등"
+        maxLength={100}
         defaultValue={majorClass}
         onChange={handleMajorClassChange}
       />
       <br />
-      소분류
+      <p className="font-bold">소분류</p>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="치와와, 랙돌, 금붕어 등등"
+        maxLength={100}
         defaultValue={minorClass}
         onChange={handleMinorClassChange}
       />
       <br />
-      나이
+      <p className="font-bold">나이</p>
       <input
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         type="text"
         placeholder="나이"
+        maxLength={100}
         defaultValue={age}
         onChange={handleAgeChange}
       />
       <br />
-      성별
-      <div>
+      <p className="font-bold">성별</p>
+      <div className="flex flex-row">
+        <input type="checkbox" name="gender" value="암" onChange={handleMaleFemaleChange} /> 암&nbsp;
         <input type="checkbox" name="gender" value="수" onChange={handleMaleFemaleChange} /> 수
-        <br />
-        <input type="checkbox" name="gender" value="암" onChange={handleMaleFemaleChange} /> 암
       </div>
-      <br /> 중성화
-      <input type="checkbox" name="neutralize" value="YES" onChange={handleNeutralize} />
       <br />
-      무게(kg) :
+      <p className="font-bold">중성화 여부</p>
+      <div className="flex flex-row">
+        <input type="checkbox" name="neutralize" value="YES" onChange={handleNeutralize} /> YES &nbsp;
+        <input type="checkbox" name="neutralize" value="No" onChange={handleNeutralize} /> No
+      </div>
+      <br />
+      <p className="font-bold">무게(kg)</p>
       <input
         type="number"
         step="0.1"
         placeholder="1kg 미만은 소수점으로 표기"
+        maxLength={100}
         className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
         name="weight"
         //value={weight === null ? "" : weight}
         onChange={handleWeight}
       />
       <br />
-      의료기록
-      <input
+      <p className="font-bold">의료기록(최대 200자)</p>
+      <textarea
         className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="예방접종 및 기타 의료 기록"
+        placeholder="예방접종 및 기타 의료 기록(최대 200자)"
+        maxLength={200}
         defaultValue={medicalRecords}
         onChange={handleMedicalRecords}
       />
       <br />
-      특징
-      <input
+      <p className="font-bold">특징(최대 200자)</p>
+      <textarea
         className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="좋아하는 것, 싫어하는 것 등등"
+        placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
+        maxLength={200}
         defaultValue={introduction}
         onChange={handleIntroductionChange}
       />
