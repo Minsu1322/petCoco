@@ -96,7 +96,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           </button>
         </div>
         {distance !== null && <p className="mb-2 text-sm text-gray-500">현위치에서 {distance}km 거리</p>}
-        {/* <p className="text-sm">모집 마감일 : {post.recruitment_end}</p> */}
+        <p className="text-sm">모집 마감일 : {post.recruitment_end}</p>
       </div>
 
       <Link href={`/mate/posts/${post.id}`} className="mt-5 flex flex-col sm:flex-row">
