@@ -7,6 +7,7 @@ import { MatePostType } from "@/types/mate.type";
 import { MatePostsResponse, PostsResponse } from "@/types/mainPageTypes/MainPageTypes";
 import AnimalCarousel from "@/components/animalCarousel/AnimalCarousel";
 import { EmblaOptionsType } from "embla-carousel";
+import Image from "next/image";
 
 export default function Home() {
   //메이트정보
@@ -57,11 +58,21 @@ export default function Home() {
         배너영역
       </div>
 
-      <div className="w-8/12 rounded-lg border border-[#B4E85F] bg-white p-6 shadow-md">
-        <h2 className="mb-4 text-xl font-semibold">주인님을 기다리고 있어요😥</h2>
-        <AnimalCarousel slides={SLIDES} options={OPTIONS} />
-      </div>
+      <div className="flex w-8/12 flex-col items-center justify-center">
+        <Image
+          src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_img/banner003.png"
+          alt="banner images"
+          width={600}
+          height={150}
+          layout="responsive"
+          className="rounded-lg"
+        />
 
+        <div className="mt-2 w-full rounded-lg border border-[#B4E85F] bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-xl font-semibold">주인님을 기다리고 있어요😥</h2>
+          <AnimalCarousel slides={SLIDES} options={OPTIONS} />
+        </div>
+      </div>
       {/* 게시글 영역 */}
       <div className="flex w-8/12 space-x-4">
         {/* 자유게시판 */}
