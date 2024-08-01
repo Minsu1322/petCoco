@@ -34,14 +34,14 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "comments_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          }
-        ];
-      };
+            foreignKeyName: "comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       matepostpets: {
         Row: {
           age: string | null;
@@ -85,59 +85,59 @@ export type Database = {
       };
       matePosts: {
         Row: {
-          address: string | null;
-          content: string | null;
-          created_at: string;
-          date_time: string | null;
-          id: string;
-          location: unknown | null;
-          members: string | null;
-          place_name: string | null;
-          position: Json | null;
-          preferred_route: string | null;
-          recruiting: boolean | null;
-          recruitment_end: string | null;
-          recruitment_start: string | null;
-          special_requirements: string | null;
-          title: string | null;
-          user_id: string | null;
-        };
+          address: string | null
+          content: string | null
+          created_at: string
+          date_time: string | null
+          id: string
+          location: unknown | null
+          members: string | null
+          place_name: string | null
+          position: Json | null
+          preferred_route: string | null
+          recruiting: boolean | null
+          recruitment_end: string | null
+          recruitment_start: string | null
+          special_requirements: string | null
+          title: string | null
+          user_id: string | null
+        }
         Insert: {
-          address?: string | null;
-          content?: string | null;
-          created_at?: string;
-          date_time?: string | null;
-          id?: string;
-          location?: unknown | null;
-          members?: string | null;
-          place_name?: string | null;
-          position?: Json | null;
-          preferred_route?: string | null;
-          recruiting?: boolean | null;
-          recruitment_end?: string | null;
-          recruitment_start?: string | null;
-          special_requirements?: string | null;
-          title?: string | null;
-          user_id?: string | null;
-        };
+          address?: string | null
+          content?: string | null
+          created_at?: string
+          date_time?: string | null
+          id?: string
+          location?: unknown | null
+          members?: string | null
+          place_name?: string | null
+          position?: Json | null
+          preferred_route?: string | null
+          recruiting?: boolean | null
+          recruitment_end?: string | null
+          recruitment_start?: string | null
+          special_requirements?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
         Update: {
-          address?: string | null;
-          content?: string | null;
-          created_at?: string;
-          date_time?: string | null;
-          id?: string;
-          location?: unknown | null;
-          members?: string | null;
-          place_name?: string | null;
-          position?: Json | null;
-          preferred_route?: string | null;
-          recruiting?: boolean | null;
-          recruitment_end?: string | null;
-          recruitment_start?: string | null;
-          special_requirements?: string | null;
-          title?: string | null;
-          user_id?: string | null;
-        };
+          address?: string | null
+          content?: string | null
+          created_at?: string
+          date_time?: string | null
+          id?: string
+          location?: unknown | null
+          members?: string | null
+          place_name?: string | null
+          position?: Json | null
+          preferred_route?: string | null
+          recruiting?: boolean | null
+          recruitment_end?: string | null
+          recruitment_start?: string | null
+          special_requirements?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
         Relationships: [
           {
             foreignKeyName: "matePosts_user_id_fkey";
@@ -332,48 +332,71 @@ export type Database = {
     Functions: {
       calculate_distance_km: {
         Args: {
-          lat1: number;
-          lng1: number;
-          lat2: number;
-          lng2: number;
-        };
-        Returns: number;
-      };
+          lat1: number
+          lng1: number
+          lat2: number
+          lng2: number
+        }
+        Returns: number
+      }
       create_mate_post_with_pets: {
         Args: {
-          post_data: Json;
-          pets_data: Json;
-        };
-        Returns: Json;
-      };
+          post_data: Json
+          pets_data: Json
+        }
+        Returns: Json
+      }
       get_mate_posts_with_distance: {
         Args: {
-          lat: number;
-          lng: number;
-        };
+          lat: number
+          lng: number
+        }
         Returns: {
-          id: string;
-          created_at: string;
-          title: string;
-          content: string;
-          user_id: string;
-          position: Json;
-          members: string;
-          date_time: string;
-          recruiting: boolean;
-          recruitment_start: string;
-          recruitment_end: string;
-          address: string;
-          place_name: string;
-          preferred_route: string;
-          special_requirements: string;
-          location: unknown;
-          users: Json;
-          matepostpets: Json;
-          distance: number;
-        }[];
-      };
-    };
+          id: string
+          created_at: string
+          title: string
+          content: string
+          user_id: string
+          position: Json
+          members: string
+          date_time: string
+          recruiting: boolean
+          recruitment_start: string
+          recruitment_end: string
+          address: string
+          place_name: string
+          preferred_route: string
+          special_requirements: string
+          location: unknown
+          users: Json
+          matepostpets: Json
+          distance: number
+        }[]
+      }
+      get_mate_posts_with_location: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          created_at: string
+          title: string
+          content: string
+          user_id: string
+          POSITION: Json
+          members: string
+          date_time: string
+          recruiting: boolean
+          recruitment_start: string
+          recruitment_end: string
+          address: string
+          place_name: string
+          preferred_route: string
+          special_requirements: string
+          location: unknown
+          users: Json
+          matepostpets: Json
+        }[]
+      }
+    }
     Enums: {
       [_ in never]: never;
     };

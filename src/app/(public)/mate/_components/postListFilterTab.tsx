@@ -16,7 +16,8 @@ const PostListFilterTab = ({isCurrentPosts, handleToggleAllPosts, handleDateSort
         <div className="flex flex-row gap-x-2">
           <div className="cursor-pointer" onClick={handleDateSort}>마감 임박순</div>
           <p>|</p>
-          <div className="cursor-pointer" onClick={handleDistanceSort}>가까운 순</div>
+          <div className="cursor-not-allowed" onClick={handleDistanceSort} >가까운 순</div>
+          {/* 아직 구현중,,, */}
         </div>
       </div>
     </div>
