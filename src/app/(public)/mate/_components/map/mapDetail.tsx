@@ -9,7 +9,7 @@ const MapDetail = ({ center }: MapDetailProps) => {
   //  console.log(center)
   return (
     <>
-      <Map center={center} style={{ width: "500px", height: "360px" }} level={5}>
+      <Map center={center} style={{ width: "450px", height: "360px" }} level={5}>
         <MapMarker
           position={center}
           image={{

@@ -122,15 +122,19 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
   return (
     <div className="w-full">
-      <div className="flex flex-row flex-wrap gap-x-5 justify-center">
+     <div classNae="flex justify-center">
+     <div className="flex flex-row flex-wrap gap-x-7">
         {posts.length > 0 ? (
           posts.map((post) => (
             <MatePostItem key={post.id} post={post} />
           ))
         ) : (
-          <div className="text-center py-4">현재 모집 중인 산책 메이트가 없습니다.</div>
+          <div className="flex justify-center items-center">
+            <p className="text-center py-4">현재 모집 중인 산책 메이트가 없습니다.</p>
+          </div>
         )}
       </div>
+     </div>
   
       {/* pagination */}
       <div className="mt-8 flex flex-row justify-center items-center">

@@ -209,12 +209,150 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   return (
-    <div className="container mx-auto px-4 pb-5 sm:px-6 lg:px-8">
+    <div className="container mx-auto mb-5 mt-10 px-4 ">
       {isEditing ? (
-        <form onSubmit={handleUpdatePost} className="space-y-6 mt-10">
-          <div className="flex flex-col items-center justify-between sm:flex-row">
-            <h1 className="mb-4 text-2xl font-semibold sm:mb-0">산책 메이트 모집 글 작성하기</h1>
-            <div className="flex flex-col gap-3 sm:flex-row">
+        <form onSubmit={handleUpdatePost} className="mx-auto flex max-w-4xl flex-col items-center">
+          <div className="mb-5 flex flex-col items-center justify-between">
+            <h1 className="mb-3 text-3xl font-semibold">산책 메이트 모집 글 수정하기</h1>
+          </div>
+          <div className="mt-[40px] flex w-full flex-col gap-y-5">
+            <div className="flex flex-col">
+              <label htmlFor="title" className="w-full text-lg font-semibold">
+                제목
+              </label>
+              <input
+                type="text"
+                value={formPosts.title || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
+                placeholder=" 제목을 입력해 주세요"
+                className="mt-3 h-10 w-full rounded-md border border-gray-300"
+                id="title"
+              />
+            </div>
+            <div className="mt-[10px] flex w-full items-center justify-between">
+              <div className="flex w-full flex-col">
+                <label htmlFor="date_time" className="w-full text-lg font-semibold">
+                  희망 날짜 및 시간
+                </label>
+                <input
+                  type="datetime-local"
+                  id="date_time"
+                  value={formPosts.date_time || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
+                  className="mt-3 h-10 w-full rounded-md border border-gray-300"
+                />
+              </div>
+              <div className="ml-[20px] flex w-[200px] flex-col">
+                <label htmlFor="members" className="w-[150px] whitespace-nowrap text-lg font-semibold">
+                  모집 인원 수
+                </label>
+                <div className="flex flex-row items-center gap-x-2">
+                  <input
+                    type="text"
+                    id="members"
+                    placeholder="0"
+                    className="mt-3 h-10 w-[150px] rounded-md border border-gray-300 text-center"
+                    value={formPosts.members || ""}
+                    onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
+                  />
+                  <span className="mt-3 flex h-10 items-center">명</span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-[10px] flex w-full flex-col gap-y-2">
+              <label htmlFor="recruitment_period" className="w-full whitespace-nowrap text-lg font-semibold">
+                모집기간
+              </label>
+              <div className="flex flex-row items-center gap-x-2">
+                <input
+                  type="datetime-local"
+                  id="recruitment_start"
+                  value={formPosts.recruitment_start || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, recruitment_start: e.target.value })}
+                  className="h-10 w-full rounded-md border border-gray-300"
+                />
+                <span>~</span>
+                <input
+                  type="datetime-local"
+                  id="recruitment_end"
+                  value={formPosts.recruitment_end || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, recruitment_end: e.target.value })}
+                  className="h-10 w-full rounded-md border border-gray-300"
+                />
+              </div>
+            </div>
+            <div className="mt-[20px] flex">
+              <div>
+                <label className="w-full text-lg font-semibold">산책 장소</label>
+                <div className="mt-4">
+                  <DynamicMapEditComponent
+                    center={{
+                      lat: Number(post.position?.center?.lat),
+                      lng: Number(post.position?.center?.lng)
+                    }}
+                    isEditing={true}
+                    dbPosition={{
+                      lat: Number(post.position?.center?.lat),
+                      lng: Number(post.position?.center?.lng)
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="ml-[20px] mt-[35px] w-full">
+                <div>
+                  <div className="my-2 flex flex-col">
+                    <p className="mr-2 text-lg font-semibold">클릭한 곳의 주소는?</p>
+                    <p>{roadAddress}</p>
+                  </div>
+                  <input
+                    type="text"
+                    className="h-10 w-full rounded-md border border-gray-300"
+                    value={formPosts.place_name || ""}
+                    onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
+                    placeholder=" 장소 정보를 추가로 기입해 주세요"
+                  />
+                </div>
+                <div className="flex flex-col items-start gap-y-2">
+                  <label htmlFor="preferred_route" className="mt-[30px] text-lg font-semibold">
+                    선호하는 산책 루트
+                  </label>
+                  <input
+                    type="text"
+                    id="preferred_route"
+                    className="h-10 w-full rounded-md border border-gray-300"
+                    placeholder=" 선호하는 산책 루트가 있다면 적어주세요!"
+                    value={formPosts.preferred_route || ""}
+                    onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
+                  />
+                </div>
+                <div className="flex flex-col items-start gap-y-2">
+                  <label htmlFor="special_requirements" className="mt-[30px] text-lg font-semibold">
+                    특별한 요구사항
+                  </label>
+                  <input
+                    type="text"
+                    id="special_requirements"
+                    className="h-10 w-full rounded-md border border-gray-300"
+                    placeholder=" 메이트에게 원하는 특별한 사항이 있다면 적어주세요!"
+                    value={formPosts.special_requirements || ""}
+                    onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-[20px] flex flex-col items-start">
+              <label htmlFor="content" className="text-lg font-semibold">
+                내용
+              </label>
+              <textarea
+                value={formPosts.content || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
+                placeholder=" 글을 작성해 주세요."
+                className="mt-4 h-40 w-full resize-none rounded-md border border-gray-300 p-1"
+                id="content"
+              ></textarea>
+            </div>
+            <div className="mb-5 mt-8 flex flex-row justify-end gap-3">
               <button
                 className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-4 sm:w-auto"
                 type="submit"
@@ -230,183 +368,40 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               </button>
             </div>
           </div>
-
-          <div className="space-y-6">
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="title" className="text-sm font-medium text-gray-700">
-                제목
-              </label>
-              <input
-                type="text"
-                value={formPosts.title || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
-                placeholder="제목을 입력해 주세요"
-                className="h-10 w-3/4 rounded-md border border-gray-300 px-3"
-                id="title"
-              />
-            </div>
-
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="flex flex-grow flex-col space-y-2">
-                <label htmlFor="date_time" className="text-sm font-medium text-gray-700">
-                  희망 날짜 및 시간
-                </label>
-                <input
-                  type="datetime-local"
-                  id="date_time"
-                  value={formPosts.date_time || ""}
-                  onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
-                  className="h-10 w-3/4 rounded-md border border-gray-300 px-3"
-                />
-              </div>
-              <div className="flex flex-grow flex-col space-y-2">
-                <label htmlFor="members" className="text-sm font-medium text-gray-700">
-                  모집 인원 수
-                </label>
-                <div className="flex items-center">
-                  <input
-                    type="text"
-                    id="members"
-                    className="h-10 w-1/4 rounded-md border border-gray-300 px-3"
-                    value={formPosts.members || ""}
-                    onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
-                  />
-                  <span className="ml-2">명</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="recruitment_period" className="text-sm font-medium text-gray-700">
-                모집기간
-              </label>
-              <div className="flex flex-col gap-2 sm:flex-row">
-                <input
-                  type="datetime-local"
-                  id="recruitment_start"
-                  value={formPosts.recruitment_start || ""}
-                  onChange={(e) => setFormPosts({ ...formPosts, recruitment_start: e.target.value })}
-                  className="h-10 w-2/6 rounded-md border border-gray-300 px-3"
-                />
-                <span className="self-center">~</span>
-                <input
-                  type="datetime-local"
-                  id="recruitment_end"
-                  value={formPosts.recruitment_end || ""}
-                  onChange={(e) => setFormPosts({ ...formPosts, recruitment_end: e.target.value })}
-                  className="h-10 w-2/6 rounded-md border border-gray-300 px-3"
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col space-y-2">
-              <label className="text-sm font-medium text-gray-700">산책 장소</label>
-              <DynamicMapEditComponent
-                center={{
-                  lat: Number(post.position?.center?.lat),
-                  lng: Number(post.position?.center?.lng)
-                }}
-                isEditing={true}
-                dbPosition={{
-                  lat: Number(post.position?.center?.lat),
-                  lng: Number(post.position?.center?.lng)
-                }}
-              />
-              <p className="text-sm text-gray-600">클릭한 곳의 주소는? {roadAddress}</p>
-              <input
-                type="text"
-                className="h-10 w-3/4 rounded-md border border-gray-300 px-3"
-                value={formPosts.place_name || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
-                placeholder="장소 정보를 추가로 기입해 주세요"
-              />
-            </div>
-
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="preferred_route" className="text-sm font-medium text-gray-700">
-                선호하는 산책 루트
-              </label>
-              <input
-                type="text"
-                id="preferred_route"
-                className="h-10 w-3/4 rounded-md border border-gray-300 px-3"
-                placeholder="선호하는 산책 루트가 있다면 적어주세요!"
-                value={formPosts.preferred_route || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
-              />
-            </div>
-
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="special_requirements" className="text-sm font-medium text-gray-700">
-                특별한 요구사항
-              </label>
-              <input
-                type="text"
-                id="special_requirements"
-                className="h-10 w-3/4 rounded-md border border-gray-300 px-3"
-                placeholder="메이트에게 원하는 특별한 사항이 있다면 적어주세요!"
-                value={formPosts.special_requirements || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
-              />
-            </div>
-
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="content" className="text-sm font-medium text-gray-700">
-                내용
-              </label>
-              <textarea
-                value={formPosts.content || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
-                placeholder="글을 작성해 주세요."
-                className="h-40 w-3/4 resize-none rounded-md border border-gray-300 p-3"
-                id="content"
-              ></textarea>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xl font-semibold">반려동물 정보 🐶</p>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-                {post.matepostpets.map((pet) => (
-                  <div className="rounded-md bg-gray-100 p-4" key={pet.id}>
-                    <p>성별 : {pet.male_female === "male" ? "남" : "여"}</p>
-                    <p>중성화 여부 : {pet.neutered === true ? "예" : "아니오"}</p>
-                    <p>나이 : {pet.age}살</p>
-                    <p>무게 : {pet.weight} kg</p>
-                    <p>성격 : {pet.characteristics}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </form>
       ) : (
-        <div className="mt-10 space-y-6">
-          <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
-            <p className="mb-4 text-2xl font-semibold sm:mb-0">{post.title}</p>
-            {userId === post.user_id && (
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <button
-                  className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-4 sm:w-auto"
-                  onClick={handleEditPost}
-                >
-                  수정
-                </button>
-                <button
-                  className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md bg-delBtnColor px-4 sm:w-auto"
-                  onClick={() => handleDeletePost(post.id)}
-                >
-                  삭제
-                </button>
-                <button
-                  className="flex h-10 w-full cursor-pointer items-center justify-center rounded-md bg-gray-200 px-4 sm:w-auto"
-                  onClick={() => handleTogglePost(post.id)}
-                >
-                  모집상태 변경
-                </button>
-              </div>
-            )}
-          </div>
-
+        <div className="mx-auto flex max-w-4xl flex-col items-center">
+          {/* 제목 및 버튼 영역 */}
+          <div className="flex flex-row justify-between items-center mb-3 w-full">
+  <div className="flex-shrink-0">
+    <p className="text-3xl font-semibold">{post.title}</p>
+  </div>
+  <div className="flex-shrink-0">
+    {userId === post.user_id && (
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <button
+          className="flex h-10 cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-4 whitespace-nowrap"
+          onClick={handleEditPost}
+        >
+          수정
+        </button>
+        <button
+          className="flex h-10 cursor-pointer items-center justify-center rounded-md bg-delBtnColor px-4 whitespace-nowrap"
+          onClick={() => handleDeletePost(post.id)}
+        >
+          삭제
+        </button>
+        <button
+          className="flex h-10 cursor-pointer items-center justify-center rounded-md bg-gray-200 px-4 whitespace-nowrap"
+          onClick={() => handleTogglePost(post.id)}
+        >
+          모집상태 변경
+        </button>
+      </div>
+    )}
+  </div>
+</div>
+          {/* 프로필 영역 */}
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <Image
@@ -417,53 +412,98 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 className="rounded-full"
               />
               <div className="text-gray-500">
-                <p>{post.users?.nickname}</p>
+                <p>{post.users[0]?.nickname}</p>
                 <p>{new Date(post.created_at).toLocaleString()}</p>
               </div>
             </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <p>
-                모집기간 : {post.recruitment_start?.split("T")[0]}{" "}
-                {getConvertTime({ date_time: post.recruitment_start || "" })} ~ {post.recruitment_end?.split("T")[0]}{" "}
-                {getConvertTime({ date_time: post.recruitment_end || "" })}
-              </p>
-              <p>모집 인원 수 : {post.members}명</p>
-              <p>산책 장소 : {post.place_name}</p>
-              <p>산책 날짜 : {post.date_time?.split("T")[0]}</p>
-              <p>산책 시간 : {getConvertTime({ date_time: post.date_time || "" })}</p>
-            </div>
-
-            <DynamicMapComponent
-              center={{
-                lat: Number(post.position?.center?.lat),
-                lng: Number(post.position?.center?.lng)
-              }}
-            />
-
-            <p>선호하는 산책 루트 : {post.preferred_route}</p>
-            <p>특별한 요구 사항 : {post.special_requirements}</p>
-            <p>내용 : {post.content}</p>
-
-            <div className="space-y-4">
-              <p className="text-xl font-semibold">반려동물 정보 🐶</p>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-                {post.matepostpets && post.matepostpets.length > 0 ? (
-                  post.matepostpets.map((pet) => (
-                    <div className="rounded-md border border-gray-200 bg-gray-100 p-4 shadow-lg" key={pet.id}>
-                      <p>성별: {pet.male_female === "male" ? "남" : pet.male_female === "female" ? "여" : ""}</p>
-                      <p>중성화 여부: {pet.neutered ? "예" : pet.neutered === false ? "아니오" : ""}</p>
-                      <p>나이: {pet.age ? `${pet.age}살` : ""}</p>
-                      <p>무게: {pet.weight ? `${pet.weight} kg` : ""}</p>
-                      <p>성격: {pet.characteristics || ""}</p>
-                    </div>
-                  ))
-                ) : (
-                  <div className="col-span-full flex items-center justify-center rounded-md bg-gray-200 p-4 text-gray-600">
-                    반려동물 정보가 없습니다.
-                  </div>
-                )}
+            {/* 컨텐츠 영역 */}
+            <div className="mt-[10px] flex w-full items-center justify-between">
+              <div className="flex flex-col">
+                <p className="w-full text-lg font-semibold"> 희망 날짜 및 시간</p>
+                <p className="mt-3 h-10 w-full">
+                  {post.date_time?.split("T")[0]} {getConvertTime({ date_time: post.date_time || "" })}
+                </p>
               </div>
+              <div className="ml-[20px] flex w-[200px] flex-col">
+                <div className="flex flex-col">
+                  <p className="w-[150px] whitespace-nowrap text-lg font-semibold">모집 인원 수</p>
+                  <div> 
+                  <p className="mt-3 h-10 w-full">
+                    {post.members}명
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+            <div className="flex w-full flex-col">
+              <p className="w-full text-lg font-semibold mb-3">모집기간</p>
+              <p className=" h-10 w-full">
+              {post.recruitment_start?.split("T")[0]}{" "}{getConvertTime({ date_time: post.recruitment_start || "" })}
+               ~ {post.recruitment_end?.split("T")[0]}{" "}{getConvertTime({ date_time: post.recruitment_end || "" })}
+              </p>
+            </div>
+            </div>
+            </div>
+            
+            <div className="mt-[20px] flex flex-row">
+              <div className="mt-3">
+              <p className="w-full text-lg font-semibold">산책 장소</p>
+              <div className="w-full">
+                <div className="mt-4">
+                  <DynamicMapComponent
+                    center={{
+                      lat: Number(post.position?.center?.lat),
+                      lng: Number(post.position?.center?.lng)
+                    }}
+                  />
+                </div>
+              </div>
+              </div>
+              <div className="ml-[20px] mt-[35px] w-full">
+                <div>
+                  <div className="my-2 flex flex-col">
+                    <p className="mr-2 text-lg font-semibold mt-3">만나기로 한 곳의 주소는?</p>
+                    <p className="mt-2">{roadAddress}</p>
+                  <p>{post.place_name}</p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-start gap-y-2">
+                  <p className="mt-[30px] text-lg font-semibold">선호하는 산책 루트</p>
+                  <p>{post.preferred_route}</p>
+                </div>
+                <div className="flex flex-col items-start gap-y-2">
+                  <p className="mt-[30px] text-lg font-semibold">특별한 요구사항</p>
+                  {post.special_requirements}
+                </div>
+              </div>
+            </div>
+            <div className="mt-[20px] flex flex-col items-start">
+              <p className="text-lg font-semibold">내용</p>
+              <p className="mt-4 w-full rounded-md border border-gray-300 p-5"> {post.content}</p>
+            </div>
+          </div>
+          {/* 반려동물 정보 */}
+          <div className="mt-5 flex w-full flex-col gap-y-5">
+          <div className="flex items-center">
+                <span className="mr-2 text-3xl">🐶</span>
+                <h2 className="text-lg font-semibold">반려동물 정보</h2>
+              </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+              {post.matepostpets && post.matepostpets.length > 0 ? (
+                post.matepostpets.map((pet) => (
+                  <div className="rounded-lg bg-gray-50 p-6 shadow-sm" key={pet.id}>
+                    <p>성별: {pet.male_female === "male" ? "남" : pet.male_female === "female" ? "여" : ""}</p>
+                    <p>중성화 여부: {pet.neutered ? "예" : pet.neutered === false ? "아니오" : ""}</p>
+                    <p>나이: {pet.age ? `${pet.age}살` : ""}</p>
+                    <p>무게: {pet.weight ? `${pet.weight} kg` : ""}</p>
+                    <p>성격 및 특징: {pet.characteristics || ""}</p>
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-full flex items-center justify-center rounded-md bg-gray-200 p-4 text-gray-600">
+                  반려동물 정보가 없습니다.
+                </div>
+              )}
             </div>
           </div>
         </div>
