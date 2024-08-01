@@ -81,9 +81,9 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   return (
-    <div className="mb-5 rounded-xl border border-gray-300 p-5">
-      <div className="mb-3 flex w-5/6 items-center justify-between">
-        <div className="flex gap-x-2">
+    <div className="mb-5 rounded-xl border border-gray-300 p-3 sm:p-5">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap gap-2 mb-2 sm:mb-0">
           <ItemButton
             text={post.recruiting ? "모집 중" : "모집 완료"}
             className={`${post.recruiting ? "bg-mainColor" : "bg-gray-300"} w-24 rounded-full px-4 py-2`}
@@ -95,19 +95,19 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             1:1 대화
           </button>
         </div>
-        <p>모집 마감일 : {post.recruitment_end}</p>
-        {/* 모집 마감 필터 임시 코드 */}
-        {distance !== null && <p className="mr-5 text-gray-500">현위치에서 {distance}km 거리</p>}
+        {distance !== null && <p className="text-sm text-gray-500 mb-2">현위치에서 {distance}km 거리</p>}
+        {/* <p className="text-sm">모집 마감일 : {post.recruitment_end}</p> */}
       </div>
-
-      <Link href={`/mate/posts/${post.id}`} className="ml-3 mt-5 flex">
-        <div className="flex-grow pr-5">
+      
+  
+      <Link href={`/mate/posts/${post.id}`} className="mt-5 flex flex-col sm:flex-row">
+        <div className="flex-grow pr-0 sm:pr-5 mb-4 sm:mb-0">
           <p className="mb-3 text-xl font-semibold">{post.title}</p>
-          <p className="mb-3 h-24 overflow-hidden overflow-ellipsis whitespace-nowrap">{post.content}</p>
-          <div className="mt-3 flex flex-row justify-between">
-            <p>{post && post.users.nickname}</p>
-            <div className="flex flex-row gap-x-5">
-            <p className="w-28 overflow-hidden text-ellipsis whitespace-nowrap text-end">
+          <p className="mb-3 h-24 overflow-hidden overflow-ellipsis">{post.content}</p>
+          <div className="mt-3 flex flex-col sm:flex-row justify-between">
+            <p className="mb-2 sm:mb-0">{post && post.users.nickname}</p>
+            <div className="flex flex-col sm:flex-row gap-y-1 sm:gap-x-5">
+              <p className="w-full sm:w-28 overflow-hidden text-ellipsis whitespace-nowrap text-start sm:text-end">
                 {`${extractDong(post.address || "")}, ${post.place_name || ""}`}
               </p>
               <p>
@@ -117,12 +117,13 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             </div>
           </div>
         </div>
-        <div>
+        <div className="flex justify-center sm:justify-start">
           <Image
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU"
             alt="사용자 프로필 이미지"
             width={140}
             height={140}
+            className="w-32 h-32 sm:w-36 sm:h-36 object-cover"
           />
         </div>
       </Link>
