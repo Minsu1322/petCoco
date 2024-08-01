@@ -16,17 +16,17 @@ export const GET = async (request: NextRequest) => {
   const limit = parseInt(searchParams.get("limit") || "8");
   const isCurrentPosts = searchParams.get("current");
   const filter = Object.fromEntries(searchParams.entries());
-  // console.log(filter);
-
-  // 모집 마감 순 정렬
-  const date = new Date();
-  const currentTime = new Date(date.getTime() + (9 * 60 * 60 * 1000));
-  const formattedDate = currentTime.toISOString();
-  // console.log(formattedDate); 
+  const userLat = parseFloat(searchParams.get("userLat") || "0");
+  const userLng = parseFloat(searchParams.get("userLng") || "0");
 
   try {
-    let query = supabase.from("matePosts").select(`*,users("*"),matePostPets("*") `, { count: "exact" });
-    // .order("created_at", { ascending: false });
+    let query = supabase
+      .from("matePosts")
+      .select(`
+      *,
+      users(*),
+      matePostPets(*)
+      `, { count: "exact" });
 
     if (search) {
       query = query.ilike("content", `%${search}%`);
@@ -36,15 +36,16 @@ export const GET = async (request: NextRequest) => {
       query = query.eq("recruiting", true);
     }
 
-    
-
-    if (filter.sort === "recruitment_end") {
-      query = query.gte("recruitment_end", formattedDate).order("recruitment_end", { ascending: true });
+    // 정렬 조건 적용
+    if (filter.sort === "distance" && userLat !== 0 && userLng !== 0) {
+      query = query.order('distance', { ascending: true });
+    } else if (filter.sort === "recruitment_end") {
+      query = query.gte("recruitment_end", new Date().toISOString()).order("recruitment_end", { ascending: true });
     } else {
-      // 기본 정렬 조건 (created_at 기준 내림차순)
       query = query.order("created_at", { ascending: false });
     }
 
+    // 기존 필터 적용
     if (filter.gender && filter.gender !== "전체") {
       query = query.eq("users.gender", filter.gender);
     }
@@ -55,23 +56,25 @@ export const GET = async (request: NextRequest) => {
 
     if (filter.date_time) {
       query = query.ilike("date_time", `%${filter.date_time}%`);
-      // console.log(filter.date_time);
+    }
+
+    if(filter.regions && filter.regions !== "전체") {
+      const regionPrefix = filter.regions.slice(0, 2);
+      query = query.ilike("address", `${regionPrefix}%`);
     }
 
     if (filter.weight) {
-      const wigthtVale = parseFloat(filter.weight);
-      query.gte("matePostPets.weight", wigthtVale);
+      const weightValue = parseFloat(filter.weight);
+      query = query.gte("matePostPets.weight", weightValue);
     }
 
     if (filter.male_female && filter.male_female !== "전체") {
-      query.eq("matePostPets.male_female", filter.male_female);
+      query = query.eq("matePostPets.male_female", filter.male_female);
     }
 
-    query.not("users", "is", null);
-    query.not("matePostPets", "is", null);
+    query = query.not("users", "is", null).not("matePostPets", "is", null);
 
     const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
-    console.log(data);
 
     if (error) {
       console.error(error);
@@ -97,11 +100,23 @@ export const POST = async (request: NextRequest, { params }: { params: { id: str
 
   console.log("Received Data:", post_data, pets_data);
 
+ // location 필드에 값 추출에서 추가, 따로 넣어줒 않아도
+  const postDataWithLocation = {
+    ...post_data,
+    location: `POINT(${post_data.position.center.lng} ${post_data.position.center.lat})`
+  };
+//   const post_data_json = JSON.stringify(postDataWithLocation);
+// const pets_data_json = JSON.stringify(pets_data);
+
   try {
     // RPC 함수 호출
+
+
+   
+
     const { data, error } = await supabase.rpc("create_mate_post_with_pets", {
-      post_data,
-      pets_data
+      post_data: postDataWithLocation,  // JSON 객체로 전달
+      pets_data: pets_data  // JSON 객체로 전달
     });
 
     if (error) {
