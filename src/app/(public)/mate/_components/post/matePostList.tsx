@@ -56,7 +56,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
       // TODO: query안에 userLat, userLng 넣으면 좋을 거 같은데
       const response = await fetch(
-        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=3&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
+        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=6&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
       );
       const data = response.json();
       //console.log(data);
@@ -118,11 +118,11 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         </div>
       </div>
     );
-  }
+  }  
 
   return (
     <div className="w-full">
-      <div className="ml-1 mt-5 flex flex-col space-y-4">
+      <div className="flex flex-row flex-wrap gap-x-5 justify-center">
         {posts.length > 0 ? (
           posts.map((post) => (
             <MatePostItem key={post.id} post={post} />

@@ -40,7 +40,7 @@ const LoginForm = () => {
   return (
     <div className="mt-10 w-full">
       <h1 className="text-center text-[30px] font-semibold">로그인</h1>
-      <div className="mt-10 flex flex-col items-center">
+      <div className="mt-14 flex flex-col items-center">
         <form onSubmit={handleSubmit}>
           <div className="flex h-[60px] w-[550px] items-center rounded-[10px] border">
             <label className="ml-5 w-[70px] text-center">이메일</label>
@@ -53,7 +53,7 @@ const LoginForm = () => {
               required
             />
           </div>
-          <div className="mt-[30px] flex h-[60px] w-[550px] items-center rounded-[10px] border">
+          <div className="mt-[20px] flex h-[60px] w-[550px] items-center rounded-[10px] border">
             <label className="ml-5 w-[70px] text-center">비밀번호</label>
             <input
               className="ml-5 h-[35px] w-[420px] pl-2"
@@ -64,12 +64,7 @@ const LoginForm = () => {
               required
             />
           </div>
-          <div className="mt-5 h-[30px]">
-            <label className="float-right">비밀번호 찾기</label>
-            <p className="float-right ml-2 mr-2">|</p>
-            <label className="float-right">아이디 찾기</label>
-          </div>
-          <button className="mt-[30px] h-[70px] w-[550px] border bg-black text-white" type="submit">
+          <button className="mt-[80px] h-[70px] w-[550px] rounded-[16px] border bg-black text-white" type="submit">
             로그인 하기
           </button>
           <div className="mt-5 flex justify-center">
@@ -85,12 +80,18 @@ const LoginForm = () => {
           <div className="h-[1px] w-[180px] border"></div>
         </div>
         <div className="mt-5 flex w-[550px]">
-          <button onClick={handleKakaoSignIn} className="mr-5 flex h-[35px] w-[200px] items-center bg-yellow-500">
-            <RiKakaoTalkFill className="ml-2 mr-7 h-[24px] w-[24px]" />
+          <button
+            onClick={handleKakaoSignIn}
+            className="mr-5 flex h-[60px] w-full items-center justify-center rounded-[8px] bg-yellow-400"
+          >
+            <RiKakaoTalkFill className="mr-2 h-[24px] w-[24px]" />
             <p>카카오 로그인</p>
           </button>
-          <button onClick={handleGoogleSignIn} className="flex h-[35px] w-[200px] items-center border">
-            <FcGoogle className="ml-2 mr-2 h-[24px] w-[24px]" />
+          <button
+            onClick={handleGoogleSignIn}
+            className="flex h-[60px] w-full items-center justify-center rounded-[8px] border"
+          >
+            <FcGoogle className="mr-2 h-[24px] w-[24px]" />
             <p>Sign in with Google</p>
           </button>
         </div>
