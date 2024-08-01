@@ -47,7 +47,7 @@ export default function Home() {
   if (error || mateError) return <div>Error: {error?.message || mateError?.message}</div>;
 
   const OPTIONS: EmblaOptionsType = { align: "start", dragFree: true, loop: true };
-  const SLIDE_COUNT = 5;
+  const SLIDE_COUNT = 7;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
   return (

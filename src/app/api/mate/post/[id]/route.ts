@@ -8,12 +8,12 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
   try {
     const { data, error } = await supabase
       .from("matePosts")
-      .select("*,users(nickname),matePostPets(*)")
+      .select("*,users(nickname),matepostpets(*)")
       .eq("id", id)
       .single();
 
     if (error) {
-      if (error.code === 'PGRST116') {
+      if (error.code === "PGRST116") {
         // PGRST116는 Supabase에서 결과가 없을 때 발생하는 에러 코드입니다.
         return NextResponse.json({ error: "Post not found" }, { status: 404 });
       }

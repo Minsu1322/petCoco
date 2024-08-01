@@ -112,3 +112,22 @@
 .embla__dot__selected:after {
   background-color: #1e293b;
 }
+
+.toggleContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.toggleButton {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.toggleButton.active {
+  background-color: #007bff;
+  color: white;
+}

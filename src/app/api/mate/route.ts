@@ -20,12 +20,12 @@ export const GET = async (request: NextRequest) => {
 
   // 모집 마감 순 정렬
   const date = new Date();
-  const currentTime = new Date(date.getTime() + (9 * 60 * 60 * 1000));
+  const currentTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
   const formattedDate = currentTime.toISOString();
-  // console.log(formattedDate); 
+  // console.log(formattedDate);
 
   try {
-    let query = supabase.from("matePosts").select(`*,users("*"),matePostPets("*") `, { count: "exact" });
+    let query = supabase.from("matePosts").select(`*,users("*"),matepostpets("*") `, { count: "exact" });
     // .order("created_at", { ascending: false });
 
     if (search) {
@@ -35,8 +35,6 @@ export const GET = async (request: NextRequest) => {
     if (isCurrentPosts === "true") {
       query = query.eq("recruiting", true);
     }
-
-    
 
     if (filter.sort === "recruitment_end") {
       query = query.gte("recruitment_end", formattedDate).order("recruitment_end", { ascending: true });
@@ -60,15 +58,15 @@ export const GET = async (request: NextRequest) => {
 
     if (filter.weight) {
       const wigthtVale = parseFloat(filter.weight);
-      query.gte("matePostPets.weight", wigthtVale);
+      query.gte("matepostpets.weight", wigthtVale);
     }
 
     if (filter.male_female && filter.male_female !== "전체") {
-      query.eq("matePostPets.male_female", filter.male_female);
+      query.eq("matepostpets.male_female", filter.male_female);
     }
 
     query.not("users", "is", null);
-    query.not("matePostPets", "is", null);
+    query.not("matepostpets", "is", null);
 
     const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
     console.log(data);
