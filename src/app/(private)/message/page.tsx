@@ -106,17 +106,17 @@ export default function MessagePage() {
   if (isLoading) return <div className="p-4 text-center">메시지를 불러오는 중...</div>;
   if (error) return <div className="p-4 text-center text-red-500">에러 발생: {(error as Error).message}</div>;
   return (
-    <div className="container mx-auto flex h-[calc(100vh-4rem)] max-w-4xl flex-col p-4">
-      <div className="flex flex-grow overflow-hidden rounded-lg border border-[#1FE476]">
-        <div className="w-1/3 overflow-y-auto border-r border-[#1FE476]">
-          <div className="h-16 border-b border-[#1FE476]"></div>
+    <div className="container mx-auto flex h-[calc(100vh-10rem)] max-w-4xl flex-col p-4">
+      <div className="flex flex-grow overflow-hidden rounded-lg border border-mainColor">
+        <div className="w-1/3 overflow-y-auto border-r border-mainColor">
+          <div className="h-16 border-b border-mainColor"></div>
           <ul>
             {Object.entries(groupedMessages).map(([userId, userMessages]) => (
               <li
                 key={userId}
                 className={`cursor-pointer p-4 hover:bg-gray-100 ${
-                  selectedUser === userId ? "bg-[#1FE476] text-white" : ""
-                } border-b border-[#1FE476]`}
+                  selectedUser === userId ? "bg-mainColor text-white" : ""
+                } border-b border-mainColor`}
                 onClick={() => setSelectedUser(userId)}
               >
                 <div className="font-bold">{userMessages[0].nickname}</div>
@@ -128,12 +128,12 @@ export default function MessagePage() {
         <div className="flex w-2/3 flex-col">
           {selectedUser && (
             <>
-              <div className="flex h-16 flex-col justify-center border-b border-[#1FE476] bg-[#f0fff5] p-3">
+              <div className="flex h-16 flex-col justify-center border-b border-mainColor bg-[#d0dbee] p-3">
                 <h1 className="text-lg font-bold">쪽지함</h1>
                 <span className="text-sm text-gray-500">매너있는 대화 부탁드립니다</span>
               </div>
               <div className="relative flex-grow overflow-y-auto">
-                <div className="sticky top-0 z-10 flex items-center border-b border-[#1FE476] bg-white bg-opacity-80 p-3">
+                <div className="sticky top-0 z-10 flex items-center border-b border-mainColor bg-white bg-opacity-70 p-3">
                   {groupedMessages[selectedUser][0].profile_img ? (
                     <Image
                       src={groupedMessages[selectedUser][0].profile_img}
@@ -143,7 +143,7 @@ export default function MessagePage() {
                       className="mr-3 rounded-full"
                     />
                   ) : (
-                    <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#1FE476]">
+                    <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-mainColor">
                       <span className="text-lg font-bold text-white">
                         {groupedMessages[selectedUser][0].nickname.charAt(0).toUpperCase()}
                       </span>
@@ -159,7 +159,7 @@ export default function MessagePage() {
                     >
                       <div
                         className={`inline-block rounded-lg p-2 ${
-                          message.sender_id === user.id ? "bg-[#1FE476] text-white" : "bg-gray-200"
+                          message.sender_id === user.id ? "bg-mainColor text-white" : "bg-gray-200"
                         }`}
                       >
                         <p className="text-sm">{message.content}</p>

@@ -1,19 +1,22 @@
 import Comments from "@/components/community/[id]/Comment";
 import { createClient } from "@/supabase/server";
-import { MatePostAllType } from "@/types/mate.type";
+import { Tables } from "@/types/supabase";
+import { Post } from "@/types/TypeOfCommunity/CommunityTypes";
+
 import Link from "next/link";
 import React from "react";
 
 interface PageProps {
   params: { id: string };
 }
+type Posts = Tables<"posts">[];
 
-const fetchMyPosts = async (userId: string): Promise<MatePostAllType[] | null> => {
+const fetchMyPosts = async (userId: string) => {
   const supabase = createClient();
   console.log("id", userId);
 
-  const { data, error } = await supabase.from("posts").select("*").eq("user_id", userId);
-
+  const { data, error } = await supabase.from("posts").select("*,users(*)").eq("user_id", userId);
+  console.log(data);
   return data; // API가 배열을 반환하므로 첫 번째 항목을 가져옵니다
 };
 

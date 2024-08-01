@@ -9,19 +9,19 @@ import { UsersPetType } from "@/types/auth.type";
 type PetType = UsersPetType;
 
 const fixmypetprofile = () => {
-  const [petName, setPetNickName] = useState("");
-  const [age, setAge] = useState("");
-  const [majorClass, setMajorClass] = useState("");
-  const [minorClass, setMinorClass] = useState("");
-  const [maleFemale, setMaleFemale] = useState("");
-  const [neutralized, setNeutralized] = useState("");
-  const [weight, setWeight] = useState(0);
-  const [medicalRecords, setMedicalRecords] = useState("");
-  const [introduction, setIntroduction] = useState("");
+  const [petName, setPetNickName] = useState<string | null>("");
+  const [age, setAge] = useState<string | null>("");
+  const [majorClass, setMajorClass] = useState<string | null>("");
+  const [minorClass, setMinorClass] = useState<string | null>("");
+  const [maleFemale, setMaleFemale] = useState<string | null>("");
+  const [neutralized, setNeutralized] = useState<string | null>("");
+  const [weight, setWeight] = useState<number | null>(0);
+  const [medicalRecords, setMedicalRecords] = useState<string | null>("");
+  const [introduction, setIntroduction] = useState<string | null>("");
   const [petImage, setPetImage] = useState<File | null>(); //서버에 반영될 이미지 파일
-  const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
-  const [petImageUrl, setPetImageUrl] = useState("");
-  const [filteredProfile, setFilteredProfile] = useState<PetType>([]);
+  const [previewImage, setPreviewImage] = useState<string | null>(); // 이미지 변경 확인을 위해 보여줄 임시 url
+  const [petImageUrl, setPetImageUrl] = useState<string | null>();
+  const [filteredProfile, setFilteredProfile] = useState<PetType[]>([]);
   const params = useParams();
 
   if (params === null) {
@@ -135,7 +135,7 @@ const fixmypetprofile = () => {
     const FILE_NAME = "profile_image";
     const fileUrl = `${FILE_NAME}_${imageId}`;
 
-    let uploadUrl = "";
+    let uploadUrl = null;
     if (petImage) {
       const imgData = await supabase.storage.from("pet_image").upload(fileUrl, petImage);
       const imgUrl = supabase.storage.from("pet_image").getPublicUrl(imgData.data!.path);
@@ -209,7 +209,11 @@ const fixmypetprofile = () => {
     >
       <h1 className="mt-5 text-2xl font-bold">팻 정보 변경하기</h1>
       <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
-        <img className="max-h-[200px] max-w-[200px] object-cover" src={previewImage} alt="profile_img" />
+        <img
+          className="max-h-[200px] max-w-[200px] object-cover"
+          src={previewImage ? previewImage : ""}
+          alt="profile_img"
+        />
         <br></br>
         <button
           className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"

@@ -14,7 +14,7 @@ export type Post = {
   content: string;
   created_at: string;
   user_id: string;
-  comments: string;
+  comments: string | null;
   users: {
     id: string;
     nickname: string;
