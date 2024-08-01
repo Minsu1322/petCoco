@@ -59,7 +59,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         `/api/mate?current=${isCurrentPosts}&page=${page}&limit=6&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
       );
       const data = response.json();
-      //console.log(data);
+      // console.log(data);
       return data;
     }
   });

@@ -12,7 +12,7 @@ export type MatePostFullType = MatePostType & {
     errMsg: string | null;
     isLoading: boolean;
   };
-  users: UserType;
+  users: UserType[];  
 };
 
 export type MatePostAllType = MatePostType & {
@@ -24,7 +24,7 @@ export type MatePostAllType = MatePostType & {
     errMsg: string | null;
     isLoading: boolean;
   };
-  users: UserType;
+  users: UserType[];
   matepostpets: matepostpetsType[];
 };
 
