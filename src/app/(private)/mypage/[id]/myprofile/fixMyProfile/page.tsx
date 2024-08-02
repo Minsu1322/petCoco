@@ -18,12 +18,10 @@ const FixMyProfile = () => {
   const [profileImageUrl, setProfileImageUrl] = useState(""); //서버에 반영될 이미지 URL
   const params = useParams();
 
-  if (params === null) {
-    return;
-  }
-  const id = params.id;
   const supabase = createClient();
   const queryClient = useQueryClient();
+
+  const id = params?.id || 0;
 
   const router = useRouter();
 

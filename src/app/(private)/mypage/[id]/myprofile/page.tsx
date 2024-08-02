@@ -3,15 +3,11 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import Router from "next/router";
 
 const MyProfile = () => {
   const params = useParams();
-  if (params === null) {
-    return;
-  }
-  const id = params.id;
 
+  const id = params?.id || 0;
   const getProfileData = async () => {
     const response = await fetch(`/api/mypage/${id}/myprofile`, {
       method: "GET",
@@ -30,11 +26,11 @@ const MyProfile = () => {
     queryKey: ["user"],
     queryFn: getProfileData
   });
+
   if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
   if (isError) {
-    alert("데이터 로딩 실패");
-    return null;
+    return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
   }
 
   return (

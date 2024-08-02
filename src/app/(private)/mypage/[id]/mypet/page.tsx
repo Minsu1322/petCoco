@@ -6,14 +6,10 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import Router from "next/router";
 type PetType = UsersPetType;
-const mypet = () => {
+const MyPet = () => {
   const params = useParams();
-  if (params === null) {
-    return;
-  }
-  const id = params.id;
-  console.log(id);
 
+  const id = params?.id || 0;
   const getPetData = async () => {
     const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
       method: "GET",
@@ -32,6 +28,7 @@ const mypet = () => {
     queryKey: ["pets", id],
     queryFn: getPetData
   });
+
   if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
   if (isError) {
@@ -83,4 +80,4 @@ const mypet = () => {
   );
 };
 
-export default mypet;
+export default MyPet;
