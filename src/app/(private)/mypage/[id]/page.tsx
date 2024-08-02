@@ -75,7 +75,7 @@ function MyPage() {
               src={userProfile.profile_img}
               alt=""
             />
-            <span className="font-bold text-[#42E68A] sm:text-[48px]">
+            <span className="flex items-center font-bold text-[#42E68A] sm:text-[40px]">
               {userProfile.nickname}
               <div className="text-[36px] text-black">님 반갑습니다.</div>
             </span>

@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserInfoType } from "@/types/auth.type";
+import { Input, Textarea } from "@nextui-org/input";
+
 type UserType = UserInfoType;
 
 const FixMyProfile = () => {
@@ -30,7 +32,7 @@ const FixMyProfile = () => {
   }
 
   const ageOptions = [
-    { value: "null", label: "연령대 선택" },
+    { value: "null", label: "미공개" },
     { value: "10대", label: "10대" },
     { value: "20대", label: "20대" },
     { value: "30대", label: "30대" },
@@ -92,10 +94,11 @@ const FixMyProfile = () => {
   };
 
   const handleAgeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.currentTarget.value);
     setAge(e.currentTarget.value);
   };
 
-  const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
+  const handleIntroductionChange = (e: ChangeEvent<HTMLInputElement>) => setIntroduction(e.target.value);
 
   const updateProfileWithSupabase = async ({
     nickname,
@@ -158,80 +161,84 @@ const FixMyProfile = () => {
 
   return (
     <div
-      className="my-auto flex flex-col items-center justify-center rounded-[30px] bg-white"
+      className="my-auto flex flex-col items-center justify-center rounded-[30px]"
       onClick={(e) => e.stopPropagation()}
     >
-      <h1 className="mt-5 text-2xl font-bold">프로필 수정</h1>
-      <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
-        <img className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover" src={previewImage} alt="" />
-        <br></br>
-        <button
-          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
-          type={"button"}
-          onClick={() => document.getElementById("fileInput")?.click()}
-        >
-          이미지 변경하기
-        </button>
-        <input id="fileInput" type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
-      </div>
-      <br />
-      <p className="font-bold">닉네임</p>
-      <input
-        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="변경할 닉네임(최대 8자)"
-        maxLength={8}
-        defaultValue={user.nickname}
-        onChange={handleNickNameChange}
-      />
-      <br />
-      <p className="font-bold">연령대</p>
-      <select className="border border-[#D2D2D2]" onChange={handleAgeChange} value={age}>
-        {ageOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <br />
-      <p className="font-bold">성별</p>
-      <div className="flex gap-[20px]">
-        <input type="checkbox" name="gender" value="남" onChange={handleGenderChange} /> 남
+      <div className="w-[600px]">
+        <h1 className="mt-5 text-2xl font-bold">프로필 수정</h1>
+        <div className="my-auto mt-5 flex max-h-[400px] flex-col items-center justify-center">
+          <img className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover" src={previewImage} alt="" />
+          <br></br>
+          <button
+            className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
+            type={"button"}
+            onClick={() => document.getElementById("fileInput")?.click()}
+          >
+            이미지 변경하기
+          </button>
+          <input id="fileInput" type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
+        </div>
         <br />
-        <input type="checkbox" name="gender" value="여" onChange={handleGenderChange} /> 여
-      </div>
-      <br />
-      <p className="font-bold">MBTI</p>
-      <input
-        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="MBTI"
-        maxLength={4}
-        defaultValue={user.mbti}
-        onChange={handleMbtiChange}
-      />
-      <br />
-      <p className="font-bold">자기소개</p>
-      <textarea
-        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        placeholder="자기소개(최대 200자)"
-        maxLength={200}
-        defaultValue={user.introduction}
-        onChange={handleIntroductionChange}
-      />
-      <div className="mt-5 flex gap-[15px]">
-        <button
-          className="rounded border border-[#C9C9C9] bg-[#D1D1D1] px-4 py-2 text-center font-bold text-black"
-          onClick={toMyProfile}
-        >
-          뒤로가기
-        </button>
-        <button
-          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
-          onClick={submitChange}
-        >
-          변경하기
-        </button>
+        <div>
+          <p className="font-bold">닉네임</p>
+          <Input
+            className="mt-2"
+            type="text"
+            placeholder="변경할 닉네임(최대 8자)"
+            maxLength={8}
+            defaultValue={user.nickname}
+            onChange={handleNickNameChange}
+          />
+          <br />
+          <p className="font-bold">연령대</p>
+          <select className="mt-2 h-[40px] rounded-md bg-gray-100 px-2" onChange={handleAgeChange} value={age}>
+            {ageOptions.map((option) => (
+              <option key={option.label} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <br />
+          <p className="mt-5 font-bold">성별</p>
+          <div className="mt-2 flex gap-[10px] pl-2">
+            <input type="checkbox" name="gender" value="남" onChange={handleGenderChange} /> 남
+            <br />
+            <input type="checkbox" name="gender" value="여" onChange={handleGenderChange} /> 여
+          </div>
+          <br />
+          <p className="font-bold">MBTI</p>
+          <Input
+            className="mt-2"
+            type="text"
+            placeholder="MBTI"
+            maxLength={4}
+            defaultValue={user.mbti}
+            onChange={handleMbtiChange}
+          />
+          <br />
+          <p className="font-bold">자기소개</p>
+          <Textarea
+            className="mt-2"
+            placeholder="자기소개(최대 200자)"
+            maxLength={200}
+            defaultValue={user.introduction}
+            onChange={handleIntroductionChange}
+          />
+        </div>
+        <div className="mb-20 mt-10 flex flex-row-reverse gap-[15px]">
+          <button
+            className="rounded border border-[#C9C9C9] bg-[#D1D1D1] px-4 py-2 text-center font-bold text-black"
+            onClick={toMyProfile}
+          >
+            뒤로가기
+          </button>
+          <button
+            className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
+            onClick={submitChange}
+          >
+            변경하기
+          </button>
+        </div>
       </div>
     </div>
   );

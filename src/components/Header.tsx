@@ -14,10 +14,10 @@ const supabase = createClient();
 const Header = () => {
   const [isUser, setIsUser] = useState(false);
   const { setSession } = useAuthStore();
-  const router = useRouter();
   const { user } = useAuthStore((state) => ({
     user: state.user
   }));
+  const router = useRouter();
 
   useEffect(() => {
     const checkUser = async () => {
@@ -42,7 +42,7 @@ const Header = () => {
 
   const handleMypageClick = () => {
     if (user) {
-      router.push(`/mypage/${user.id}`);
+      router.push(`/mypage/${user.id}/myprofile`);
     } else {
       router.push("/signin");
     }
