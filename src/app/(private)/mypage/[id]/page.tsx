@@ -12,12 +12,11 @@ type PetType = UsersPetType;
 function MyPage() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id;
+
+  const id = params?.id || 0;
 
   const user = useAuthStore((state) => state.user);
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   const getProfileData = async () => {
     const response = await fetch(`/api/mypage/${id}/myprofile`, {
@@ -37,6 +36,7 @@ function MyPage() {
     queryKey: ["userProfile"],
     queryFn: getProfileData
   });
+
   const getPetData = async () => {
     const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
       method: "GET",
@@ -47,14 +47,18 @@ function MyPage() {
     return data;
   };
 
-  const { data: pets } = useQuery<PetType[]>({
+  const {
+    data: pets,
+    isPending: isPetPending,
+    isError: isPetError
+  } = useQuery<PetType[]>({
     queryKey: ["pets", id],
     queryFn: getPetData
   });
 
-  if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  if (isPending || isPetPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
-  if (isError) {
+  if (isError || isPetError) {
     return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
   }
 
