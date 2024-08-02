@@ -211,7 +211,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   return (
     <div className="container mx-auto px-4 pb-5 sm:px-6 lg:px-8">
       {isEditing ? (
-        <form onSubmit={handleUpdatePost} className="space-y-6 mt-10">
+        <form onSubmit={handleUpdatePost} className="mt-10 space-y-6">
           <div className="flex flex-col items-center justify-between sm:flex-row">
             <h1 className="mb-4 text-2xl font-semibold sm:mb-0">산책 메이트 모집 글 작성하기</h1>
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -417,7 +417,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 className="rounded-full"
               />
               <div className="text-gray-500">
-                <p>{post.users?.nickname}</p>
+                {/* <p>{post.users?.nickname}</p> */}
                 <p>{new Date(post.created_at).toLocaleString()}</p>
               </div>
             </div>
