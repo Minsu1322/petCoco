@@ -40,11 +40,19 @@ const LogoutButton = () => {
     router.push("/signin");
   };
 
+  const handleMypageClick = () => {
+    if (user) {
+      router.push(`/mypage/${user.id}`);
+    } else {
+      router.push("/signin");
+    }
+  };
+
   return (
     <div className="flex">
-      <Link href={"/mypage"}>
+      <button onClick={handleMypageClick}>
         <button className="mr-2">{nickname}</button>
-      </Link>
+      </button>
       <p>|</p>
       <button onClick={handleLogout} className="ml-2">
         {" "}
