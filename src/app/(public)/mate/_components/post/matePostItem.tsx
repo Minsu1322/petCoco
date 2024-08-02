@@ -3,10 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { getDistanceHaversine } from "../../getDistanceHaversine";
 import { locationStore } from "@/zustand/locationStore";
-import { getConvertTime } from "@/app/utils/getConvertTime";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
+import { getConvertTime } from "@/app/utils/getConvertTime";
 
 interface MatePostItemPorps {
   post: MatePostAllType;
@@ -80,20 +80,14 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   return (
-    <div className="mb-5 w-[400px] rounded-xl border border-gray-300 px-4 pb-2 pt-1">
+    <div className="mb-5 w-[415px] rounded-xl border border-gray-300 px-4 pb-2 pt-1">
       <div className="mb-3 flex h-16 flex-row items-center justify-between border-b-2">
-        <div className="mb-2 flex flex-wrap gap-2 sm:mb-0">
+        <div className="mb-2 flex flex-wrap gap-2">
           <div
             className={`${post.recruiting ? "bg-mainColor" : "bg-gray-300"} w-18 flex h-10 items-center justify-center rounded-md px-8 py-2`}
           >
             {post.recruiting ? "모집 중" : "모집 완료"}
           </div>
-          {/* <button
-            className="flex h-11 w-24 items-center justify-center rounded-full border border-gray-400 p-3 text-center"
-            onClick={startChat}
-          >
-            1:1 대화
-          </button> */}
           <p className="ml-2 flex h-10 items-center justify-center font-semibold">{post.members}명 모집</p>
         </div>
         {distance !== null && (
@@ -101,37 +95,36 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
         )}
         {/* <p className="text-sm">모집 마감일 : {post.recruitment_end}</p> */}
       </div>
-
-      <Link href={`/mate/posts/${post.id}`} className="mt-5">
+    <Link href={`/mate/posts/${post.id}`} className="mt-5">
         <div className="mb-4 mt-2 flex w-full flex-row justify-between">
-          <div className="flex justify-between">
-            <div className="flex flex-col gap-y-2">
-              <p className="mb-3 text-xl font-semibold">{post.title}</p>
-              <p className="mb-3 h-24 overflow-hidden overflow-ellipsis">{post.content}</p>
-            </div>
+          <div className="flex flex-grow flex-col gap-y-2 pr-4">
+            <p className="mb-3 text-xl font-semibold">{post.title}</p>
+            <p className="h-24 mb-3 line-clamp-3 overflow-hidden text-ellipsis">{post.content}</p>
           </div>
-          <div className="flex">
+          <div className="h-[100px] w-[100px] flex-shrink-0">
             <Image
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU"
               alt="사용자 프로필 이미지"
-              width={140}
-              height={140}
-              className="h-32 w-32 object-cover sm:h-36 sm:w-36"
+              width={100}
+              height={100}
+              className="h-full w-full object-cover"
             />
           </div>
         </div>
       </Link>
-      <div className="mt-3 flex flex-col justify-between sm:flex-row">
-        <div className="flex flex-row items-center gap-x-1 rounded-lg px-1 hover:bg-sky-200" onClick={startChat}>
-          <p className="mb-2 sm:mb-0">{post.users[0]?.nickname}</p>
-          <img src="/assets/svg/mail-alt.svg" className="h-6 w-6" />
+      <div className="mt-3 flex flex-row items-end justify-between">
+        <div
+          className="flex cursor-pointer flex-row items-center gap-x-1 rounded-lg px-1 hover:bg-sky-200"
+          onClick={startChat}
+        >
+          <img src="/assets/svg/mail-alt.svg" className="h-5 w-5" alt="메일 아이콘" />
+          <p className="w-15 overflow-hidden text-ellipsis whitespace-nowrap">{post.users[0]?.nickname}</p>
         </div>
-        <div className="flex flex-col items-center gap-y-1 sm:flex-row sm:gap-x-5">
-          <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-start text-sm sm:w-28 sm:text-end">
+        <div className="flex flex-col gap-y-1">
+          <p className="mr-2 w-36 overflow-hidden text-ellipsis whitespace-nowrap text-end text-sm">
             {`${extractDong(post.address || "동정보 없음")}, ${post.place_name || ""}`}
-            {/* 동정보 빼오기 수정 필요 000동2가 같은 상황 고려 */}
           </p>
-          <p className="text-sm">
+          <p className="text-end text-sm">
             {post.date_time?.split("T")[0]} {getConvertTime({ date_time: post.date_time || "" })}
           </p>
         </div>
