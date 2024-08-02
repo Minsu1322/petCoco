@@ -412,7 +412,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 className="rounded-full"
               />
               <div className="text-gray-500">
-                <p>{post.users[0]?.nickname}</p>
+                {/* <p>{post.users?.nickname}</p> */}
                 <p>{new Date(post.created_at).toLocaleString()}</p>
               </div>
             </div>

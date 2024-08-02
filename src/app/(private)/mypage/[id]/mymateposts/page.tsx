@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/zustand/useAuth";
-import { MatePostFullType, MatePostType } from "@/types/mate.type";
+import { MatePostAllType, MatePostFullType, MatePostType } from "@/types/mate.type";
 import Link from "next/link";
 import { getConvertTime } from "@/app/utils/getConvertTime";
 
@@ -41,7 +41,7 @@ const MyMate = () => {
             <p className="mb-3 text-xl font-semibold">{data.title}</p>
             <p className="mb-3 h-24 overflow-hidden overflow-ellipsis whitespace-nowrap">{data.content}</p>
             <div className="mt-3 flex flex-row justify-between">
-              {/* <p>{data && data.users.nickname}</p> */}
+              {/* <p>{data.users.nickname}</p> */}
               <div className="flex flex-row gap-x-5">
                 <p className="w-28 overflow-hidden text-ellipsis whitespace-nowrap text-end">
                   {`${extractDong(data.address || "")}, ${data.place_name || ""}`}
