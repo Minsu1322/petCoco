@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
+import { Input, Textarea } from "@nextui-org/input";
 
 type PetType = UsersPetType;
 
@@ -162,7 +163,7 @@ const FixMypetProfile = () => {
   };
 
   function toMyPet() {
-    router.push(`/mypage/${id}/mypet/mypetprofile/${petId}`);
+    router.push(`/mypage/${id}/myprofile`);
   }
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -187,8 +188,8 @@ const FixMypetProfile = () => {
 
   const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
   const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
-  const handleMedicalRecords = (e: ChangeEvent<HTMLTextAreaElement>) => setMedicalRecords(e.target.value);
-  const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
+  const handleMedicalRecords = (e: ChangeEvent<HTMLInputElement>) => setMedicalRecords(e.target.value);
+  const handleIntroductionChange = (e: ChangeEvent<HTMLInputElement>) => setIntroduction(e.target.value);
 
   if (isPending || filteredProfile.length === 0)
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
@@ -211,7 +212,7 @@ const FixMypetProfile = () => {
         />
         <br></br>
         <button
-          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
+          className="rounded bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
           type={"button"}
           onClick={() => document.getElementById("fileInput")?.click()}
         >
@@ -219,98 +220,100 @@ const FixMypetProfile = () => {
         </button>
         <input id="fileInput" type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
       </div>
-      <br />
-      <p className="font-bold">이름</p>
-      <input
-        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="변경할 이름(최대 8자)"
-        maxLength={8}
-        defaultValue={filteredProfile![0].petName || ""}
-        onChange={handlePetNameChange}
-      />
-      <br />
-      <p className="font-bold">대분류</p>
-      <input
-        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="개, 고양이, 물고기 등등"
-        maxLength={20}
-        defaultValue={filteredProfile![0].majorClass || ""}
-        onChange={handleMajorClassChange}
-      />
-      <br />
-      <p className="font-bold">소분류</p>
-      <input
-        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="치와와, 랙돌, 금붕어 등등"
-        maxLength={20}
-        defaultValue={filteredProfile![0].minorClass || ""}
-        onChange={handleMinorClassChange}
-      />
-      <br />
-      <p className="font-bold">나이</p>
-      <input
-        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        type="text"
-        placeholder="나이"
-        maxLength={100}
-        defaultValue={filteredProfile![0].age || ""}
-        onChange={handleAgeChange}
-      />
-      <br />
-      <p className="font-bold">성별</p>
-      <div className="flex flex-row">
-        <input type="checkbox" name="gender" value="암" onChange={handleMaleFemaleChange} /> 암&nbsp;
-        <input type="checkbox" name="gender" value="수" onChange={handleMaleFemaleChange} /> 수
+      <div className="w-[600px]">
+        <br />
+        <p className="font-bold">이름</p>
+        <Input
+          className="mt-2"
+          type="text"
+          placeholder="변경할 이름(최대 8자)"
+          maxLength={8}
+          defaultValue={filteredProfile![0].petName || ""}
+          onChange={handlePetNameChange}
+        />
+        <br />
+        <p className="font-bold">대분류</p>
+        <Input
+          className="mt-2"
+          type="text"
+          placeholder="개, 고양이, 물고기 등등"
+          maxLength={20}
+          defaultValue={filteredProfile![0].majorClass || ""}
+          onChange={handleMajorClassChange}
+        />
+        <br />
+        <p className="font-bold">소분류</p>
+        <Input
+          className="mt-2"
+          type="text"
+          placeholder="치와와, 랙돌, 금붕어 등등"
+          maxLength={20}
+          defaultValue={filteredProfile![0].minorClass || ""}
+          onChange={handleMinorClassChange}
+        />
+        <br />
+        <p className="font-bold">나이</p>
+        <Input
+          className="mt-2"
+          type="text"
+          placeholder="나이"
+          maxLength={100}
+          defaultValue={filteredProfile![0].age || ""}
+          onChange={handleAgeChange}
+        />
+        <br />
+        <p className="font-bold">성별</p>
+        <div className="mt-2 flex gap-[10px] pl-2">
+          <input type="checkbox" name="gender" value="암" onChange={handleMaleFemaleChange} /> 암&nbsp;
+          <input type="checkbox" name="gender" value="수" onChange={handleMaleFemaleChange} /> 수
+        </div>
+        <br />
+        <p className="font-bold">중성화 여부</p>
+        <div className="mt-2 flex gap-[10px] pl-2">
+          <input type="checkbox" name="neutralize" value="YES" onChange={handleNeutralize} /> YES &nbsp;
+          <input type="checkbox" name="neutralize" value="No" onChange={handleNeutralize} /> No
+        </div>
+        <br />
+        <p className="font-bold">무게(kg)</p>
+        <input
+          type="number"
+          step="0.1"
+          placeholder="1kg 미만은 소수점으로 표기"
+          maxLength={100}
+          defaultValue={filteredProfile![0].weight || ""}
+          className="mt-2 h-[40px] rounded-md bg-gray-100 px-2"
+          name="weight"
+          //value={weight === null ? "" : weight}
+          onChange={handleWeight}
+        />
+        <br />
+        <p className="mt-6 font-bold">의료기록(최대 200자)</p>
+        <Textarea
+          className="mt-2"
+          placeholder="예방접종 및 기타 의료 기록(최대 200자)"
+          maxLength={200}
+          defaultValue={filteredProfile![0].medicalRecords || ""}
+          onChange={handleMedicalRecords}
+        />
+        <br />
+        <p className="font-bold">특징(최대 200자)</p>
+        <Textarea
+          className="mt-2"
+          placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
+          maxLength={200}
+          defaultValue={filteredProfile![0].introduction || ""}
+          onChange={handleIntroductionChange}
+        />
       </div>
-      <br />
-      <p className="font-bold">중성화 여부</p>
-      <div className="flex flex-row">
-        <input type="checkbox" name="neutralize" value="YES" onChange={handleNeutralize} /> YES &nbsp;
-        <input type="checkbox" name="neutralize" value="No" onChange={handleNeutralize} /> No
-      </div>
-      <br />
-      <p className="font-bold">무게(kg)</p>
-      <input
-        type="number"
-        step="0.1"
-        placeholder="1kg 미만은 소수점으로 표기"
-        maxLength={100}
-        defaultValue={filteredProfile![0].weight || ""}
-        className="mt-5 flex items-center rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        name="weight"
-        //value={weight === null ? "" : weight}
-        onChange={handleWeight}
-      />
-      <br />
-      <p className="font-bold">의료기록(최대 200자)</p>
-      <textarea
-        className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        placeholder="예방접종 및 기타 의료 기록(최대 200자)"
-        maxLength={200}
-        defaultValue={filteredProfile![0].medicalRecords || ""}
-        onChange={handleMedicalRecords}
-      />
-      <br />
-      <p className="font-bold">특징(최대 200자)</p>
-      <textarea
-        className="mt-5 flex min-h-[300px] min-w-[100px] rounded-[10px] border border-[#D2D2D2] px-[14px] py-[12px] text-center"
-        placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
-        maxLength={200}
-        defaultValue={filteredProfile![0].introduction || ""}
-        onChange={handleIntroductionChange}
-      />
-      <div className="mt-5 flex gap-[15px]">
+      <div className="mb-20 mt-5 flex gap-[15px]">
         <button
-          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
+          className="rounded bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
           onClick={toMyPet}
         >
           뒤로가기
         </button>
         <button
-          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
+          className="rounded bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
           onClick={submitChange}
         >
           변경하기
