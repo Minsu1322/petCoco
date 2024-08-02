@@ -29,7 +29,7 @@ const myPost: React.FC<PageProps> = async ({ params }) => {
   return (
     <div className="mx-auto mt-8 flex max-w-2xl flex-col items-center justify-center rounded-lg bg-white p-6 shadow-md">
       {post.map((post) => (
-        <Link href={`/community/${post.id}`}>
+        <Link key={post.id} href={`/community/${post.id}`}>
           <h1 className="mb-4 text-3xl font-bold">{post.title}</h1>
           {/* <p className="mb-2 text-gray-600">작성자: {post.users.nickname}</p> */}
           <img src={post.post_imageURL || ""} alt="" />

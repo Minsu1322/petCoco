@@ -34,4 +34,6 @@ export const tabs = [
   "고민있어요",
   "실종/신고"
 ];
+
+export const tags = ["거북이", "도마뱀", "앵무새"];
 export const sortCategory = ["최신순", "인기순", "댓글많은순"];

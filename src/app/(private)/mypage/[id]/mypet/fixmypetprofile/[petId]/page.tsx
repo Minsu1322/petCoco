@@ -1,14 +1,14 @@
 "use client";
 import { v4 as uuidv4 } from "uuid";
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
 
 type PetType = UsersPetType;
 
-const fixmypetprofile = () => {
+const FixMypetProfile = () => {
   const [petName, setPetNickName] = useState<string | null>("");
   const [age, setAge] = useState<string | null>("");
   const [majorClass, setMajorClass] = useState<string | null>("");
@@ -23,45 +23,11 @@ const fixmypetprofile = () => {
   const [petImageUrl, setPetImageUrl] = useState<string | null>();
   const [filteredProfile, setFilteredProfile] = useState<PetType[]>([]);
   const params = useParams();
-
-  if (params === null) {
-    return;
-  }
-  const id = params.id;
-  const petId = params.petId;
   const supabase = createClient();
-  const queryClient = useQueryClient();
-
   const router = useRouter();
 
-  function toMyPet() {
-    router.push(`/mypage/${id}/mypet/mypetprofile/${petId}`);
-  }
-
-  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0];
-    let image = window.URL.createObjectURL(file);
-    setPreviewImage(image);
-    setPetImage(file);
-  };
-
-  const handlePetNameChange = (e: ChangeEvent<HTMLInputElement>) => setPetNickName(e.target.value);
-
-  const handleMajorClassChange = (e: ChangeEvent<HTMLInputElement>) => setMajorClass(e.target.value);
-  const handleMinorClassChange = (e: ChangeEvent<HTMLInputElement>) => setMinorClass(e.target.value);
-
-  const handleMaleFemaleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setMaleFemale(e.currentTarget.value);
-  };
-
-  const handleNeutralize = (e: ChangeEvent<HTMLInputElement>) => {
-    setNeutralized(e.currentTarget.value);
-  };
-
-  const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
-  const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
-  const handleMedicalRecords = (e: ChangeEvent<HTMLTextAreaElement>) => setMedicalRecords(e.target.value);
-  const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
+  const id = params?.id || 0;
+  const petId = params?.petId || 0;
 
   const getPetData = async () => {
     const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
@@ -81,6 +47,41 @@ const fixmypetprofile = () => {
     queryKey: ["pet"],
     queryFn: getPetData
   });
+
+  const submitChange = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const imageId = uuidv4();
+    const FILE_NAME = "profile_image";
+    const fileUrl = `${FILE_NAME}_${imageId}`;
+
+    let uploadUrl = null;
+    if (petImage) {
+      const imgData = await supabase.storage.from("pet_image").upload(fileUrl, petImage);
+      const imgUrl = supabase.storage.from("pet_image").getPublicUrl(imgData.data!.path);
+      setPetImageUrl(imgUrl.data.publicUrl);
+      uploadUrl = imgUrl.data.publicUrl;
+    } else {
+      setPetImageUrl(filteredProfile![0].petImage);
+      uploadUrl = filteredProfile![0].petImage;
+    }
+
+    updateMutate.mutate({
+      petName: petName,
+      petImage: uploadUrl,
+      age: age,
+      majorClass: majorClass,
+      minorClass: minorClass,
+      male_female: maleFemale,
+      neutralized: neutralized,
+      weight: weight,
+      medicalRecords: medicalRecords,
+      introduction: introduction
+    });
+
+    alert("프로필 변경이 성공적으로 완료되었습니다!");
+
+    toMyPet();
+  };
 
   const updateProfileWithSupabase = async ({
     petName,
@@ -129,40 +130,19 @@ const fixmypetprofile = () => {
     mutationFn: updateProfileWithSupabase
   });
 
-  const submitChange = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const imageId = uuidv4();
-    const FILE_NAME = "profile_image";
-    const fileUrl = `${FILE_NAME}_${imageId}`;
-
-    let uploadUrl = null;
-    if (petImage) {
-      const imgData = await supabase.storage.from("pet_image").upload(fileUrl, petImage);
-      const imgUrl = supabase.storage.from("pet_image").getPublicUrl(imgData.data!.path);
-      setPetImageUrl(imgUrl.data.publicUrl);
-      uploadUrl = imgUrl.data.publicUrl;
-    } else {
-      setPetImageUrl(filteredProfile![0].petImage);
-      uploadUrl = filteredProfile![0].petImage;
+  useEffect(() => {
+    if (!pet) {
+      return;
     }
-
-    updateMutate.mutate({
-      petName: petName,
-      petImage: uploadUrl,
-      age: age,
-      majorClass: majorClass,
-      minorClass: minorClass,
-      male_female: maleFemale,
-      neutralized: neutralized,
-      weight: weight,
-      medicalRecords: medicalRecords,
-      introduction: introduction
+    const filtered = pet.filter((profile) => {
+      return profile.id === petId;
     });
+    setFilteredProfile(filtered);
+  }, [pet]);
 
-    alert("프로필 변경이 성공적으로 완료되었습니다!");
-
-    toMyPet();
-  };
+  useEffect(() => {
+    setDefaultProfile();
+  }, [filteredProfile]);
 
   const setDefaultProfile = () => {
     if (!filteredProfile || filteredProfile.length === 0) {
@@ -181,19 +161,34 @@ const fixmypetprofile = () => {
     setPetImageUrl(filteredProfile[0].petImage);
   };
 
-  useEffect(() => {
-    if (!pet) {
-      return;
-    }
-    const filtered = pet.filter((profile) => {
-      return profile.id === petId;
-    });
-    setFilteredProfile(filtered);
-  }, [pet]);
+  function toMyPet() {
+    router.push(`/mypage/${id}/mypet/mypetprofile/${petId}`);
+  }
 
-  useEffect(() => {
-    setDefaultProfile();
-  }, [filteredProfile]);
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0];
+    let image = window.URL.createObjectURL(file);
+    setPreviewImage(image);
+    setPetImage(file);
+  };
+
+  const handlePetNameChange = (e: ChangeEvent<HTMLInputElement>) => setPetNickName(e.target.value);
+
+  const handleMajorClassChange = (e: ChangeEvent<HTMLInputElement>) => setMajorClass(e.target.value);
+  const handleMinorClassChange = (e: ChangeEvent<HTMLInputElement>) => setMinorClass(e.target.value);
+
+  const handleMaleFemaleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setMaleFemale(e.currentTarget.value);
+  };
+
+  const handleNeutralize = (e: ChangeEvent<HTMLInputElement>) => {
+    setNeutralized(e.currentTarget.value);
+  };
+
+  const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
+  const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
+  const handleMedicalRecords = (e: ChangeEvent<HTMLTextAreaElement>) => setMedicalRecords(e.target.value);
+  const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
 
   if (isPending || filteredProfile.length === 0)
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
@@ -325,4 +320,4 @@ const fixmypetprofile = () => {
   );
 };
 
-export default fixmypetprofile;
+export default FixMypetProfile;

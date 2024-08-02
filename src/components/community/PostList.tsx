@@ -79,7 +79,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
       <div className="space-y-6">
         {sortedPosts.map((post) => (
           <Link key={post.id} href={`${process.env.NEXT_PUBLIC_SITE_URL}/community/${post.id}`}>
-            <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-mainColor shadow-sm">
+            <div className="mb-6 flex h-[190px] overflow-hidden rounded-lg border border-mainColor p-3 shadow-sm">
               <div className="flex flex-grow flex-col justify-between p-4">
                 <div>
                   <h2 className="mb-2 text-xl font-bold">{post.title}</h2>
@@ -95,7 +95,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
               </div>
               <div className="flex">
                 {post.post_imageURL && post.post_imageURL.length && post.post_imageURL[0] && (
-                  <div className="h-[180px] w-[120px] flex-shrink-0">
+                  <div className="my-auto ml-6 mr-3 h-[140px] w-[140px] flex-shrink-0">
                     <img src={post.post_imageURL[0]} alt={`게시글 이미지 `} className="h-full w-full object-cover" />
                   </div>
                 )}

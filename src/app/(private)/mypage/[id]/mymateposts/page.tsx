@@ -32,7 +32,11 @@ const MyMate = () => {
   return (
     <div>
       {data.map((data) => (
-        <Link href={`/mate/posts/${data.id}`} className="ml-3 mt-5 flex flex-col items-center justify-center">
+        <Link
+          key={data.id}
+          href={`/mate/posts/${data.id}`}
+          className="ml-3 mt-5 flex flex-col items-center justify-center"
+        >
           <div className="flex-grow pr-5">
             <p className="mb-3 text-xl font-semibold">{data.title}</p>
             <p className="mb-3 h-24 overflow-hidden overflow-ellipsis whitespace-nowrap">{data.content}</p>
