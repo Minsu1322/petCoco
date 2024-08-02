@@ -7,12 +7,17 @@ import LoginButton from "./auth/LoginBtn";
 import { useEffect, useState } from "react";
 import { createClient } from "@/supabase/client";
 import { HiOutlineUserCircle } from "react-icons/hi2";
+import { useRouter } from "next/navigation";
 
 const supabase = createClient();
 
 const Header = () => {
   const [isUser, setIsUser] = useState(false);
   const { setSession } = useAuthStore();
+  const { user } = useAuthStore((state) => ({
+    user: state.user
+  }));
+  const router = useRouter();
 
   useEffect(() => {
     const checkUser = async () => {
@@ -34,6 +39,14 @@ const Header = () => {
 
     return () => subscription.unsubscribe();
   }, [setSession]);
+
+  const handleMypageClick = () => {
+    if (user) {
+      router.push(`/mypage/${user.id}`);
+    } else {
+      router.push("/signin");
+    }
+  };
 
   return (
     <header className="flex w-full items-center justify-between bg-mainColor px-10 py-1 text-black">
@@ -61,9 +74,9 @@ const Header = () => {
           <p>산책 메이트</p>
         </Link>
 
-        <Link href={"/mypage"}>
+        <button onClick={handleMypageClick}>
           <p>마이페이지</p>
-        </Link>
+        </button>
       </div>
       <div className="flex h-[70px] items-center justify-center font-semibold">
         <div className="mr-2 text-3xl">
