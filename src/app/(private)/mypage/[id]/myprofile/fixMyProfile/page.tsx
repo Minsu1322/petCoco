@@ -6,6 +6,7 @@ import { createClient } from "@/supabase/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserInfoType } from "@/types/auth.type";
 import { Input, Textarea } from "@nextui-org/input";
+import { defaultUserImg } from "@/components/DefaultImg";
 
 type UserType = UserInfoType;
 
@@ -167,7 +168,11 @@ const FixMyProfile = () => {
       <div className="w-[600px]">
         <h1 className="mt-5 text-2xl font-bold">프로필 수정</h1>
         <div className="my-auto mt-5 flex max-h-[400px] flex-col items-center justify-center">
-          <img className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover" src={previewImage} alt="" />
+          <img
+            className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover"
+            src={previewImage || defaultUserImg}
+            alt=""
+          />
           <br></br>
           <button
             className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"

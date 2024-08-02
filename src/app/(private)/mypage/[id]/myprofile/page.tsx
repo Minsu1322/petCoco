@@ -4,6 +4,7 @@ import { UsersPetType } from "@/types/auth.type";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { defaultUserImg, defaultPetImg } from "@/components/DefaultImg";
 
 type PetType = UsersPetType;
 
@@ -81,7 +82,11 @@ const MyProfile = () => {
       <div className="flex items-center gap-20">
         <div className="flex flex-col gap-[50px]">
           <div className="flex items-center gap-20">
-            <img className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover" src={user.profile_img} alt="" />
+            <img
+              className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover"
+              src={user.profile_img || defaultUserImg}
+              alt=""
+            />
             <div className="my-auto flex flex-col items-start justify-center rounded-lg px-[15px] lg:px-0">
               <br />
               <span className="text-[24px] text-[#000000] sm:text-[20px]">연령대: {user.age}</span>
@@ -108,7 +113,7 @@ const MyProfile = () => {
               <div className="my-auto flex w-[500px] flex-row items-center gap-12 rounded-[20px] border-2 border-gray-400 bg-white px-[16px] py-[12px]">
                 <img
                   className="h-[100px] w-[100px] rounded-full bg-lime-300 object-cover"
-                  src={pet.petImage || "..."}
+                  src={pet.petImage ? pet.petImage : defaultPetImg}
                   alt="..."
                 />
                 <div>

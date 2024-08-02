@@ -6,6 +6,7 @@ import { createClient } from "@/supabase/client";
 import { useMutation } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
 import { Input, Textarea } from "@nextui-org/input";
+import { defaultPetImg } from "@/components/DefaultImg";
 
 type PetType = UsersPetType;
 
@@ -141,9 +142,13 @@ const AddMypetProfile = () => {
       className="my-auto flex flex-col items-center justify-center rounded-[30px] bg-white"
       onClick={(e) => e.stopPropagation()}
     >
-      <h1 className="mt-5 text-2xl font-bold">애완동물 추가하기</h1>
+      <p className="mt-5 text-2xl font-bold">애완동물 추가하기</p>
       <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
-        <img className="max-h-[200px] max-w-[200px] object-cover" src={previewImage} alt="profile_img" />
+        <img
+          className="max-h-[200px] max-w-[200px] object-cover"
+          src={previewImage || defaultPetImg}
+          alt="profile_img"
+        />
         <br></br>
         <button
           className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
