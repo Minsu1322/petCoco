@@ -53,10 +53,18 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-8 bg-gray-100 p-10">
-      {/* 배너 영역 */}
-      <div className="flex h-60 w-8/12 items-center justify-center rounded-lg bg-sky-500 text-2xl font-bold text-white shadow-md">
-        배너영역
+      <div className="flex w-8/12 flex-col items-center justify-center">
+        {/* 배너 영역 */}
+        <Image
+          src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_img/banner004.png"
+          alt="banner images"
+          width={600}
+          height={150}
+          layout="responsive"
+          className="rounded-lg"
+        />
       </div>
+
       {/* 게시글 영역 */}
       <div className="flex w-8/12 space-x-4">
         {/* 자유게시판 */}
@@ -112,7 +120,7 @@ export default function Home() {
         />
 
         <div className="mt-2 w-full rounded-lg border border-[#B4E85F] bg-white p-6 shadow-md">
-          <h2 className="mb-8 text-xl font-semibold">주인님을 기다리고 있어요😥</h2>
+          <h2 className="mb-8 text-xl font-semibold">주인을 기다리고 있어요😥</h2>
           <AnimalCarousel slides={SLIDES} options={OPTIONS} />
         </div>
       </div>
