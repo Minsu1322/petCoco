@@ -137,17 +137,17 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
                   {
                     <Image
                       src={
-                        comment.users.profile_img ||
+                        comment.users?.profile_img ||
                         "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/post_image/1722324396777_xo2ka9.jpg"
                       }
-                      alt={comment.users.nickname}
+                      alt={comment.users?.nickname}
                       width={50}
                       height={50}
                       className="mr-3 rounded-full"
                     />
                   }
                   <div className="flex flex-col">
-                    <p className="font-semibold">{comment.users.nickname}</p>
+                    <p className="font-semibold">{comment.users?.nickname}</p>
                     <small className="float-end text-gray-400">{new Date(comment.created_at).toLocaleString()}</small>
                   </div>
                 </div>
