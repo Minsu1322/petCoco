@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { usePostStore } from "@/zustand/post";
 import { createClient } from "@/supabase/client";
 import Image from "next/image";
