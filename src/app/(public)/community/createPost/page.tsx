@@ -176,6 +176,12 @@ const CreatePostPage = () => {
     }
   };
 
+  if (!user) {
+    alert("로그인이 필요한 서비스입니다.");
+    router.push("http://localhost:3000/signin");
+    return null;
+  }
+
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl p-4">
       <h1 className="mb-4 text-2xl font-bold">글 작성하기</h1>
