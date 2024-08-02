@@ -122,7 +122,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
   return (
     <div className="w-full">
-     <div classNae="flex justify-center">
+     <div className="flex justify-center">
      <div className="flex flex-row flex-wrap gap-x-7">
         {posts.length > 0 ? (
           posts.map((post) => (
