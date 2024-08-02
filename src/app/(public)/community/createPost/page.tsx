@@ -7,12 +7,15 @@ import { usePostStore } from "@/zustand/post";
 import { createClient } from "@/supabase/client";
 import Image from "next/image";
 import { useAuthStore } from "@/zustand/useAuth";
-import { tabs } from "@/components/community/communityTabAndSortTab/TabAndCategory";
+import { tabs, tags } from "@/components/community/communityTabAndSortTab/TabAndCategory";
 import { NextRequest } from "next/server";
 
 const supabase = createClient();
 
 const CATEGORIES = tabs.filter((tab) => tab !== "전체" && tab !== "인기글").map((tab) => ({ value: tab, label: tab })); // "전체"와 "인기글" 제외
+const CATEGORIESANIMAL = tags
+  .filter((tab) => tab !== "전체" && tab !== "인기글")
+  .map((tab) => ({ value: tab, label: tab }));
 
 // Zustand store에서 필요한 상태와 함수들을 가져옵니다.
 const CreatePostPage = () => {
@@ -195,20 +198,31 @@ const CreatePostPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-2xl p-4">
-      <h1 className="mb-4 text-2xl font-bold">글 작성하기</h1>
+    <form onSubmit={handleSubmit} className="mx-auto max-w-5xl p-4">
+      <h1 className="my-10 text-center text-2xl font-bold">글 작성하기</h1>
       {/* 카테고리 선택 UI */}
-      <div className="mb-4">
-        <label htmlFor="category" className="mb-2 block font-semibold">
+      <div className="mb-4 flex">
+        <label htmlFor="category" className="mr-5 block w-[140px] py-2 font-semibold">
           카테고리 선택
         </label>
-        <div id="category" className="flex w-full flex-row rounded border p-2">
+        <div id="category" className="flex flex-row flex-wrap">
           {CATEGORIES.map((cat) => (
-            <div key={cat.value} className="mr-2">
+            <div key={cat.value} className="mb-2 mr-2">
               <button
                 type="button"
                 onClick={() => setCategory(cat.value)}
-                className={`rounded-full px-4 py-2 ${category === cat.value ? "bg-gray-300" : "hover:bg-gray-200"}`}
+                className={`rounded-full border px-4 py-2 ${category === cat.value ? "bg-gray-300" : "hover:bg-gray-200"}`}
+              >
+                {cat.label}
+              </button>
+            </div>
+          ))}
+          {CATEGORIESANIMAL.map((cat) => (
+            <div key={cat.value} className="mb-2 mr-2">
+              <button
+                type="button"
+                onClick={() => setCategory(cat.value)}
+                className={`rounded-full border px-4 py-2 ${category === cat.value ? "bg-gray-300" : "hover:bg-gray-200"}`}
               >
                 {cat.label}
               </button>
@@ -217,8 +231,8 @@ const CreatePostPage = () => {
         </div>
       </div>
       {/* 제목 입력 필드 */}
-      <div className="mb-4">
-        <label htmlFor="title" className="mb-2 block font-semibold">
+      <div className="mb-4 flex">
+        <label htmlFor="title" className="mr-5 block w-[140px] font-semibold">
           제목
         </label>
         <input
@@ -231,8 +245,8 @@ const CreatePostPage = () => {
         />
       </div>
       {/* 내용 입력 필드 */}
-      <div className="mb-4">
-        <label htmlFor="content" className="mb-2 block font-semibold">
+      <div className="mb-4 flex">
+        <label htmlFor="content" className="mr-5 block w-[140px] font-semibold">
           내용
         </label>
         <textarea
@@ -249,15 +263,15 @@ const CreatePostPage = () => {
           이미지 첨부
         </label>
         <input type="file" id="images" multiple onChange={handleImageUpload} className="w-full" />
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-2 flex flex-nowrap gap-2">
           {images.map((image, index) => (
             <div key={index} className="relative">
               <Image
                 src={image}
                 alt={`attachment-${index}`}
-                width={96}
-                height={96}
-                className={`h-24 w-24 rounded object-cover ${index === 0 ? "border-4 border-blue-500" : ""}`}
+                width={220}
+                height={220}
+                className={`rounded object-cover ${index === 0 ? "border-4 border-blue-500" : ""}`}
               />
               {index === 0 && (
                 <span className="absolute left-0 top-0 rounded-br bg-blue-500 px-2 py-1 text-xs text-white">
@@ -275,20 +289,22 @@ const CreatePostPage = () => {
           ))}
         </div>
       </div>
-      {/* 제출 버튼 */}
-      <button
-        type="submit"
-        className="mb-4 w-full rounded bg-blue-500 p-2 font-semibold text-white transition-colors hover:bg-blue-600"
-      >
-        {postId ? "수정" : "작성"}하기
-      </button>
-      {/* 뒤로가기 링크 */}
-      <Link
-        href="/community"
-        className="block w-full rounded bg-gray-500 p-2 text-center font-semibold text-white transition-colors hover:bg-gray-600"
-      >
-        뒤로가기
-      </Link>
+      <div className="flex justify-end">
+        {/* 뒤로가기 링크 */}
+        <Link
+          href="/community"
+          className="mr-4 block w-[140px] rounded bg-gray-500 p-3 text-center font-semibold text-white transition-colors hover:bg-gray-600"
+        >
+          취소
+        </Link>
+        {/* 제출 버튼 */}
+        <button
+          type="submit"
+          className="block w-[140px] rounded bg-blue-500 p-3 font-semibold text-white transition-colors hover:bg-blue-600"
+        >
+          {postId ? "수정" : "작성"}하기
+        </button>
+      </div>
     </form>
   );
 };

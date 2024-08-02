@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Comments from "../_components/comments";
 
 interface PageProps {
   params: { id: string };
@@ -84,7 +85,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
   }
 
   return (
-    <div className="mx-auto mt-8 max-w-2xl rounded-lg bg-white p-6 shadow-md">
+    <div className="mx-auto mt-8 max-w-5xl rounded-lg bg-white p-6 shadow-md">
       <div className="mb-4 flex justify-start">
         {post.category.split(",").map((category) => (
           <span key={category} className="mr-2 rounded-full bg-gray-300 px-2 py-1 text-sm text-white">
@@ -130,25 +131,29 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
       <div className="prose max-w-none">
         <p>{post.content}</p>
       </div>
-      {post.post_imageURL && (
-        <div className="mt-4 flex max-w-2xl overflow-x-auto rounded-lg">
+      {post?.post_imageURL && (
+        <div className="mt-4 flex overflow-x-auto rounded-lg">
           {post.post_imageURL.split(",").map((img, index) => (
-            <Image
-              key={index}
-              src={img}
-              alt={`${post.title} - 이미지 ${index + 1}`}
-              width={0}
-              height={0}
-              sizes="100vw"
-              className={`rounded ${index === 0 ? "" : "ml-2"}`}
-              style={{ width: "80%", height: "auto" }}
-            />
+            <div key={index} style={{ position: "relative", width: "220px", height: "220px" }}>
+              <Image
+                key={index}
+                src={img}
+                alt={`${post.title} - 이미지 ${index + 1}`}
+                sizes="100vw"
+                fill
+                style={{
+                  objectFit: "cover"
+                }}
+                className={`rounded ${index === 0 ? "" : "ml-2"}`}
+              />
+            </div>
           ))}
         </div>
       )}
       <hr className="my-8" />
       <h2 className="mb-4 text-2xl font-semibold">댓글</h2>
       {/* Comments 컴포넌트를 여기에 추가하세요 */}
+      <Comments postId={post.id} />
     </div>
   );
 };
