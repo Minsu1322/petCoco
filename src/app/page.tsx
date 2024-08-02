@@ -112,7 +112,7 @@ export default function Home() {
         />
 
         <div className="mt-2 w-full rounded-lg border border-[#B4E85F] bg-white p-6 shadow-md">
-          <h2 className="mb-8 text-xl font-semibold">주인님을 기다리고 있어요😥</h2>
+          <h2 className="mb-8 text-xl font-semibold">주인을 기다리고 있어요😥</h2>
           <AnimalCarousel slides={SLIDES} options={OPTIONS} />
         </div>
       </div>
