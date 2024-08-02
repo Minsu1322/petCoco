@@ -1,14 +1,14 @@
 "use client";
 import { v4 as uuidv4 } from "uuid";
-import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
 
 type PetType = UsersPetType;
 
-const addmypetprofile = () => {
+const AddMypetProfile = () => {
   const [petName, setPetNickName] = useState("");
   const [age, setAge] = useState("");
   const [majorClass, setMajorClass] = useState("");
@@ -21,45 +21,8 @@ const addmypetprofile = () => {
   const [petImage, setPetImage] = useState<File | null>(); //서버에 반영될 이미지 파일
   const [previewImage, setPreviewImage] = useState(""); // 이미지 변경 확인을 위해 보여줄 임시 url
   const params = useParams();
-  if (params === null) {
-    return;
-  }
-  const id = params.id;
-
   const supabase = createClient();
-  const queryClient = useQueryClient();
-
   const router = useRouter();
-
-  function toMyPet() {
-    router.push(`/mypage/${id}/mypet`);
-  }
-
-  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0];
-    let image = window.URL.createObjectURL(file);
-    setPreviewImage(image);
-    setPetImage(file);
-  };
-
-  const handlePetNameChange = (e: ChangeEvent<HTMLInputElement>) => setPetNickName(e.target.value);
-
-  const handleMajorClassChange = (e: ChangeEvent<HTMLInputElement>) => setMajorClass(e.target.value);
-  const handleMinorClassChange = (e: ChangeEvent<HTMLInputElement>) => setMinorClass(e.target.value);
-
-  const handleMaleFemaleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setMaleFemale(e.currentTarget.value);
-  };
-
-  const handleNeutralize = (e: ChangeEvent<HTMLInputElement>) => {
-    setNeutralized(e.currentTarget.value);
-  };
-
-  const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
-  const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
-  const handleMedicalRecords = (e: ChangeEvent<HTMLTextAreaElement>) => setMedicalRecords(e.target.value);
-  const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
-
   const updateProfileWithSupabase = async ({
     petName,
     petImage,
@@ -106,6 +69,40 @@ const addmypetprofile = () => {
   const updateMutate = useMutation({
     mutationFn: updateProfileWithSupabase
   });
+
+  if (params === null) {
+    return;
+  }
+  const id = params.id;
+
+  const toMyPet = () => {
+    router.push(`/mypage/${id}/mypet`);
+  };
+
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0];
+    let image = window.URL.createObjectURL(file);
+    setPreviewImage(image);
+    setPetImage(file);
+  };
+
+  const handlePetNameChange = (e: ChangeEvent<HTMLInputElement>) => setPetNickName(e.target.value);
+
+  const handleMajorClassChange = (e: ChangeEvent<HTMLInputElement>) => setMajorClass(e.target.value);
+  const handleMinorClassChange = (e: ChangeEvent<HTMLInputElement>) => setMinorClass(e.target.value);
+
+  const handleMaleFemaleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setMaleFemale(e.currentTarget.value);
+  };
+
+  const handleNeutralize = (e: ChangeEvent<HTMLInputElement>) => {
+    setNeutralized(e.currentTarget.value);
+  };
+
+  const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
+  const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
+  const handleMedicalRecords = (e: ChangeEvent<HTMLTextAreaElement>) => setMedicalRecords(e.target.value);
+  const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
 
   const submitChange = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -255,4 +252,4 @@ const addmypetprofile = () => {
   );
 };
 
-export default addmypetprofile;
+export default AddMypetProfile;
