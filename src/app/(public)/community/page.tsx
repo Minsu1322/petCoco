@@ -8,6 +8,8 @@ import {
 import PostList from "./_components/PostList";
 import React, { useState } from "react";
 import Link from "next/link"; // Link 컴포넌트 추가
+import { RiSearch2Line } from "react-icons/ri";
+import { FcSearch } from "react-icons/fc";
 
 const CommunityMainPage = () => {
   const [selectedTab, setSelectedTab] = useState<string>("전체");
@@ -26,11 +28,6 @@ const CommunityMainPage = () => {
       <div className="mb-8">
         {/* 제목탭 - 선택한 카테고리를 출력 */}
         <h1 className="text-4xl font-bold">{selectedTab}</h1>
-
-        {/* 서브제목(소개글) - components의 TabAndCategory에서 관리 */}
-        <h3 className="mt-2 text-xl text-[#67C047] underline decoration-[rgba(103,192,71,0.8)]">
-          {handleTabIntroduction(selectedTab)}
-        </h3>
       </div>
 
       <div className="flex">
@@ -41,7 +38,7 @@ const CommunityMainPage = () => {
               {sortCategory.map((sort) => (
                 <button
                   key={sort}
-                  className={`rounded-md border border-gray-300 px-3 py-1 ${
+                  className={`h-[40px] rounded-full border border-gray-300 px-3 py-1 ${
                     selectedSort === sort ? "bg-mainColor text-white" : "bg-white hover:bg-gray-100"
                   }`}
                   onClick={() => setSelectedSort(sort)}
@@ -60,7 +57,7 @@ const CommunityMainPage = () => {
           {/* 글쓰기 버튼 */}
           <Link
             href="/community/createPost"
-            className="mb-8 block w-full rounded-md bg-mainColor px-4 py-2 text-center text-white hover:bg-[#5AAF3F]"
+            className="mb-8 block w-full rounded-md bg-mainColor px-4 py-2 text-center text-black hover:bg-[#5e96ff]"
           >
             글쓰기
           </Link>
@@ -75,8 +72,8 @@ const CommunityMainPage = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-4 py-2 focus:outline-none"
               />
-              <button type="submit" className="w-auto bg-mainColor px-4 py-2 text-white">
-                검색
+              <button type="submit" className="w-autopx-4 mx-4 py-2">
+                <RiSearch2Line />
               </button>
             </div>
           </form>
@@ -88,7 +85,7 @@ const CommunityMainPage = () => {
               {tabs.slice(0, showMoreKeywords ? undefined : 9).map((keyword, index) => (
                 <button
                   key={keyword}
-                  className={`rounded-md border px-2 py-1 text-sm ${
+                  className={`h-[40px] rounded-full border px-2 py-1 text-sm ${
                     selectedTab === keyword
                       ? "border-mainColor bg-mainColor text-white"
                       : index === 8 && !showMoreKeywords
@@ -116,7 +113,7 @@ const CommunityMainPage = () => {
               {tags.slice(0, showMoreKeywords ? undefined : 3).map((keyword) => (
                 <button
                   key={keyword}
-                  className={`rounded-md border px-2 py-1 text-sm ${
+                  className={`h-[40px] rounded-full border px-2 py-1 text-sm ${
                     selectedTab === keyword
                       ? "border-mainColor bg-mainColor text-white"
                       : "border-gray-300 bg-white hover:bg-gray-100"
