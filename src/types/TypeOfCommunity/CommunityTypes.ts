@@ -6,6 +6,7 @@ export type Comment = {
   users: {
     id: string;
     nickname: string;
+    profile_img: string;
   };
 };
 export type Post = {

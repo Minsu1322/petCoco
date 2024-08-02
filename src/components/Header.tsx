@@ -1,4 +1,3 @@
-// Header 임시 파일
 "use client";
 
 import Link from "next/link";
@@ -7,6 +6,7 @@ import { useAuthStore } from "@/zustand/useAuth";
 import LoginButton from "./auth/LoginBtn";
 import { useEffect, useState } from "react";
 import { createClient } from "@/supabase/client";
+import { HiOutlineUserCircle } from "react-icons/hi2";
 
 const supabase = createClient();
 
@@ -36,10 +36,15 @@ const Header = () => {
   }, [setSession]);
 
   return (
-    <header className="w-full items-center bg-mainColor px-10 py-6 text-black">
-      <div className="flex justify-center gap-6">
+    <header className="flex w-full items-center justify-between bg-mainColor px-10 py-1 text-black">
+      <img
+        src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/logo_img/PetCocoLogo5.png?t=2024-08-01T11%3A47%3A18.222Z"
+        alt="logo images"
+        className="h-[70px] w-[70px] rounded-lg"
+      />
+      <div className="flex justify-center gap-12 font-semibold">
         <Link href={"/"}>
-          <p>홈</p>
+          <p className="h-[20px] w-[20px]">홈</p>
         </Link>
 
         <Link href={"/community"}>
@@ -55,6 +60,15 @@ const Header = () => {
         <Link href={"/mate"}>
           <p>산책 메이트</p>
         </Link>
+
+        <Link href={"/mypage"}>
+          <p>마이페이지</p>
+        </Link>
+      </div>
+      <div className="flex h-[70px] items-center justify-center font-semibold">
+        <div className="mr-2 text-3xl">
+          <HiOutlineUserCircle />
+        </div>
         {isUser ? <LogoutButton /> : <LoginButton />}
       </div>
     </header>
