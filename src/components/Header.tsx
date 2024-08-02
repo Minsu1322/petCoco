@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/supabase/client";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useRouter } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 const supabase = createClient();
 
@@ -49,14 +48,6 @@ const Header = () => {
     }
   };
 
-  const handleMypageClick = () => {
-    if (user) {
-      router.push(`/mypage/${user.id}`);
-    } else {
-      router.push("/signin");
-    }
-  };
-
   return (
     <header className="flex w-full items-center justify-between bg-mainColor px-10 py-1 text-black">
       <img
@@ -84,9 +75,7 @@ const Header = () => {
         </Link>
 
         <button onClick={handleMypageClick}>
-          <button onClick={handleMypageClick}>
-            <p>마이페이지</p>
-          </button>
+          <p>마이페이지</p>
         </button>
       </div>
       <div className="flex h-[70px] items-center justify-center font-semibold">
