@@ -53,10 +53,18 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-8 bg-gray-100 p-10">
-      {/* 배너 영역 */}
-      <div className="flex h-60 w-8/12 items-center justify-center rounded-lg bg-sky-500 text-2xl font-bold text-white shadow-md">
-        배너영역
+      <div className="flex w-8/12 flex-col items-center justify-center">
+        {/* 배너 영역 */}
+        <Image
+          src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_img/banner004.png"
+          alt="banner images"
+          width={600}
+          height={150}
+          layout="responsive"
+          className="rounded-lg"
+        />
       </div>
+
       {/* 게시글 영역 */}
       <div className="flex w-8/12 space-x-4">
         {/* 자유게시판 */}
