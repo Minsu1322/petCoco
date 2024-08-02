@@ -2,7 +2,8 @@
 import {
   handleTabIntroduction,
   sortCategory,
-  tabs
+  tabs,
+  tags
 } from "@/components/community/communityTabAndSortTab/TabAndCategory";
 import PostList from "@/components/community/PostList";
 import React, { useState } from "react";
@@ -111,9 +112,21 @@ const CommunityMainPage = () => {
           {/* 희귀 동물 게시판 */}
           <div>
             <h4 className="mb-4 text-lg font-semibold">희귀 동물 게시판</h4>
-            <button className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm hover:bg-gray-100">
-              거북이
-            </button>
+            <div className="grid grid-cols-3 gap-2">
+              {tags.slice(0, showMoreKeywords ? undefined : 3).map((keyword) => (
+                <button
+                  key={keyword}
+                  className={`rounded-md border px-2 py-1 text-sm ${
+                    selectedTab === keyword
+                      ? "border-mainColor bg-mainColor text-white"
+                      : "border-gray-300 bg-white hover:bg-gray-100"
+                  }`}
+                  onClick={() => setSelectedTab(keyword)}
+                >
+                  {keyword}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
