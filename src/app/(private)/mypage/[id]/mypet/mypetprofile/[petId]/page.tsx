@@ -46,7 +46,7 @@ const MyPetProfile = () => {
   }, [pet]);
 
   function toMyPet() {
-    router.push(`/mypage/${id}/mypet`);
+    router.push(`/mypage/${id}/myprofile`);
   }
 
   const deleteProfile = async (id: string) => {
@@ -88,61 +88,59 @@ const MyPetProfile = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center gap-12 pt-20">
       <img
         className="h-[170px] w-[170px] items-center justify-center rounded-full bg-lime-300 object-cover"
         src={filteredProfile[0]?.petImage || "..."}
         alt=""
       />
-      <div className="my-auto flex flex-col items-start justify-center rounded-lg px-[15px] lg:px-0">
-        <br />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">이름: {filteredProfile[0]?.petName}</span>
-        <br />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
-          대분류: {filteredProfile[0]?.majorClass}
-        </span>
-        <br />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
-          소분류: {filteredProfile[0]?.minorClass}
-        </span>
-        <br />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">나이: {filteredProfile[0]?.age}</span>
-        <br />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
-          성별: {filteredProfile[0]?.male_female}
-        </span>
-        <br />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
-          중성화 여부: {filteredProfile[0]?.neutralized}
-        </span>
-        <br />
-        <span className="text-[24px] font-bold text-[#000000] sm:text-[20px]">
-          무게: {filteredProfile[0]?.weight} kg
-        </span>
-        <br />
-        <div className="max-w-[300px] break-words text-[24px] font-bold text-[#000000] sm:text-[20px]">
-          의료기록: {filteredProfile[0]?.medicalRecords}
+      <div className="flex flex-row gap-4">
+        <div className="my-auto flex h-[400px] w-[400px] flex-col items-start gap-2 rounded-lg bg-gray-200 p-4">
+          <span className="mb-4 text-[24px] font-bold text-[#000000] sm:text-[20px]">기본 정보</span>
+          <span className="text-[24px] text-[#000000] sm:text-[20px]">이름: {filteredProfile[0]?.petName}</span>
+
+          <span className="text-[24px] text-[#000000] sm:text-[20px]">대분류: {filteredProfile[0]?.majorClass}</span>
+
+          <span className="text-[24px] text-[#000000] sm:text-[20px]">소분류: {filteredProfile[0]?.minorClass}</span>
+
+          <span className="text-[24px] text-[#000000] sm:text-[20px]">나이: {filteredProfile[0]?.age}</span>
+
+          <span className="text-[24px] text-[#000000] sm:text-[20px]">성별: {filteredProfile[0]?.male_female}</span>
+
+          <span className="text-[24px] text-[#000000] sm:text-[20px]">
+            중성화 여부: {filteredProfile[0]?.neutralized}
+          </span>
+
+          <span className="text-[24px] text-[#000000] sm:text-[20px]">무게: {filteredProfile[0]?.weight} kg</span>
         </div>
-        <br />
-        <div className="max-w-[300px] break-words text-[24px] font-bold text-[#000000] sm:text-[20px]">
-          자기소개: {filteredProfile[0]?.introduction}
+        <div>
+          <div className="flex h-[400px] w-[400px] flex-col break-words rounded-lg bg-gray-200 p-4 text-[24px] text-[#000000] sm:text-[20px]">
+            <span className="mb-4 text-[24px] font-bold text-[#000000] sm:text-[20px]">의료기록 </span>
+            <span>{filteredProfile[0]?.medicalRecords}</span>
+          </div>
+        </div>
+        <div>
+          <div className="flex h-[400px] w-[400px] flex-col break-words rounded-lg bg-gray-200 p-4 text-[24px] text-[#000000] sm:text-[20px]">
+            <span className="mb-4 text-[24px] font-bold text-[#000000] sm:text-[20px]">자기소개 </span>{" "}
+            <span>{filteredProfile[0]?.introduction}</span>
+          </div>
         </div>
       </div>
       <div className="mt-5 flex gap-[15px]">
         <Link
-          href={`/mypage/${id}/mypet`}
-          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
+          href={`/mypage/${id}/myprofile`}
+          className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
         >
           뒤로가기
         </Link>
         <Link
           href={`/mypage/${id}/mypet/fixmypetprofile/${filteredProfile[0]?.id}`}
-          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
+          className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
         >
           변경하기
         </Link>
         <button
-          className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
+          className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
           onClick={() => handleDelte(filteredProfile[0]?.id)}
         >
           삭제하기
