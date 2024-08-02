@@ -5,7 +5,7 @@ import {
   tabs,
   tags
 } from "@/components/community/communityTabAndSortTab/TabAndCategory";
-import PostList from "@/components/community/PostList";
+import PostList from "./_components/PostList";
 import React, { useState } from "react";
 import Link from "next/link"; // Link 컴포넌트 추가
 

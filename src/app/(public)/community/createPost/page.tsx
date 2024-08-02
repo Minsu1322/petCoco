@@ -1,5 +1,4 @@
 "use client";
-
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import React, { Suspense, useEffect, useState } from "react";
@@ -9,14 +8,11 @@ import Image from "next/image";
 import { useAuthStore } from "@/zustand/useAuth";
 import { tabs, tags } from "@/components/community/communityTabAndSortTab/TabAndCategory";
 import { NextRequest } from "next/server";
-
 const supabase = createClient();
-
 const CATEGORIES = tabs.filter((tab) => tab !== "전체" && tab !== "인기글").map((tab) => ({ value: tab, label: tab })); // "전체"와 "인기글" 제외
 const CATEGORIESANIMAL = tags
   .filter((tab) => tab !== "전체" && tab !== "인기글")
   .map((tab) => ({ value: tab, label: tab }));
-
 // Zustand store에서 필요한 상태와 함수들을 가져옵니다.
 const CreatePostPage = () => {
   const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage, initPost } =
@@ -28,7 +24,6 @@ const CreatePostPage = () => {
   const postId = searchParams.get("id");
   const { user } = useAuthStore();
   // const user_id = user && user.id;
-
   useEffect(() => {
     let ignore = false;
     const fetchPost = async (postId: string | null) => {
@@ -49,7 +44,6 @@ const CreatePostPage = () => {
           setTitle(postData?.title || "");
           setContent(postData?.content || "");
           setCategory(postData?.category || "");
-
           setUploadFiles([]); // 업로드 파일 초기화
           await fetchPostImages(postData as { post_imageURL: string });
         }
@@ -58,19 +52,15 @@ const CreatePostPage = () => {
         setUploadFiles([]); // 업로드 파일 초기화
       }
     };
-
     fetchPost(postId);
-
     return () => {
       ignore = true;
     };
   }, [postId, initPost, setTitle, setContent, setCategory]);
-
   const fetchPostImages = async (postData: { post_imageURL: string }) => {
     if (postData?.post_imageURL) {
       const urls = postData.post_imageURL.split(",");
       const existingUrls = new Set(uploadFiles.map((file) => file.name)); // 이미 업로드된 이미지 이름 추적
-
       for (const url of urls) {
         if (!existingUrls.has(url)) {
           // 중복된 이미지 URL이 아닌 경우에만 처리
@@ -95,7 +85,6 @@ const CreatePostPage = () => {
       }
     }
   };
-
   // 이미지 업로드 처리 함수
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -112,22 +101,18 @@ const CreatePostPage = () => {
       reader.readAsDataURL(file);
     });
   };
-
   const handleImageRemove = async (index: number) => {
     const imageLocationArray = uploadFiles[index].name.split("/storage/v1/object/public/post_image/");
     if (imageLocationArray.length > 1) {
       const imageLocation = imageLocationArray[1];
-
       setDeleteFiles((prev) => [...prev, imageLocation]);
     }
     removeImage(index);
     setUploadFiles((prev) => prev.filter((_, i) => i !== index));
   };
-
   // 폼 제출 처리 함수
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
       // 이미지 업로드 및 URL 저장
       const imageUrls: string[] = [];
@@ -135,7 +120,6 @@ const CreatePostPage = () => {
         const { error: deleteError } = await supabase.storage.from("post_image").remove([deleteImage]);
         if (deleteError) throw deleteError;
       }
-
       for (const image of uploadFiles) {
         // 0123456
         // aaa.png
@@ -154,13 +138,11 @@ const CreatePostPage = () => {
       }
       // arr.join(',') : [aaa.png, bbb.png, ccc.png] -> "aaa.png,bbb.png,ccc.png"
       // arr.split(',') : "aaa.png,bbb.png,ccc.png" -> [aaa.png, bbb.png, ccc.png]
-
       // useEffect(() => {
       //   if (data?.fetchBoard.images?.length) {
       //     setImgUrl([...data?.fetchBoard.images]);
       //   }
       // }, [data]);
-
       // 게시글 수정이라면 업데이트, 아니라면 새로 생성
       if (postId) {
         const { data: postData, error: postError } = await supabase
@@ -172,7 +154,6 @@ const CreatePostPage = () => {
             post_imageURL: imageUrls.join(",")
           })
           .eq("id", postId);
-
         if (postError) throw postError;
       } else {
         const { data: postData, error: postError } = await supabase
@@ -185,10 +166,8 @@ const CreatePostPage = () => {
             post_imageURL: imageUrls.join(",")
           })
           .select("*");
-
         if (postError) throw postError;
       }
-
       console.log("게시글이 성공적으로 저장되었습니다.");
       router.push(postId ? `/community/${postId}` : "/community");
     } catch (error) {
@@ -196,7 +175,6 @@ const CreatePostPage = () => {
       alert("게시글 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
     }
   };
-
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-5xl p-4">
       <h1 className="my-10 text-center text-2xl font-bold">글 작성하기</h1>
@@ -308,5 +286,4 @@ const CreatePostPage = () => {
     </form>
   );
 };
-
 export default CreatePostPage;

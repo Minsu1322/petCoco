@@ -14,10 +14,10 @@ const supabase = createClient();
 const Header = () => {
   const [isUser, setIsUser] = useState(false);
   const { setSession } = useAuthStore();
-  const router = useRouter();
   const { user } = useAuthStore((state) => ({
     user: state.user
   }));
+  const router = useRouter();
 
   useEffect(() => {
     const checkUser = async () => {
