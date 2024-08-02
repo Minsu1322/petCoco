@@ -42,7 +42,7 @@ const Header = () => {
 
   const handleMypageClick = () => {
     if (user) {
-      router.push(`/mypage/${user.id}`);
+      router.push(`/mypage/${user.id}/myprofile`);
     } else {
       router.push("/signin");
     }

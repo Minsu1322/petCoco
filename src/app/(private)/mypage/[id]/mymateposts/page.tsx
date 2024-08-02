@@ -53,9 +53,9 @@ const MyMate = () => {
               </div>
             </div>
           </div>
-          <div>
+          {/* <div>
             <img src={"사용자 프로필 이미지"} alt="사용자 프로필 이미지" width={140} height={140} />
-          </div>
+          </div> */}
         </Link>
       ))}
     </div>
