@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Comments from "../_components/comments";
 
 interface PageProps {
   params: { id: string };
@@ -84,7 +85,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
   }
 
   return (
-    <div className="mx-auto mt-8 max-w-2xl rounded-lg bg-white p-6 shadow-md">
+    <div className="mx-auto mt-8 max-w-5xl rounded-lg bg-white p-6 shadow-md">
       <div className="mb-4 flex justify-start">
         {post.category.split(",").map((category) => (
           <span key={category} className="mr-2 rounded-full bg-gray-300 px-2 py-1 text-sm text-white">
@@ -94,15 +95,18 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
       </div>
       <h1 className="mb-4 text-3xl font-bold">{post.title}</h1>
       <div className="mb-4 flex">
-        {post.users.profile_img && (
+        {
           <Image
-            src={post.users.profile_img}
+            src={
+              post.users.profile_img ||
+              "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/post_image/1722324396777_xo2ka9.jpg"
+            }
             alt={post.users.nickname}
             width={74}
             height={74}
             className="rounded-full"
           />
-        )}
+        }
         <div className="ml-2 flex flex-col justify-center">
           <p className="text-gray-600">작성자: {post.users.nickname}</p>
           <p className="text-gray-600">작성일: {new Date(post.created_at).toLocaleString()}</p>
@@ -112,13 +116,13 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
         <div className="mb-4 flex flex-row gap-x-5">
           <button
             onClick={handleEdit}
-            className="bg-editBtnColor flex h-8 w-16 cursor-pointer items-center justify-center rounded-md p-2"
+            className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
           >
             수정
           </button>
           <button
             onClick={() => handleDelete(id)}
-            className="bg-delBtnColor flex h-8 w-16 cursor-pointer items-center justify-center rounded-md p-2"
+            className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
           >
             삭제
           </button>
@@ -127,25 +131,29 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
       <div className="prose max-w-none">
         <p>{post.content}</p>
       </div>
-      {post.post_imageURL && (
-        <div className="mt-4 flex max-w-2xl overflow-x-auto rounded-lg">
+      {post?.post_imageURL && (
+        <div className="mt-4 flex overflow-x-auto rounded-lg">
           {post.post_imageURL.split(",").map((img, index) => (
-            <Image
-              key={index}
-              src={img}
-              alt={`${post.title} - 이미지 ${index + 1}`}
-              width={0}
-              height={0}
-              sizes="100vw"
-              className={`rounded ${index === 0 ? "" : "ml-2"}`}
-              style={{ width: "80%", height: "auto" }}
-            />
+            <div key={index} style={{ position: "relative", width: "220px", height: "220px" }}>
+              <Image
+                key={index}
+                src={img}
+                alt={`${post.title} - 이미지 ${index + 1}`}
+                sizes="100vw"
+                fill
+                style={{
+                  objectFit: "cover"
+                }}
+                className={`rounded ${index === 0 ? "" : "ml-2"}`}
+              />
+            </div>
           ))}
         </div>
       )}
       <hr className="my-8" />
       <h2 className="mb-4 text-2xl font-semibold">댓글</h2>
       {/* Comments 컴포넌트를 여기에 추가하세요 */}
+      <Comments postId={post.id} />
     </div>
   );
 };
