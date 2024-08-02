@@ -1,6 +1,7 @@
 import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { MateNextPostType, Pets } from "@/types/mate.type";
+import { UserType } from "@/types/auth.type";
 
 interface CreateMatePostWithPetsData {
   post_data: MateNextPostType;
@@ -68,6 +69,28 @@ try {
   if (filter.regions && filter.regions !== "전체") {
     const regionPrefix = filter.regions.slice(0, 2);
     validPosts = validPosts.filter(post => post.address.startsWith(regionPrefix));
+  }
+
+  if(filter.gender && filter.gender !== "전체") {
+    validPosts = validPosts.filter(post => {
+      if (Array.isArray(post.users)) {
+        return (post.users as UserType[]).some(pet => 
+          pet.gender === filter.gender
+        );
+      }
+      return false;
+    });
+  }
+
+  if(filter.age && filter.age !== "전체") {
+    validPosts = validPosts.filter(post => {
+      if (Array.isArray(post.users)) {
+        return (post.users as UserType[]).some(pet => 
+          pet.age === filter.age
+        );
+      }
+      return false;
+    });
   }
 
   if (filter.weight) {

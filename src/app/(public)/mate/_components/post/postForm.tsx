@@ -155,17 +155,14 @@ const PostForm = () => {
     }
   };
   return (
-    <div className="container mx-auto mb-5 mt-10 px-4 lg:px-20">
-      <form onSubmit={handleUploadPost} className="mx-auto flex max-w-4xl flex-col">
-        <div className="mb-5 flex flex-col items-center justify-between sm:flex-row">
-          <h1 className="mb-3 text-xl font-semibold sm:mb-0 sm:text-2xl">산책 메이트 모집 글 작성하기</h1>
-          <button type="submit" className="mt-3 h-10 w-full rounded-md bg-mainColor p-3 flex items-center sm:w-auto">
-            작성완료
-          </button>
+    <div className="container mx-auto mb-5 mt-10 px-4">
+      <form onSubmit={handleUploadPost} className="mx-auto flex max-w-4xl flex-col items-center">
+        <div className="mb-5 flex flex-col items-center justify-between">
+          <h1 className="mb-3 text-3xl font-semibold">산책 메이트 모집 글 작성하기</h1>
         </div>
-        <div className="flex w-full flex-col gap-y-5">
-          <div className="flex flex-col items-start gap-y-2 sm:flex-row sm:items-center sm:gap-x-3">
-            <label htmlFor="title" className="w-full sm:w-auto">
+        <div className="mt-[40px] flex w-full flex-col gap-y-5">
+          <div className="flex flex-col">
+            <label htmlFor="title" className="w-full text-lg font-semibold">
               제목
             </label>
             <input
@@ -173,278 +170,311 @@ const PostForm = () => {
               value={formPosts.title || ""}
               onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
               placeholder=" 제목을 입력해 주세요"
-              className="h-10 w-full rounded-md border border-gray-300 sm:w-3/4"
+              className="mt-3 h-10 w-full rounded-md border border-gray-300"
               id="title"
             />
           </div>
-          <div className="flex flex-row sm:gap-x-4 sm:flex-row sm:items-center">
-            <label htmlFor="date_time" className="w-full sm:w-auto">
-              희망 날짜 및 시간
-            </label>
-            <input
-              type="datetime-local"
-              id="date_time"
-              value={formPosts.date_time || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
-              className="h-10 w-full rounded-md border border-gray-300 sm:w-1/2"
-            />
-          </div>
-          <div className="flex flex-col justify-between gap-y-4 md:flex-row md:gap-x-4">
-            <div className="flex w-full flex-col gap-y-2 md:w-2/3">
-              <label htmlFor="recruitment_period" className="w-full whitespace-nowrap">
-                모집기간
+          <div className="mt-[10px] flex w-full items-center justify-between">
+            <div className="flex w-full flex-col">
+              <label htmlFor="date_time" className="w-full text-lg font-semibold">
+                희망 날짜 및 시간
               </label>
-              <div className="flex flex-row items-center gap-x-2">
-                <input
-                  type="datetime-local"
-                  id="recruitment_start"
-                  value={formPosts.recruitment_start || ""}
-                  onChange={(e) => setFormPosts({ ...formPosts, recruitment_start: e.target.value })}
-                  className="h-10 w-full rounded-md border border-gray-300"
-                />
-                <span>~</span>
-                <input
-                  type="datetime-local"
-                  id="recruitment_end"
-                  value={formPosts.recruitment_end || ""}
-                  onChange={(e) => setFormPosts({ ...formPosts, recruitment_end: e.target.value })}
-                  className="h-10 w-full rounded-md border border-gray-300"
-                />
-              </div>
+              <input
+                type="datetime-local"
+                id="date_time"
+                value={formPosts.date_time || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
+                className="mt-3 h-10 w-full rounded-md border border-gray-300"
+              />
             </div>
-            <div className="flex w-full flex-col gap-y-2 md:w-1/3">
-              <label htmlFor="members" className="w-full whitespace-nowrap">
+            <div className="ml-[20px] flex w-[200px] flex-col">
+              <label htmlFor="members" className="w-[150px] whitespace-nowrap text-lg font-semibold">
                 모집 인원 수
               </label>
               <div className="flex flex-row items-center gap-x-2">
                 <input
                   type="text"
                   id="members"
-                  className="h-10 w-20 rounded-md border border-gray-300"
+                  placeholder="0"
+                  className="mt-3 h-10 w-[150px] rounded-md border border-gray-300 text-center"
                   value={formPosts.members || ""}
                   onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
                 />
-                <span>명</span>
+                <span className="mt-3 flex h-10 items-center">명</span>
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-y-3 sm:flex-row sm:gap-x-3">
-            <label className="w-full sm:w-auto">산책 장소</label>
-            <div className="w-full sm:w-4/6">
-              <div className="mt-1">
-                <DynamicMapComponent center={{ lat: 37.5556236021213, lng: 126.992199507869 }} />
-                <p className="my-2">클릭한 곳의 주소는? {roadAddress}</p>
-              </div>
+          <div className="mt-[10px] flex w-full flex-col gap-y-2">
+            <label htmlFor="recruitment_period" className="w-full whitespace-nowrap text-lg font-semibold">
+              모집기간
+            </label>
+            <div className="flex flex-row items-center gap-x-2">
               <input
-                type="text"
+                type="datetime-local"
+                id="recruitment_start"
+                value={formPosts.recruitment_start || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, recruitment_start: e.target.value })}
                 className="h-10 w-full rounded-md border border-gray-300"
-                value={formPosts.place_name || ""}
-                onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
-                placeholder=" 장소 정보를 추가로 기입해 주세요"
+              />
+              <span>~</span>
+              <input
+                type="datetime-local"
+                id="recruitment_end"
+                value={formPosts.recruitment_end || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, recruitment_end: e.target.value })}
+                className="h-10 w-full rounded-md border border-gray-300"
               />
             </div>
           </div>
-          <div className="flex flex-col items-start gap-y-2 sm:flex-row sm:items-center sm:gap-x-2">
-            <label htmlFor="preferred_route">선호하는 산책 루트</label>
-            <input
-              type="text"
-              id="preferred_route"
-              className="h-10 w-full rounded-md border border-gray-300 sm:w-4/6"
-              placeholder=" 선호하는 산책 루트가 있다면 적어주세요!"
-              value={formPosts.preferred_route || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
-            />
+          <div className="mt-[20px] flex">
+            <div>
+              <label className="w-full text-lg font-semibold">산책 장소</label>
+              <div className="w-full">
+                <div className="mt-4">
+                  <DynamicMapComponent center={{ lat: 37.5556236021213, lng: 126.992199507869 }} />
+                </div>
+              </div>
+            </div>
+            <div className="ml-[20px] mt-[35px] w-full">
+              <div>
+                <p className="my-2 flex">
+                  <p className="mr-2 text-lg font-semibold">클릭한 곳의 주소는?</p> {roadAddress}
+                </p>
+                <input
+                  type="text"
+                  className="h-10 w-full rounded-md border border-gray-300"
+                  value={formPosts.place_name || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
+                  placeholder=" 장소 정보를 추가로 기입해 주세요"
+                />
+              </div>
+              <div className="flex flex-col items-start gap-y-2">
+                <label htmlFor="preferred_route" className="mt-[30px] text-lg font-semibold">
+                  선호하는 산책 루트
+                </label>
+                <input
+                  type="text"
+                  id="preferred_route"
+                  className="h-10 w-full rounded-md border border-gray-300"
+                  placeholder=" 선호하는 산책 루트가 있다면 적어주세요!"
+                  value={formPosts.preferred_route || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, preferred_route: e.target.value })}
+                />
+              </div>
+              <div className="flex flex-col items-start gap-y-2">
+                <label htmlFor="special_requirements" className="mt-[30px] text-lg font-semibold">
+                  특별한 요구사항
+                </label>
+                <input
+                  type="text"
+                  id="special_requirements"
+                  className="h-10 w-full rounded-md border border-gray-300"
+                  placeholder=" 메이트에게 원하는 특별한 사항이 있다면 적어주세요!"
+                  value={formPosts.special_requirements || ""}
+                  onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
+                />
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col items-start gap-y-2 sm:flex-row sm:items-center sm:gap-x-2">
-            <label htmlFor="special_requirements">특별한 요구사항</label>
-            <input
-              type="text"
-              id="special_requirements"
-              className="h-10 w-full rounded-md border border-gray-300 sm:w-4/6"
-              placeholder=" 메이트에게 원하는 특별한 사항이 있다면 적어주세요!"
-              value={formPosts.special_requirements || ""}
-              onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
-            />
-          </div>
-          <div className="flex flex-col items-start gap-y-2 sm:flex-row sm:gap-x-2">
-            <label htmlFor="content" className="mt-2">
+
+          <div className="mt-[20px] flex flex-col items-start">
+            <label htmlFor="content" className="text-lg font-semibold">
               내용
             </label>
             <textarea
               value={formPosts.content || ""}
               onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
               placeholder=" 글을 작성해 주세요."
-              className="mt-1 h-40 w-full resize-none rounded-md border border-gray-300 p-1 sm:w-5/6"
+              className="mt-4 h-40 w-full resize-none rounded-md border border-gray-300 p-1"
               id="content"
             ></textarea>
           </div>
 
-          {/* 반려동물 정보 */}
-          <div className="mt-3 flex w-full flex-col gap-y-5">
-            <div className="flex items-center gap-x-2">
-              <span className="text-2xl">🐶</span>
-              <h2 className="text-lg font-semibold">반려동물 정보</h2>
+{/* 반려동물 정보 */}
+<div className="mt-3 flex w-full flex-col gap-y-5">
+            <div className="flex items-center justify-between gap-x-2">
+              <div className="flex items-center">
+                <span className="mr-2 text-3xl">🐶</span>
+                <h2 className="text-lg font-semibold">반려동물 정보</h2>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  className="h-[40px] w-[200px] rounded-md border-2 border-mainColor bg-white px-4 transition-colors hover:bg-gray-300"
+                  onClick={() => {
+                    setFormPets([
+                      ...formPets,
+                      {
+                        male_female: "",
+                        neutered: null,
+                        weight: null,
+                        characteristics: "",
+                        age: ""
+                      }
+                    ]);
+                  }}
+                >
+                  반려동물 정보 추가
+                </button>
+              </div>
             </div>
-            <button
-              type="button"
-              className="h-10 rounded-md bg-gray-200 px-4 transition-colors hover:bg-gray-300 sm:w-auto md:w-1/4 lg:w-1/4"
-              onClick={() => {
-                setFormPets([
-                  ...formPets,
-                  {
-                    male_female: "",
-                    neutered: null,
-                    weight: null,
-                    characteristics: "",
-                    age: ""
-                  }
-                ]);
-              }}
-            >
-              반려동물 정보 추가
-            </button>
             <div className="grid grid-cols-1 gap-6">
               {formPets.map((pet, index) => (
                 <div key={index} className="rounded-lg bg-gray-50 p-6 shadow-sm">
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div className="flex flex-col gap-y-2">
-                      <label className="font-medium">성별</label>
-                      <div className="flex gap-x-4">
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name={`male_female_${index}`}
-                            value="female"
-                            checked={pet.male_female === "female"}
-                            onChange={() => {
-                              const newPets = [...formPets];
-                              newPets[index].male_female = "female";
-                              setFormPets(newPets);
-                            }}
-                            className="mr-2"
-                          />
-                          암컷
-                        </label>
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name={`male_female_${index}`}
-                            value="male"
-                            checked={pet.male_female === "male"}
-                            onChange={() => {
-                              const newPets = [...formPets];
-                              newPets[index].male_female = "male";
-                              setFormPets(newPets);
-                            }}
-                            className="mr-2"
-                          />
-                          수컷
-                        </label>
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="flex w-[300px] justify-between">
+                      <div className="flex flex-col gap-y-2">
+                        <label className="text-md font-semibold">성별</label>
+                        <div className="flex gap-x-4">
+                          <label className="flex items-center">
+                            <input
+                              type="radio"
+                              name={`male_female_${index}`}
+                              value="female"
+                              checked={pet.male_female === "female"}
+                              onChange={() => {
+                                const newPets = [...formPets];
+                                newPets[index].male_female = "female";
+                                setFormPets(newPets);
+                              }}
+                              className="mr-2"
+                            />
+                            암컷
+                          </label>
+                          <label className="text-md flex items-center">
+                            <input
+                              type="radio"
+                              name={`male_female_${index}`}
+                              value="male"
+                              checked={pet.male_female === "male"}
+                              onChange={() => {
+                                const newPets = [...formPets];
+                                newPets[index].male_female = "male";
+                                setFormPets(newPets);
+                              }}
+                              className="mr-2"
+                            />
+                            수컷
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-y-2">
+                        <label className="text-md font-semibold">중성화 여부</label>
+                        <div className="flex gap-x-4">
+                          <label className="flex items-center">
+                            <input
+                              type="radio"
+                              name={`neutered_${index}`}
+                              checked={pet.neutered === true}
+                              onChange={() => {
+                                const newPets = [...formPets];
+                                newPets[index].neutered = true;
+                                setFormPets(newPets);
+                              }}
+                              className="mr-2"
+                            />
+                            네
+                          </label>
+                          <label className="flex items-center">
+                            <input
+                              type="radio"
+                              name={`neutered_${index}`}
+                              checked={pet.neutered === false}
+                              onChange={() => {
+                                const newPets = [...formPets];
+                                newPets[index].neutered = false;
+                                setFormPets(newPets);
+                              }}
+                              className="mr-2"
+                            />
+                            아니오
+                          </label>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-y-2">
-                      <label className="font-medium">중성화 여부</label>
-                      <div className="flex gap-x-4">
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name={`neutered_${index}`}
-                            checked={pet.neutered === true}
-                            onChange={() => {
-                              const newPets = [...formPets];
-                              newPets[index].neutered = true;
-                              setFormPets(newPets);
-                            }}
-                            className="mr-2"
-                          />
-                          네
+                    <div className="mt-[20px] flex w-full justify-between gap-5">
+                      <div className="flex w-full flex-col gap-y-2">
+                        <label htmlFor={`age_${index}`} className="text-md font-semibold">
+                          나이
                         </label>
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name={`neutered_${index}`}
-                            checked={pet.neutered === false}
-                            onChange={() => {
-                              const newPets = [...formPets];
-                              newPets[index].neutered = false;
-                              setFormPets(newPets);
-                            }}
-                            className="mr-2"
-                          />
-                          아니오
-                        </label>
+                        <input
+                          type="text"
+                          id={`age_${index}`}
+                          className="w-full rounded-md border p-2"
+                          value={pet.age || ""}
+                          onChange={(e) => {
+                            const newPets = [...formPets];
+                            newPets[index].age = e.target.value;
+                            setFormPets(newPets);
+                          }}
+                        />
                       </div>
-                    </div>
-                    <div className="flex flex-col gap-y-2">
-                      <label htmlFor={`age_${index}`} className="font-medium">
-                        나이
-                      </label>
-                      <input
-                        type="text"
-                        id={`age_${index}`}
-                        className="w-full rounded-md border p-2"
-                        value={pet.age || ""}
-                        onChange={(e) => {
-                          const newPets = [...formPets];
-                          newPets[index].age = e.target.value;
-                          setFormPets(newPets);
-                        }}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-y-2">
-                      <label htmlFor={`weight_${index}`} className="font-medium">
-                        무게
-                      </label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        id={`weight_${index}`}
-                        className="w-full rounded-md border p-2"
-                        value={pet.weight === null ? "" : pet.weight}
-                        onChange={(e) => {
-                          const newPets = [...formPets];
-                          newPets[index].weight = e.target.value === "" ? null : Number(e.target.value);
-                          setFormPets(newPets);
-                        }}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-y-2 sm:col-span-2">
-                      <label htmlFor={`characteristics_${index}`} className="font-medium">
-                        성격 및 특징
-                      </label>
-                      <select
-                        id={`characteristics_${index}`}
-                        className="w-full rounded-md border p-2"
-                        value={pet.characteristics || ""}
-                        onChange={(e) => {
-                          const newPets = [...formPets];
-                          newPets[index].characteristics = e.target.value;
-                          setFormPets(newPets);
-                        }}
-                      >
-                        <option value="">선택</option>
-                        {characteristicsArr.map((characteristic) => (
-                          <option key={characteristic} value={characteristic}>
-                            {characteristic}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="flex w-full flex-col gap-y-2">
+                        <label htmlFor={`weight_${index}`} className="text-md font-semibold">
+                          무게
+                        </label>
+                        <input
+                          type="number"
+                          step="0.1"
+                          id={`weight_${index}`}
+                          className="w-full rounded-md border p-2"
+                          value={pet.weight === null ? "" : pet.weight}
+                          onChange={(e) => {
+                            const newPets = [...formPets];
+                            newPets[index].weight = e.target.value === "" ? null : Number(e.target.value);
+                            setFormPets(newPets);
+                          }}
+                        />
+                      </div>
+                      <div className="flex w-full flex-col gap-y-2">
+                        <label htmlFor={`characteristics_${index}`} className="text-md font-semibold">
+                          성격 및 특징
+                        </label>
+                        <select
+                          id={`characteristics_${index}`}
+                          className="w-full rounded-md border p-2"
+                          value={pet.characteristics || ""}
+                          onChange={(e) => {
+                            const newPets = [...formPets];
+                            newPets[index].characteristics = e.target.value;
+                            setFormPets(newPets);
+                          }}
+                        >
+                          <option value="">선택</option>
+                          {characteristicsArr.map((characteristic) => (
+                            <option key={characteristic} value={characteristic}>
+                              {characteristic}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    className="mt-4 rounded-md bg-red-100 px-4 py-2 text-red-600 transition-colors hover:bg-red-200"
-                    onClick={() => {
-                      const newPets = formPets.filter((_, i) => i !== index);
-                      setFormPets(newPets);
-                    }}
-                  >
-                    삭제
-                  </button>
+                  <div className="flex w-full justify-end">
+                    <button
+                      type="button"
+                      className="mt-8 h-[50px] w-[120px] rounded-md bg-red-100 text-red-600 transition-colors hover:bg-red-200"
+                      onClick={() => {
+                        const newPets = formPets.filter((_, i) => i !== index);
+                        setFormPets(newPets);
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
+        </div>
+        <div className="flex w-full justify-center">
+          <button
+            type="submit"
+            className="mb-[40px] mt-[60px] flex h-[60px] w-[250px] items-center justify-center rounded-md bg-mainColor"
+          >
+            작성완료
+          </button>
         </div>
       </form>
     </div>

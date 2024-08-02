@@ -69,11 +69,11 @@ const MatePage = () => {
   }
 
   return (
-    <div className="min-h-screen mb-10 container mx-auto px-4">
-      <h1 className="mb-7 p-2 text-2xl md:text-3xl font-semibold">산책 메이트</h1>
+    <div className="min-h-screen mb-10 container mx-auto px-2">
+      <h1 className="mb-7 p-2 text-2xl md:text-3xl font-semibold mt-5">산책 메이트</h1>
       <div className="flex flex-col lg:flex-row gap-y-5 lg:gap-x-5">
         {/* 왼쪽 메인 컨텐츠 영역 */}
-        <div className="w-full lg:w-3/4 mx-0 lg:mx-3">
+        <div className="w-full lg:w-3/4 mx-0 lg:mx-2">
           <div className="mb-5">
             <PostListFilterTab
               isCurrentPosts={isCurrentPosts}

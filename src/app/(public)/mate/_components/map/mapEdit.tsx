@@ -52,7 +52,7 @@ const MapEdit = ({ center, isEditing, dbPosition }: MapComponentProps) => {
     <>
       <Map
         center={position.center}
-        style={{ width: "500px", height: "360px" }}
+        style={{ width: "450px", height: "360px" }}
         level={5}
         onClick={(_, mouseEvent) => {
           const latlng = mouseEvent.latLng;
