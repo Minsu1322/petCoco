@@ -80,7 +80,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   return (
-    <div className="mb-5 w-[415px] rounded-xl border border-gray-300 px-4 pb-2 pt-1">
+    <div className="mb-5 w-[540px] rounded-xl border border-gray-300 px-4 pb-2 pt-1">
       <div className="mb-3 flex h-16 flex-row items-center justify-between border-b-2">
         <div className="mb-2 flex flex-wrap gap-2">
           <div
@@ -95,11 +95,11 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
         )}
         {/* <p className="text-sm">모집 마감일 : {post.recruitment_end}</p> */}
       </div>
-    <Link href={`/mate/posts/${post.id}`} className="mt-5">
+      <Link href={`/mate/posts/${post.id}`} className="mt-5">
         <div className="mb-4 mt-2 flex w-full flex-row justify-between">
           <div className="flex flex-grow flex-col gap-y-2 pr-4">
             <p className="mb-3 text-xl font-semibold">{post.title}</p>
-            <p className="h-24 mb-3 line-clamp-3 overflow-hidden text-ellipsis">{post.content}</p>
+            <p className="mb-3 line-clamp-3 h-24 overflow-hidden text-ellipsis">{post.content}</p>
           </div>
           <div className="h-[100px] w-[100px] flex-shrink-0">
             <Image
@@ -120,10 +120,11 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           <img src="/assets/svg/mail-alt.svg" className="h-5 w-5" alt="메일 아이콘" />
           <p className="w-15 overflow-hidden text-ellipsis whitespace-nowrap">{post.users[0]?.nickname}</p>
         </div>
-        <div className="flex flex-col gap-y-1">
-          <p className="mr-2 w-36 overflow-hidden text-ellipsis whitespace-nowrap text-end text-sm">
+        <div className="flex items-center gap-y-1">
+          <p className="w-36 overflow-hidden text-ellipsis whitespace-nowrap text-end text-sm">
             {`${extractDong(post.address || "동정보 없음")}, ${post.place_name || ""}`}
           </p>
+          <div className="mx-4">|</div>
           <p className="text-end text-sm">
             {post.date_time?.split("T")[0]} {getConvertTime({ date_time: post.date_time || "" })}
           </p>

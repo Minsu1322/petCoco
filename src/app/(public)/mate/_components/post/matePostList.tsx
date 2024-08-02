@@ -31,9 +31,9 @@ interface MatePostListProps {
 }
 
 const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: MatePostListProps) => {
-  const { geoData,  setIsUseGeo, setGeoData } = locationStore();
+  const { geoData, setIsUseGeo, setGeoData } = locationStore();
   const [page, setPage] = useState(1);
-//console.log(geoData)
+  //console.log(geoData)
 
   const { data, isPending, error } = useQuery<PostsResponse>({
     queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, sortBy, filters, geoData],
@@ -106,8 +106,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
     retry: false
   });
 
-
-  const posts = data?.data ?? []
+  const posts = data?.data ?? [];
 
   if (isPending) {
     return (
@@ -118,26 +117,24 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         </div>
       </div>
     );
-  }  
+  }
 
   return (
     <div className="w-full">
-     <div className="flex justify-center">
-     <div className="flex flex-row flex-wrap gap-x-7">
-        {posts.length > 0 ? (
-          posts.map((post) => (
-            <MatePostItem key={post.id} post={post} />
-          ))
-        ) : (
-          <div className="flex justify-center items-center">
-            <p className="text-center py-4">현재 모집 중인 산책 메이트가 없습니다.</p>
-          </div>
-        )}
+      <div className="flex">
+        <div className="flex flex-row flex-wrap justify-between gap-x-7">
+          {posts.length > 0 ? (
+            posts.map((post) => <MatePostItem key={post.id} post={post} />)
+          ) : (
+            <div className="flex items-center justify-center">
+              <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
+            </div>
+          )}
+        </div>
       </div>
-     </div>
-  
+
       {/* pagination */}
-      <div className="mt-8 flex flex-row justify-center items-center">
+      <div className="mt-8 flex flex-row items-center justify-center">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
@@ -148,7 +145,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         <span className="px-4 py-2">
           페이지 {!data || data.data?.length === 0 ? "0" : `${page}`} / {data?.totalPages ?? "0"}
         </span>
-        <button 
+        <button
           onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
           disabled={data?.totalPages !== undefined && page === data.totalPages}
           className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"

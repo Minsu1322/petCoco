@@ -7,12 +7,14 @@ import { createClient } from "@/supabase/client";
 import Image from "next/image";
 import { useAuthStore } from "@/zustand/useAuth";
 import { tabs, tags } from "@/components/community/communityTabAndSortTab/TabAndCategory";
-import { NextRequest } from "next/server";
+
 const supabase = createClient();
+
 const CATEGORIES = tabs.filter((tab) => tab !== "전체" && tab !== "인기글").map((tab) => ({ value: tab, label: tab })); // "전체"와 "인기글" 제외
 const CATEGORIESANIMAL = tags
   .filter((tab) => tab !== "전체" && tab !== "인기글")
   .map((tab) => ({ value: tab, label: tab }));
+
 // Zustand store에서 필요한 상태와 함수들을 가져옵니다.
 const CreatePostPage = () => {
   const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage, initPost } =
@@ -24,6 +26,7 @@ const CreatePostPage = () => {
   const postId = searchParams.get("id");
   const { user } = useAuthStore();
   // const user_id = user && user.id;
+
   useEffect(() => {
     let ignore = false;
     const fetchPost = async (postId: string | null) => {
@@ -44,6 +47,7 @@ const CreatePostPage = () => {
           setTitle(postData?.title || "");
           setContent(postData?.content || "");
           setCategory(postData?.category || "");
+
           setUploadFiles([]); // 업로드 파일 초기화
           await fetchPostImages(postData as { post_imageURL: string });
         }
@@ -61,6 +65,7 @@ const CreatePostPage = () => {
     if (postData?.post_imageURL) {
       const urls = postData.post_imageURL.split(",");
       const existingUrls = new Set(uploadFiles.map((file) => file.name)); // 이미 업로드된 이미지 이름 추적
+
       for (const url of urls) {
         if (!existingUrls.has(url)) {
           // 중복된 이미지 URL이 아닌 경우에만 처리
@@ -85,6 +90,7 @@ const CreatePostPage = () => {
       }
     }
   };
+
   // 이미지 업로드 처리 함수
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -105,11 +111,13 @@ const CreatePostPage = () => {
     const imageLocationArray = uploadFiles[index].name.split("/storage/v1/object/public/post_image/");
     if (imageLocationArray.length > 1) {
       const imageLocation = imageLocationArray[1];
+
       setDeleteFiles((prev) => [...prev, imageLocation]);
     }
     removeImage(index);
     setUploadFiles((prev) => prev.filter((_, i) => i !== index));
   };
+
   // 폼 제출 처리 함수
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
