@@ -24,7 +24,7 @@ export type MatePostFullType = MatePostType & {
     errMsg: string | null;
     isLoading: boolean;
   };
-  users: UserType;  
+  users: UserType;
 };
 
 export type MatePostAllTypeForItem = MatePostType & {
@@ -38,6 +38,7 @@ export type MatePostAllTypeForItem = MatePostType & {
   };
   users: UserType[];
   matepostpets: matepostpetsType[];
+  distance: number;
 };
 
 export type MatePostAllType = MatePostType & {
