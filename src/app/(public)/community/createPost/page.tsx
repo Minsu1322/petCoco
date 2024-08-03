@@ -7,6 +7,7 @@ import { createClient } from "@/supabase/client";
 import Image from "next/image";
 import { useAuthStore } from "@/zustand/useAuth";
 import { tabs, tags } from "@/components/community/communityTabAndSortTab/TabAndCategory";
+import { Input, Textarea, Button } from "@nextui-org/react";
 
 const supabase = createClient();
 
@@ -194,24 +195,28 @@ const CreatePostPage = () => {
         <div id="category" className="flex flex-row flex-wrap">
           {CATEGORIES.map((cat) => (
             <div key={cat.value} className="mb-2 mr-2">
-              <button
+              {/* <button
                 type="button"
                 onClick={() => setCategory(cat.value)}
-                className={`rounded-full border px-4 py-2 ${category === cat.value ? "bg-gray-300" : "hover:bg-gray-200"}`}
+                className={`rounded-full border px-4 py-2 ${category === cat.value ? "bg-gray-300 font-semibold" : "hover:bg-gray-200"}`}
               >
                 {cat.label}
-              </button>
+              </button> */}
+     <Button radius="full"  size="md" onClick={() => setCategory(cat.value)}   className={`font-medium ${category === cat.value ? "bg-blue-300  font-semibold" : "hover:bg-blue-200"}`}>{cat.label}
+      </Button>
             </div>
           ))}
           {CATEGORIESANIMAL.map((cat) => (
             <div key={cat.value} className="mb-2 mr-2">
-              <button
+                   <Button radius="full"  size="md" onClick={() => setCategory(cat.value)}>{cat.label}
+                   </Button>
+              {/* <button
                 type="button"
                 onClick={() => setCategory(cat.value)}
                 className={`rounded-full border px-4 py-2 ${category === cat.value ? "bg-gray-300" : "hover:bg-gray-200"}`}
               >
                 {cat.label}
-              </button>
+              </button> */}
             </div>
           ))}
         </div>
@@ -221,27 +226,35 @@ const CreatePostPage = () => {
         <label htmlFor="title" className="mr-5 block w-[140px] font-semibold">
           제목
         </label>
-        <input
+        <Input size="md" type="text" radius="sm"  value={title}
+          onChange={(e) => setTitle(e.target.value)}/>
+        {/* <input
           type="text"
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="w-full rounded border p-2"
           required
-        />
+        /> */}
       </div>
       {/* 내용 입력 필드 */}
       <div className="mb-4 flex">
         <label htmlFor="content" className="mr-5 block w-[140px] font-semibold">
           내용
         </label>
-        <textarea
+        <Textarea
+  value={content}
+  onChange={(e) => setContent(e.target.value)}
+  minRows={15}
+/>
+
+        {/* <textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="h-40 w-full rounded border p-2"
           required
-        ></textarea>
+        ></textarea> */}
       </div>
       {/* 이미지 업로드 UI */}
       <div className="mb-4">
@@ -286,7 +299,7 @@ const CreatePostPage = () => {
         {/* 제출 버튼 */}
         <button
           type="submit"
-          className="block w-[140px] rounded bg-blue-500 p-3 font-semibold text-white transition-colors hover:bg-blue-600"
+          className="block w-[140px] rounded-md bg-blue-500 p-3 font-semibold text-white transition-colors hover:bg-blue-600"
         >
           {postId ? "수정" : "작성"}하기
         </button>
