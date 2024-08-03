@@ -5,7 +5,7 @@ import { useState, useCallback } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getDistanceHaversine } from "../../getDistanceHaversine";
 
-import { MatePostAllType, PostsResponse } from "@/types/mate.type";
+import { MatePostAllTypeForItem, PostsResponse } from "@/types/mate.type";
 
 export type PositionData = {
   center: {
@@ -31,38 +31,9 @@ interface MatePostListProps {
 }
 
 const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: MatePostListProps) => {
-  const { geoData,  setIsUseGeo, setGeoData } = locationStore();
+  const { geoData, setIsUseGeo, setGeoData } = locationStore();
   const [page, setPage] = useState(1);
-//console.log(geoData)
-
-  const { data, isPending, error } = useQuery<PostsResponse>({
-    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, sortBy, filters, geoData],
-    queryFn: async () => {
-      //console.log('sortBy값 확인', sortBy);
-      const getValidFilters = Object.fromEntries(
-        Object.entries(filters).filter(([_, value]) => value !== null && value !== "" && value !== undefined)
-      );
-
-      let query = "";
-      query = Object.keys(getValidFilters)
-        .map((key) => {
-          const value = getValidFilters[key];
-          return value != null ? `${encodeURIComponent(key)}=${encodeURIComponent(value)}` : "";
-        })
-        .join("&");
-
-      const userLat = geoData?.center.lat || 0;
-      const userLng = geoData?.center.lng || 0;
-
-      // TODO: query안에 userLat, userLng 넣으면 좋을 거 같은데
-      const response = await fetch(
-        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=6&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
-      );
-      const data = response.json();
-      // console.log(data);
-      return data;
-    }
-  });
+  //console.log(geoData)
 
   const getCurrentPosition = (): Promise<PositionData | null> => {
     return new Promise((resolve) => {
@@ -103,13 +74,42 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
   } = useQuery<PositionData, Error>({
     queryKey: ["geoData"],
     queryFn: getCurrentPosition,
-    retry: false
+    retry: false,
   });
 
+  const { data, isPending, error } = useQuery<PostsResponse>({
+    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, sortBy, filters, geoData],
+    queryFn: async () => {
+      //console.log('sortBy값 확인', sortBy);
+      const getValidFilters = Object.fromEntries(
+        Object.entries(filters).filter(([_, value]) => value !== null && value !== "" && value !== undefined)
+      );
 
-  const posts = data?.data ?? []
+      let query = "";
+      query = Object.keys(getValidFilters)
+        .map((key) => {
+          const value = getValidFilters[key];
+          return value != null ? `${encodeURIComponent(key)}=${encodeURIComponent(value)}` : "";
+        })
+        .join("&");
 
-  if (isPending) {
+      const userLat = geoData?.center.lat || 0;
+      const userLng = geoData?.center.lng || 0;
+
+      // TODO: query안에 userLat, userLng 넣으면 좋을 거 같은데
+      const response = await fetch(
+        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=6&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
+      );
+      const data = response.json();
+      // console.log(data);
+      return data;
+    },
+    enabled: !!geolocationData
+  });
+
+  const posts = data?.data ?? [];
+
+  if (isPending || isGeoPending) {
     return (
       <div className="flex h-full items-center justify-center">
         <div className="flex flex-col items-center">
@@ -118,26 +118,24 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         </div>
       </div>
     );
-  }  
+  }
 
   return (
     <div className="w-full">
-     <div className="flex justify-center">
-     <div className="flex flex-row flex-wrap gap-x-7">
-        {posts.length > 0 ? (
-          posts.map((post) => (
-            <MatePostItem key={post.id} post={post} />
-          ))
-        ) : (
-          <div className="flex justify-center items-center">
-            <p className="text-center py-4">현재 모집 중인 산책 메이트가 없습니다.</p>
-          </div>
-        )}
+      <div className="flex justify-center">
+        <div className="flex flex-row flex-wrap gap-x-7">
+          {posts.length > 0 ? (
+            posts.map((post) => <MatePostItem key={post.id} post={post} />)
+          ) : (
+            <div className="flex items-center justify-center">
+              <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
+            </div>
+          )}
+        </div>
       </div>
-     </div>
-  
+
       {/* pagination */}
-      <div className="mt-8 flex flex-row justify-center items-center">
+      <div className="mt-8 flex flex-row items-center justify-center">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
@@ -148,7 +146,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         <span className="px-4 py-2">
           페이지 {!data || data.data?.length === 0 ? "0" : `${page}`} / {data?.totalPages ?? "0"}
         </span>
-        <button 
+        <button
           onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
           disabled={data?.totalPages !== undefined && page === data.totalPages}
           className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
