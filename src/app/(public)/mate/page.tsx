@@ -5,8 +5,8 @@ import { useAuthStore } from "@/zustand/useAuth";
 
 import Link from "next/link";
 import MatePostList from "./_components/post/matePostList";
-import PostListFilterTab from "./_components/postListFilterTab";
-import PostItemFilterTab from "./_components/postItemFilterTab";
+import PostListFilterTab from "./_components/tab/postListFilterTab";
+import PostItemFilterTab from "./_components/tab/postItemFilterTab";
 import NotLogInView from "./_components/notLogInView";
 
 export type PositionData = {
@@ -32,7 +32,7 @@ const MatePage = () => {
     date_time: undefined,
     male_female: null,
     weight: null,
-    regions: null,
+    regions: null
   });
 
   const updateFilter = (filterName: string, value: string) => {
@@ -51,7 +51,7 @@ const MatePage = () => {
   const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
   const handleDateSort = () => setSortBy("recruitment_end");
   const handleDistanceSort = () => setSortBy("distance");
-  
+
   const handleResetFilter = () => {
     setFilters({
       gender: null,
@@ -59,7 +59,7 @@ const MatePage = () => {
       date_time: undefined,
       male_female: null,
       weight: null,
-      regions: null,
+      regions: null
     });
     setSortBy("");
   };
@@ -69,11 +69,11 @@ const MatePage = () => {
   }
 
   return (
-    <div className="min-h-screen mb-10 container mx-auto px-2">
-      <h1 className="mb-7 p-2 text-2xl md:text-3xl font-semibold mt-5">산책 메이트</h1>
-      <div className="flex flex-col lg:flex-row gap-y-5 lg:gap-x-5">
+    <div className="container mx-auto mb-10 min-h-screen px-2">
+      <h1 className="mb-7 mt-5 p-2 text-2xl font-semibold md:text-3xl">산책 메이트</h1>
+      <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-5">
         {/* 왼쪽 메인 컨텐츠 영역 */}
-        <div className="w-full lg:w-3/4 mx-0 lg:mx-2">
+        <div className="mx-0 w-full lg:mx-2 lg:w-3/4">
           <div className="mb-5">
             <PostListFilterTab
               isCurrentPosts={isCurrentPosts}
@@ -90,20 +90,27 @@ const MatePage = () => {
           />
         </div>
         {/* 가운데 사이드 선 */}
-        <div className="hidden lg:block border-l-2 border-gray-100 h-screen mx-3"><br /></div>
+        <div className="mx-3 hidden h-screen border-l-2 border-gray-100 lg:block">
+          <br />
+        </div>
         {/* 오른쪽 사이드바 영역 */}
-        <div className="w-full lg:w-1/4 pl-0 lg:pl-5 mr-0 lg:mr-8">
+        <div className="mr-0 w-full pl-0 lg:mr-8 lg:w-1/4 lg:pl-5">
+          {/* 글쓰기 버튼 영역 */}
           <div className="mt-1 flex">
             <Link href="/mate/posts" className="mb-4 h-10 w-full items-center rounded-lg bg-mainColor p-2 text-center">
               <div>글쓰기</div>
             </Link>
           </div>
+          {/* 검색 영역 */}
           <div className="mb-5 flex flex-col">
-            <p className="text-lg mt-3 text-gray-500">검색</p>
-            <form onSubmit={handleSearchPosts} className="flex w-full flex-row items-center rounded-full border p-1 mt-3 h-12">
+            <p className="mt-3 text-lg text-gray-500">검색</p>
+            <form
+              onSubmit={handleSearchPosts}
+              className="mt-3 flex h-12 w-full flex-row items-center rounded-full border p-1"
+            >
               <input
                 type="text"
-                className="w-full ml-3"
+                className="ml-3 w-full"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />

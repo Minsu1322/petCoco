@@ -10,7 +10,7 @@ import Link from "next/link";
 import { getConvertAddress } from "../../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType, Pets } from "@/types/mate.type";
-import { characteristicsArr } from "../../array";
+import { characteristicsArr } from "../../selectOptionArray";
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapForm"), { ssr: false });
@@ -290,8 +290,8 @@ const PostForm = () => {
             ></textarea>
           </div>
 
-{/* 반려동물 정보 */}
-<div className="mt-3 flex w-full flex-col gap-y-5">
+          {/* 반려동물 정보 */}
+          <div className="mt-3 flex w-full flex-col gap-y-5">
             <div className="flex items-center justify-between gap-x-2">
               <div className="flex items-center">
                 <span className="mr-2 text-3xl">🐶</span>
