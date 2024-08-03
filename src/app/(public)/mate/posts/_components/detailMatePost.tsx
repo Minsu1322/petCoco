@@ -44,6 +44,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     location: post.location || ""
   };
 
+
   // const initialPetState: matepostpetsType = {
   //   male_female: "",
   //   neutered: null,
@@ -57,7 +58,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   const [isEditing, setIstEditting] = useState<boolean>(false);
 
-  // console.log(post);
+  // console.log(post.users);
 
   const {
     data: addressData,
@@ -97,8 +98,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       }
 
       router.replace("/mate");
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -117,8 +118,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       }
 
       router.replace("/mate");
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -138,8 +139,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
         }
 
         router.replace("/mate");
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.error(error);
       }
     }
   };
@@ -209,7 +210,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   return (
-    <div className="container mx-auto mb-5 mt-10 px-4 ">
+    <div className="container mx-auto mb-5 mt-10 px-4">
       {isEditing ? (
         <form onSubmit={handleUpdatePost} className="mx-auto flex max-w-4xl flex-col items-center">
           <div className="mb-5 flex flex-col items-center justify-between">
@@ -372,47 +373,51 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       ) : (
         <div className="mx-auto flex max-w-4xl flex-col items-center">
           {/* 제목 및 버튼 영역 */}
-          <div className="flex flex-row justify-between items-center mb-3 w-full">
-  <div className="flex-shrink-0">
-    <p className="text-3xl font-semibold">{post.title}</p>
-  </div>
-  <div className="flex-shrink-0">
-    {userId === post.user_id && (
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <button
-          className="flex h-10 cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-4 whitespace-nowrap"
-          onClick={handleEditPost}
-        >
-          수정
-        </button>
-        <button
-          className="flex h-10 cursor-pointer items-center justify-center rounded-md bg-delBtnColor px-4 whitespace-nowrap"
-          onClick={() => handleDeletePost(post.id)}
-        >
-          삭제
-        </button>
-        <button
-          className="flex h-10 cursor-pointer items-center justify-center rounded-md bg-gray-200 px-4 whitespace-nowrap"
-          onClick={() => handleTogglePost(post.id)}
-        >
-          모집상태 변경
-        </button>
-      </div>
-    )}
-  </div>
-</div>
+          <div className="mb-3 flex w-full flex-row items-center justify-between">
+            <div className="flex-shrink-0">
+              <p className="text-3xl font-semibold">{post.title}</p>
+            </div>
+            <div className="flex-shrink-0">
+              {userId === post.user_id && (
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <button
+                    className="flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-md bg-editBtnColor px-4"
+                    onClick={handleEditPost}
+                  >
+                    수정
+                  </button>
+                  <button
+                    className="flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-md bg-delBtnColor px-4"
+                    onClick={() => handleDeletePost(post.id)}
+                  >
+                    삭제
+                  </button>
+                  <button
+                    className="flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-md bg-gray-200 px-4"
+                    onClick={() => handleTogglePost(post.id)}
+                  >
+                    모집상태 변경
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
           {/* 프로필 영역 */}
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <Image
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU"
+                src={
+                  post.users && post.users?.profile_img
+                    ? post.users?.profile_img
+                    : "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/post_image/1722324396777_xo2ka9.jpg"
+                }
                 alt="사용자 프로필 이미지"
                 width={50}
                 height={50}
                 className="rounded-full"
               />
               <div className="text-gray-500">
-                {/* <p>{post.users?.nickname}</p> */}
+                <p>{post.users?.nickname}</p>
                 <p>{new Date(post.created_at).toLocaleString()}</p>
               </div>
             </div>
@@ -427,44 +432,42 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               <div className="ml-[20px] flex w-[200px] flex-col">
                 <div className="flex flex-col">
                   <p className="w-[150px] whitespace-nowrap text-lg font-semibold">모집 인원 수</p>
-                  <div> 
-                  <p className="mt-3 h-10 w-full">
-                    {post.members}명
-                    </p>
+                  <div>
+                    <p className="mt-3 h-10 w-full">{post.members}명</p>
                   </div>
                 </div>
               </div>
               <div>
-            <div className="flex w-full flex-col">
-              <p className="w-full text-lg font-semibold mb-3">모집기간</p>
-              <p className=" h-10 w-full">
-              {post.recruitment_start?.split("T")[0]}{" "}{getConvertTime({ date_time: post.recruitment_start || "" })}
+                <div className="flex w-full flex-col">
+                  <p className="mb-3 w-full text-lg font-semibold">모집기간</p>
+                  <p className="h-10 w-full">
+                  {post.recruitment_start?.split("T")[0]}{" "}{getConvertTime({ date_time: post.recruitment_start || "" })}
                ~ {post.recruitment_end?.split("T")[0]}{" "}{getConvertTime({ date_time: post.recruitment_end || "" })}
-              </p>
-            </div>
-            </div>
-            </div>
-            
-            <div className="mt-[20px] flex flex-row">
-              <div className="mt-3">
-              <p className="w-full text-lg font-semibold">산책 장소</p>
-              <div className="w-full">
-                <div className="mt-4">
-                  <DynamicMapComponent
-                    center={{
-                      lat: Number(post.position?.center?.lat),
-                      lng: Number(post.position?.center?.lng)
-                    }}
-                  />
+                  </p>
                 </div>
               </div>
+            </div>
+
+            <div className="mt-[20px] flex flex-row">
+              <div className="mt-3">
+                <p className="w-full text-lg font-semibold">산책 장소</p>
+                <div className="w-full">
+                  <div className="mt-4">
+                    <DynamicMapComponent
+                      center={{
+                        lat: Number(post.position?.center?.lat),
+                        lng: Number(post.position?.center?.lng)
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
               <div className="ml-[20px] mt-[35px] w-full">
                 <div>
                   <div className="my-2 flex flex-col">
-                    <p className="mr-2 text-lg font-semibold mt-3">만나기로 한 곳의 주소는?</p>
+                    <p className="mr-2 mt-3 text-lg font-semibold">만나기로 한 곳의 주소는?</p>
                     <p className="mt-2">{roadAddress}</p>
-                  <p>{post.place_name}</p>
+                    <p>{post.place_name}</p>
                   </div>
                 </div>
                 <div className="flex flex-col items-start gap-y-2">
@@ -484,10 +487,10 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           </div>
           {/* 반려동물 정보 */}
           <div className="mt-5 flex w-full flex-col gap-y-5">
-          <div className="flex items-center">
-                <span className="mr-2 text-3xl">🐶</span>
-                <h2 className="text-lg font-semibold">반려동물 정보</h2>
-              </div>
+            <div className="flex items-center">
+              <span className="mr-2 text-3xl">🐶</span>
+              <h2 className="text-lg font-semibold">반려동물 정보</h2>
+            </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
               {post.matepostpets && post.matepostpets.length > 0 ? (
                 post.matepostpets.map((pet) => (
