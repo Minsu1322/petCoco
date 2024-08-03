@@ -9,7 +9,6 @@ import PostList from "./_components/PostList";
 import React, { useState } from "react";
 import Link from "next/link"; // Link 컴포넌트 추가
 import { RiSearch2Line } from "react-icons/ri";
-import { FcSearch } from "react-icons/fc";
 
 const CommunityMainPage = () => {
   const [selectedTab, setSelectedTab] = useState<string>("전체");
