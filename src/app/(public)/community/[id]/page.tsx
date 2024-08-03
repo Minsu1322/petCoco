@@ -84,6 +84,12 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
     return <p>Loading...</p>;
   }
 
+  if (!user) {
+    alert("로그인이 필요한 서비스입니다.");
+    router.push("http://localhost:3000/signin");
+    return null;
+  }
+
   return (
     <div className="mx-auto mb-5 mt-8 max-w-5xl rounded-lg border border-gray-200 bg-white p-6 shadow-md">
       <div className="mb-1 flex justify-between">
@@ -141,7 +147,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
         <h1 className="text-xl font-bold">{post.title}</h1>
       </div>
 
-      <div className="prose max-w-none rounded-md bg-[#f7faff] p-4">
+      <div className="prose max-w-none whitespace-pre-wrap rounded-md bg-[#f7faff] p-4">
         <p>{post.content}</p>
       </div>
       {post?.post_imageURL && (

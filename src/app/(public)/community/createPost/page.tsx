@@ -184,6 +184,13 @@ const CreatePostPage = () => {
       alert("게시글 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
     }
   };
+
+  if (!user) {
+    alert("로그인이 필요한 서비스입니다.");
+    router.push(`${process.env.NEXT_PUBLIC_SITE_URL}/signin`);
+    return null;
+  }
+
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-5xl p-4">
       <h1 className="my-10 text-center text-2xl font-bold">글 작성하기</h1>
@@ -202,14 +209,21 @@ const CreatePostPage = () => {
               >
                 {cat.label}
               </button> */}
-     <Button radius="full"  size="md" onClick={() => setCategory(cat.value)}   className={`font-medium ${category === cat.value ? "bg-blue-300  font-semibold" : "hover:bg-blue-200"}`}>{cat.label}
-      </Button>
+              <Button
+                radius="full"
+                size="md"
+                onClick={() => setCategory(cat.value)}
+                className={`font-medium ${category === cat.value ? "bg-blue-300 font-semibold" : "hover:bg-blue-200"}`}
+              >
+                {cat.label}
+              </Button>
             </div>
           ))}
           {CATEGORIESANIMAL.map((cat) => (
             <div key={cat.value} className="mb-2 mr-2">
-                   <Button radius="full"  size="md" onClick={() => setCategory(cat.value)}>{cat.label}
-                   </Button>
+              <Button radius="full" size="md" onClick={() => setCategory(cat.value)}>
+                {cat.label}
+              </Button>
               {/* <button
                 type="button"
                 onClick={() => setCategory(cat.value)}
@@ -226,8 +240,7 @@ const CreatePostPage = () => {
         <label htmlFor="title" className="mr-5 block w-[140px] font-semibold">
           제목
         </label>
-        <Input size="md" type="text" radius="sm"  value={title}
-          onChange={(e) => setTitle(e.target.value)}/>
+        <Input size="md" type="text" radius="sm" value={title} onChange={(e) => setTitle(e.target.value)} />
         {/* <input
           type="text"
           id="title"
@@ -242,11 +255,7 @@ const CreatePostPage = () => {
         <label htmlFor="content" className="mr-5 block w-[140px] font-semibold">
           내용
         </label>
-        <Textarea
-  value={content}
-  onChange={(e) => setContent(e.target.value)}
-  minRows={15}
-/>
+        <Textarea value={content} onChange={(e) => setContent(e.target.value)} minRows={15} />
 
         {/* <textarea
           id="content"
