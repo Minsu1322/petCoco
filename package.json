@@ -35,7 +35,11 @@
     "react-icons": "^5.2.1",
     "react-kakao-maps-sdk": "^1.1.27",
     "react-quill": "^2.0.0",
+<<<<<<< HEAD
+    "supabase": "^1.187.10",
+=======
     "supabase": ">=1.8.1",
+>>>>>>> dev
     "tailwind-scrollbar-hide": "^1.1.7",
     "uuid": "^10.0.0",
     "uuidv4": "^6.2.13",

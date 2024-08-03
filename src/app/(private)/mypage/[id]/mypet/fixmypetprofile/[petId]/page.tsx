@@ -6,6 +6,7 @@ import { createClient } from "@/supabase/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
 import { Input, Textarea } from "@nextui-org/input";
+import { defaultPetImg } from "@/components/DefaultImg";
 
 type PetType = UsersPetType;
 
@@ -207,7 +208,7 @@ const FixMypetProfile = () => {
       <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
         <img
           className="max-h-[200px] max-w-[200px] object-cover"
-          src={previewImage ? previewImage : ""}
+          src={previewImage ? previewImage : defaultPetImg}
           alt="profile_img"
         />
         <br></br>
