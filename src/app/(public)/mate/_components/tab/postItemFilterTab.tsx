@@ -1,9 +1,9 @@
 "use client";
 
-import FilterSelectChip from "./filterSelectChip";
-import FilterDateChip from "./filterDateChip";
-import FilterWeightChip from "./filterWeightChip";
-import { gender, age, male_female, regions } from "../array";
+import FilterSelectChip from "../chip/filterSelectChip";
+import FilterDateChip from "../chip/filterDateChip";
+import FilterWeightChip from "../chip/filterWeightChip";
+import { gender, age, male_female, regions } from "../../selectOptionArray";
 
 interface PostItemFilterTabProps {
   updateFilter: (filterName: string, value: any) => void;
