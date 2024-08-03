@@ -32,7 +32,6 @@ interface MatePostListProps {
 
 const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: MatePostListProps) => {
   const { geoData, setIsUseGeo, setGeoData } = locationStore();
-  const { geoData, setIsUseGeo, setGeoData } = locationStore();
   const [page, setPage] = useState(1);
   //console.log(geoData)
 
