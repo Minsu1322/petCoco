@@ -14,7 +14,7 @@ interface MatePostItemPorps {
 const supabase = createClient();
 
 const MatePostItem = ({ post }: MatePostItemPorps) => {
-  const { geoData, isUseGeo } = locationStore();
+  // const { geoData, isUseGeo } = locationStore();
   const router = useRouter();
   const { user } = useAuthStore();
 
@@ -113,7 +113,6 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
         </div>
       </Link>
       <div className="mt-3 flex flex-row items-end justify-between">
-        
         <div
           className="flex cursor-pointer flex-row items-center gap-x-1 rounded-lg px-1 hover:bg-sky-200"
           onClick={startChat}
@@ -125,7 +124,6 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           <p className="w-36 overflow-hidden text-ellipsis whitespace-nowrap text-end text-sm">
             {`${extractDong(post.address || "")}, ${post.place_name || ""}`}
           </p>
-          {/* <div className="mx-4">|</div> */}
           <p className="text-end text-sm">
             {post.date_time?.split("T")[0]} {getConvertTime({ date_time: post.date_time || "" })}
           </p>
