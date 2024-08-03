@@ -44,8 +44,8 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
     return (
       <div className="flex h-full items-center justify-center">
         <div className="flex flex-col items-center">
-          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-green-500"></div>
-          <p className="text-lg font-semibold text-green-600">로딩 중...</p>
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
         </div>
       </div>
     );
@@ -73,17 +73,21 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
 
   console.log(sortedPosts);
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-4 text-2xl font-bold">게시글 목록</h1>
+    <div className="container mx-auto px-4">
+      <h1 className="mb-5 text-2xl font-bold">게시글 목록</h1>
 
       <div className="space-y-6">
         {sortedPosts.map((post) => (
           <Link key={post.id} href={`/community/${post.id}`}>
-            <div className="mb-6 flex h-[190px] overflow-hidden rounded-lg border border-mainColor p-3 shadow-sm">
+            <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-mainColor p-3 shadow-sm">
               <div className="flex flex-grow flex-col justify-between p-4">
                 <div>
-                  <h2 className="mb-2 text-xl font-bold">{post.title}</h2>
-                  <p className="mb-2 line-clamp-3 text-sm text-gray-600">{post.content}</p>
+                  <div className="mb-4 rounded-md bg-[#f7faff] p-1">
+                    <h2 className="text-lg font-semibold">{post.title}</h2>
+                  </div>
+                  <div className="mb-2 rounded-md bg-[#f7faff] p-4">
+                    <p className="mb-2 line-clamp-3 text-sm text-gray-600">{post.content}</p>
+                  </div>
                 </div>
 
                 <div className="flex items-end justify-between">
@@ -95,8 +99,12 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
               </div>
               <div className="flex">
                 {post.post_imageURL && post.post_imageURL.length && post.post_imageURL[0] && (
-                  <div className="my-auto ml-6 mr-3 h-[140px] w-[140px] flex-shrink-0">
-                    <img src={post.post_imageURL[0]} alt={`게시글 이미지 `} className="h-full w-full object-cover" />
+                  <div className="my-auto ml-6 mr-3 h-[140px] w-[140px] flex-shrink-0 rounded-md border border-[#e6efff]">
+                    <img
+                      src={post.post_imageURL[0]}
+                      alt={`게시글 이미지 `}
+                      className="h-full w-full rounded-md object-cover"
+                    />
                   </div>
                 )}
               </div>

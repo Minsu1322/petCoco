@@ -85,16 +85,34 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
   }
 
   return (
-    <div className="mx-auto mt-8 max-w-5xl rounded-lg bg-white p-6 shadow-md">
-      <div className="mb-4 flex justify-start">
-        {post.category.split(",").map((category) => (
-          <span key={category} className="mr-2 rounded-full bg-gray-300 px-2 py-1 text-sm text-white">
-            {category}
-          </span>
-        ))}
+    <div className="mx-auto mb-5 mt-8 max-w-5xl rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+      <div className="mb-1 flex justify-between">
+        <div className="mb-4 flex justify-start">
+          {post.category.split(",").map((category) => (
+            <span key={category} className="mr-2 rounded-full bg-gray-300 px-2 py-1 text-sm text-white">
+              {category}
+            </span>
+          ))}
+        </div>
+        {user.id === post.user_id && (
+          <div className="mb-4 flex flex-row gap-x-5">
+            <button
+              onClick={handleEdit}
+              className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
+            >
+              수정
+            </button>
+            <button
+              onClick={() => handleDelete(id)}
+              className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
+            >
+              삭제
+            </button>
+          </div>
+        )}
       </div>
-      <h1 className="mb-4 text-3xl font-bold">{post.title}</h1>
-      <div className="mb-4 flex">
+
+      <div className="mb-10 flex">
         {
           <Image
             src={
@@ -104,37 +122,32 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
             alt={post.users.nickname}
             width={74}
             height={74}
-            className="rounded-full"
+            className="rounded-full border border-[#e6efff]"
           />
         }
-        <div className="ml-2 flex flex-col justify-center">
-          <p className="text-gray-600">작성자: {post.users.nickname}</p>
-          <p className="text-gray-600">작성일: {new Date(post.created_at).toLocaleString()}</p>
+        <div className="ml-3 flex flex-col justify-center">
+          <div className="flex font-semibold">
+            {/* <p className="mr-2 font-semibold">작성자:</p> */}
+            {post.users.nickname}
+          </div>
+          <div className="flex text-gray-400">
+            {/* <p className="mr-2 font-semibold">작성일:</p> */}
+            {new Date(post.created_at).toLocaleString()}
+          </div>
         </div>
       </div>
-      {user.id === post.user_id && (
-        <div className="mb-4 flex flex-row gap-x-5">
-          <button
-            onClick={handleEdit}
-            className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
-          >
-            수정
-          </button>
-          <button
-            onClick={() => handleDelete(id)}
-            className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
-          >
-            삭제
-          </button>
-        </div>
-      )}
-      <div className="prose max-w-none">
+
+      <div className="mb-4 rounded-md bg-[#f7faff] p-1">
+        <h1 className="text-xl font-bold">{post.title}</h1>
+      </div>
+
+      <div className="prose max-w-none rounded-md bg-[#f7faff] p-4">
         <p>{post.content}</p>
       </div>
       {post?.post_imageURL && (
-        <div className="mt-4 flex overflow-x-auto rounded-lg">
+        <div className="mt-4 flex overflow-x-auto rounded-md">
           {post.post_imageURL.split(",").map((img, index) => (
-            <div key={index} style={{ position: "relative", width: "220px", height: "220px" }}>
+            <div key={index} style={{ position: "relative", width: "220px", height: "220px" }} className="rounded-md">
               <Image
                 key={index}
                 src={img}
@@ -144,7 +157,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
                 style={{
                   objectFit: "cover"
                 }}
-                className={`rounded ${index === 0 ? "" : "ml-2"}`}
+                className={`rounded ${index === 0 ? "" : "ml-2"} rounded-md border border-[#e6efff]`}
               />
             </div>
           ))}
