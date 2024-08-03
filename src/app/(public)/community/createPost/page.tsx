@@ -184,6 +184,14 @@ const CreatePostPage = () => {
       alert("게시글 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
     }
   };
+
+
+  if (!user) {
+    alert("로그인이 필요한 서비스입니다.");
+    router.push(`${process.env.NEXT_PUBLIC_SITE_URL}/signin`);
+    return null;
+  }
+
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-5xl p-4">
       <h1 className="my-10 text-center text-2xl font-bold">글 작성하기</h1>

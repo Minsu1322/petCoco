@@ -9,9 +9,14 @@ interface PostListProps {
   searchTerm: string;
   selectedSort: string;
 }
-// pagination 한페이지에 나오는 항목수 : limit수정(현재12)
-const fetchPosts = async (page: number, category: string, searchTerm: string): Promise<PostsResponse> => {
-  const response = await fetch(`/api/community?page=${page}&limit=3&category=${category}&search=${searchTerm}`);
+
+const fetchPosts = async (page: number, category: string, searchTerm: string, sort: string): Promise<PostsResponse> => {
+  const url =
+    sort === "댓글많은순"
+      ? `/api/sortByComments?page=${page}&limit=3&category=${category}&search=${searchTerm}`
+      : `/api/community?page=${page}&limit=3&category=${category}&search=${searchTerm}`;
+
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error("메인페이지오류");
   }
@@ -21,23 +26,21 @@ const fetchPosts = async (page: number, category: string, searchTerm: string): P
 const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selectedSort }) => {
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, error } = useQuery<PostsResponse, Error>({
-    queryKey: ["posts", page, selectedCategory, searchTerm],
-    queryFn: () => fetchPosts(page, selectedCategory, searchTerm)
+    queryKey: ["posts", page, selectedCategory, searchTerm, selectedSort],
+    queryFn: () => fetchPosts(page, selectedCategory, searchTerm, selectedSort)
   });
 
   useEffect(() => {
-    setPage(1); // 카테고리나 검색어가 변경되면 첫 페이지로 이동
-  }, [selectedCategory, searchTerm]);
+    setPage(1);
+  }, [selectedCategory, searchTerm, selectedSort]);
 
-  const sortPosts = (posts: any[], sortBy: string) => {
-    switch (sortBy) {
-      case "최신순":
-        return posts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      case "댓글많은순":
-        return posts.sort((a, b) => b.comments.length - a.comments.length);
-      default:
-        return posts;
+  const sortPosts = (posts: any[]) => {
+    if (selectedSort === "최신순") {
+      return [...posts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    } else if (selectedSort === "댓글많은순") {
+      return [...posts].sort((a, b) => (b.comments?.length || 0) - (a.comments?.length || 0));
     }
+    return posts;
   };
 
   if (isLoading) {
@@ -50,6 +53,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
       </div>
     );
   }
+
   if (isError) {
     return (
       <div className="flex h-screen items-center justify-center bg-red-100">
@@ -69,9 +73,9 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
       </div>
     );
   }
-  const sortedPosts = sortPosts(data?.data || [], selectedSort);
 
-  console.log(sortedPosts);
+  const sortedPosts = sortPosts([...(data?.data || [])]);
+
   return (
     <div className="container mx-auto px-4">
       <h1 className="mb-5 text-2xl font-bold">게시글 목록</h1>
@@ -113,7 +117,6 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
         ))}
       </div>
 
-      {/* pagination섹션입니다  rgba(103,192,71,0.8) */}
       <div className="mt-8 flex justify-center space-x-2">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
