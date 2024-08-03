@@ -3,6 +3,18 @@ import { Tables } from "./supabase";
 export type MatePostType = Tables<"matePosts">;
 export type matepostpetsType = Tables<"matepostpets">;
 
+export type UserTypeForUsers = {
+  id: string;
+  age: string | null;
+  mbti: string | null;
+  email: string | null;
+  gender: string | null;
+  nickname: string;
+  created_at: string;
+  profile_img: string | null;
+  introduction: string | null;
+};
+
 export type MatePostFullType = MatePostType & {
   position: {
     center: {
@@ -12,7 +24,20 @@ export type MatePostFullType = MatePostType & {
     errMsg: string | null;
     isLoading: boolean;
   };
-  users: UserType[];  
+  users: UserType;  
+};
+
+export type MatePostAllTypeForItem = MatePostType & {
+  position: {
+    center: {
+      lat: number;
+      lng: number;
+    };
+    errMsg: string | null;
+    isLoading: boolean;
+  };
+  users: UserType[];
+  matepostpets: matepostpetsType[];
 };
 
 export type MatePostAllType = MatePostType & {
@@ -24,7 +49,7 @@ export type MatePostAllType = MatePostType & {
     errMsg: string | null;
     isLoading: boolean;
   };
-  users: UserType[];
+  users: UserType;
   matepostpets: matepostpetsType[];
 };
 
@@ -47,7 +72,7 @@ export type Pets = {
 };
 
 export type PostsResponse = {
-  data: MatePostAllType[];
+  data: MatePostAllTypeForItem[];
   page: number;
   limit: number;
   total: number;
