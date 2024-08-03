@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/supabase/client";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useRouter } from "next/navigation";
+import { button } from "@nextui-org/react";
 
 const supabase = createClient();
 
@@ -48,35 +49,53 @@ const Header = () => {
     }
   };
 
+  const handleMainClick = () => {
+    router.push("/");
+  };
+
+  const handleCommunityClick = () => {
+    router.push("/community");
+  };
+
+  const handleMessageClick = () => {
+    router.push("/message");
+  };
+
+  const handleMateClick = () => {
+    router.push("/mate");
+  };
+
   return (
-    <header className="flex w-full items-center justify-between bg-mainColor px-10 py-1 text-black">
-      <img
-        src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/logo_img/PetCocoLogo5.png?t=2024-08-01T11%3A47%3A18.222Z"
-        alt="logo images"
-        className="h-[70px] w-[70px] rounded-lg"
-      />
-      <div className="flex justify-center gap-12 font-semibold">
-        <Link href={"/"}>
-          <p className="h-[20px] w-[20px]">홈</p>
-        </Link>
+    <header className="flex w-full items-center justify-between bg-mainColor px-12 py-1 text-black">
+      <div className="flex items-center justify-center">
+        <img
+          src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/logo_img/PetCocoLogo5.png?t=2024-08-01T11%3A47%3A18.222Z"
+          alt="logo images"
+          className="h-[70px] w-[70px] rounded-lg"
+        />
+        <div className="ml-[100px] flex justify-center gap-14 font-semibold">
+          <button onClick={handleMainClick}>
+            <p>홈</p>
+          </button>
 
-        <Link href={"/community"}>
-          <p>커뮤니티</p>
-        </Link>
+          <button onClick={handleCommunityClick}>
+            <p>커뮤니티</p>
+          </button>
 
-        {isUser ? (
-          <Link href={"/message"}>
-            <p>대화함</p>
-          </Link>
-        ) : null}
+          <button onClick={handleMateClick}>
+            <p>산책 메이트</p>
+          </button>
 
-        <Link href={"/mate"}>
-          <p>산책 메이트</p>
-        </Link>
+          {isUser ? (
+            <button onClick={handleMessageClick}>
+              <p>대화함</p>
+            </button>
+          ) : null}
 
-        <button onClick={handleMypageClick}>
-          <p>마이페이지</p>
-        </button>
+          <button onClick={handleMypageClick}>
+            <p>마이페이지</p>
+          </button>
+        </div>
       </div>
       <div className="flex h-[70px] items-center justify-center font-semibold">
         <div className="mr-2 text-3xl">
