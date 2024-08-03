@@ -147,9 +147,9 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
         <h1 className="text-xl font-bold">{post.title}</h1>
       </div>
 
-      <pre className="prose max-w-none rounded-md bg-[#f7faff] p-4">
+      <div className="prose max-w-none whitespace-pre-wrap rounded-md bg-[#f7faff] p-4">
         <p>{post.content}</p>
-      </pre>
+      </div>
       {post?.post_imageURL && (
         <div className="mt-4 flex overflow-x-auto rounded-md">
           {post.post_imageURL.split(",").map((img, index) => (
