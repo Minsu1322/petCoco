@@ -33,6 +33,7 @@ const MatePage = () => {
     male_female: null,
     weight: null,
     regions: null
+    regions: null
   });
 
   const updateFilter = (filterName: string, value: string) => {
@@ -52,6 +53,7 @@ const MatePage = () => {
   const handleDateSort = () => setSortBy("recruitment_end");
   const handleDistanceSort = () => setSortBy("distance");
 
+
   const handleResetFilter = () => {
     setFilters({
       gender: null,
@@ -59,6 +61,7 @@ const MatePage = () => {
       date_time: undefined,
       male_female: null,
       weight: null,
+      regions: null
       regions: null
     });
     setSortBy("");
@@ -72,6 +75,9 @@ const MatePage = () => {
     <div className="container mx-auto mb-10 min-h-screen px-2">
       <h1 className="mb-7 mt-5 p-2 text-2xl font-semibold md:text-3xl">산책 메이트</h1>
       <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-5">
+    <div className="container mx-auto mb-10 min-h-screen px-2">
+      <h1 className="mb-7 mt-5 p-2 text-2xl font-semibold md:text-3xl">산책 메이트</h1>
+      <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-5">
         {/* 왼쪽 메인 컨텐츠 영역 */}
         <div className="mx-0 w-full lg:mx-2 lg:w-3/4">
           <div className="mb-5">
@@ -82,14 +88,19 @@ const MatePage = () => {
               handleDistanceSort={handleDistanceSort}
             />
           </div>
-          <MatePostList
-            activeSearchTerm={activeSearchTerm}
-            isCurrentPosts={isCurrentPosts}
-            sortBy={sortBy}
-            filters={filters}
-          />
+          <div>
+            <MatePostList
+              activeSearchTerm={activeSearchTerm}
+              isCurrentPosts={isCurrentPosts}
+              sortBy={sortBy}
+              filters={filters}
+            />
+          </div>
         </div>
         {/* 가운데 사이드 선 */}
+        <div className="mx-3 hidden h-screen border-l-2 border-gray-100 lg:block">
+          <br />
+        </div>
         <div className="mx-3 hidden h-screen border-l-2 border-gray-100 lg:block">
           <br />
         </div>
@@ -108,8 +119,14 @@ const MatePage = () => {
               onSubmit={handleSearchPosts}
               className="mt-3 flex h-12 w-full flex-row items-center rounded-full border p-1"
             >
+            <p className="mt-3 text-lg text-gray-500">검색</p>
+            <form
+              onSubmit={handleSearchPosts}
+              className="mt-3 flex h-12 w-full flex-row items-center rounded-full border p-1"
+            >
               <input
                 type="text"
+                className="ml-3 w-full"
                 className="ml-3 w-full"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}

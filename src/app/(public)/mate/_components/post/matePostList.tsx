@@ -32,6 +32,7 @@ interface MatePostListProps {
 
 const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: MatePostListProps) => {
   const { geoData, setIsUseGeo, setGeoData } = locationStore();
+  const { geoData, setIsUseGeo, setGeoData } = locationStore();
   const [page, setPage] = useState(1);
   //console.log(geoData)
 
@@ -122,8 +123,8 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
   return (
     <div className="w-full">
-      <div className="flex justify-center">
-        <div className="flex flex-row flex-wrap gap-x-7">
+      <div className="flex">
+        <div className="flex flex-row flex-wrap justify-between gap-x-7">
           {posts.length > 0 ? (
             posts.map((post) => <MatePostItem key={post.id} post={post} />)
           ) : (

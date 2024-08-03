@@ -7,12 +7,15 @@ import { createClient } from "@/supabase/client";
 import Image from "next/image";
 import { useAuthStore } from "@/zustand/useAuth";
 import { tabs, tags } from "@/components/community/communityTabAndSortTab/TabAndCategory";
-import { NextRequest } from "next/server";
+import { Input, Textarea, Button } from "@nextui-org/react";
+
 const supabase = createClient();
+
 const CATEGORIES = tabs.filter((tab) => tab !== "전체" && tab !== "인기글").map((tab) => ({ value: tab, label: tab })); // "전체"와 "인기글" 제외
 const CATEGORIESANIMAL = tags
   .filter((tab) => tab !== "전체" && tab !== "인기글")
   .map((tab) => ({ value: tab, label: tab }));
+
 // Zustand store에서 필요한 상태와 함수들을 가져옵니다.
 const CreatePostPage = () => {
   const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage, initPost } =
@@ -24,6 +27,7 @@ const CreatePostPage = () => {
   const postId = searchParams.get("id");
   const { user } = useAuthStore();
   // const user_id = user && user.id;
+
   useEffect(() => {
     let ignore = false;
     const fetchPost = async (postId: string | null) => {
@@ -44,6 +48,7 @@ const CreatePostPage = () => {
           setTitle(postData?.title || "");
           setContent(postData?.content || "");
           setCategory(postData?.category || "");
+
           setUploadFiles([]); // 업로드 파일 초기화
           await fetchPostImages(postData as { post_imageURL: string });
         }
@@ -61,6 +66,7 @@ const CreatePostPage = () => {
     if (postData?.post_imageURL) {
       const urls = postData.post_imageURL.split(",");
       const existingUrls = new Set(uploadFiles.map((file) => file.name)); // 이미 업로드된 이미지 이름 추적
+
       for (const url of urls) {
         if (!existingUrls.has(url)) {
           // 중복된 이미지 URL이 아닌 경우에만 처리
@@ -85,6 +91,7 @@ const CreatePostPage = () => {
       }
     }
   };
+
   // 이미지 업로드 처리 함수
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -105,11 +112,13 @@ const CreatePostPage = () => {
     const imageLocationArray = uploadFiles[index].name.split("/storage/v1/object/public/post_image/");
     if (imageLocationArray.length > 1) {
       const imageLocation = imageLocationArray[1];
+
       setDeleteFiles((prev) => [...prev, imageLocation]);
     }
     removeImage(index);
     setUploadFiles((prev) => prev.filter((_, i) => i !== index));
   };
+
   // 폼 제출 처리 함수
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -175,6 +184,13 @@ const CreatePostPage = () => {
       alert("게시글 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
     }
   };
+
+  if (!user) {
+    alert("로그인이 필요한 서비스입니다.");
+    router.push(`${process.env.NEXT_PUBLIC_SITE_URL}/signin`);
+    return null;
+  }
+
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-5xl p-4">
       <h1 className="my-10 text-center text-2xl font-bold">글 작성하기</h1>
@@ -186,24 +202,35 @@ const CreatePostPage = () => {
         <div id="category" className="flex flex-row flex-wrap">
           {CATEGORIES.map((cat) => (
             <div key={cat.value} className="mb-2 mr-2">
-              <button
+              {/* <button
                 type="button"
                 onClick={() => setCategory(cat.value)}
-                className={`rounded-full border px-4 py-2 ${category === cat.value ? "bg-gray-300" : "hover:bg-gray-200"}`}
+                className={`rounded-full border px-4 py-2 ${category === cat.value ? "bg-gray-300 font-semibold" : "hover:bg-gray-200"}`}
               >
                 {cat.label}
-              </button>
+              </button> */}
+              <Button
+                radius="full"
+                size="md"
+                onClick={() => setCategory(cat.value)}
+                className={`font-medium ${category === cat.value ? "bg-blue-300 font-semibold" : "hover:bg-blue-200"}`}
+              >
+                {cat.label}
+              </Button>
             </div>
           ))}
           {CATEGORIESANIMAL.map((cat) => (
             <div key={cat.value} className="mb-2 mr-2">
-              <button
+              <Button radius="full" size="md" onClick={() => setCategory(cat.value)}>
+                {cat.label}
+              </Button>
+              {/* <button
                 type="button"
                 onClick={() => setCategory(cat.value)}
                 className={`rounded-full border px-4 py-2 ${category === cat.value ? "bg-gray-300" : "hover:bg-gray-200"}`}
               >
                 {cat.label}
-              </button>
+              </button> */}
             </div>
           ))}
         </div>
@@ -213,27 +240,30 @@ const CreatePostPage = () => {
         <label htmlFor="title" className="mr-5 block w-[140px] font-semibold">
           제목
         </label>
-        <input
+        <Input size="md" type="text" radius="sm" value={title} onChange={(e) => setTitle(e.target.value)} />
+        {/* <input
           type="text"
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="w-full rounded border p-2"
           required
-        />
+        /> */}
       </div>
       {/* 내용 입력 필드 */}
       <div className="mb-4 flex">
         <label htmlFor="content" className="mr-5 block w-[140px] font-semibold">
           내용
         </label>
-        <textarea
+        <Textarea value={content} onChange={(e) => setContent(e.target.value)} minRows={15} />
+
+        {/* <textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="h-40 w-full rounded border p-2"
           required
-        ></textarea>
+        ></textarea> */}
       </div>
       {/* 이미지 업로드 UI */}
       <div className="mb-4">
@@ -278,7 +308,7 @@ const CreatePostPage = () => {
         {/* 제출 버튼 */}
         <button
           type="submit"
-          className="block w-[140px] rounded bg-blue-500 p-3 font-semibold text-white transition-colors hover:bg-blue-600"
+          className="block w-[140px] rounded-md bg-blue-500 p-3 font-semibold text-white transition-colors hover:bg-blue-600"
         >
           {postId ? "수정" : "작성"}하기
         </button>

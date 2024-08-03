@@ -96,9 +96,11 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
         {/* <p className="text-sm">모집 마감일 : {post.recruitment_end}</p> */}
       </div>
       <Link href={`/mate/posts/${post.id}`} className="mt-5">
+      <Link href={`/mate/posts/${post.id}`} className="mt-5">
         <div className="mb-4 mt-2 flex w-full flex-row justify-between">
           <div className="flex h-28 flex-grow flex-col gap-y-2 pr-4">
             <p className="mb-3 text-xl font-semibold">{post.title}</p>
+            <p className="mb-3 line-clamp-3 h-24 overflow-hidden text-ellipsis">{post.content}</p>
             <p className="mb-3 line-clamp-3 h-24 overflow-hidden text-ellipsis">{post.content}</p>
           </div>
           <Image
@@ -125,6 +127,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           <p className="mr-2 w-36 overflow-hidden text-ellipsis whitespace-nowrap text-end text-sm">
             {`${extractDong(post.address || "")}, ${post.place_name || ""}`}
           </p>
+          <div className="mx-4">|</div>
           <p className="text-end text-sm">
             {post.date_time?.split("T")[0]} {getConvertTime({ date_time: post.date_time || "" })}
           </p>
