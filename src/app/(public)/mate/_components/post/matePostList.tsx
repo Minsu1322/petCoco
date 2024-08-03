@@ -111,7 +111,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
   if (isPending || isGeoPending) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <div className="flex items-center justify-center w-full h-screen">
         <div className="flex flex-col items-center">
           <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-blue-500"></div>
           <p className="text-lg font-semibold text-blue-600">로딩 중...</p>
@@ -122,7 +122,6 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
   return (
     <div className="w-full">
-      <div className="flex">
         <div className="flex flex-row flex-wrap justify-between gap-x-7">
           {posts.length > 0 ? (
             posts.map((post) => <MatePostItem key={post.id} post={post} />)
@@ -131,7 +130,6 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
               <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
             </div>
           )}
-        </div>
       </div>
 
       {/* pagination */}
