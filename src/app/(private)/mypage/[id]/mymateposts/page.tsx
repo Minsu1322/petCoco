@@ -30,7 +30,7 @@ const MyMate = () => {
   if (error) return <div>에러 발생: {error.message}</div>;
 
   return (
-    <div className="ml-[250px] mt-10 flex h-[440px] w-[640px] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] bg-gray-100 py-4 scrollbar-hide">
+    <div className="ml-[570px] mt-24 flex h-[440px] w-[640px] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] bg-gray-100 py-4 scrollbar-hide">
       {data.map((data) => (
         <div key={data.id} className="w-[440px] rounded-[10px] border border-[#4885f8] bg-white">
           <Link href={`/mate/posts/${data.id}`} className="ml-3 mt-5 flex flex-col items-center justify-center">

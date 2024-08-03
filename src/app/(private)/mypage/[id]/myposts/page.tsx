@@ -27,7 +27,7 @@ const myPost: React.FC<PageProps> = async ({ params }) => {
   if (!post) return;
 
   return (
-    <div className="ml-[250px] mt-10 flex h-[440px] w-[640px] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] bg-gray-100 py-4 scrollbar-hide">
+    <div className="ml-[570px] mt-24 flex h-[440px] w-[640px] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] bg-gray-100 py-4 scrollbar-hide">
       {post.map((post) => (
         <div key={post.id} className="w-[440px] rounded-[10px] border border-[#4885f8] bg-white">
           <Link href={`/community/${post.id}`} className="ml-3 mt-5 flex flex-col justify-center">
