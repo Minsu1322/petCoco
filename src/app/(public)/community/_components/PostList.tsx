@@ -73,17 +73,21 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
 
   console.log(sortedPosts);
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4">
       <h1 className="mb-5 text-2xl font-bold">게시글 목록</h1>
 
       <div className="space-y-6">
         {sortedPosts.map((post) => (
           <Link key={post.id} href={`/community/${post.id}`}>
-            <div className="mb-6 flex h-[190px] overflow-hidden rounded-lg border border-mainColor p-3 shadow-sm">
+            <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-mainColor p-3 shadow-sm">
               <div className="flex flex-grow flex-col justify-between p-4">
                 <div>
-                  <h2 className="mb-2 text-xl font-bold">{post.title}</h2>
-                  <p className="mb-2 line-clamp-3 text-sm text-gray-600">{post.content}</p>
+                  <div className="mb-4 rounded-md bg-[#f7faff] p-1">
+                    <h2 className="text-lg font-semibold">{post.title}</h2>
+                  </div>
+                  <div className="mb-2 rounded-md bg-[#f7faff] p-4">
+                    <p className="mb-2 line-clamp-3 text-sm text-gray-600">{post.content}</p>
+                  </div>
                 </div>
 
                 <div className="flex items-end justify-between">
