@@ -447,7 +447,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 </div>
               </div>
             </div>
-
             <div className="mt-[20px] flex flex-row">
               <div className="mt-3">
                 <p className="w-full text-lg font-semibold">산책 장소</p>

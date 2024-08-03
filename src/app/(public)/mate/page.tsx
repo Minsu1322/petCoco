@@ -9,6 +9,8 @@ import PostListFilterTab from "./_components/tab/postListFilterTab";
 import PostItemFilterTab from "./_components/tab/postItemFilterTab";
 import NotLogInView from "./_components/notLogInView";
 
+import { RiSearch2Line } from "react-icons/ri";
+
 export type PositionData = {
   center: {
     lat: number;
@@ -51,7 +53,6 @@ const MatePage = () => {
   const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
   const handleDateSort = () => setSortBy("recruitment_end");
   const handleDistanceSort = () => setSortBy("distance");
-
 
   const handleResetFilter = () => {
     setFilters({
@@ -118,7 +119,7 @@ const MatePage = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button type="submit" className="mx-4">
-                🔍
+                <RiSearch2Line />
               </button>
             </form>
           </div>
