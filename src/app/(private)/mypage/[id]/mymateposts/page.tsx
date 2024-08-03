@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/zustand/useAuth";
-import { MatePostAllType, MatePostFullType, MatePostType } from "@/types/mate.type";
+import { MatePostFullType } from "@/types/mate.type";
 import Link from "next/link";
 import { getConvertTime } from "@/app/utils/getConvertTime";
 
@@ -10,7 +10,7 @@ const MyMate = () => {
   const { user } = useAuthStore();
   const userId = user?.id;
   const extractDong = (address: string) => {
-    const match = address?.match(/(\S+동)(?=\s|$)/);
+    const match = address?.match(/(\S+(?:동\d*가?|읍|면))(?=\s|$)/);
     return match ? match[0] : "";
   };
 

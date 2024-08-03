@@ -19,8 +19,8 @@ const MatePost = ({ params }: { params: { id: string } }) => {
       return data;
     }
   });
-  //console.log(post);
 
+  //console.log(post);
 
   if(!post) return;
 
