@@ -63,7 +63,7 @@ const PostItemFilterTab = ({ updateFilter, filters, onClick }: PostItemFilterTab
       </div>
       <div className="mt-7 flex">
         <div
-          className="mb-4 h-12 w-full cursor-pointer items-center rounded-lg border-2 border-mainColor p-2 text-center"
+          className="flex mb-4 h-12 w-full cursor-pointer items-center rounded-lg border-2 border-mainColor p-2 justify-center"
           onClick={onClick}
         >
           초기화

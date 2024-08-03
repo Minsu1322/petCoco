@@ -101,7 +101,7 @@ const MatePage = () => {
         <div className="mr-0 w-full pl-0 lg:mr-8 lg:w-1/4 lg:pl-5">
           {/* 글쓰기 버튼 영역 */}
           <div className="mt-1 flex">
-            <Link href="/mate/posts" className="mb-4 h-10 w-full items-center rounded-lg bg-mainColor p-2 text-center">
+            <Link href="/mate/posts" className="flex mb-4 h-12 w-full items-center rounded-lg bg-mainColor p-2 justify-center">
               <div>글쓰기</div>
             </Link>
           </div>
