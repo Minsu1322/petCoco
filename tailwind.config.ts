@@ -21,6 +21,6 @@ const config: Config = {
       }
     }
   },
-  plugins: [nextui()],
+  plugins: [nextui(), require("tailwind-scrollbar-hide")]
 };
 export default config;
