@@ -96,10 +96,11 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
       </div>
       <Link href={`/mate/posts/${post.id}`} className="mt-5">
         <div className="mb-4 mt-2 flex w-full flex-row justify-between">
-          <div className="flex h-32 w-9/12 flex-col gap-y-2 pr-4">
+          <div className="flex h-32 w-8/12 flex-col gap-y-2 pr-4">
             <p className="mb-3 text-xl font-semibold">{post.title}</p>
             <p className="mb-3 line-clamp-3 h-28 overflow-hidden text-ellipsis">{post.content}</p>
           </div>
+          <div className="w-4/12">
           <Image
             src={
               post.users[0]?.profile_img ||
@@ -107,9 +108,10 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             }
             alt="사용자 프로필 이미지"
             width={120}
-            height={120}
-            className="rounded-md object-cover"
+            height={60}
+            className="rounded-md object-cover w-full h-32"
           />
+          </div>
         </div>
       </Link>
       <div className="mt-3 flex flex-row items-end justify-between">
