@@ -466,7 +466,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 <div>
                   <div className="my-2 flex flex-col">
                     <p className="mr-2 mt-3 text-lg font-semibold">만나기로 한 곳의 주소는?</p>
-                    <p className="mt-2">{roadAddress}</p>
+                    <p className="mt-2">{post.address}</p>
                     <p>{post.place_name}</p>
                   </div>
                 </div>
