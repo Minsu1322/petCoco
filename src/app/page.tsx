@@ -12,7 +12,7 @@ import Image from "next/image";
 export default function Home() {
   //메이트정보
   const fetchPostsMate = async () => {
-    const response = await fetch("/api/mate");
+    const response = await fetch("/api/mate?page=1&limit=5");
     console.log(response);
 
     if (!response.ok) {
@@ -32,7 +32,7 @@ export default function Home() {
 
   //자유게시판 정보
   const fetchPosts = async () => {
-    const response = await fetch("/api/community");
+    const response = await fetch("/api/community?page=1&limit=5");
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
