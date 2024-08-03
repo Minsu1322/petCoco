@@ -2,7 +2,7 @@ import { MatePostAllTypeForItem } from "@/types/mate.type";
 import Link from "next/link";
 import Image from "next/image";
 // import { getDistanceHaversine } from "../../getDistanceHaversine";
-import { locationStore } from "@/zustand/locationStore";
+// import { locationStore } from "@/zustand/locationStore";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
@@ -36,7 +36,6 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   //console.log(post);
-
   const startChat = async () => {
     if (!user) {
       alert("로그인이 필요합니다.");
@@ -78,6 +77,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
       alert("채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.");
     }
   };
+
 
   return (
     <div className="mb-5 w-[48%] rounded-xl border border-gray-300 px-4 pb-2 pt-1">

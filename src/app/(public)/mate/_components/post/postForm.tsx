@@ -358,7 +358,6 @@ const PostForm = () => {
                           </label>
                         </div>
                       </div>
-
                       <div className="flex flex-col gap-y-2">
                         <label className="text-md font-semibold">중성화 여부</label>
                         <div className="flex gap-x-4">
