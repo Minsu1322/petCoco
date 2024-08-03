@@ -1,7 +1,7 @@
 import { MatePostAllTypeForItem } from "@/types/mate.type";
 import Link from "next/link";
 import Image from "next/image";
-import { getDistanceHaversine } from "../../getDistanceHaversine";
+// import { getDistanceHaversine } from "../../getDistanceHaversine";
 import { locationStore } from "@/zustand/locationStore";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
@@ -82,7 +82,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   return (
     <div className="mb-5 w-[48%] rounded-xl border border-gray-300 px-4 pb-2 pt-1">
       <div className="mb-3 flex h-16 flex-row items-center justify-between border-b-2">
-        <div className="mb-2 flex flex-wrap gap-2">
+        <div className=" flex gap-2 h-10 items-center">
           <div
             className={`${post.recruiting ? "bg-mainColor" : "bg-gray-300"} w-18 flex h-10 items-center justify-center rounded-md px-8 py-2`}
           >
@@ -93,13 +93,11 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
         {post.distance !== null && (
           <p className="flex h-10 items-center text-sm text-gray-500">현위치에서 {post.distance.toFixed(1)}km 거리</p>
         )}
-        {/* <p className="text-sm">모집 마감일 : {post.recruitment_end}</p> */}
       </div>
       <Link href={`/mate/posts/${post.id}`} className="mt-5">
         <div className="mb-4 mt-2 flex w-full flex-row justify-between">
           <div className="flex h-28 flex-grow flex-col gap-y-2 pr-4">
             <p className="mb-3 text-xl font-semibold">{post.title}</p>
-            <p className="mb-3 line-clamp-3 h-24 overflow-hidden text-ellipsis">{post.content}</p>
             <p className="mb-3 line-clamp-3 h-24 overflow-hidden text-ellipsis">{post.content}</p>
           </div>
           <Image
@@ -123,10 +121,10 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           <p className="w-15 overflow-hidden text-ellipsis whitespace-nowrap">{post.users[0]?.nickname}</p>
         </div>
         <div className="flex flex-col gap-y-1">
-          <p className="mr-2 w-36 overflow-hidden text-ellipsis whitespace-nowrap text-end text-sm">
+          <p className="w-36 overflow-hidden text-ellipsis whitespace-nowrap text-end text-sm">
             {`${extractDong(post.address || "")}, ${post.place_name || ""}`}
           </p>
-          <div className="mx-4">|</div>
+          {/* <div className="mx-4">|</div> */}
           <p className="text-end text-sm">
             {post.date_time?.split("T")[0]} {getConvertTime({ date_time: post.date_time || "" })}
           </p>
