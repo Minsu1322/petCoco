@@ -30,33 +30,31 @@ const MyMate = () => {
   if (error) return <div>에러 발생: {error.message}</div>;
 
   return (
-    <div>
+    <div className="ml-[250px] mt-10 flex h-[440px] w-[640px] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] bg-gray-100 py-4 scrollbar-hide">
       {data.map((data) => (
-        <Link
-          key={data.id}
-          href={`/mate/posts/${data.id}`}
-          className="ml-3 mt-5 flex flex-col items-center justify-center"
-        >
-          <div className="flex-grow pr-5">
-            <p className="mb-3 text-xl font-semibold">{data.title}</p>
-            <p className="mb-3 h-24 overflow-hidden overflow-ellipsis whitespace-nowrap">{data.content}</p>
-            <div className="mt-3 flex flex-row justify-between">
-              {/* <p>{data.users.nickname}</p> */}
-              <div className="flex flex-row gap-x-5">
-                <p className="w-28 overflow-hidden text-ellipsis whitespace-nowrap text-end">
-                  {`${extractDong(data.address || "")}, ${data.place_name || ""}`}
-                </p>
-                <p>
-                  {data.date_time?.split("T")[0]} | {getConvertTime({ date_time: data.date_time || "" })}
-                </p>
-                <p>{data.members}명 모집</p>
+        <div key={data.id} className="w-[440px] rounded-[10px] border border-[#4885f8] bg-white">
+          <Link href={`/mate/posts/${data.id}`} className="ml-3 mt-5 flex flex-col items-center justify-center">
+            <div className="flex-grow pr-5">
+              <p className="mb-3 text-xl font-semibold">{data.title}</p>
+              <p className="mb-3 h-24 overflow-hidden overflow-ellipsis whitespace-nowrap">{data.content}</p>
+              <div className="mt-3 flex flex-row justify-between">
+                {/* <p>{data.users.nickname}</p> */}
+                <div className="flex flex-row gap-x-5">
+                  <p className="w-28 overflow-hidden text-ellipsis whitespace-nowrap text-end">
+                    {`${extractDong(data.address || "")}, ${data.place_name || ""}`}
+                  </p>
+                  <p>
+                    {data.date_time?.split("T")[0]} | {getConvertTime({ date_time: data.date_time || "" })}
+                  </p>
+                  <p>{data.members}명 모집</p>
+                </div>
               </div>
             </div>
-          </div>
-          {/* <div>
+            {/* <div>
             <img src={"사용자 프로필 이미지"} alt="사용자 프로필 이미지" width={140} height={140} />
           </div> */}
-        </Link>
+          </Link>
+        </div>
       ))}
     </div>
   );
