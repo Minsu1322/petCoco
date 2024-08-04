@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { RiKakaoTalkFill } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -17,14 +18,22 @@ const LoginForm = () => {
     e.preventDefault();
     const success = await signIn({ email, password });
     if (success) {
-      alert("로그인이 완료되었습니다!");
+      Swal.fire({
+        title: "success",
+        text: "로그인이 완료되었습니다!",
+        icon: "success"
+      });
       router.push("/");
     }
   };
 
   useEffect(() => {
     if (error) {
-      alert(`아이디와 비밀번호를 확인해주세요.`);
+      Swal.fire({
+        title: "error",
+        text: "아이디와 비밀번호를 확인해주세요.",
+        icon: "error"
+      });
       setError(null);
     }
   }, [error, setError]);
