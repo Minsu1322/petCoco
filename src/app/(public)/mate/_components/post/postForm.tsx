@@ -11,6 +11,7 @@ import { getConvertAddress } from "../../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType, Pets } from "@/types/mate.type";
 import { characteristicsArr } from "../../selectOptionArray";
+import Swal from 'sweetalert2';
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapForm"), { ssr: false });
@@ -125,7 +126,12 @@ const PostForm = () => {
       !preferred_route ||
       !content
     ) {
-      alert("모든 항목을 입력해 주세요!");
+      // alert("모든 항목을 입력해 주세요!");
+      Swal.fire({
+        title: "모든 항목을 입력해 주세요!",
+        text: "빠진 부분이 있는지 확인해 주세요.",
+        icon: "warning"
+      });
       return;
     }
 

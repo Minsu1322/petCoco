@@ -68,7 +68,12 @@ const MatePage = () => {
 
   const handleCreatePost = () => {
     if (user === null) {
-      alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
+      // alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
+      Swal.fire({
+        title: "로그인이 필요합니다!",
+        text: "글 작성을 위해서는 로그인이 필요합니다",
+        icon: "warning"
+      });
       router.replace("/signin");
     }
   };
