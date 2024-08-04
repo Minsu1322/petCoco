@@ -9,6 +9,7 @@ import PostListFilterTab from "./_components/tab/postListFilterTab";
 import PostItemFilterTab from "./_components/tab/postItemFilterTab";
 
 import { RiSearch2Line } from "react-icons/ri";
+import Swal from 'sweetalert2';
 
 export type PositionData = {
   center: {
@@ -66,11 +67,19 @@ const MatePage = () => {
     setSortBy("");
   };
 
-  const handleCreatePost = () => {
-    if (user === null) {
-      alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
-      router.replace("/signin");
+  const handleLoginCheck = () => {
+    if (user) {
+      router.push('/mate/posts')
     }
+    if (user === null) {
+      // alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
+      Swal.fire({
+        title: "로그인이 필요합니다!",
+        text: "산책메이트 글쓰기를 위해서는 로그인이 필요합니다",
+        icon: "warning"
+      });
+      router.push("/signin");
+    } 
   };
 
   return (
@@ -105,7 +114,7 @@ const MatePage = () => {
           {/* 글쓰기 버튼 영역 */}
           <div className="mt-1 flex">
             <button
-              onClick={handleCreatePost}
+              onClick={handleLoginCheck}
               className="mb-4 flex h-12 w-full items-center justify-center rounded-lg bg-mainColor p-2"
             >
               <div>글쓰기</div>

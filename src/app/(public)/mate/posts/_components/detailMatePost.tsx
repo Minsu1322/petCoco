@@ -12,6 +12,7 @@ import { getConvertTime } from "@/app/utils/getConvertTime";
 import { getConvertDate } from "../../_components/getConvertDate";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
+import Swal from 'sweetalert2';
 
 interface DetailMatePostProps {
   post: MatePostAllType;
@@ -119,7 +120,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      router.replace("/mate");
+      setIstEditting(true);
     } catch (error) {
       console.error(error);
     }
@@ -140,7 +141,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        router.replace("/mate");
+        
       } catch (error) {
         console.error(error);
       }
@@ -151,11 +152,21 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     mutationFn: deletePost,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-      alert("삭제가 완료되었습니다.");
+      // alert("삭제가 완료되었습니다.");
+      Swal.fire({
+        title: "완료!",
+        text: "게시글 삭제가 완료되었습니다.",
+        icon: "success"
+      });
     },
     onError: (error) => {
       console.error("삭제 중 오류 발생:", error);
-      alert("삭제 중 오류가 발생했습니다.");
+      // alert("삭제 중 오류가 발생했습니다.");
+      Swal.fire({
+        title: "오류가 발생했습니다!",
+        text: "게시글 삭제에 실패했습니다.",
+        icon: "error"
+      });
     }
   });
 
@@ -163,12 +174,22 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     mutationFn: (id: string) => editPost(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-      alert("수정이 완료되었습니다.");
+      // alert("수정이 완료되었습니다.");
+      Swal.fire({
+        title: "완료!",
+        text: "게시글 수정이 완료되었습니다.",
+        icon: "success"
+      });
       setIstEditting(false);
     },
     onError: (error) => {
       console.error("수정 중 오류 발생:", error);
-      alert("수정 중 오류가 발생했습니다.");
+      // alert("수정 중 오류가 발생했습니다.");
+      Swal.fire({
+        title: "오류가 발생했습니다!",
+        text: "게시글 수정이 실패했습니다.",
+        icon: "error"
+      });
     }
   });
 
@@ -176,6 +197,11 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     mutationFn: (id: string) => togglePost(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+      Swal.fire({
+        title: "완료!",
+        text: "모집 상태가 변경되었습니다",
+        icon: "success"
+      });
     }
   });
 
@@ -198,6 +224,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   const handleTogglePost = (id: string) => {
     toggleMutation.mutate(id);
+    setIstEditting(false);
   };
 
   const handleResetEditPost = () => {
@@ -213,7 +240,12 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   const startChat = async () => {
     if (!user) {
-      alert("로그인이 필요합니다.");
+      // alert("로그인이 필요합니다.");
+      Swal.fire({
+        title: "로그인이 필요합니다!",
+        text: "1:1 대화를 하려면 로그인이 필요합니다.",
+        icon: "warning"
+      });
       router.replace("/signin");
       return;
     }
@@ -249,14 +281,25 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       }
     } catch (error) {
       console.error("채팅 시작 오류:", error);
-      alert("채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.");
+      // alert("채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.");
+      Swal.fire({
+        title: "채팅 시작 오류",
+        text: "채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.",
+        icon: "warning"
+      });
     }
   };
 
   if (user === null) {
-    alert("산책메이트 상세 페이지 확인을 위해서는 로그인이 필요합니다");
+    // alert("산책메이트 상세 페이지 확인을 위해서는 로그인이 필요합니다");
+    Swal.fire({
+      title: "로그인이 필요합니다!",
+      text: "상세 페이지 확인을 위해서는 로그인이 필요합니다",
+      icon: "warning"
+    });
     router.replace("/signin");
   }
+  
 
   return (
     <div className="container mx-auto mb-5 mt-10 px-4">
@@ -431,30 +474,32 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                     <div className="mb-4 flex item-center gap-x-5">
                       <button
                         onClick={handleEditPost}
-                        className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
+                        className="flex h-10 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
                       >
                         수정
                       </button>
                       <button
                         onClick={() => handleDeletePost(post.id)}
-                        className="flex h-8 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
+                        className="flex h-10 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
                       >
                         삭제
                       </button>
                       <button
                         onClick={() => handleTogglePost(post.id)}
-                        className="flex h-8 w-28 cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
+                        className="flex h-10 w-28 cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
                       >
                         모집상태 변경
                       </button>
                     </div>
                   ) : (
+                    <div className="mb-4 flex item-center gap-x-5">
                     <button
                         onClick={startChat}
-                        className="flex h-8 w-28 cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
+                        className="flex h-10 w-28 cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
                       >
                         1:1대화
                       </button>
+                      </div>
                   )}
                 </div>
               </div>

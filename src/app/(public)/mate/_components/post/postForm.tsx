@@ -11,6 +11,7 @@ import { getConvertAddress } from "../../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType, Pets } from "@/types/mate.type";
 import { characteristicsArr } from "../../selectOptionArray";
+import Swal from 'sweetalert2';
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapForm"), { ssr: false });
@@ -49,7 +50,7 @@ const PostForm = () => {
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
   const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
-  console.log(formPosts);
+  // console.log(formPosts);
 
   // 게시물 등록
   const addPost = async (formAllData: { post: MateNextPostType; pets: Pets[] }) => {
@@ -66,14 +67,14 @@ const PostForm = () => {
         })
       });
 
-      console.log("Response status:", response.status); // 응답 상태 로그
+      // console.log("Response status:", response.status); // 응답 상태 로그
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("Response data:", data);
+      // console.log("Response data:", data);
 
       return data;
     } catch (error) {
@@ -125,7 +126,12 @@ const PostForm = () => {
       !preferred_route ||
       !content
     ) {
-      alert("모든 항목을 입력해 주세요!");
+      // alert("모든 항목을 입력해 주세요!");
+      Swal.fire({
+        title: "모든 항목을 입력해 주세요!",
+        text: "빠진 부분이 있는지 확인해 주세요.",
+        icon: "warning"
+      });
       return;
     }
 
@@ -148,7 +154,12 @@ const PostForm = () => {
       setFormPosts(initialState);
       setFormPets([initialPetState]);
 
-      alert("등록되었습니다!");
+      // alert("등록되었습니다!");
+      Swal.fire({
+        title: "완료!",
+        text: "게시글이 등록되었습니다!",
+        icon: "success"
+      });
       router.replace("/mate");
     } catch (err) {
       console.error(err);
