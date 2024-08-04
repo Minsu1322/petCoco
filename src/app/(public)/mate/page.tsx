@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 
-import Link from "next/link";
 import MatePostList from "./_components/post/matePostList";
-import PostListFilterTab from "./_components/postListFilterTab";
-import PostItemFilterTab from "./_components/postItemFilterTab";
-import NotLogInView from "./_components/notLogInView";
+import PostListFilterTab from "./_components/tab/postListFilterTab";
+import PostItemFilterTab from "./_components/tab/postItemFilterTab";
+
+import { RiSearch2Line } from "react-icons/ri";
+import Swal from 'sweetalert2';
 
 export type PositionData = {
   center: {
@@ -25,6 +27,7 @@ const MatePage = () => {
   const [sortBy, setSortBy] = useState("");
 
   const { user } = useAuthStore();
+  const router = useRouter();
 
   const [filters, setFilters] = useState({
     gender: null,
@@ -64,16 +67,27 @@ const MatePage = () => {
     setSortBy("");
   };
 
-  if (user === null) {
-    return <NotLogInView />;
-  }
+  const handleLoginCheck = () => {
+    if (user) {
+      router.push('/mate/posts')
+    }
+    if (user === null) {
+      // alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
+      Swal.fire({
+        title: "로그인이 필요합니다!",
+        text: "산책메이트 글쓰기를 위해서는 로그인이 필요합니다",
+        icon: "warning"
+      });
+      router.push("/signin");
+    } 
+  };
 
   return (
     <div className="container mx-auto mb-10 min-h-screen px-2">
       <h1 className="mb-7 mt-5 p-2 text-2xl font-semibold md:text-3xl">산책 메이트</h1>
       <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-5">
         {/* 왼쪽 메인 컨텐츠 영역 */}
-        <div className="mx-0 flex w-full flex-col">
+        <div className="mx-0 w-full lg:mx-2 lg:w-3/4">
           <div className="mb-5">
             <PostListFilterTab
               isCurrentPosts={isCurrentPosts}
@@ -97,11 +111,16 @@ const MatePage = () => {
         </div>
         {/* 오른쪽 사이드바 영역 */}
         <div className="mr-0 w-full pl-0 lg:mr-8 lg:w-1/4 lg:pl-5">
+          {/* 글쓰기 버튼 영역 */}
           <div className="mt-1 flex">
-            <Link href="/mate/posts" className="mb-4 h-10 w-full items-center rounded-lg bg-mainColor p-2 text-center">
+            <button
+              onClick={handleLoginCheck}
+              className="mb-4 flex h-12 w-full items-center justify-center rounded-lg bg-mainColor p-2"
+            >
               <div>글쓰기</div>
-            </Link>
+            </button>
           </div>
+          {/* 검색 영역 */}
           <div className="mb-5 flex flex-col">
             <p className="mt-3 text-lg text-gray-500">검색</p>
             <form
@@ -110,12 +129,12 @@ const MatePage = () => {
             >
               <input
                 type="text"
-                className="ml-3 w-full"
+                className="ml-3 w-full focus:outline-none"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button type="submit" className="mx-4">
-                🔍
+                <RiSearch2Line />
               </button>
             </form>
           </div>

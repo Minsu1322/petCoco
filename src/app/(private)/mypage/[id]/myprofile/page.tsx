@@ -57,60 +57,54 @@ const MyProfile = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      {/* <img
-        className="h-[170px] w-[170px] items-center justify-center rounded-full bg-lime-300 object-cover"
-        src={user.profile_img}
-        alt=""
-      /> */}
-      <div className="flex h-80 flex-col items-center justify-center">
-        <div className="my-auto flex flex-col items-center justify-center px-[15px] text-[24px] sm:text-[48px] lg:px-0">
-          {/* <img className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover" src={user.profile_img} alt="" /> */}
-          <span className="flex items-center font-bold text-[#4885f8] sm:text-[40px]">
-            {user.nickname}
-            <div className="text-[36px] text-black">님 반갑습니다.</div>
-          </span>
-
-          {/* <Link
-            className="rounded border bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
-            href={`/mypage/${user.id}/myprofile`}
-          >
-            내 프로필
-          </Link> */}
-        </div>
-      </div>
-      <div className="flex items-center gap-20">
-        <div className="flex flex-col gap-[50px]">
-          <div className="flex items-center gap-20">
+    <div className="">
+      <div className="flex items-center">
+        <div className="border-gray flex h-[500px] w-[500px] flex-col gap-[50px] rounded-lg border">
+          <div className="mt-5 flex items-center">
             <img
-              className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover"
+              className="ml-5 mr-5 h-[60px] w-[60px] rounded-full bg-mainColor object-cover"
               src={user.profile_img || defaultUserImg}
               alt=""
             />
-            <div className="my-auto flex flex-col items-start justify-center rounded-lg px-[15px] lg:px-0">
-              <br />
-              <span className="text-[24px] text-[#000000] sm:text-[20px]">연령대: {user.age}</span>
-              <br />
-              <span className="text-[24px] text-[#000000] sm:text-[20px]">성별: {user.gender}</span>
-              <br />
-              <span className="text-[24px] text-[#000000] sm:text-[20px]">MBTI: {user.mbti}</span>
-              <br />
-              <div className="max-w-[300px] break-words text-[24px] text-[#000000] sm:text-[20px]">
-                자기소개: {user.introduction}
+            <div className="flex flex-col">
+              <span className="flex items-center text-[30px] font-bold text-[#4885f8]">
+                {user.nickname}
+                <div className="ml-2 text-[30px] text-black">님 반갑습니다.</div>
+              </span>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <div className="flex w-[90%] flex-col rounded-lg">
+              <div className="mb-5 flex w-[50%] justify-between">
+                <span className="flex flex-col items-center gap-1">
+                  <p className="text-[20px] font-semibold">연령대</p>
+                  <p className="text-[18px]">{user.age}</p>
+                </span>
+                <span className="flex flex-col items-center gap-1">
+                  <p className="text-[20px] font-semibold">성별</p>
+                  <p className="text-[18px]">{user.gender}</p>
+                </span>
+                <span className="flex flex-col items-center gap-1">
+                  <p className="text-[20px] font-semibold">MBTI</p>
+                  <p className="text-[18px]">{user.mbti}</p>
+                </span>
+              </div>
+              <div className="text-[20px]">
+                <p className="font-semibold">자기소개</p>
+                <div className="mt-2 h-[150px] overflow-y-auto rounded-lg bg-[#eef4ff] p-4 scrollbar-hide">
+                  {user.introduction}
+                </div>
               </div>
             </div>
           </div>
-          <Link
-            className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-3 text-center text-[16px] font-semibold text-black"
-            href={`/mypage/${user.id}/myprofile/fixMyProfile`}
-          >
-            변경하기
+          <Link href={`/mypage/${user.id}/myprofile/fixMyProfile`} className="mt-[-20px] flex justify-center">
+            <p className="flex h-[40px] w-[200px] items-center justify-center rounded-md bg-mainColor">변경하기</p>
           </Link>
         </div>
-        <div className="ml-20 flex h-[340px] w-[540px] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] bg-gray-200 py-4 scrollbar-hide">
+        <div className="border-gray ml-20 flex h-[500px] w-[500px] flex-col items-center gap-6 overflow-y-scroll rounded-[10px] border py-4 scrollbar-hide">
           {pets?.map((pet) => (
             <Link key={pet.id} href={`/mypage/${id}/mypet/mypetprofile/${pet.id}`}>
-              <div className="my-auto flex w-[500px] flex-row items-center gap-12 rounded-[20px] border-2 border-gray-400 bg-white px-[16px] py-[12px]">
+              <div className="border-gray my-auto mt-2 flex w-[400px] flex-row items-center gap-12 rounded-xl border-2 bg-white px-[16px] py-[12px]">
                 <img
                   className="h-[100px] w-[100px] rounded-full bg-lime-300 object-cover"
                   src={pet.petImage ? pet.petImage : defaultPetImg}
@@ -124,29 +118,16 @@ const MyProfile = () => {
               </div>
             </Link>
           ))}
-          <Link href={`/mypage/${id}/mypet/addmypetprofile`}>
-            <div className="my-auto flex w-[500px] flex-row items-center justify-center gap-12 rounded-[20px] border-2 border-gray-400 bg-white px-[16px] py-[12px] font-bold">
-              추가하기
-            </div>
-          </Link>
-          {/* <div className="mt-5 flex gap-[15px]">
-            <Link
-              className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
-              href={`/mypage/${id}/mypet`}
-            >
-              내 애완동물
+          <div className="fixed mt-[420px]">
+            <Link href={`/mypage/${id}/mypet/addmypetprofile`}>
+              <div className="my-auto flex w-[420px] flex-row items-center justify-center gap-12 rounded-[20px] border-2 border-gray-400 bg-white px-[16px] py-[12px] font-bold">
+                추가하기
+              </div>
             </Link>
-          </div> */}
+          </div>
         </div>
       </div>
-      <div className="mt-20 flex gap-[15px]">
-        {/* <Link
-              className="rounded border border-[#C9C9C9] bg-[#42E68A] px-4 py-2 text-center text-[16px] font-semibold text-black"
-              href={`/mypage/${user.id}`}
-            >
-              뒤로가기
-            </Link> */}
-      </div>
+      {/* <div className="mt-10 flex gap-[15px]"></div> */}
     </div>
   );
 };

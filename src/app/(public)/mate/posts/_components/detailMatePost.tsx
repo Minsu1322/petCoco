@@ -8,9 +8,11 @@ import Image from "next/image";
 import { useState } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getConvertAddress } from "../../getConvertAddress";
-import { useAuthStore } from "@/zustand/useAuth";
 import { getConvertTime } from "@/app/utils/getConvertTime";
 import { getConvertDate } from "../../_components/getConvertDate";
+import { useAuthStore } from "@/zustand/useAuth";
+import { createClient } from "@/supabase/client";
+import Swal from 'sweetalert2';
 
 interface DetailMatePostProps {
   post: MatePostAllType;
@@ -25,6 +27,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const { user } = useAuthStore();
   const userId = user && user.id;
   const router = useRouter();
+  const supabase = createClient();
+  // const [isMapLoading, setIsMapLoading] = useState(true);
 
   const { position, setPosition } = locationStore();
 
@@ -57,7 +61,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   const [isEditing, setIstEditting] = useState<boolean>(false);
 
-  // console.log(post);
+  // console.log(post.users);
 
   const {
     data: addressData,
@@ -97,8 +101,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       }
 
       router.replace("/mate");
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -116,15 +120,27 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      router.replace("/mate");
-    } catch (err) {
-      console.error(err);
+      setIstEditting(true);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const togglePost = async (id: string) => {
-    if (confirm("모집 상태를 변경하시겠어요?")) {
-      try {
+    try {
+      const result = await Swal.fire({
+        title: "모집 상태를 변경하시겠어요?",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        cancelButtonText: "취소",
+        confirmButtonColor:'#1763e7',
+        cancelButtonColor: '#c0c0c0',
+        icon: 'question',
+      });
+  
+      if (result.isConfirmed) {
+        Swal.fire("완료!", "모집 상태가 변경되었습니다!", "success");
+        
         const response = await fetch(`/api/mate/post/${post.id}`, {
           method: "PUT",
           headers: {
@@ -132,27 +148,41 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           },
           body: JSON.stringify({ recruiting: !post.recruiting })
         });
-
+  
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        router.replace("/mate");
-      } catch (err) {
-        console.error(err);
+        
+      } else if (result.isDenied) {
+        Swal.fire("오류!", "모집상태가 변경되지 않았습니다.", "error");
       }
+    } catch (error) {
+      console.error(error);
+      Swal.fire("오류!", "모집상태가 변경되지 않았습니다.", "error");
     }
   };
+  
 
   const deleteMutation = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-      alert("삭제가 완료되었습니다.");
+      // alert("삭제가 완료되었습니다.");
+      Swal.fire({
+        title: "완료!",
+        text: "게시글 삭제가 완료되었습니다.",
+        icon: "success"
+      });
     },
     onError: (error) => {
       console.error("삭제 중 오류 발생:", error);
-      alert("삭제 중 오류가 발생했습니다.");
+      // alert("삭제 중 오류가 발생했습니다.");
+      Swal.fire({
+        title: "오류가 발생했습니다!",
+        text: "게시글 삭제에 실패했습니다.",
+        icon: "error"
+      });
     }
   });
 
@@ -160,12 +190,22 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     mutationFn: (id: string) => editPost(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-      alert("수정이 완료되었습니다.");
+      // alert("수정이 완료되었습니다.");
+      Swal.fire({
+        title: "완료!",
+        text: "게시글 수정이 완료되었습니다.",
+        icon: "success"
+      });
       setIstEditting(false);
     },
     onError: (error) => {
       console.error("수정 중 오류 발생:", error);
-      alert("수정 중 오류가 발생했습니다.");
+      // alert("수정 중 오류가 발생했습니다.");
+      Swal.fire({
+        title: "오류가 발생했습니다!",
+        text: "게시글 수정이 실패했습니다.",
+        icon: "error"
+      });
     }
   });
 
@@ -173,13 +213,29 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     mutationFn: (id: string) => togglePost(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+      // Swal.fire({
+      //   title: "완료!",
+      //   text: "모집 상태가 변경되었습니다",
+      //   icon: "success"
+      // });
     }
   });
 
   const handleDeletePost = (id: string) => {
-    if (confirm("현재 게시글을 삭제하시겠어요?")) {
-      deleteMutation.mutate(id);
-    }
+    Swal.fire({
+      title: '게시글 삭제',
+      text: "현재 게시글을 삭제하시겠어요?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor:'#d33',
+      cancelButtonColor: '#c0c0c0',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMutation.mutate(id);
+      }
+    });
   };
 
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
@@ -188,13 +244,25 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   const handleEditPost = () => {
-    if (confirm("현재 게시글을 수정하시겠어요?")) {
-      setIstEditting(true);
-    }
+    Swal.fire({
+      title: '게시글 수정',
+      text: "현재 게시글을 수정하시겠어요?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#1763e7',
+      cancelButtonColor: '#c0c0c0',
+      confirmButtonText: '확인',
+      cancelButtonText: '취소'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setIstEditting(true);
+      }
+    });
   };
 
   const handleTogglePost = (id: string) => {
     toggleMutation.mutate(id);
+    setIstEditting(false);
   };
 
   const handleResetEditPost = () => {
@@ -208,8 +276,62 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     });
   };
 
+  const startChat = async () => {
+    if (!user) {
+      // alert("로그인이 필요합니다.");
+      Swal.fire({
+        title: "로그인이 필요합니다!",
+        text: "1:1 대화를 하려면 로그인이 필요합니다.",
+        icon: "warning"
+      });
+      router.replace("/signin");
+      return;
+    }
+
+    try {
+      // 채팅방이 이미 존재하는지 확인
+      const { data: existingChat, error: chatError } = await supabase
+        .from("messages")
+        .select("*")
+        .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
+        .or(`sender_id.eq.${post.user_id},receiver_id.eq.${post.user_id}`)
+        .limit(1);
+
+      if (chatError) throw chatError;
+
+      if (existingChat && existingChat.length > 0) {
+        // 이미 채팅방이 존재하면 해당 채팅방으로 이동
+        router.push(`/message?selectedUser=${post.user_id}`);
+      } else {
+        // 새로운 채팅방 생성
+        const { error: insertError } = await supabase.from("messages").insert([
+          {
+            sender_id: user.id,
+            receiver_id: post.user_id,
+            content: "채팅이 시작되었습니다."
+          }
+        ]);
+
+        if (insertError) throw insertError;
+
+        // 새로 생성된 채팅방으로 이동
+        router.push(`/message?selectedUser=${post.user_id}`);
+      }
+    } catch (error) {
+      console.error("채팅 시작 오류:", error);
+      // alert("채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.");
+      Swal.fire({
+        title: "채팅 시작 오류",
+        text: "채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.",
+        icon: "warning"
+      });
+    }
+  };
+
+
+
   return (
-    <div className="container mx-auto mb-5 mt-10 px-4 ">
+    <div className="container mx-auto mb-5 mt-10 px-4">
       {isEditing ? (
         <form onSubmit={handleUpdatePost} className="mx-auto flex max-w-4xl flex-col items-center">
           <div className="mb-5 flex flex-col items-center justify-between">
@@ -370,140 +492,174 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           </div>
         </form>
       ) : (
-        <div className="mx-auto flex max-w-4xl flex-col items-center">
+        <div className="mx-auto mb-5 mt-8 max-w-5xl rounded-lg border border-gray-200 bg-white p-6 shadow-md">
           {/* 제목 및 버튼 영역 */}
-          <div className="flex flex-row justify-between items-center mb-3 w-full">
-  <div className="flex-shrink-0">
-    <p className="text-3xl font-semibold">{post.title}</p>
-  </div>
-  <div className="flex-shrink-0">
-    {userId === post.user_id && (
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <button
-          className="flex h-10 cursor-pointer items-center justify-center rounded-md bg-editBtnColor px-4 whitespace-nowrap"
-          onClick={handleEditPost}
-        >
-          수정
-        </button>
-        <button
-          className="flex h-10 cursor-pointer items-center justify-center rounded-md bg-delBtnColor px-4 whitespace-nowrap"
-          onClick={() => handleDeletePost(post.id)}
-        >
-          삭제
-        </button>
-        <button
-          className="flex h-10 cursor-pointer items-center justify-center rounded-md bg-gray-200 px-4 whitespace-nowrap"
-          onClick={() => handleTogglePost(post.id)}
-        >
-          모집상태 변경
-        </button>
-      </div>
-    )}
-  </div>
-</div>
-          {/* 프로필 영역 */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-4">
-              <Image
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU"
-                alt="사용자 프로필 이미지"
-                width={50}
-                height={50}
-                className="rounded-full"
-              />
-              <div className="text-gray-500">
-                {/* <p>{post.users?.nickname}</p> */}
-                <p>{new Date(post.created_at).toLocaleString()}</p>
+          <div className="mb-1 flex flex-col">
+            <div className="flex flex-col px-6">
+              <div className="flex justify-between mt-3">
+                <h1 className="text-3xl font-semibold">{post.title}</h1>
+                <div>
+                  {userId === post.user_id ? (
+                    <div className="mb-4 flex item-center gap-x-5">
+                      <button
+                        onClick={handleEditPost}
+                        className="flex h-10 w-16 cursor-pointer items-center justify-center rounded-md bg-editBtnColor p-2"
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={() => handleDeletePost(post.id)}
+                        className="flex h-10 w-16 cursor-pointer items-center justify-center rounded-md bg-delBtnColor p-2"
+                      >
+                        삭제
+                      </button>
+                      <button
+                        onClick={() => handleTogglePost(post.id)}
+                        className="flex h-10 w-32 cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
+                      >
+                        모집상태 변경
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="mb-4 flex item-center gap-x-5">
+                    <button
+                        onClick={startChat}
+                        className="flex h-10 w-28 cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
+                      >
+                        1:1대화
+                      </button>
+                      </div>
+                  )}
+                </div>
+              </div>
+              
+              {/* 프로필 영역 */}
+              <div className="mb-10 mt-4 flex">
+                <Image
+                  src={
+                    post.users && post.users?.profile_img
+                      ? post.users?.profile_img
+                      : "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/post_image/1722324396777_xo2ka9.jpg"
+                  }
+                  alt="사용자 프로필 이미지"
+                  width={50}
+                  height={50}
+                  className="rounded-full border border-[#e6efff]"
+                />
+                <div className="ml-3 flex flex-col justify-center">
+                  <div className="flex font-semibold">{post.users?.nickname}</div>
+                  <div className="flex text-gray-400">{new Date(post.created_at).toLocaleString()}</div>
+                </div>
               </div>
             </div>
-            {/* 컨텐츠 영역 */}
-            <div className="mt-[10px] flex w-full items-center justify-between">
-              <div className="flex flex-col">
-                <p className="w-full text-lg font-semibold"> 희망 날짜 및 시간</p>
-                <p className="mt-3 h-10 w-full">
-                  {post.date_time?.split("T")[0]} {getConvertTime({ date_time: post.date_time || "" })}
-                </p>
-              </div>
-              <div className="ml-[20px] flex w-[200px] flex-col">
-                <div className="flex flex-col">
-                  <p className="w-[150px] whitespace-nowrap text-lg font-semibold">모집 인원 수</p>
-                  <div> 
-                  <p className="mt-3 h-10 w-full">
-                    {post.members}명
+
+            <div className="overflow-hidden">
+              <div className="space-y-8 p-6">
+                {/* 희망 날짜/시간 및 모집 인원 */}
+                <div className="flex rounded-lg bg-gray-50 p-4">
+                  <div className="w-3/6">
+                    <p className="text-sm text-gray-500">희망 날짜 및 시간</p>
+                    <p className="mt-1 font-semibold">
+                      {post.date_time?.split("T")[0]} {getConvertTime({ date_time: post.date_time || "" })}
                     </p>
                   </div>
+                  <div className="ml-8">
+                    <p className="text-sm text-gray-500">모집 인원 수</p>
+                    <p className="mt-1 font-semibold">{post.members}명</p>
+                  </div>
                 </div>
-              </div>
-              <div>
-            <div className="flex w-full flex-col">
-              <p className="w-full text-lg font-semibold mb-3">모집기간</p>
-              <p className=" h-10 w-full">
-              {post.recruitment_start?.split("T")[0]}{" "}{getConvertTime({ date_time: post.recruitment_start || "" })}
-               ~ {post.recruitment_end?.split("T")[0]}{" "}{getConvertTime({ date_time: post.recruitment_end || "" })}
-              </p>
-            </div>
-            </div>
-            </div>
-            
-            <div className="mt-[20px] flex flex-row">
-              <div className="mt-3">
-              <p className="w-full text-lg font-semibold">산책 장소</p>
-              <div className="w-full">
-                <div className="mt-4">
-                  <DynamicMapComponent
-                    center={{
-                      lat: Number(post.position?.center?.lat),
-                      lng: Number(post.position?.center?.lng)
-                    }}
-                  />
+
+                {/* 모집기간 */}
+                <div className="rounded-lg bg-gray-50 p-4">
+                  <p className="text-sm text-gray-500">모집기간</p>
+                  <p className="mt-1 font-semibold">
+                    {post.recruitment_start?.split("T")[0]}{" "}
+                    {getConvertTime({ date_time: post.recruitment_start || "" })}
+                    {" ~ "}
+                    {post.recruitment_end?.split("T")[0]} {getConvertTime({ date_time: post.recruitment_end || "" })}
+                  </p>
                 </div>
-              </div>
-              </div>
-              <div className="ml-[20px] mt-[35px] w-full">
+
+                {/* 산책 장소 정보 */}
+                <div className="flex flex-col gap-6 md:flex-row">
+                  <div className="w-full md:w-1/2">
+                    <p className="mb-2 font-semibold">산책 장소</p>
+                    <div className="overflow-hidden rounded-lg shadow-md">
+                      {/* {isMapLoading && <div className="h-[300px] w-full animate-pulse bg-gray-200"></div>} */}
+                      <div>
+                        <DynamicMapComponent
+                          center={{
+                            lat: Number(post.position?.center?.lat),
+                            lng: Number(post.position?.center?.lng)
+                          }}
+                          // onMapLoad={() => setIsMapLoading(false)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-7 w-full space-y-4 rounded-lg bg-gray-50 p-4 md:w-1/2">
+                    <div>
+                      <p className="text-sm text-gray-500">만나기로 한 곳의 주소</p>
+                      <p className="mt-1 font-semibold">{post.address}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">산책 장소 추가 설명</p>
+                      <p className="font-semibold">{post.place_name}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">선호하는 산책 루트</p>
+                      <p className="mt-1 font-semibold">{post.preferred_route}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">특별한 요구사항</p>
+                      <p className="mt-1 font-semibold">{post.special_requirements}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 내용 */}
                 <div>
-                  <div className="my-2 flex flex-col">
-                    <p className="mr-2 text-lg font-semibold mt-3">만나기로 한 곳의 주소는?</p>
-                    <p className="mt-2">{roadAddress}</p>
-                  <p>{post.place_name}</p>
+                  <p className="mb-2 text-sm text-gray-500">내용</p>
+                  <p className="rounded-lg bg-gray-50 p-4">{post.content}</p>
+                </div>
+
+                {/* 반려동물 정보 */}
+                <div>
+                  <div className="mb-3 flex items-center">
+                    <span className="mr-2 text-3xl">🐶</span>
+                    <h2 className="text-lg font-semibold">반려동물 정보</h2>
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                    {post.matepostpets && post.matepostpets.length > 0 ? (
+                      post.matepostpets.map((pet) => (
+                        <div className="rounded-lg bg-gray-50 p-4 shadow-sm" key={pet.id}>
+                          <p className="mb-2">
+                            <span className="font-semibold">성별:</span>{" "}
+                            {pet.male_female === "male" ? "남" : pet.male_female === "female" ? "여" : ""}
+                          </p>
+                          <p className="mb-2">
+                            <span className="font-semibold">중성화 여부:</span>{" "}
+                            {pet.neutered ? "예" : pet.neutered === false ? "아니오" : ""}
+                          </p>
+                          <p className="mb-2">
+                            <span className="font-semibold">나이:</span> {pet.age ? `${pet.age}살` : ""}
+                          </p>
+                          <p className="mb-2">
+                            <span className="font-semibold">무게:</span> {pet.weight ? `${pet.weight} kg` : ""}
+                          </p>
+                          <p>
+                            <span className="font-semibold">성격 및 특징:</span> {pet.characteristics || ""}
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="col-span-full flex items-center justify-center rounded-lg bg-gray-100 p-4 text-gray-500">
+                        반려동물 정보가 없습니다.
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="flex flex-col items-start gap-y-2">
-                  <p className="mt-[30px] text-lg font-semibold">선호하는 산책 루트</p>
-                  <p>{post.preferred_route}</p>
-                </div>
-                <div className="flex flex-col items-start gap-y-2">
-                  <p className="mt-[30px] text-lg font-semibold">특별한 요구사항</p>
-                  {post.special_requirements}
-                </div>
               </div>
-            </div>
-            <div className="mt-[20px] flex flex-col items-start">
-              <p className="text-lg font-semibold">내용</p>
-              <p className="mt-4 w-full rounded-md border border-gray-300 p-5"> {post.content}</p>
-            </div>
-          </div>
-          {/* 반려동물 정보 */}
-          <div className="mt-5 flex w-full flex-col gap-y-5">
-          <div className="flex items-center">
-                <span className="mr-2 text-3xl">🐶</span>
-                <h2 className="text-lg font-semibold">반려동물 정보</h2>
-              </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-              {post.matepostpets && post.matepostpets.length > 0 ? (
-                post.matepostpets.map((pet) => (
-                  <div className="rounded-lg bg-gray-50 p-6 shadow-sm" key={pet.id}>
-                    <p>성별: {pet.male_female === "male" ? "남" : pet.male_female === "female" ? "여" : ""}</p>
-                    <p>중성화 여부: {pet.neutered ? "예" : pet.neutered === false ? "아니오" : ""}</p>
-                    <p>나이: {pet.age ? `${pet.age}살` : ""}</p>
-                    <p>무게: {pet.weight ? `${pet.weight} kg` : ""}</p>
-                    <p>성격 및 특징: {pet.characteristics || ""}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-full flex items-center justify-center rounded-md bg-gray-200 p-4 text-gray-600">
-                  반려동물 정보가 없습니다.
-                </div>
-              )}
             </div>
           </div>
         </div>

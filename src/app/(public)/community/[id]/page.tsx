@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import Comments from "../_components/comments";
 
 interface PageProps {
@@ -86,7 +86,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
 
   if (!user) {
     alert("로그인이 필요한 서비스입니다.");
-    router.push("http://localhost:3000/signin");
+    router.push("/signin");
     return null;
   }
 

@@ -1,40 +1,70 @@
 "use client";
+
+import { useAuthStore } from "@/zustand/useAuth";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
+import NavLink from "../navLink";
 
 const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const params = useParams();
-  if (params === null) {
-    return;
-  }
+  const { user } = useAuthStore((state) => ({
+    user: state.user
+  }));
   const id = params.id;
-  return (
-    <div className="ml-[100px] flex flex-wrap">
-      <div className="gap flex flex-col items-start justify-start justify-items-start">
-        <div>마이페이지</div>
-        <>----------------</>
-        {/* <Link className="px-4 py-2 text-center font-bold text-black" href={`/mypage/${id}`}>
-          마이페이지
-        </Link> */}
-        <Link className="px-4 py-2 text-center font-bold text-black" href={`/mypage/${id}/myprofile`}>
-          내 정보
-        </Link>
-        {/* <Link className="px-4 py-2 text-center font-bold text-black" href={`/mypage/${id}/myprofile/fixMyProfile`}>
-          프로필 변경
-        </Link>
-        <Link className="px-4 py-2 text-center font-bold text-black" href={`/mypage/${id}/mypet`}>
-          내 팻 관리
-        </Link> */}
-        <Link className="px-4 py-2 text-center font-bold text-black" href={`/mypage/${id}/myposts`}>
-          내 포스트
-        </Link>
-        <Link className="px-4 py-2 text-center font-bold text-black" href={`/mypage/${id}/mymateposts`}>
-          내 산책 메이트
-        </Link>
-      </div>
 
-      <div className="w-4/5 items-center justify-center">{children}</div>
+  if (params === null) {
+    return null;
+  }
+
+
+  const handleMypageClick = () => {
+    if (user) {
+      router.push(`/mypage/${user.id}/myprofile`);
+    } else {
+      router.push("/signin");
+    }
+  };
+
+  return (
+    <div className="mt-[50px] flex w-full justify-center">
+      <div className="flex w-full justify-center">
+        <div className="flex justify-end">
+          <div className="ml-5 mr-[50px] mt-[20px] flex h-[300px] w-[200px] flex-col rounded-md border border-mainColor">
+            <div className="mt-5 flex w-full flex-col">
+              <button onClick={handleMypageClick} className="mt-5 text-[22px] font-semibold">
+                마이페이지
+              </button>
+              {/* <div className="flex w-full justify-center">
+            <div className="w-[90%] border border-mainColor"></div>
+          </div> */}
+            </div>
+            <div className="mt-5 flex w-full flex-col items-center">
+              <div className="flex w-full flex-col items-center">
+                <NavLink
+                  href={`/mypage/${id}/myprofile`}
+                >
+                  내 정보
+                </NavLink>
+                <NavLink
+                  href={`/mypage/${id}/myposts`}
+                >
+                  내 포스트
+                </NavLink>
+                <NavLink
+                  href={`/mypage/${id}/mymateposts`}
+                >
+                  내 산책 메이트
+                </NavLink>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-center">
+          <div className="itmes-center mt-[20px] flex justify-center">{children}</div>
+        </div>
+      </div>
     </div>
   );
 };

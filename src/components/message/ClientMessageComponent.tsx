@@ -134,7 +134,7 @@ export default function ClientMessageComponent() {
                 <h1 className="text-lg font-bold">쪽지함</h1>
                 <span className="text-sm text-gray-500">매너있는 대화 부탁드립니다</span>
               </div>
-              <div className="relative flex-grow overflow-y-auto">
+              <div className="relative flex-grow overflow-y-auto scrollbar-hide">
                 <div className="sticky top-0 z-10 flex items-center border-b border-mainColor bg-white bg-opacity-70 p-3">
                   {groupedMessages[selectedUser][0].profile_img ? (
                     <Image
