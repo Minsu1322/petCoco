@@ -78,7 +78,6 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
     }
   };
 
-
   return (
     <div className="mb-5 w-[48%] rounded-xl border border-gray-300 px-4 pb-2 pt-1">
       <div className="mb-3 flex h-16 flex-row items-center justify-between border-b-2">
