@@ -4,6 +4,7 @@ import { useAuthStore } from "@/zustand/useAuth";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
+import NavLink from "../navLink";
 
 const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -41,24 +42,21 @@ const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
             <div className="mt-5 flex w-full flex-col items-center">
               <div className="flex w-full flex-col items-center">
-                <Link
-                  className="flex h-[50px] w-[90%] items-center rounded-md px-6 hover:bg-mainColor"
+                <NavLink
                   href={`/mypage/${id}/myprofile`}
                 >
                   내 정보
-                </Link>
-                <Link
-                  className="flex h-[50px] w-[90%] items-center rounded-md px-6 hover:bg-mainColor"
+                </NavLink>
+                <NavLink
                   href={`/mypage/${id}/myposts`}
                 >
                   내 포스트
-                </Link>
-                <Link
-                  className="flex h-[50px] w-[90%] items-center rounded-md px-6 hover:bg-mainColor"
+                </NavLink>
+                <NavLink
                   href={`/mypage/${id}/mymateposts`}
                 >
                   내 산책 메이트
-                </Link>
+                </NavLink>
               </div>
             </div>
           </div>
