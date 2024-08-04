@@ -127,8 +127,20 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   const togglePost = async (id: string) => {
-    if (confirm("모집 상태를 변경하시겠어요?")) {
-      try {
+    try {
+      const result = await Swal.fire({
+        title: "모집 상태를 변경하시겠어요?",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        cancelButtonText: "취소",
+        confirmButtonColor:'#1763e7',
+        cancelButtonColor: '#c0c0c0',
+        icon: 'question',
+      });
+  
+      if (result.isConfirmed) {
+        Swal.fire("완료!", "모집 상태가 변경되었습니다!", "success");
+        
         const response = await fetch(`/api/mate/post/${post.id}`, {
           method: "PUT",
           headers: {
@@ -136,17 +148,21 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           },
           body: JSON.stringify({ recruiting: !post.recruiting })
         });
-
+  
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         
-      } catch (error) {
-        console.error(error);
+      } else if (result.isDenied) {
+        Swal.fire("오류!", "모집상태가 변경되지 않았습니다.", "error");
       }
+    } catch (error) {
+      console.error(error);
+      Swal.fire("오류!", "모집상태가 변경되지 않았습니다.", "error");
     }
   };
+  
 
   const deleteMutation = useMutation({
     mutationFn: deletePost,
@@ -197,18 +213,29 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     mutationFn: (id: string) => togglePost(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-      Swal.fire({
-        title: "완료!",
-        text: "모집 상태가 변경되었습니다",
-        icon: "success"
-      });
+      // Swal.fire({
+      //   title: "완료!",
+      //   text: "모집 상태가 변경되었습니다",
+      //   icon: "success"
+      // });
     }
   });
 
   const handleDeletePost = (id: string) => {
-    if (confirm("현재 게시글을 삭제하시겠어요?")) {
-      deleteMutation.mutate(id);
-    }
+    Swal.fire({
+      title: '게시글 삭제',
+      text: "현재 게시글을 삭제하시겠어요?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor:'#d33',
+      cancelButtonColor: '#c0c0c0',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMutation.mutate(id);
+      }
+    });
   };
 
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
@@ -217,9 +244,20 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   const handleEditPost = () => {
-    if (confirm("현재 게시글을 수정하시겠어요?")) {
-      setIstEditting(true);
-    }
+    Swal.fire({
+      title: '게시글 수정',
+      text: "현재 게시글을 수정하시겠어요?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#1763e7',
+      cancelButtonColor: '#c0c0c0',
+      confirmButtonText: '확인',
+      cancelButtonText: '취소'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setIstEditting(true);
+      }
+    });
   };
 
   const handleTogglePost = (id: string) => {
@@ -290,16 +328,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     }
   };
 
-  if (user === null) {
-    // alert("산책메이트 상세 페이지 확인을 위해서는 로그인이 필요합니다");
-    Swal.fire({
-      title: "로그인이 필요합니다!",
-      text: "상세 페이지 확인을 위해서는 로그인이 필요합니다",
-      icon: "warning"
-    });
-    router.replace("/signin");
-  }
-  
+
 
   return (
     <div className="container mx-auto mb-5 mt-10 px-4">
