@@ -161,10 +161,7 @@ const FixMyProfile = () => {
   }
 
   return (
-    <div
-      className="my-auto flex flex-col items-center justify-center rounded-[30px]"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <div className="flex w-full justify-center" onClick={(e) => e.stopPropagation()}>
       <div className="w-[600px]">
         <h1 className="mt-5 text-2xl font-bold">프로필 수정</h1>
         <div className="my-auto mt-5 flex max-h-[400px] flex-col items-center justify-center">
