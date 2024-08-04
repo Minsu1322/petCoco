@@ -30,22 +30,26 @@ const MyMate = () => {
   if (error) return <div>에러 발생: {error.message}</div>;
 
   return (
-    <div className="ml-[570px] mt-24 flex h-[440px] w-[640px] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] bg-gray-100 py-4 scrollbar-hide">
+    <div className="mb-[30px] flex h-[80%] w-[640px] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] scrollbar-hide">
       {data.map((data) => (
-        <div key={data.id} className="w-[440px] rounded-[10px] border border-[#4885f8] bg-white">
-          <Link href={`/mate/posts/${data.id}`} className="ml-3 mt-5 flex flex-col items-center justify-center">
-            <div className="flex-grow pr-5">
-              <p className="mb-3 text-xl font-semibold">{data.title}</p>
-              <p className="mb-3 h-24 overflow-hidden overflow-ellipsis whitespace-nowrap">{data.content}</p>
-              <div className="mt-3 flex flex-row justify-between">
+        <div key={data.id} className="border-gray w-[440px] rounded-[10px] border bg-white">
+          <Link href={`/mate/posts/${data.id}`} className="mt-5 flex flex-col items-center justify-center">
+            <div className="h-[90%] w-[90%] py-5">
+              <p className="mb-4 text-2xl font-semibold">{data.title}</p>
+              <p className="mt-2 h-[150px] overflow-y-auto rounded-lg bg-[#eef4ff] p-4 scrollbar-hide">
+                {data.content}
+              </p>
+              <div className="mt-5 flex">
                 {/* <p>{data.users.nickname}</p> */}
-                <div className="flex flex-row gap-x-5">
-                  <p className="w-28 overflow-hidden text-ellipsis whitespace-nowrap text-end">
-                    {`${extractDong(data.address || "")}, ${data.place_name || ""}`}
-                  </p>
-                  <p>
-                    {data.date_time?.split("T")[0]} | {getConvertTime({ date_time: data.date_time || "" })}
-                  </p>
+                <div className="flex w-full justify-between">
+                  <div className="flex flex-col">
+                    <p className="w-28 overflow-hidden text-ellipsis whitespace-nowrap text-end">
+                      {`${extractDong(data.address || "")}, ${data.place_name || ""}`}
+                    </p>
+                    <p>
+                      {data.date_time?.split("T")[0]} | {getConvertTime({ date_time: data.date_time || "" })}
+                    </p>
+                  </div>
                   <p>{data.members}명 모집</p>
                 </div>
               </div>
