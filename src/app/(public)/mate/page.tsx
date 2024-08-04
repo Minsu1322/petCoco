@@ -9,6 +9,7 @@ import PostListFilterTab from "./_components/tab/postListFilterTab";
 import PostItemFilterTab from "./_components/tab/postItemFilterTab";
 
 import { RiSearch2Line } from "react-icons/ri";
+import Swal from 'sweetalert2';
 
 export type PositionData = {
   center: {
