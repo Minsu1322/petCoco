@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 
-import Link from "next/link";
 import MatePostList from "./_components/post/matePostList";
 import PostListFilterTab from "./_components/tab/postListFilterTab";
 import PostItemFilterTab from "./_components/tab/postItemFilterTab";
-import NotLogInView from "./_components/notLogInView";
 
 import { RiSearch2Line } from "react-icons/ri";
 
@@ -27,6 +26,7 @@ const MatePage = () => {
   const [sortBy, setSortBy] = useState("");
 
   const { user } = useAuthStore();
+  const router = useRouter();
 
   const [filters, setFilters] = useState({
     gender: null,
@@ -66,9 +66,12 @@ const MatePage = () => {
     setSortBy("");
   };
 
-  if (user === null) {
-    return <NotLogInView />;
-  }
+  const handleCreatePost = () => {
+    if (user === null) {
+      alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
+      router.replace("/signin");
+    }
+  };
 
   return (
     <div className="container mx-auto mb-10 min-h-screen px-2">
@@ -101,12 +104,12 @@ const MatePage = () => {
         <div className="mr-0 w-full pl-0 lg:mr-8 lg:w-1/4 lg:pl-5">
           {/* 글쓰기 버튼 영역 */}
           <div className="mt-1 flex">
-            <Link
-              href="/mate/posts"
+            <button
+              onClick={handleCreatePost}
               className="mb-4 flex h-12 w-full items-center justify-center rounded-lg bg-mainColor p-2"
             >
               <div>글쓰기</div>
-            </Link>
+            </button>
           </div>
           {/* 검색 영역 */}
           <div className="mb-5 flex flex-col">

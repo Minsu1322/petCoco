@@ -8,14 +8,15 @@ import React from "react";
 const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const params = useParams();
-
-  if (params === null) {
-    return;
-  }
-
   const { user } = useAuthStore((state) => ({
     user: state.user
   }));
+  const id = params.id;
+
+  if (params === null) {
+    return null;
+  }
+
 
   const handleMypageClick = () => {
     if (user) {
@@ -24,7 +25,7 @@ const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
       router.push("/signin");
     }
   };
-  const id = params.id;
+
   return (
     <div className="mt-[50px] flex w-full justify-center">
       <div className="flex w-full justify-center">

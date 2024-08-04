@@ -203,9 +203,9 @@ const FixMyProfile = () => {
           <br />
           <p className="mt-5 font-bold">성별</p>
           <div className="mt-2 flex gap-[10px] pl-2">
-            <input type="checkbox" name="gender" value="남" onChange={handleGenderChange} /> 남
+            <input type="checkbox" name="gender" value="남" onChange={handleGenderChange}  checked={selectedGender === "남"}/> 남
             <br />
-            <input type="checkbox" name="gender" value="여" onChange={handleGenderChange} /> 여
+            <input type="checkbox" name="gender" value="여" onChange={handleGenderChange} checked={selectedGender === "여"} /> 여
           </div>
           <br />
           <p className="font-bold">MBTI</p>
