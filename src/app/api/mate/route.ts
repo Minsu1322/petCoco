@@ -39,6 +39,7 @@ try {
 
   // posts가 null일 경우 빈 배열로 초기화
   let validPosts = posts || [];
+ // console.log(validPosts)
 
   // 필터링
   if (search) {
@@ -66,18 +67,18 @@ try {
     validPosts = validPosts.filter(post => post.date_time.includes(filter.date_time));
   }
 
-  if (filter.regions && filter.regions !== "전체") {
-    const regionPrefix = filter.regions.slice(0, 2);
-    validPosts = validPosts.filter(post => post.address.startsWith(regionPrefix));
-  }
+    if (filter.regions && filter.regions !== "전체") {
+      const regionPrefix = filter.regions.slice(0, 2);
+      validPosts = validPosts.filter(post => post.address.startsWith(regionPrefix));
+    }
 
-  if(filter.gender && filter.gender !== "전체") {
-    validPosts = validPosts.filter(post => {
-      if (Array.isArray(post.users)) {
-        return (post.users as UserType[]).some(pet => 
-          pet.gender === filter.gender
-        );
-      }
+    if(filter.gender && filter.gender !== "전체") {
+      validPosts = validPosts.filter(post => {
+        if (Array.isArray(post.users)) {
+          return (post.users as UserType[]).some(pet => 
+            pet.gender === filter.gender
+          );
+        }
       return false;
     });
   }
