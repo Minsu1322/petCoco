@@ -145,7 +145,7 @@ const AddMypetProfile = () => {
       <p className="mt-5 text-2xl font-bold">애완동물 추가하기</p>
       <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
         <img
-          className="max-h-[200px] max-w-[200px] object-cover"
+          className="max-h-[200px] max-w-[200px] rounded-full object-cover"
           src={previewImage || defaultPetImg}
           alt="profile_img"
         />
@@ -242,7 +242,7 @@ const AddMypetProfile = () => {
           onChange={handleIntroductionChange}
         />
       </div>
-      <div className="mb-20 mt-5 flex gap-[15px]">
+      <div className="mb-20 mt-14 flex gap-[15px]">
         <button
           className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
           onClick={toMyPet}
