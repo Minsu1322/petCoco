@@ -109,7 +109,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
   const posts = data?.data ?? [];
 
-  if (isPending || isGeoPending) {
+  if (isPending) {
     return (
       <div className="flex items-center justify-center w-full h-screen">
         <div className="flex flex-col items-center">
@@ -118,6 +118,16 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         </div>
       </div>
     );
+  }
+
+  if(isGeoPending) {
+    return (
+    <div className="flex items-center justify-center w-full h-screen">
+    <div className="flex flex-col items-center">
+      <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-blue-500"></div>
+      <p className="text-lg font-semibold text-blue-600">사용자의 위치를 계산하는 중입니다...</p>
+    </div>
+  </div>)
   }
 
   return (
