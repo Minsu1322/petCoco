@@ -18,8 +18,7 @@ const CATEGORIESANIMAL = tags
 
 // Zustand store에서 필요한 상태와 함수들을 가져옵니다.
 const CreatePostPage = () => {
-  const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage, initPost } =
-    usePostStore();
+  const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage, initPost } = usePostStore();
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const [deleteFiles, setDeleteFiles] = useState<string[]>([]);
   const router = useRouter();
@@ -62,6 +61,7 @@ const CreatePostPage = () => {
       ignore = true;
     };
   }, [postId, initPost, setTitle, setContent, setCategory]);
+
   const fetchPostImages = async (postData: { post_imageURL: string }) => {
     if (postData?.post_imageURL) {
       const urls = postData.post_imageURL.split(",");
@@ -108,6 +108,7 @@ const CreatePostPage = () => {
       reader.readAsDataURL(file);
     });
   };
+
   const handleImageRemove = async (index: number) => {
     const imageLocationArray = uploadFiles[index].name.split("/storage/v1/object/public/post_image/");
     if (imageLocationArray.length > 1) {
@@ -256,7 +257,6 @@ const CreatePostPage = () => {
           내용
         </label>
         <Textarea value={content} onChange={(e) => setContent(e.target.value)} minRows={15} />
-
         {/* <textarea
           id="content"
           value={content}

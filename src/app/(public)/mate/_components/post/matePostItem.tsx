@@ -39,7 +39,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   const startChat = async () => {
     if (!user) {
       alert("로그인이 필요합니다.");
-      router.push("/login");
+      router.replace("/signin");
       return;
     }
 
@@ -96,9 +96,9 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
       </div>
       <Link href={`/mate/posts/${post.id}`} className="mt-5">
         <div className="mb-4 mt-2 flex w-full flex-row justify-between">
-          <div className="flex h-32 w-8/12 flex-col gap-y-2 pr-4">
-            <p className="mb-3 text-xl font-semibold">{post.title}</p>
-            <p className="mb-3 line-clamp-3 h-28 overflow-hidden text-ellipsis">{post.content}</p>
+          <div className="flex h-32 w-8/12  flex-col gap-y-2 pr-4">
+            <p className="mb-3 text-xl w-full overflow-hidden text-ellipsis whitespace-nowrap font-semibold">{post.title}</p>
+            <p className="mb-3 line-clamp-3 h-24 overflow-hidden text-ellipsis">{post.content}</p>
           </div>
           <div className="w-4/12">
           <Image
