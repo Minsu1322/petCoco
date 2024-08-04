@@ -16,6 +16,7 @@ const config: Config = {
       },
       colors: {
         mainColor: "#95B7F6",
+        mainHoverColor: "#7292cc",
         editBtnColor: "#8CF2B7",
         delBtnColor: "#FFBCBC"
       }
