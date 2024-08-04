@@ -136,9 +136,12 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
           {posts.length > 0 ? (
             posts.map((post) => <MatePostItem key={post.id} post={post} />)
           ) : (
-            <div className="flex items-center justify-center">
-              <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
-            </div>
+             <div className="flex items-center justify-center w-full h-screen">
+             <div className="flex flex-col items-center">
+             <span className="mr-2 text-3xl">🐶</span>
+               <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
+             </div>
+           </div>
           )}
       </div>
 
