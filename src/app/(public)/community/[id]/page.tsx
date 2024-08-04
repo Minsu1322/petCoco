@@ -86,7 +86,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
 
   if (!user) {
     alert("로그인이 필요한 서비스입니다.");
-    router.push("http://localhost:3000/signin");
+    router.push("/signin");
     return null;
   }
 
