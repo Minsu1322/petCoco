@@ -84,9 +84,25 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
       Swal.fire({
         title: "채팅 시작 오류",
         text: "채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.",
-        icon: "warning"
+        icon: "error"
       });
     }
+  };
+
+  const handleLoginCheck = () => {
+    if (user) {
+      router.push(`/mate/posts/${post.id}`)
+    }
+    
+    if (user === null) {
+      // alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
+      Swal.fire({
+        title: "로그인이 필요합니다!",
+        text: "산책메이트 글쓰기를 위해서는 로그인이 필요합니다",
+        icon: "warning"
+      });
+      router.push("/signin");
+    } 
   };
 
   return (
@@ -104,7 +120,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           <p className="flex h-10 items-center text-sm text-gray-500">현위치에서 {post.distance.toFixed(1)}km 거리</p>
         )}
       </div>
-      <Link href={`/mate/posts/${post.id}`} className="mt-5">
+      <div className="mt-5 cursor-pointer" onClick={handleLoginCheck}>
         <div className="mb-4 mt-2 flex w-full flex-row justify-between">
           <div className="flex h-32 w-8/12  flex-col gap-y-2 pr-4">
             <p className="mb-3 text-xl h-8 w-full overflow-hidden text-ellipsis whitespace-nowrap font-semibold">{post.title}</p>
@@ -123,7 +139,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           />
           </div>
         </div>
-      </Link>
+      </div>
       <div className="mt-3 flex flex-row items-end justify-between">
         <div
           className="flex cursor-pointer flex-row items-center gap-x-1 rounded-lg px-1 hover:bg-sky-200"

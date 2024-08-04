@@ -120,7 +120,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      router.replace("/mate");
+      setIstEditting(true);
     } catch (error) {
       console.error(error);
     }
@@ -141,7 +141,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        router.replace("/mate");
+        
       } catch (error) {
         console.error(error);
       }
@@ -197,6 +197,11 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     mutationFn: (id: string) => togglePost(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+      Swal.fire({
+        title: "완료!",
+        text: "모집 상태가 변경되었습니다",
+        icon: "success"
+      });
     }
   });
 
@@ -219,6 +224,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   const handleTogglePost = (id: string) => {
     toggleMutation.mutate(id);
+    setIstEditting(false);
   };
 
   const handleResetEditPost = () => {
@@ -293,6 +299,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     });
     router.replace("/signin");
   }
+  
 
   return (
     <div className="container mx-auto mb-5 mt-10 px-4">

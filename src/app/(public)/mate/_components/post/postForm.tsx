@@ -50,7 +50,7 @@ const PostForm = () => {
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
   const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
-  console.log(formPosts);
+  // console.log(formPosts);
 
   // 게시물 등록
   const addPost = async (formAllData: { post: MateNextPostType; pets: Pets[] }) => {
@@ -67,14 +67,14 @@ const PostForm = () => {
         })
       });
 
-      console.log("Response status:", response.status); // 응답 상태 로그
+      // console.log("Response status:", response.status); // 응답 상태 로그
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("Response data:", data);
+      // console.log("Response data:", data);
 
       return data;
     } catch (error) {
@@ -154,7 +154,12 @@ const PostForm = () => {
       setFormPosts(initialState);
       setFormPets([initialPetState]);
 
-      alert("등록되었습니다!");
+      // alert("등록되었습니다!");
+      Swal.fire({
+        title: "완료!",
+        text: "게시글이 등록되었습니다!",
+        icon: "success"
+      });
       router.replace("/mate");
     } catch (err) {
       console.error(err);
