@@ -496,7 +496,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           {/* 제목 및 버튼 영역 */}
           <div className="mb-1 flex flex-col">
             <div className="flex flex-col px-6">
-              <div className="flex justify-between">
+              <div className="flex justify-between mt-3">
                 <h1 className="text-3xl font-semibold">{post.title}</h1>
                 <div>
                   {userId === post.user_id ? (
@@ -515,7 +515,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                       </button>
                       <button
                         onClick={() => handleTogglePost(post.id)}
-                        className="flex h-10 w-28 cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
+                        className="flex h-10 w-32 cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
                       >
                         모집상태 변경
                       </button>
