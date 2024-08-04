@@ -40,10 +40,9 @@ const MyMate = () => {
                 {data.content}
               </p>
               <div className="mt-5 flex">
-                {/* <p>{data.users.nickname}</p> */}
                 <div className="flex w-full justify-between">
                   <div className="flex flex-col">
-                    <p className="w-28 overflow-hidden text-ellipsis whitespace-nowrap text-end">
+                    <p className="w-28 overflow-hidden text-ellipsis whitespace-nowrap">
                       {`${extractDong(data.address || "")}, ${data.place_name || ""}`}
                     </p>
                     <p>
@@ -54,9 +53,6 @@ const MyMate = () => {
                 </div>
               </div>
             </div>
-            {/* <div>
-            <img src={"사용자 프로필 이미지"} alt="사용자 프로필 이미지" width={140} height={140} />
-          </div> */}
           </Link>
         </div>
       ))}
