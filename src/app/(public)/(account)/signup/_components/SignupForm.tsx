@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/zustand/useAuth";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const SignupForm = () => {
   const router = useRouter();
@@ -41,7 +42,7 @@ const SignupForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isChecked) {
-      alert("개인정보 수집 및 이용 동의에 체크해주세요");
+      Swal.fire("개인정보 수집 및 이용 동의에 체크해주세요.");
       return;
     }
     if (passwordError || passwordValidateError) {
@@ -50,10 +51,18 @@ const SignupForm = () => {
     await signUp({ email, password, nickname });
 
     if (!error) {
-      alert("회원가입이 완료되었습니다!");
+      Swal.fire({
+        title: "success",
+        text: "회원가입이 완료되었습니다!",
+        icon: "success"
+      });
       router.push("/");
     } else {
-      alert("회원가입에 실패했습니다.");
+      Swal.fire({
+        title: "error",
+        text: "회원가입이 실패하였습니다.",
+        icon: "error"
+      });
     }
   };
 
