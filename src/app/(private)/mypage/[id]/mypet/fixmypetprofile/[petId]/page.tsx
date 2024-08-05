@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
 import { Input, Textarea } from "@nextui-org/input";
 import { defaultPetImg } from "@/components/DefaultImg";
+import Swal from "sweetalert2";
 
 type PetType = UsersPetType;
 
@@ -80,7 +81,10 @@ const FixMypetProfile = () => {
       introduction: introduction
     });
 
-    alert("프로필 변경이 성공적으로 완료되었습니다!");
+    Swal.fire({
+      title: "success!",
+      text: "프로필 변경이 완료되었습니다!"
+    });
 
     toMyPet();
   };
@@ -258,21 +262,49 @@ const FixMypetProfile = () => {
           className="mt-2"
           type="text"
           placeholder="나이"
-          maxLength={100}
+          maxLength={50}
           defaultValue={filteredProfile![0].age || ""}
           onChange={handleAgeChange}
         />
         <br />
         <p className="font-bold">성별</p>
         <div className="mt-2 flex gap-[10px] pl-2">
-          <input type="checkbox" name="gender" value="암" onChange={handleMaleFemaleChange} /> 암&nbsp;
-          <input type="checkbox" name="gender" value="수" onChange={handleMaleFemaleChange} /> 수
+          <input
+            type="checkbox"
+            name="gender"
+            value="암"
+            onChange={handleMaleFemaleChange}
+            checked={maleFemale === "암"}
+          />{" "}
+          암&nbsp;
+          <input
+            type="checkbox"
+            name="gender"
+            value="수"
+            onChange={handleMaleFemaleChange}
+            checked={maleFemale === "수"}
+          />{" "}
+          수
         </div>
         <br />
         <p className="font-bold">중성화 여부</p>
         <div className="mt-2 flex gap-[10px] pl-2">
-          <input type="checkbox" name="neutralize" value="YES" onChange={handleNeutralize} /> YES &nbsp;
-          <input type="checkbox" name="neutralize" value="No" onChange={handleNeutralize} /> No
+          <input
+            type="checkbox"
+            name="neutralize"
+            value="YES"
+            onChange={handleNeutralize}
+            checked={neutralized === "YES"}
+          />{" "}
+          YES &nbsp;
+          <input
+            type="checkbox"
+            name="neutralize"
+            value="NO"
+            onChange={handleNeutralize}
+            checked={neutralized === "NO"}
+          />{" "}
+          No
         </div>
         <br />
         <p className="font-bold">무게(kg)</p>
@@ -280,7 +312,7 @@ const FixMypetProfile = () => {
           type="number"
           step="0.1"
           placeholder="1kg 미만은 소수점으로 표기"
-          maxLength={100}
+          maxLength={50}
           defaultValue={filteredProfile![0].weight || ""}
           className="mt-2 h-[40px] rounded-md bg-gray-100 px-2"
           name="weight"
