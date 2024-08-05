@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
+import Swal from "sweetalert2";
 
 type PetType = UsersPetType;
 
@@ -63,7 +64,11 @@ function MyPage() {
   }
 
   if (user === null) {
-    alert("로그인되어야 마이페이지를 확인 할 수 있습니다.");
+    // Swal.fire({
+    //   title: "error!",
+    //   text: "로그인되어야 마이페이지를 확인 할 수 있습니다."
+    // });
+
     router.push("/signin");
   } else {
     return (

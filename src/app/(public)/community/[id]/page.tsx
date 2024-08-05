@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
 import Comments from "../_components/comments";
+import Swal from "sweetalert2";
 
 interface PageProps {
   params: { id: string };
@@ -60,24 +61,45 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
-      try {
-        const response = await fetch(`/api/detailCommunity/${id}`, {
-          method: "DELETE"
-        });
-
-        if (response.ok) {
-          alert("삭제가 완료되었습니다.");
-          router.replace("/community");
-        } else {
-          throw new Error(`HTTP error! status: ${response.status}`);
+    Swal.fire({
+      title: '게시물 삭제',
+      text: "정말로 이 게시물을 삭제하시겠습니까?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#c0c0c0',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(`/api/detailCommunity/${id}`, {
+            method: "DELETE"
+          });
+  
+          if (response.ok) {
+            Swal.fire({
+              title: "완료!",
+              text: "게시물이 삭제되었습니다",
+              icon: "success"
+            }).then(() => {
+              router.replace("/community");
+            });
+          } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        } catch (err) {
+          console.error(err);
+          Swal.fire({
+            title: "오류가 발생했습니다!",
+            text: "게시물 삭제 중 오류가 발생했습니다.",
+            icon: "error"
+          }).then(() => {
+            router.replace("/community");
+          });
         }
-      } catch (err) {
-        console.error(err);
-        alert("삭제 중 오류가 발생했습니다.");
-        router.replace("/community");
       }
-    }
+    });
   };
 
   if (!post) {
@@ -85,7 +107,12 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
   }
 
   if (!user) {
-    alert("로그인이 필요한 서비스입니다.");
+    // alert("로그인이 필요한 서비스입니다.");
+    Swal.fire({
+      title: "로그인이 필요합니다!",
+      text: "커뮤니티 상세 페이지를 확인하기 위해서는 로그인이 필요합니다",
+      icon: "warning"
+    });
     router.push("/signin");
     return null;
   }

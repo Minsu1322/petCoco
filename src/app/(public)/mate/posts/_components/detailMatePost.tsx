@@ -100,7 +100,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      router.replace("/mate");
+      // router.replace("/mate");
     } catch (error) {
       console.error(error);
     }
@@ -167,17 +167,17 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const deleteMutation = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-      // alert("삭제가 완료되었습니다.");
       Swal.fire({
         title: "완료!",
         text: "게시글 삭제가 완료되었습니다.",
         icon: "success"
+      }).then(() => {
+        queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+        router.replace("/mate");
       });
     },
     onError: (error) => {
       console.error("삭제 중 오류 발생:", error);
-      // alert("삭제 중 오류가 발생했습니다.");
       Swal.fire({
         title: "오류가 발생했습니다!",
         text: "게시글 삭제에 실패했습니다.",
@@ -203,7 +203,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       // alert("수정 중 오류가 발생했습니다.");
       Swal.fire({
         title: "오류가 발생했습니다!",
-        text: "게시글 수정이 실패했습니다.",
+        text: "게시글 수정에 실패했습니다.",
         icon: "error"
       });
     }
@@ -619,7 +619,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
                 {/* 내용 */}
                 <div>
-                  <p className="mb-2 text-sm text-gray-500">내용</p>
                   <p className="rounded-lg bg-gray-50 p-4">{post.content}</p>
                 </div>
 

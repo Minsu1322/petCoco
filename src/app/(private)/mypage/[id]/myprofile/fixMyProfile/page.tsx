@@ -7,6 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserInfoType } from "@/types/auth.type";
 import { Input, Textarea } from "@nextui-org/input";
 import { defaultUserImg } from "@/components/DefaultImg";
+import Swal from "sweetalert2";
 
 type UserType = UserInfoType;
 
@@ -147,8 +148,10 @@ const FixMyProfile = () => {
       introduction: introduction
     });
 
-    alert("프로필 변경이 성공적으로 완료되었습니다!");
-
+    Swal.fire({
+      title: "success!",
+      text: "프로필 변경이 완료되었습니다!"
+    });
     toMyProfile();
   };
 
@@ -193,7 +196,12 @@ const FixMyProfile = () => {
           />
           <br />
           <p className="font-bold">연령대</p>
-          <select className="mt-2 h-[40px] rounded-md bg-gray-100 px-2" onChange={handleAgeChange} value={age}>
+          <select
+            className="mt-2 h-[40px] rounded-md bg-gray-100 px-2"
+            onChange={handleAgeChange}
+            value={age}
+            defaultValue={user.age}
+          >
             {ageOptions.map((option) => (
               <option key={option.label} value={option.value}>
                 {option.label}
@@ -203,9 +211,23 @@ const FixMyProfile = () => {
           <br />
           <p className="mt-5 font-bold">성별</p>
           <div className="mt-2 flex gap-[10px] pl-2">
-            <input type="checkbox" name="gender" value="남" onChange={handleGenderChange}  checked={selectedGender === "남"}/> 남
+            <input
+              type="checkbox"
+              name="gender"
+              value="남"
+              onChange={handleGenderChange}
+              checked={selectedGender === "남"}
+            />{" "}
+            남
             <br />
-            <input type="checkbox" name="gender" value="여" onChange={handleGenderChange} checked={selectedGender === "여"} /> 여
+            <input
+              type="checkbox"
+              name="gender"
+              value="여"
+              onChange={handleGenderChange}
+              checked={selectedGender === "여"}
+            />{" "}
+            여
           </div>
           <br />
           <p className="font-bold">MBTI</p>

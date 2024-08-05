@@ -39,9 +39,9 @@ const myPost: React.FC<PageProps> = async ({ params }) => {
               <div className="mt-2 h-[150px] overflow-y-auto rounded-lg bg-[#eef4ff] p-4 scrollbar-hide">
                 <p>{post.content}</p>
               </div>
-              <hr className="my-8" />
+              {/* <hr className="my-8" />
               <h2 className="mb-4 text-2xl font-semibold">댓글</h2>
-              <Comments postId={id} />
+              <Comments postId={id} /> */}
             </div>
           </Link>
         </div>

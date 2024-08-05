@@ -98,7 +98,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
       // alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
       Swal.fire({
         title: "로그인이 필요합니다!",
-        text: "산책메이트 글쓰기를 위해서는 로그인이 필요합니다",
+        text: "산책메이트 상세페이지를 확인하기 위해서는 로그인이 필요합니다",
         icon: "warning"
       });
       router.push("/signin");
