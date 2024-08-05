@@ -619,7 +619,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
                 {/* 내용 */}
                 <div>
-                  <p className="mb-2 text-sm text-gray-500">내용</p>
                   <p className="rounded-lg bg-gray-50 p-4">{post.content}</p>
                 </div>
 
