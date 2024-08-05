@@ -238,7 +238,7 @@ const AddMypetProfile = () => {
           <input
             type="checkbox"
             name="neutralize"
-            value="No"
+            value="NO"
             onChange={handleNeutralize}
             checked={neutralized === "NO"}
           />{" "}
