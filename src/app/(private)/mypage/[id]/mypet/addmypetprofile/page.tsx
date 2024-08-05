@@ -207,14 +207,42 @@ const AddMypetProfile = () => {
         <br />
         <p className="font-bold">성별</p>
         <div className="mt-2 flex gap-[10px] pl-2">
-          <input type="checkbox" name="gender" value="암" onChange={handleMaleFemaleChange} /> 암&nbsp;
-          <input type="checkbox" name="gender" value="수" onChange={handleMaleFemaleChange} /> 수
+          <input
+            type="checkbox"
+            name="gender"
+            value="암"
+            onChange={handleMaleFemaleChange}
+            checked={maleFemale === "암"}
+          />{" "}
+          암&nbsp;
+          <input
+            type="checkbox"
+            name="gender"
+            value="수"
+            onChange={handleMaleFemaleChange}
+            checked={maleFemale === "수"}
+          />{" "}
+          수
         </div>
         <br />
         <p className="font-bold">중성화 여부</p>
         <div className="mt-2 flex gap-[10px] pl-2">
-          <input type="checkbox" name="neutralize" value="YES" onChange={handleNeutralize} /> YES &nbsp;
-          <input type="checkbox" name="neutralize" value="No" onChange={handleNeutralize} /> No
+          <input
+            type="checkbox"
+            name="neutralize"
+            value="YES"
+            onChange={handleNeutralize}
+            checked={neutralized === "YES"}
+          />{" "}
+          YES &nbsp;
+          <input
+            type="checkbox"
+            name="neutralize"
+            value="NO"
+            onChange={handleNeutralize}
+            checked={neutralized === "NO"}
+          />{" "}
+          No
         </div>
         <br />
         <p className="font-bold">무게(kg)</p>
