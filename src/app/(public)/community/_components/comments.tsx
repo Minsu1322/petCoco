@@ -151,7 +151,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
       </div>
 
       {!comments || comments.length === 0 ? (
-        <div>아무 댓글이 없어요!</div>
+        <div  className="mt-5">아무 댓글이 없어요. 댓글을 남겨보세요!</div>
       ) : (
         comments
           .slice() // 원본 배열을 변경하지 않기 위해 복사본을 만듭니다.

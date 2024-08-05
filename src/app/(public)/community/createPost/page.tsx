@@ -188,7 +188,7 @@ const CreatePostPage = () => {
       // console.log("게시글이 성공적으로 저장되었습니다.");
       Swal.fire({
         title: "완료!",
-        text: "게시글이 성공적으로 저장되었습니다..",
+        text: "게시글이 성공적으로 저장되었습니다.",
         icon: "success"
       });
       
