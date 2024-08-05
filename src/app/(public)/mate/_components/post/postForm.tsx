@@ -248,9 +248,9 @@ const PostForm = () => {
             </div>
             <div className="ml-[20px] mt-[35px] w-full">
               <div>
-                <p className="my-2 flex">
+                <div className="my-2 flex">
                   <p className="mr-2 text-lg font-semibold">클릭한 곳의 주소는?</p> {roadAddress}
-                </p>
+                </div>
                 <input
                   type="text"
                   className="h-10 w-full rounded-md border border-gray-300"
