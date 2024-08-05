@@ -167,12 +167,12 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const deleteMutation = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["matePosts"] });
       Swal.fire({
         title: "완료!",
         text: "게시글 삭제가 완료되었습니다.",
         icon: "success"
       }).then(() => {
+        queryClient.invalidateQueries({ queryKey: ["matePosts"] });
         router.replace("/mate");
       });
     },
