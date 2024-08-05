@@ -5,6 +5,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { defaultPetImg } from "@/components/DefaultImg";
+import Swal from "sweetalert2";
 
 type PetType = UsersPetType;
 
@@ -68,18 +70,31 @@ const MyPetProfile = () => {
   });
 
   const handleDelte = async (id: string) => {
-    if (confirm("정말 삭제하시겠습니까?")) {
-      try {
-        deleteMutation(id);
-      } catch (error) {
-        console.log("삭제에 실패했습니다.", error);
-      }
-      alert("삭제가 완료되었습니다.");
+    Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      icon: "warning",
 
-      toMyPet();
-    } else {
-      return;
-    }
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소",
+
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        try {
+          deleteMutation(id);
+        } catch (error) {
+          console.log("삭제에 실패했습니다.", error);
+        }
+
+        Swal.fire({
+          title: "success!",
+          text: "삭제가 완료되었습니다."
+        });
+
+        toMyPet();
+      }
+    });
   };
   if (isPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
@@ -91,7 +106,7 @@ const MyPetProfile = () => {
     <div className="flex flex-col items-center justify-center gap-12">
       <img
         className="h-[170px] w-[170px] items-center justify-center rounded-full bg-lime-300 object-cover"
-        src={filteredProfile[0]?.petImage || "..."}
+        src={filteredProfile[0]?.petImage || defaultPetImg}
         alt=""
       />
       <div className="flex flex-row gap-4">
