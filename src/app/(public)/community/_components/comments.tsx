@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/supabase/client";
+import Swal from "sweetalert2";
 
 const supabase = createClient();
 
@@ -51,7 +52,12 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
 
   const handleAddComment = async () => {
     if (!newComment || newComment.trim() === "") {
-      alert("댓글을 입력해주세요.");
+      // alert("댓글을 입력해주세요.");
+      Swal.fire({
+        title: "댓글을 입력해주세요!",
+        text: "댓글 내용을 확인해 주세요.",
+        icon: "warning"
+      });
       return;
     }
     const { data, error } = await supabase.from("comments").insert([
@@ -89,24 +95,44 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("정말로 이 댓글을 삭제하시겠습니까?")) {
-      try {
-        const response = await fetch(`/api/comments?id=${id}`, {
-          method: "DELETE"
-        });
-
-        if (response.ok) {
-          alert("삭제가 완료되었습니다.");
+    Swal.fire({
+      title: '댓글 삭제',
+      text: "정말로 이 댓글을 삭제하시겠습니까?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor:'#d33',
+      cancelButtonColor: '#c0c0c0',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(`/api/comments?id=${id}`, {
+            method: "DELETE"
+          });
+  
+          if (response.ok) {
+            Swal.fire({
+              title: "완료!",
+              text: "댓글이 삭제되었습니다",
+              icon: "success"
+            });
+            
+            queryClient.invalidateQueries({ queryKey: ["comments", postId] });
+          } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        } catch (err) {
+          console.error(err);
+          Swal.fire({
+            title: "오류가 발생했습니다!",
+            text: "댓글 삭제 중 오류가 발생했습니다.",
+            icon: "error"
+          });
           queryClient.invalidateQueries({ queryKey: ["comments", postId] });
-        } else {
-          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      } catch (err) {
-        console.error(err);
-        alert("삭제 중 오류가 발생했습니다.");
-        queryClient.invalidateQueries({ queryKey: ["comments", postId] });
       }
-    }
+    });
   };
 
   return (
