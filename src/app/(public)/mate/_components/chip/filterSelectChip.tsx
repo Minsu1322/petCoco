@@ -18,6 +18,7 @@ const FilterSelectChip = ({ label, array, onSelect, selected }: FilterSelectChip
         className="w-full"
         value={selected || ""}
         onChange={(e) => onSelect(e.target.value || "")}
+        selectedKeys={selected ? [selected] : []}
       >
         {array.map((arr) => (
           <SelectItem key={arr.key} value={arr.key}>

@@ -5,6 +5,7 @@ import { useAuthStore } from "@/zustand/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/supabase/client";
+import Swal from 'sweetalert2';
 
 const supabase = createClient();
 
@@ -36,13 +37,18 @@ const LogoutButton = () => {
 
   const handleLogout = async () => {
     await signOut();
-    alert("로그아웃 되었습니다!");
+    // alert("로그아웃 되었습니다!");
+    Swal.fire({
+      title: "완료!",
+      text: "로그아웃 되었습니다!",
+      icon: "success"
+    });
     router.push("/signin");
   };
 
   const handleMypageClick = () => {
     if (user) {
-      router.push(`/mypage/${user.id}`);
+      router.push(`/mypage/${user.id}/myprofile`);
     } else {
       router.push("/signin");
     }

@@ -2,6 +2,7 @@ import { Map, MapMarker, MapTypeControl, ZoomControl } from "react-kakao-maps-sd
 
 interface MapDetailProps {
   center: { lat: number; lng: number };
+  // onMapLoad: () => void;
   //markerPosition: { lat: number; lng: number };
 }
 
@@ -9,7 +10,7 @@ const MapDetail = ({ center }: MapDetailProps) => {
   //  console.log(center)
   return (
     <>
-      <Map center={center} style={{ width: "450px", height: "360px" }} level={5}>
+      <Map center={center} style={{ width: "100%", height: "260px" }} level={5}  >
         <MapMarker
           position={center}
           image={{

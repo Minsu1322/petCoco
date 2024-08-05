@@ -88,45 +88,81 @@ const MyPetProfile = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-12 pt-20">
+    <div className="flex flex-col items-center justify-center gap-12">
       <img
         className="h-[170px] w-[170px] items-center justify-center rounded-full bg-lime-300 object-cover"
         src={filteredProfile[0]?.petImage || "..."}
         alt=""
       />
       <div className="flex flex-row gap-4">
-        <div className="my-auto flex h-[400px] w-[400px] flex-col items-start gap-2 rounded-lg bg-gray-200 p-4">
-          <span className="mb-4 text-[24px] font-bold text-[#000000] sm:text-[20px]">기본 정보</span>
-          <span className="text-[24px] text-[#000000] sm:text-[20px]">이름: {filteredProfile[0]?.petName}</span>
+        <div className="my-auto flex h-[400px] w-[400px] flex-col items-center gap-2 rounded-lg bg-[#e9f0ff] p-4">
+          <div className="mb-[40px] flex w-full flex-col items-center">
+            <span className="text-[24px] font-semibold">기본 정보</span>
+            <div className="mt-2 w-[95%] border border-gray-400"></div>
+          </div>
+          <div className="h-full w-[350px]">
+            <div className="flex w-full justify-between">
+              <span className="flex flex-col items-center text-[20px]">
+                <p className="font-semibold">이름</p>
+                {filteredProfile[0]?.petName}
+              </span>
 
-          <span className="text-[24px] text-[#000000] sm:text-[20px]">대분류: {filteredProfile[0]?.majorClass}</span>
+              <span className="flex flex-col items-center text-[20px]">
+                <p className="font-semibold">대분류</p>
+                {filteredProfile[0]?.majorClass}
+              </span>
 
-          <span className="text-[24px] text-[#000000] sm:text-[20px]">소분류: {filteredProfile[0]?.minorClass}</span>
+              <span className="flex flex-col items-center text-[20px]">
+                <p className="font-semibold">소분류</p>
+                {filteredProfile[0]?.minorClass}
+              </span>
+            </div>
+            <div className="mt-[50px] flex justify-between">
+              <span className="flex flex-col items-center text-[20px]">
+                <p className="font-semibold">나이</p>
+                {filteredProfile[0]?.age}
+              </span>
 
-          <span className="text-[24px] text-[#000000] sm:text-[20px]">나이: {filteredProfile[0]?.age}</span>
+              <span className="flex flex-col items-center text-[20px]">
+                <p className="font-semibold">성별</p>
+                {filteredProfile[0]?.male_female}
+              </span>
 
-          <span className="text-[24px] text-[#000000] sm:text-[20px]">성별: {filteredProfile[0]?.male_female}</span>
+              <span className="flex flex-col items-center text-[20px]">
+                <p className="font-semibold">중성화 여부</p> {filteredProfile[0]?.neutralized}
+              </span>
 
-          <span className="text-[24px] text-[#000000] sm:text-[20px]">
-            중성화 여부: {filteredProfile[0]?.neutralized}
-          </span>
-
-          <span className="text-[24px] text-[#000000] sm:text-[20px]">무게: {filteredProfile[0]?.weight} kg</span>
-        </div>
-        <div>
-          <div className="flex h-[400px] w-[400px] flex-col break-words rounded-lg bg-gray-200 p-4 text-[24px] text-[#000000] sm:text-[20px]">
-            <span className="mb-4 text-[24px] font-bold text-[#000000] sm:text-[20px]">의료기록 </span>
-            <span>{filteredProfile[0]?.medicalRecords}</span>
+              <span className="flex flex-col items-center text-[20px]">
+                <p className="font-semibold">무게</p>
+                {filteredProfile[0]?.weight} kg
+              </span>
+            </div>
           </div>
         </div>
         <div>
-          <div className="flex h-[400px] w-[400px] flex-col break-words rounded-lg bg-gray-200 p-4 text-[24px] text-[#000000] sm:text-[20px]">
-            <span className="mb-4 text-[24px] font-bold text-[#000000] sm:text-[20px]">자기소개 </span>{" "}
-            <span>{filteredProfile[0]?.introduction}</span>
+          <div className="flex h-[400px] w-[400px] flex-col items-center break-words rounded-lg bg-[#e9f0ff] p-4">
+            <div className="mb-[40px] flex w-full flex-col items-center">
+              <span className="text-[24px] font-semibold">의료기록</span>
+              <div className="mt-2 w-[95%] border border-gray-400"></div>
+            </div>
+            <div className="h-full w-[350px]">
+              <span className="text-[20px]">{filteredProfile[0]?.medicalRecords}</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className="flex h-[400px] w-[400px] flex-col items-center break-words rounded-lg bg-[#e9f0ff] p-4">
+            <div className="mb-[40px] flex w-full flex-col items-center">
+              <span className="text-[24px] font-semibold">자기소개</span>
+              <div className="mt-2 w-[95%] border border-gray-400"></div>
+            </div>
+            <div className="h-full w-[350px]">
+              <span className="text-[20px]">{filteredProfile[0]?.introduction}</span>
+            </div>
           </div>
         </div>
       </div>
-      <div className="mt-5 flex gap-[15px]">
+      <div className="mb-10 mt-5 flex gap-[30px]">
         <Link
           href={`/mypage/${id}/myprofile`}
           className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"

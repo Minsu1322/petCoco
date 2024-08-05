@@ -14,7 +14,7 @@ const FilterDateChip = ({ label, onSelect, selected }: FilterDateChipProps) => {
     <Input 
       type="date" 
       label={label} 
-      value={selected} 
+      value={selected || ""} 
       radius="full" 
       onChange={handleChange} 
       className="mt-5 w-full" 

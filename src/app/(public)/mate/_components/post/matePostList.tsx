@@ -5,7 +5,7 @@ import { useState, useCallback } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getDistanceHaversine } from "../../getDistanceHaversine";
 
-import { MatePostAllType, PostsResponse } from "@/types/mate.type";
+import { MatePostAllTypeForItem, PostsResponse } from "@/types/mate.type";
 
 export type PositionData = {
   center: {
@@ -34,35 +34,6 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
   const { geoData, setIsUseGeo, setGeoData } = locationStore();
   const [page, setPage] = useState(1);
   //console.log(geoData)
-
-  const { data, isPending, error } = useQuery<PostsResponse>({
-    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, sortBy, filters, geoData],
-    queryFn: async () => {
-      //console.log('sortBy값 확인', sortBy);
-      const getValidFilters = Object.fromEntries(
-        Object.entries(filters).filter(([_, value]) => value !== null && value !== "" && value !== undefined)
-      );
-
-      let query = "";
-      query = Object.keys(getValidFilters)
-        .map((key) => {
-          const value = getValidFilters[key];
-          return value != null ? `${encodeURIComponent(key)}=${encodeURIComponent(value)}` : "";
-        })
-        .join("&");
-
-      const userLat = geoData?.center.lat || 0;
-      const userLng = geoData?.center.lng || 0;
-
-      // TODO: query안에 userLat, userLng 넣으면 좋을 거 같은데
-      const response = await fetch(
-        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=6&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
-      );
-      const data = response.json();
-      // console.log(data);
-      return data;
-    }
-  });
 
   const getCurrentPosition = (): Promise<PositionData | null> => {
     return new Promise((resolve) => {
@@ -103,14 +74,44 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
   } = useQuery<PositionData, Error>({
     queryKey: ["geoData"],
     queryFn: getCurrentPosition,
-    retry: false
+    retry: false,
+  });
+
+  const { data, isPending, error } = useQuery<PostsResponse>({
+    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, sortBy, filters, geoData],
+    queryFn: async () => {
+      //console.log('sortBy값 확인', sortBy);
+      const getValidFilters = Object.fromEntries(
+        Object.entries(filters).filter(([_, value]) => value !== null && value !== "" && value !== undefined)
+      );
+
+      let query = "";
+      query = Object.keys(getValidFilters)
+        .map((key) => {
+          const value = getValidFilters[key];
+          return value != null ? `${encodeURIComponent(key)}=${encodeURIComponent(value)}` : "";
+        })
+        .join("&");
+
+      const userLat = geoData?.center.lat || 0;
+      const userLng = geoData?.center.lng || 0;
+
+      // TODO: query안에 userLat, userLng 넣으면 좋을 거 같은데
+      const response = await fetch(
+        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=6&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
+      );
+      const data = response.json();
+      // console.log(data);
+      return data;
+    },
+    enabled: !!geolocationData
   });
 
   const posts = data?.data ?? [];
 
   if (isPending) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <div className="flex items-center justify-center w-full h-screen">
         <div className="flex flex-col items-center">
           <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-blue-500"></div>
           <p className="text-lg font-semibold text-blue-600">로딩 중...</p>
@@ -119,18 +120,29 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
     );
   }
 
+  if(isGeoPending) {
+    return (
+    <div className="flex items-center justify-center w-full h-screen">
+    <div className="flex flex-col items-center">
+      <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-blue-500"></div>
+      <p className="text-lg font-semibold text-blue-600">사용자의 위치를 계산하는 중입니다...</p>
+    </div>
+  </div>)
+  }
+
   return (
     <div className="w-full">
-      <div className="flex">
         <div className="flex flex-row flex-wrap justify-between gap-x-7">
           {posts.length > 0 ? (
             posts.map((post) => <MatePostItem key={post.id} post={post} />)
           ) : (
-            <div className="flex items-center justify-center">
-              <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
-            </div>
+             <div className="flex items-center justify-center w-full h-screen">
+             <div className="flex flex-col items-center">
+             <span className="mr-2 text-3xl">🐶</span>
+               <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
+             </div>
+           </div>
           )}
-        </div>
       </div>
 
       {/* pagination */}
