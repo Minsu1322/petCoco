@@ -203,7 +203,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       // alert("수정 중 오류가 발생했습니다.");
       Swal.fire({
         title: "오류가 발생했습니다!",
-        text: "게시글 수정이 실패했습니다.",
+        text: "게시글 수정에 실패했습니다.",
         icon: "error"
       });
     }

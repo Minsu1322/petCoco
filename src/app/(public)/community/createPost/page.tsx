@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useAuthStore } from "@/zustand/useAuth";
 import { tabs, tags } from "@/components/community/communityTabAndSortTab/TabAndCategory";
 import { Input, Textarea, Button } from "@nextui-org/react";
+import Swal from 'sweetalert2';
 
 const supabase = createClient();
 
@@ -97,7 +98,13 @@ const CreatePostPage = () => {
     const files = Array.from(e.target.files || []);
     files.forEach((file) => {
       if (file.size > 5000000) {
-        alert("파일 크기가 5MB를 초과합니다!!!.");
+        // alert("파일 크기가 5MB를 초과합니다!!!.");
+        Swal.fire({
+          title: "주의!",
+          text: "파일 크기가 5MB를 초과합니다!!!",
+          icon: "warning"
+        })
+
         return;
       }
       const reader = new FileReader();
@@ -178,16 +185,32 @@ const CreatePostPage = () => {
           .select("*");
         if (postError) throw postError;
       }
-      console.log("게시글이 성공적으로 저장되었습니다.");
+      // console.log("게시글이 성공적으로 저장되었습니다.");
+      Swal.fire({
+        title: "완료!",
+        text: "게시글이 성공적으로 저장되었습니다..",
+        icon: "success"
+      });
+      
       router.push(postId ? `/community/${postId}` : "/community");
     } catch (error) {
       console.error("게시글 처리 중 오류가 발생했습니다:", error);
-      alert("게시글 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      // alert("게시글 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      Swal.fire({
+        title: "오류가 발생했습니다!",
+        text: "게시글 처리 중 오류가 발생했습니다. 다시 시도해 주세요.",
+        icon: "error"
+      });
     }
   };
 
   if (!user) {
-    alert("로그인이 필요한 서비스입니다.");
+    // alert("로그인이 필요한 서비스입니다.");
+    Swal.fire({
+      title: "로그인이 필요합니다!",
+      text: "커뮤니트 글쓰기를 위해서는 로그인이 필요합니다",
+      icon: "warning"
+    });
     router.push(`${process.env.NEXT_PUBLIC_SITE_URL}/signin`);
     return null;
   }
