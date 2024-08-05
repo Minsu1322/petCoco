@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
 import { Input, Textarea } from "@nextui-org/input";
 import { defaultPetImg } from "@/components/DefaultImg";
+import Swal from "sweetalert2";
 
 type PetType = UsersPetType;
 
@@ -132,7 +133,10 @@ const AddMypetProfile = () => {
       introduction: introduction
     });
 
-    alert("프로필 등록이 성공적으로 완료되었습니다!");
+    Swal.fire({
+      title: "success!",
+      text: "프로필 등록이 성공적으로 완료되었습니다!"
+    });
 
     toMyPet();
   };
@@ -176,7 +180,7 @@ const AddMypetProfile = () => {
           className="mt-2"
           type="text"
           placeholder="개, 고양이, 물고기 등등"
-          maxLength={100}
+          maxLength={50}
           defaultValue={majorClass}
           onChange={handleMajorClassChange}
         />
@@ -186,7 +190,7 @@ const AddMypetProfile = () => {
           className="mt-2"
           type="text"
           placeholder="치와와, 랙돌, 금붕어 등등"
-          maxLength={100}
+          maxLength={50}
           defaultValue={minorClass}
           onChange={handleMinorClassChange}
         />
@@ -196,7 +200,7 @@ const AddMypetProfile = () => {
           className="mt-2"
           type="text"
           placeholder="나이"
-          maxLength={100}
+          maxLength={50}
           defaultValue={age}
           onChange={handleAgeChange}
         />
@@ -218,7 +222,7 @@ const AddMypetProfile = () => {
           type="number"
           step="0.1"
           placeholder="1kg 미만은 소수점으로 표기"
-          maxLength={100}
+          maxLength={50}
           className="mt-2 h-[40px] rounded-md bg-gray-100 px-2"
           name="weight"
           onChange={handleWeight}
