@@ -35,7 +35,8 @@ const MatePage = () => {
     date_time: undefined,
     male_female: null,
     weight: null,
-    regions: null
+    regions: null,
+    times: null,
   });
 
   const updateFilter = (filterName: string, value: string) => {
@@ -62,9 +63,11 @@ const MatePage = () => {
       date_time: undefined,
       male_female: null,
       weight: null,
-      regions: null
+      regions: null,
+      times: null,
     });
     setSortBy("");
+    setActiveSearchTerm("");
   };
 
   const handleLoginCheck = () => {
