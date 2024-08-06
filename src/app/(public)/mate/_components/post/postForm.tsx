@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 import { locationStore } from "@/zustand/locationStore";
 import { useRouter } from "next/navigation";
 
-import Link from "next/link";
 import { getConvertAddress } from "../../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType, Pets } from "@/types/mate.type";
@@ -127,7 +126,7 @@ const PostForm = () => {
     (addressData && addressData?.documents[0]?.road_address?.address_name) ||
     addressData?.documents[0]?.address?.address_name ||
     "주소 정보를 찾을 수 없어요";
-  //  console.log(addressData)
+   // console.log(addressData)
 
   const address = (addressData && addressData?.documents[0]?.address?.address_name) || "주소 정보를 찾을 수 없어요";
 
@@ -190,8 +189,6 @@ const PostForm = () => {
   if(isPending) {
     return <p>사용자의 현재 위치를 계산하는 중입니다...!</p>
   }
-
-
 
   return (
     <div className="container mx-auto mb-5 mt-10 px-4">
