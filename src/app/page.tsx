@@ -46,7 +46,7 @@ export default function Home() {
   if (isLoading || isMateLoading) return <div>Loading...</div>;
   if (error || mateError) return <div>Error: {error?.message || mateError?.message}</div>;
 
-  const OPTIONS: EmblaOptionsType = { align: "start", dragFree: true, loop: true };
+  const OPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
   const SLIDE_COUNT = 7;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
@@ -69,7 +69,7 @@ export default function Home() {
         {/* 자유게시판 */}
         <div className="w-full rounded-lg border border-gray-300 bg-white p-4 shadow-md sm:w-full md:w-1/2 md:p-6">
           <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community`}>
-            <h2 className="mb-4 border-b pb-2 text-xl font-bold hover:underline">최신 글 목록</h2>
+            <h2 className="mb-4 border-b pb-2 text-xl font-bold hover:underline">방금 올라온 반려이야기😀</h2>
           </Link>
 
           {data?.data.slice(0, 5).map((post, index) => (
@@ -157,8 +157,7 @@ export default function Home() {
         />
 
         {/* 캐러셀 주석 처리 */}
-        <div className="mt-2 w-full rounded-lg border border-[#B4E85F] bg-white p-4 shadow-md md:p-6">
-          <h2 className="mb-8 text-xl font-semibold">주인을 기다리고 있어요😥</h2>
+        <div className="mt-2 w-full">
           <AnimalCarousel slides={SLIDES} options={OPTIONS} />
         </div>
       </div>
