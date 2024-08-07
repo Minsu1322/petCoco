@@ -18,7 +18,8 @@ export async function GET(request: Request) {
         *,
         users (
           id,
-          nickname
+          nickname,
+          profile_img
         ),
         comments (
         id

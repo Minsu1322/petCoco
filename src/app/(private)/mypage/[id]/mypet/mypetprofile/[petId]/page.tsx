@@ -109,14 +109,14 @@ const MyPetProfile = () => {
         src={filteredProfile[0]?.petImage || defaultPetImg}
         alt=""
       />
-      <div className="flex flex-row gap-4">
-        <div className="my-auto flex h-[400px] w-[400px] flex-col items-center gap-2 rounded-lg bg-[#e9f0ff] p-4">
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <div className="my-auto flex flex-col items-center gap-2 rounded-lg bg-[#e9f0ff] p-4 sm:h-[400px] sm:w-[400px]">
           <div className="mb-[40px] flex w-full flex-col items-center">
             <span className="text-[24px] font-semibold">기본 정보</span>
             <div className="mt-2 w-[95%] border border-gray-400"></div>
           </div>
-          <div className="h-full w-[350px]">
-            <div className="flex w-full justify-between">
+          <div className="sm:h-full sm:w-[350px]">
+            <div className="flex w-full flex-col justify-between gap-2 sm:flex-row">
               <span className="flex flex-col items-center text-[20px]">
                 <p className="font-semibold">이름</p>
                 {filteredProfile[0]?.petName}
@@ -132,7 +132,7 @@ const MyPetProfile = () => {
                 {filteredProfile[0]?.minorClass}
               </span>
             </div>
-            <div className="mt-[50px] flex justify-between">
+            <div className="flex flex-col justify-between gap-2 sm:mt-[50px] sm:flex-row">
               <span className="flex flex-col items-center text-[20px]">
                 <p className="font-semibold">나이</p>
                 {filteredProfile[0]?.age}
@@ -155,35 +155,29 @@ const MyPetProfile = () => {
           </div>
         </div>
         <div>
-          <div className="flex h-[400px] w-[400px] flex-col items-center break-words rounded-lg bg-[#e9f0ff] p-4">
+          <div className="flex flex-col items-center break-words rounded-lg bg-[#e9f0ff] p-4 sm:h-[400px] sm:w-[400px]">
             <div className="mb-[40px] flex w-full flex-col items-center">
               <span className="text-[24px] font-semibold">의료기록</span>
               <div className="mt-2 w-[95%] border border-gray-400"></div>
             </div>
-            <div className="h-full w-[350px]">
+            <div className="sm:h-full sm:w-[350px]">
               <span className="text-[20px]">{filteredProfile[0]?.medicalRecords}</span>
             </div>
           </div>
         </div>
         <div>
-          <div className="flex h-[400px] w-[400px] flex-col items-center break-words rounded-lg bg-[#e9f0ff] p-4">
+          <div className="flex flex-col items-center break-words rounded-lg bg-[#e9f0ff] p-4 sm:h-[400px] sm:w-[400px]">
             <div className="mb-[40px] flex w-full flex-col items-center">
               <span className="text-[24px] font-semibold">자기소개</span>
               <div className="mt-2 w-[95%] border border-gray-400"></div>
             </div>
-            <div className="h-full w-[350px]">
+            <div className="sm:h-full sm:w-[350px]">
               <span className="text-[20px]">{filteredProfile[0]?.introduction}</span>
             </div>
           </div>
         </div>
       </div>
-      <div className="mb-10 mt-5 flex gap-[30px]">
-        <Link
-          href={`/mypage/${id}/myprofile`}
-          className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
-        >
-          뒤로가기
-        </Link>
+      <div className="mb-10 mt-5 flex flex-col gap-[30px] max-[639px]:w-full sm:flex-row">
         <Link
           href={`/mypage/${id}/mypet/fixmypetprofile/${filteredProfile[0]?.id}`}
           className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
@@ -196,6 +190,12 @@ const MyPetProfile = () => {
         >
           삭제하기
         </button>
+        <Link
+          href={`/mypage/${id}/myprofile`}
+          className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
+        >
+          뒤로가기
+        </Link>
       </div>
     </div>
   );

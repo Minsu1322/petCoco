@@ -209,7 +209,7 @@ const FixMypetProfile = () => {
       onClick={(e) => e.stopPropagation()}
     >
       <h1 className="mt-5 text-2xl font-bold">팻 정보 변경하기</h1>
-      <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
+      <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center sm:flex-row">
         <img
           className="max-h-[200px] max-w-[200px] object-cover"
           src={previewImage ? previewImage : defaultPetImg}
@@ -225,7 +225,7 @@ const FixMypetProfile = () => {
         </button>
         <input id="fileInput" type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
       </div>
-      <div className="w-[600px]">
+      <div className="sm:w-[600px]">
         <br />
         <p className="font-bold">이름</p>
         <Input
@@ -338,18 +338,18 @@ const FixMypetProfile = () => {
           onChange={handleIntroductionChange}
         />
       </div>
-      <div className="mb-20 mt-5 flex gap-[15px]">
-        <button
-          className="rounded bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
-          onClick={toMyPet}
-        >
-          뒤로가기
-        </button>
+      <div className="mb-20 mt-5 flex flex-col gap-[15px] max-[639px]:w-full sm:flex-row">
         <button
           className="rounded bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
           onClick={submitChange}
         >
           변경하기
+        </button>
+        <button
+          className="rounded bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
+          onClick={toMyPet}
+        >
+          뒤로가기
         </button>
       </div>
     </div>

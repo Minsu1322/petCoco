@@ -57,7 +57,7 @@ const LogoutButton = () => {
   return (
     <div className="flex">
       <button onClick={handleMypageClick}>
-        <div className="mr-2">{nickname}</div>
+        <p className="mr-2">{nickname}</p>
       </button>
       <p>|</p>
       <button onClick={handleLogout} className="ml-2">

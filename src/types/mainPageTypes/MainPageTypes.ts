@@ -1,4 +1,12 @@
-import { MatePostType } from "../mate.type";
+import { Tables } from "../supabase";
+
+export type MatePostType = Tables<"matePosts"> & {
+  users: {
+    id: string;
+    nickname: string;
+    profile_img: string;
+  }[];
+};
 
 export type Post = {
   id: string;
@@ -7,9 +15,11 @@ export type Post = {
   created_at: string;
   user_id: string;
   comments: { id: string }[];
+  post_imageURL: string;
   users: {
     id: string;
     nickname: string;
+    profile_img: string;
   };
 };
 
@@ -23,4 +33,12 @@ export type PostsResponse = {
 
 export type MatePostsResponse = {
   data: MatePostType[];
+};
+
+export type MatePostsAndUsersResponse = MatePostsResponse & {
+  users?: {
+    id: string;
+    nickname: string;
+    profile_img: string;
+  }[];
 };
