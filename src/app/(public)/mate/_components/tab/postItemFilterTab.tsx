@@ -4,6 +4,7 @@ import FilterSelectChip from "../chip/filterSelectChip";
 import FilterDateChip from "../chip/filterDateChip";
 import FilterWeightChip from "../chip/filterWeightChip";
 import { gender, age, male_female, regions, times } from "../../selectOptionArray";
+import Button from "@/components/Button";
 
 interface PostItemFilterTabProps {
   updateFilter: (filterName: string, value: any) => void;
@@ -69,12 +70,7 @@ const PostItemFilterTab = ({ updateFilter, filters, onClick }: PostItemFilterTab
         />
       </div>
       <div className="mt-7 flex">
-        <div
-          className="flex mb-4 h-12 w-full cursor-pointer items-center rounded-lg border-2 border-mainColor p-2 justify-center"
-          onClick={onClick}
-        >
-          초기화
-        </div>
+        <Button className="flex mb-4 h-12 w-full cursor-pointer items-center rounded-lg border-2 border-mainColor p-2 justify-center" text="초기화" onClick={onClick} />
       </div>
     </div>
   );

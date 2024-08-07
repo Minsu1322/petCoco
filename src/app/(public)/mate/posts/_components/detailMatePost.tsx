@@ -492,7 +492,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           </div>
         </form>
       ) : (
-        <div className="mx-auto mb-5 mt-8 max-w-5xl rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+        <div className="mx-auto mb-5 mt-8 max-w-5xl rounded-lg border border-gray-200 bg-white p-2 lg:p-6 shadow-md">
           {/* 제목 및 버튼 영역 */}
           <div className="mb-1 flex flex-col">
             <div className="flex flex-col px-6">
@@ -524,7 +524,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                     <div className="mb-4 flex item-center gap-x-5">
                     <button
                         onClick={startChat}
-                        className="flex h-10 w-28 cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
+                        className="flex h-8 w-20 lg:h-10 lg:w-28 cursor-pointer items-center justify-center rounded-md bg-gray-200 p-2"
                       >
                         1:1대화
                       </button>

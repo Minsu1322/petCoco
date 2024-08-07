@@ -190,11 +190,12 @@ const PostForm = () => {
     return <p>사용자의 현재 위치를 계산하는 중입니다...!</p>
   }
 
+
   return (
     <div className="container mx-auto mb-5 mt-10 px-4">
     <form onSubmit={handleUploadPost} className="mx-auto flex max-w-4xl flex-col items-center">
       <div className="mb-5 flex flex-col items-center justify-between">
-        <h1 className="mb-3 text-3xl font-semibold">산책 메이트 모집 글 작성하기</h1>
+        <h1 className="mb-3 text-2xl lg:text-3xl font-semibold">산책 메이트 모집 글 작성하기</h1>
       </div>
       <div className="mt-[40px] flex w-full flex-col gap-y-5">
         <div className="flex flex-col">
@@ -210,7 +211,7 @@ const PostForm = () => {
             id="title"
           />
         </div>
-        <div className="mt-[10px] flex w-full items-center justify-between">
+        <div className="mt-[10px] flex flex-col lg:flex-row w-full items-start lg:items-center lg:justify-between">
           <div className="flex w-full flex-col">
             <label htmlFor="date_time" className="w-full text-lg font-semibold">
               희망 날짜 및 시간
@@ -223,7 +224,7 @@ const PostForm = () => {
               className="mt-3 h-10 w-full rounded-md border border-gray-300"
             />
           </div>
-          <div className="ml-[20px] flex w-[200px] flex-col">
+          <div className="lg:ml-[20px] ml-0 flex w-[200px] flex-col mt-5 lg:mt-0 ">
             <label htmlFor="members" className="w-[150px] whitespace-nowrap text-lg font-semibold">
               모집 인원 수
             </label>
@@ -245,7 +246,7 @@ const PostForm = () => {
             모집기간
           </label>
           <div className="flex flex-col ">
-            <div className="flex gap-x-2 items-center">
+            <div className="flex gap-x-2 items-center flex-col lg:flex-row">
             <input
               type="datetime-local"
               id="recruitment_start"
@@ -253,19 +254,19 @@ const PostForm = () => {
               onChange={handleStartDateChange}
               className="h-10 w-full rounded-md border border-gray-300"
             />
-            <span>~</span>
+            <span className="lg:block hidden ">~</span>
             <input
               type="datetime-local"
               id="recruitment_end"
               value={formPosts.recruitment_end || ""}
               onChange={handleEndDateChange}
-              className="h-10 w-full rounded-md border border-gray-300"
+              className="h-10 w-full rounded-md border border-gray-300 mt-3 lg:mt-0"
             />
             </div>
             <p className="text-sm text-red-500">{dateError}</p>
           </div>
         </div>
-        <div className="mt-[20px] flex">
+        <div className="mt-[20px] flex flex-col lg:flex-row">
           <div>
             <label className="w-full text-lg font-semibold">산책 장소</label>
             <div className="w-full">
@@ -274,9 +275,9 @@ const PostForm = () => {
               </div>
             </div>
           </div>
-          <div className="ml-[20px] mt-[35px] w-full">
+          <div className="lg:ml-[20px] mt-[35px] w-full">
             <div>
-              <div className="my-2 flex">
+              <div className="my-2 flex-col">
                 <p className="mr-2 text-lg font-semibold">클릭한 곳의 주소는?</p> {roadAddress}
               </div>
               <input
@@ -307,15 +308,14 @@ const PostForm = () => {
               <input
                 type="text"
                 id="special_requirements"
-                className="h-10 w-full rounded-md border border-gray-300"
-                placeholder=" 메이트에게 원하는 특별한 사항이 있다면 적어주세요!"
+                className="lg:h-10 h-14 w-full lg:w-full rounded-md border border-gray-300"
+                placeholder={`메이트에게 원하는 특별한 사항이 있다면 적어주세요!`}
                 value={formPosts.special_requirements || ""}
                 onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
               />
             </div>
           </div>
         </div>
-
         <div className="mt-[20px] flex flex-col items-start">
           <label htmlFor="content" className="text-lg font-semibold">
             내용
@@ -331,11 +331,11 @@ const PostForm = () => {
 
         {/* 반려동물 정보 */}
         <div className="mt-3 flex w-full flex-col gap-y-5">
-          <div className="flex items-center justify-between gap-x-2">
-            <div className="flex items-center">
-              <span className="mr-2 text-3xl">🐶</span>
+          <div className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-between gap-x-2">
+            <div className="flex items-center mb-3 lg:mb-0">
+              <span className="mr-2 text-3xl mt-1 lg:mt-0">🐶</span>
               <h2 className="text-lg font-semibold">반려동물 정보</h2>
-            </div>
+            </div>    
             <div>
               <button
                 type="button"
@@ -361,7 +361,7 @@ const PostForm = () => {
             {formPets.map((pet, index) => (
               <div key={index} className="rounded-lg bg-gray-50 p-6 shadow-sm">
                 <div className="grid grid-cols-1 gap-4">
-                  <div className="flex w-[300px] justify-between">
+                  <div className="flex w-[280px] lg:w-[300px] justify-between">
                     <div className="flex flex-col gap-y-2">
                       <label className="text-md font-semibold">성별</label>
                       <div className="flex gap-x-4">
