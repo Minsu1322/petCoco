@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MessageForm } from "@/components/message/MessageForm";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { RealtimeChannel } from "@supabase/supabase-js";
 
 const supabase = createClient();
 
@@ -33,8 +34,9 @@ export default function ClientMessageComponent() {
   const [selectedUser, setSelectedUser] = useState<string | null>(initialSelectedUser);
   const { user, setUser } = useAuthStore();
   const messageEndRef = useRef<HTMLDivElement>(null);
-
   const [isUserLoading, setIsUserLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const [realtimeChannel, setRealtimeChannel] = useState<RealtimeChannel | null>(null);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -49,34 +51,37 @@ export default function ClientMessageComponent() {
     checkUser();
   }, [setUser]);
 
+  const fetchMessages = useCallback(async () => {
+    if (!user) return [];
+    const { data, error } = await supabase
+      .from("messages")
+      .select(
+        `
+        *,
+        sender:users!sender_id(nickname),
+        receiver:users!receiver_id(nickname)
+      `
+      )
+      .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
+      .order("created_at", { ascending: true });
+
+    if (error) throw error;
+    return data.map((message: any) => ({
+      ...message,
+      sender_nickname: message.sender.nickname,
+      receiver_nickname: message.receiver.nickname
+    }));
+  }, [user]);
+
   const {
     data: messages,
     isLoading,
     error
   } = useQuery({
     queryKey: ["messages", user?.id],
-    queryFn: async () => {
-      if (!user) return []; // 사용자가 없으면 빈 배열 반환
-      const { data, error } = await supabase
-        .from("messages")
-        .select(
-          `
-          *,
-          sender:users!sender_id(nickname),
-          receiver:users!receiver_id(nickname)
-        `
-        )
-        .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
-        .order("created_at", { ascending: true });
-
-      if (error) throw error;
-      return data.map((message: any) => ({
-        ...message,
-        sender_nickname: message.sender.nickname,
-        receiver_nickname: message.receiver.nickname
-      }));
-    },
-    enabled: !!user && !isUserLoading
+    queryFn: fetchMessages,
+    enabled: !!user && !isUserLoading,
+    refetchInterval: 1000
   });
 
   useEffect(() => {
@@ -88,6 +93,96 @@ export default function ClientMessageComponent() {
       messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, selectedUser]);
+
+  const markMessagesAsRead = useCallback(
+    async (userId: string) => {
+      if (!user) return;
+
+      const { error } = await supabase
+        .from("messages")
+        .update({ read: true })
+        .eq("receiver_id", user.id)
+        .eq("sender_id", userId)
+        .eq("read", false);
+
+      if (error) {
+        console.error("Error marking messages as read:", error);
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["messages", user.id] });
+      }
+    },
+    [user, queryClient]
+  );
+
+  const setSelectedUserAndMarkRead = useCallback(
+    (userId: string) => {
+      setSelectedUser(userId);
+      if (userId) {
+        markMessagesAsRead(userId);
+      }
+    },
+    [markMessagesAsRead]
+  );
+
+  const subscribeToMessages = useCallback(() => {
+    if (!user) return;
+
+    console.log("Attempting to subscribe to messages channel");
+
+    const channel = supabase
+      .channel("messages")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `or(sender_id.eq.${user.id},receiver_id.eq.${user.id})`
+        },
+        async (payload) => {
+          console.log("Received new message:", payload);
+          await queryClient.invalidateQueries({ queryKey: ["messages", user.id] });
+
+          // 자동으로 읽음 처리
+          if (selectedUser && payload.new.sender_id === selectedUser && payload.new.receiver_id === user.id) {
+            await markMessagesAsRead(selectedUser);
+          }
+        }
+      )
+      .subscribe((status) => {
+        console.log("Subscription status:", status);
+      });
+
+    setRealtimeChannel(channel);
+
+    return () => {
+      console.log("Unsubscribing from messages channel");
+      channel.unsubscribe();
+    };
+  }, [user, queryClient, selectedUser, markMessagesAsRead]);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToMessages();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [subscribeToMessages]);
+
+  useEffect(() => {
+    const subscription = supabase.channel("system").subscribe((status) => {
+      console.log(`Supabase realtime status: ${status}`);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (selectedUser) {
+      markMessagesAsRead(selectedUser);
+    }
+  }, [selectedUser, markMessagesAsRead]);
 
   const groupedMessages: GroupedMessages = messages
     ? messages.reduce((acc, message) => {
@@ -102,13 +197,29 @@ export default function ClientMessageComponent() {
       }, {} as GroupedMessages)
     : {};
 
+  const unreadCounts = messages
+    ? messages.reduce(
+        (acc, message) => {
+          if (!message.read && message.receiver_id === user?.id) {
+            const userId = message.sender_id;
+            if (!acc[userId]) {
+              acc[userId] = 0;
+            }
+            acc[userId]++;
+          }
+          return acc;
+        },
+        {} as { [userId: string]: number }
+      )
+    : {};
+
   if (isUserLoading) return <div className="p-4 text-center">사용자 정보를 불러오는 중...</div>;
   if (!user) return <div className="p-4 text-center">로그인이 필요합니다.</div>;
   if (isLoading) return <div className="p-4 text-center">메시지를 불러오는 중...</div>;
-  if (error) return <div className="p-4 text-center text-red-500">에러 발생: {(error as Error).message}</div>;
+  if (error) return <div className="p-4 text-center">메시지를 불러오는 중 오류가 발생했습니다.</div>;
 
   return (
-    <div className="container mx-auto flex h-[calc(100vh-10rem)] max-w-4xl flex-col p-4">
+    <div className="container mx-auto flex h-[calc(100vh-13rem)] max-w-4xl flex-col p-4">
       <div className="flex flex-grow overflow-hidden rounded-lg border border-mainColor">
         <div className="w-1/3 overflow-y-auto border-r border-mainColor">
           <div className="h-16 border-b border-mainColor"></div>
@@ -118,11 +229,18 @@ export default function ClientMessageComponent() {
                 key={userId}
                 className={`cursor-pointer p-4 hover:bg-gray-100 ${
                   selectedUser === userId ? "bg-mainColor text-white" : ""
-                } border-b border-mainColor`}
-                onClick={() => setSelectedUser(userId)}
+                } flex items-center justify-between border-b border-mainColor`}
+                onClick={() => setSelectedUserAndMarkRead(userId)}
               >
-                <div className="font-bold">{userMessages[0].nickname}</div>
-                <div className="truncate text-sm text-gray-600">{userMessages[userMessages.length - 1].content}</div>
+                <div>
+                  <div className="font-bold">{userMessages[0].nickname}</div>
+                  <div className="truncate text-sm text-gray-600">{userMessages[userMessages.length - 1].content}</div>
+                </div>
+                {unreadCounts[userId] > 0 && (
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-200 text-xs font-bold text-red-800">
+                    {unreadCounts[userId]}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -172,7 +290,7 @@ export default function ClientMessageComponent() {
                   <div ref={messageEndRef} />
                 </div>
               </div>
-              <MessageForm receiverId={selectedUser} />
+              <MessageForm receiverId={selectedUser} markMessagesAsRead={markMessagesAsRead} />
             </>
           )}
         </div>
