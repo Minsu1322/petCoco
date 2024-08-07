@@ -17,6 +17,13 @@ export const age = [
   { key: "70대이상", label: "70대이상" }
 ];
 
+export const times = [
+  { key: "새벽", label: "새벽 (00:00-06:00)" },
+  { key: "아침", label: "아침 (06:00-12:00)" },
+  { key: "오후", label: "오후 (12:00-18:00)" },
+  { key: "저녁", label: "저녁 (18:00-24:00)" }
+];
+
 export const regions = [
   { key: "전체", label: "전체" },
   { key: "서울", label: "서울" },

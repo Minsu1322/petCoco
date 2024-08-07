@@ -2,11 +2,12 @@ import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { MateNextPostType, Pets } from "@/types/mate.type";
 import { UserType } from "@/types/auth.type";
+import { getTiemRage } from "@/app/(public)/mate/getTimeRange";
 
-interface CreateMatePostWithPetsData {
+export type CreateMatePostWithPetsData = {
   post_data: MateNextPostType;
   pets_data: Pets[];
-}
+};
 
 export const GET = async (request: NextRequest) => {
   const supabase = createClient();
@@ -25,115 +26,115 @@ export const GET = async (request: NextRequest) => {
   const currentTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
   const formattedDate = currentTime.toISOString();
 
-try {
-  // RPC 호출
-  let { data: posts = [], error } = await supabase.rpc("get_mate_posts_with_distance", {
-    lat: userLat,
-    lng: userLng
-  });
+  // console.log(filter);
 
-  if (error) {
-    console.error('RPC Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+  try {
+    // RPC 호출
+    let { data: posts = [], error } = await supabase.rpc("get_mate_posts_with_distance", {
+      lat: userLat,
+      lng: userLng
+    });
 
-  // posts가 null일 경우 빈 배열로 초기화
-  let validPosts = posts || [];
- // console.log(validPosts)
+    if (error) {
+      console.error("RPC Error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
-  // 필터링
-  if (search) {
-    validPosts = validPosts.filter(post => 
-      post.content.toLowerCase().includes(search.toLowerCase()) ||
-      post.title.toLowerCase().includes(search.toLowerCase())
-    );
-  }
+    // posts가 null일 경우 빈 배열로 초기화
+    let validPosts = posts || [];
+    // console.log(validPosts)
 
-  if (isCurrentPosts === "true") {
-    validPosts = validPosts.filter(post => post.recruiting);
-  }
+    // 필터링
+    if (search) {
+      validPosts = validPosts.filter(
+        (post) =>
+          post.content.toLowerCase().includes(search.toLowerCase()) ||
+          post.title.toLowerCase().includes(search.toLowerCase())
+      );
+    }
 
-  // 정렬 조건 적용
-  if (filter.sort === "distance" && userLat !== 0 && userLng !== 0) {
-    validPosts = validPosts.sort((a, b) => (a.distance || 0) - (b.distance || 0));
-  } else if (filter.sort === "recruitment_end") {
-    validPosts = validPosts.filter(post => new Date(post.recruitment_end) >= new Date(formattedDate));
-    validPosts = validPosts.sort((a, b) => new Date(a.recruitment_end).getTime() - new Date(b.recruitment_end).getTime());
-  } else {
-    validPosts = validPosts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-  }
+    if (isCurrentPosts === "true") {
+      validPosts = validPosts.filter((post) => post.recruiting);
+    }
 
-  if (filter.date_time) {
-    validPosts = validPosts.filter(post => post.date_time.includes(filter.date_time));
-  }
+    // 정렬 조건 적용
+    if (filter.sort === "distance" && userLat !== 0 && userLng !== 0) {
+      validPosts = validPosts.sort((a, b) => (a.distance || 0) - (b.distance || 0));
+    } else if (filter.sort === "recruitment_end") {
+      validPosts = validPosts.filter((post) => new Date(post.recruitment_end) >= new Date(formattedDate));
+      validPosts = validPosts.sort(
+        (a, b) => new Date(a.recruitment_end).getTime() - new Date(b.recruitment_end).getTime()
+      );
+    } else {
+      validPosts = validPosts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    }
+
+    if (filter.date_time) {
+      validPosts = validPosts.filter((post) => post.date_time.includes(filter.date_time));
+    }
 
     if (filter.regions && filter.regions !== "전체") {
       const regionPrefix = filter.regions.slice(0, 2);
-      validPosts = validPosts.filter(post => post.address.startsWith(regionPrefix));
+      validPosts = validPosts.filter((post) => post.address.startsWith(regionPrefix));
     }
 
-    if(filter.gender && filter.gender !== "전체") {
-      validPosts = validPosts.filter(post => {
+    if (filter.gender && filter.gender !== "전체") {
+      validPosts = validPosts.filter((post) => {
         if (Array.isArray(post.users)) {
-          return (post.users as UserType[]).some(pet => 
-            pet.gender === filter.gender
-          );
+          return (post.users as UserType[]).some((pet) => pet.gender === filter.gender);
         }
-      return false;
-    });
-  }
+        return false;
+      });
+    }
 
-  if(filter.age && filter.age !== "전체") {
-    validPosts = validPosts.filter(post => {
-      if (Array.isArray(post.users)) {
-        return (post.users as UserType[]).some(pet => 
-          pet.age === filter.age
-        );
-      }
-      return false;
-    });
-  }
+    if (filter.times) {
+      validPosts = getTiemRage(validPosts, filter.times);
+    }
 
-  if (filter.weight) {
-    const weightValue = parseFloat(filter.weight);
-    validPosts = validPosts.filter(post => {
-      if (Array.isArray(post.matepostpets)) {
-        return (post.matepostpets as Pets[]).some(pet => 
-          pet.weight !== null && pet.weight >= weightValue
-        );
-      }
-      return false;
-    });
-  }
-  
-  if (filter.male_female && filter.male_female !== "전체") {
-    validPosts = validPosts.filter(post => {
-      if (Array.isArray(post.matepostpets)) {
-        return (post.matepostpets as Pets[]).some(pet => 
-          pet.male_female === filter.male_female
-        );
-      }
-      return false;
-    });
-  }
+    if (filter.age && filter.age !== "전체") {
+      validPosts = validPosts.filter((post) => {
+        if (Array.isArray(post.users)) {
+          return (post.users as UserType[]).some((pet) => pet.age === filter.age);
+        }
+        return false;
+      });
+    }
 
-  // 페이지네이션 처리
-  const total = validPosts.length;
-  const paginatedPosts = validPosts.slice((page - 1) * limit, page * limit);
+    if (filter.weight) {
+      const weightValue = parseFloat(filter.weight);
+      validPosts = validPosts.filter((post) => {
+        if (Array.isArray(post.matepostpets)) {
+          return (post.matepostpets as Pets[]).some((pet) => pet.weight !== null && pet.weight >= weightValue);
+        }
+        return false;
+      });
+    }
 
-  return NextResponse.json({
-    data: paginatedPosts,
-    page,
-    limit,
-    total,
-    totalPages: Math.ceil(total / limit)
-  });
-} catch (error) {
-  console.error('Error:', error);
-  return NextResponse.json({ error: error }, { status: 500 });
-}
+    if (filter.male_female && filter.male_female !== "전체") {
+      validPosts = validPosts.filter((post) => {
+        if (Array.isArray(post.matepostpets)) {
+          return (post.matepostpets as Pets[]).some((pet) => pet.male_female === filter.male_female);
+        }
+        return false;
+      });
+    }
+
+    // 페이지네이션 처리
+    const total = validPosts.length;
+    const paginatedPosts = validPosts.slice((page - 1) * limit, page * limit);
+
+    return NextResponse.json({
+      data: paginatedPosts,
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit)
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return NextResponse.json({ error: error }, { status: 500 });
+  }
 };
-
 
 export const POST = async (request: NextRequest, { params }: { params: { id: string } }) => {
   const supabase = createClient();

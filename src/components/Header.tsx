@@ -71,7 +71,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex w-full items-center justify-between bg-mainColor px-4 py-1 text-black md:px-12">
+    <header className="flex w-full items-center justify-between bg-mainColor px-4 py-1 text-black md:px-12 z-50">
       <div className="flex w-full items-center justify-between md:w-auto">
         <img
           src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/logo_img/PetCocoLogo5.png?t=2024-08-01T11%3A47%3A18.222Z"

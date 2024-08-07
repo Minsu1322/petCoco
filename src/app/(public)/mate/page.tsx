@@ -8,8 +8,9 @@ import MatePostList from "./_components/post/matePostList";
 import PostListFilterTab from "./_components/tab/postListFilterTab";
 import PostItemFilterTab from "./_components/tab/postItemFilterTab";
 
-import { RiSearch2Line } from "react-icons/ri";
 import Swal from 'sweetalert2';
+import Button from "@/components/Button";
+import SearchBar from "@/components/SearchBar";
 
 export type PositionData = {
   center: {
@@ -21,7 +22,7 @@ export type PositionData = {
 } | null;
 
 const MatePage = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);
   const [activeSearchTerm, setActiveSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState("");
@@ -35,7 +36,8 @@ const MatePage = () => {
     date_time: undefined,
     male_female: null,
     weight: null,
-    regions: null
+    regions: null,
+    times: null,
   });
 
   const updateFilter = (filterName: string, value: string) => {
@@ -47,8 +49,8 @@ const MatePage = () => {
 
   const handleSearchPosts = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setActiveSearchTerm(searchQuery);
-    setSearchQuery("");
+    setActiveSearchTerm(searchTerm);
+    setSearchTerm("");
   };
 
   const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
@@ -62,9 +64,11 @@ const MatePage = () => {
       date_time: undefined,
       male_female: null,
       weight: null,
-      regions: null
+      regions: null,
+      times: null,
     });
     setSortBy("");
+    setActiveSearchTerm("");
   };
 
   const handleLoginCheck = () => {
@@ -112,32 +116,9 @@ const MatePage = () => {
         {/* 오른쪽 사이드바 영역 */}
         <div className="mr-0 w-full pl-0 lg:mr-8 lg:w-1/4 lg:pl-5">
           {/* 글쓰기 버튼 영역 */}
-          <div className="mt-1 flex">
-            <button
-              onClick={handleLoginCheck}
-              className="mb-4 flex h-12 w-full items-center justify-center rounded-lg bg-mainColor p-2"
-            >
-              <div>글쓰기</div>
-            </button>
-          </div>
+          <Button onClick={handleLoginCheck} text="글쓰기" className="mb-4 flex h-12 w-full items-center justify-center rounded-lg bg-mainColor p-2" />
           {/* 검색 영역 */}
-          <div className="mb-5 flex flex-col">
-            <p className="mt-3 text-lg text-gray-500">검색</p>
-            <form
-              onSubmit={handleSearchPosts}
-              className="mt-3 flex h-12 w-full flex-row items-center rounded-full border p-1"
-            >
-              <input
-                type="text"
-                className="ml-3 w-full focus:outline-none"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <button type="submit" className="mx-4">
-                <RiSearch2Line />
-              </button>
-            </form>
-          </div>
+          <SearchBar onSubmit={handleSearchPosts} value={searchTerm} setSearchTerm={setSearchTerm}  />
           <PostItemFilterTab updateFilter={updateFilter} filters={filters} onClick={handleResetFilter} />
         </div>
       </div>

@@ -27,6 +27,7 @@ interface MatePostListProps {
     age: string | null;
     weight: string | null;
     regions: string | null;
+    times: string | null;
   };
 }
 
@@ -38,8 +39,15 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
   const getCurrentPosition = (): Promise<PositionData | null> => {
     return new Promise((resolve) => {
       if (!navigator.geolocation) {
+        console.error('위치 정보 사용 거부:', error);
+        const defaultPosition = {
+          center: { lat: 37.5556236021213, lng: 126.992199507869 },
+          errMsg: "Geolocation is not supported",
+          isLoading: false
+        };
         setIsUseGeo(false);
-        resolve(null);
+        setGeoData(defaultPosition);
+        resolve(defaultPosition);
         return;
       }
 
@@ -53,15 +61,20 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
             isLoading: false
           };
           setGeoData(newPosition);
-          //console.log('위치 정보 획득 성공');
+          console.log('위치 정보 획득 성공');
           setIsUseGeo(true);
-          //console.log(isUseGeo);
           resolve(newPosition);
         },
         (error) => {
-          //console.error('위치 정보 획득 실패:', error);
+          console.error('위치 정보 획득 실패:', error);
+          const defaultPosition = {
+            center: { lat: 37.5556236021213, lng: 126.992199507869 },
+            errMsg: error.message,
+            isLoading: false
+          };
           setIsUseGeo(false);
-          resolve(null);
+          setGeoData(defaultPosition);
+          resolve(defaultPosition);
         }
       );
     });
@@ -137,10 +150,10 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
             posts.map((post) => <MatePostItem key={post.id} post={post} />)
           ) : (
              <div className="flex items-center justify-center w-full h-screen">
-             <div className="flex flex-col items-center">
-             <span className="mr-2 text-3xl">🐶</span>
-               <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
-             </div>
+              <div className="flex flex-col items-center">
+                <span className="mr-2 text-3xl">🐶</span>
+                <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
+              </div>
            </div>
           )}
       </div>
