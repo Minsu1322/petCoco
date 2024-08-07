@@ -8,6 +8,7 @@ import { createClient } from "@/supabase/client";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { RealtimeChannel } from "@supabase/supabase-js";
+import { getTimeDifference } from "@/app/utils/getTimeDifference";
 
 const supabase = createClient();
 
@@ -22,6 +23,16 @@ interface Message {
   receiver_nickname: string;
   nickname: string;
   profile_img: string;
+  sender_profile?: {
+    id: string;
+    nickname: string;
+    profile_img: string;
+  };
+  receiver_profile?: {
+    id: string;
+    nickname: string;
+    profile_img: string;
+  };
 }
 
 interface GroupedMessages {
@@ -37,6 +48,8 @@ export default function ClientMessageComponent() {
   const [isUserLoading, setIsUserLoading] = useState(true);
   const queryClient = useQueryClient();
   const [realtimeChannel, setRealtimeChannel] = useState<RealtimeChannel | null>(null);
+  const [selectedUserProfile, setSelectedUserProfile] = useState<any>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -57,10 +70,10 @@ export default function ClientMessageComponent() {
       .from("messages")
       .select(
         `
-        *,
-        sender:users!sender_id(nickname),
-        receiver:users!receiver_id(nickname)
-      `
+      *,
+      sender:users!sender_id(id, nickname, profile_img),
+      receiver:users!receiver_id(id, nickname, profile_img)
+    `
       )
       .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
       .order("created_at", { ascending: true });
@@ -69,7 +82,9 @@ export default function ClientMessageComponent() {
     return data.map((message: any) => ({
       ...message,
       sender_nickname: message.sender.nickname,
-      receiver_nickname: message.receiver.nickname
+      receiver_nickname: message.receiver.nickname,
+      sender_profile: message.sender,
+      receiver_profile: message.receiver
     }));
   }, [user]);
 
@@ -80,8 +95,8 @@ export default function ClientMessageComponent() {
   } = useQuery({
     queryKey: ["messages", user?.id],
     queryFn: fetchMessages,
-    enabled: !!user && !isUserLoading,
-    refetchInterval: 1000
+    enabled: !!user && !isUserLoading
+    // refetchInterval: 1000
   });
 
   useEffect(() => {
@@ -119,9 +134,13 @@ export default function ClientMessageComponent() {
       setSelectedUser(userId);
       if (userId) {
         markMessagesAsRead(userId);
+        const userProfile =
+          messages?.find((m) => m.sender_id === userId)?.sender_profile ||
+          messages?.find((m) => m.receiver_id === userId)?.receiver_profile;
+        setSelectedUserProfile(userProfile);
       }
     },
-    [markMessagesAsRead]
+    [markMessagesAsRead, messages]
   );
 
   const subscribeToMessages = useCallback(() => {
@@ -219,9 +238,20 @@ export default function ClientMessageComponent() {
   if (error) return <div className="p-4 text-center">메시지를 불러오는 중 오류가 발생했습니다.</div>;
 
   return (
-    <div className="container mx-auto flex h-[calc(100vh-13rem)] max-w-4xl flex-col p-4">
-      <div className="flex flex-grow overflow-hidden rounded-lg border border-mainColor">
-        <div className="w-1/3 overflow-y-auto border-r border-mainColor">
+    <div className="container mx-auto flex h-[calc(100vh-10rem)] max-w-4xl flex-col p-4">
+      <div className="relative flex flex-grow overflow-hidden rounded-lg border border-mainColor">
+        {/* 모바일 메뉴 토글 버튼 */}
+        <button
+          className="absolute right-4 top-4 z-30 block rounded-full bg-mainColor p-2 text-white shadow-md sm:hidden"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? "닫기" : "메뉴"}
+        </button>
+
+        {/* 대화 목록 */}
+        <div
+          className={`w-full overflow-y-auto border-r border-mainColor transition-all duration-300 ease-in-out sm:w-1/3 ${isMobileMenuOpen ? "absolute inset-y-0 left-0 z-20 bg-white" : "hidden sm:block"}`}
+        >
           <div className="h-16 border-b border-mainColor"></div>
           <ul>
             {Object.entries(groupedMessages).map(([userId, userMessages]) => (
@@ -230,11 +260,36 @@ export default function ClientMessageComponent() {
                 className={`cursor-pointer p-4 hover:bg-gray-100 ${
                   selectedUser === userId ? "bg-mainColor text-white" : ""
                 } flex items-center justify-between border-b border-mainColor`}
-                onClick={() => setSelectedUserAndMarkRead(userId)}
+                onClick={() => {
+                  setSelectedUserAndMarkRead(userId);
+                  setIsMobileMenuOpen(false);
+                }}
               >
-                <div>
-                  <div className="font-bold">{userMessages[0].nickname}</div>
-                  <div className="truncate text-sm text-gray-600">{userMessages[userMessages.length - 1].content}</div>
+                <div className="flex items-center">
+                  {userMessages[0].sender_profile?.profile_img ? (
+                    <Image
+                      src={userMessages[0].sender_profile.profile_img}
+                      alt="Profile"
+                      width={40}
+                      height={40}
+                      className="mr-3 rounded-full"
+                    />
+                  ) : (
+                    <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-mainColor">
+                      <span className="text-lg font-bold text-white">
+                        {userMessages[0].sender_profile?.nickname.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                  <div>
+                    <div className="font-bold">{userMessages[0].nickname}</div>
+                    <div className="truncate text-sm text-gray-600">
+                      {userMessages[userMessages.length - 1].content}
+                    </div>
+                  </div>
+                </div>
+                <div className="mb-2 text-sm text-gray-500" style={{ whiteSpace: "nowrap" }}>
+                  {getTimeDifference(userMessages[userMessages.length - 1].created_at)}
                 </div>
                 {unreadCounts[userId] > 0 && (
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-200 text-xs font-bold text-red-800">
@@ -245,32 +300,30 @@ export default function ClientMessageComponent() {
             ))}
           </ul>
         </div>
-        <div className="flex w-2/3 flex-col">
-          {selectedUser && (
+
+        {/* 메시지 영역 */}
+        <div className="flex w-full flex-col sm:w-2/3">
+          {selectedUser && selectedUserProfile && (
             <>
-              <div className="flex h-16 flex-col justify-center border-b border-mainColor bg-[#d0dbee] p-3">
-                <h1 className="text-lg font-bold">쪽지함</h1>
-                <span className="text-sm text-gray-500">매너있는 대화 부탁드립니다</span>
+              <div className="flex h-16 items-center justify-center border-b border-mainColor bg-[#d0dbee] p-3">
+                {selectedUserProfile.profile_img ? (
+                  <Image
+                    src={selectedUserProfile.profile_img}
+                    alt="Profile"
+                    width={40}
+                    height={40}
+                    className="mr-3 rounded-full"
+                  />
+                ) : (
+                  <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-mainColor">
+                    <span className="text-lg font-bold text-white">
+                      {selectedUserProfile.nickname.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                <span className="text-lg font-bold">{selectedUserProfile.nickname}</span>
               </div>
               <div className="relative flex-grow overflow-y-auto scrollbar-hide">
-                <div className="sticky top-0 z-10 flex items-center border-b border-mainColor bg-white bg-opacity-70 p-3">
-                  {groupedMessages[selectedUser][0].profile_img ? (
-                    <Image
-                      src={groupedMessages[selectedUser][0].profile_img}
-                      alt="Profile"
-                      width={40}
-                      height={40}
-                      className="mr-3 rounded-full"
-                    />
-                  ) : (
-                    <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-mainColor">
-                      <span className="text-lg font-bold text-white">
-                        {groupedMessages[selectedUser][0].nickname.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  )}
-                  <span className="font-bold">{groupedMessages[selectedUser][0].nickname}</span>
-                </div>
                 <div className="p-3">
                   {groupedMessages[selectedUser].map((message) => (
                     <div
@@ -278,8 +331,10 @@ export default function ClientMessageComponent() {
                       className={`mb-4 ${message.sender_id === user.id ? "text-right" : "text-left"}`}
                     >
                       <div
-                        className={`inline-block rounded-lg p-2 ${
-                          message.sender_id === user.id ? "bg-mainColor text-white" : "bg-gray-200"
+                        className={`relative inline-block p-2 ${
+                          message.sender_id === user.id
+                            ? "rounded-bl-2xl rounded-br-none rounded-tl-2xl rounded-tr-2xl bg-mainColor text-white"
+                            : "rounded-bl-2xl rounded-br-2xl rounded-tl-none rounded-tr-2xl bg-gray-200 text-black"
                         }`}
                       >
                         <p className="text-sm">{message.content}</p>
