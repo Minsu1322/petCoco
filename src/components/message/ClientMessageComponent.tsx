@@ -108,7 +108,7 @@ export default function ClientMessageComponent() {
   if (error) return <div className="p-4 text-center text-red-500">에러 발생: {(error as Error).message}</div>;
 
   return (
-    <div className="container mx-auto flex h-[calc(100vh-10rem)] max-w-4xl flex-col p-4">
+    <div className="container mx-auto flex h-[calc(100vh-13rem)] max-w-4xl flex-col p-4">
       <div className="flex flex-grow overflow-hidden rounded-lg border border-mainColor">
         <div className="w-1/3 overflow-y-auto border-r border-mainColor">
           <div className="h-16 border-b border-mainColor"></div>

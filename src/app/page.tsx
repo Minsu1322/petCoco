@@ -1,24 +1,22 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import Link from "next/link";
 import { MatePostsAndUsersResponse, PostsResponse } from "@/types/mainPageTypes/MainPageTypes";
 import AnimalCarousel from "@/components/animalCarousel/AnimalCarousel";
 import { EmblaOptionsType } from "embla-carousel";
 import Image from "next/image";
+import { useAuthStore } from "@/zustand/useAuth";
+import { useRouter } from "next/navigation";
+import { fetchPostsMate, fetchPosts } from "./utils/mainPageFetch";
+import { useState, useCallback } from "react";
+import startChat from "./utils/startChat";
 
 export default function Home() {
-  //메이트정보
-  const fetchPostsMate = async () => {
-    const response = await fetch("/api/mate?page=1&limit=5");
-    console.log(response);
+  const [currentMateIndex, setCurrentMateIndex] = useState(0);
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return response.json();
-  };
+  const { user } = useAuthStore();
+  const router = useRouter();
 
   const {
     data: mateResponse,
@@ -29,19 +27,27 @@ export default function Home() {
     queryFn: fetchPostsMate
   });
 
-  //자유게시판 정보
-  const fetchPosts = async () => {
-    const response = await fetch("/api/community?page=1&limit=5");
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return response.json();
-  };
-
   const { data, isLoading, error } = useQuery<PostsResponse, Error>({
     queryKey: ["posts"],
     queryFn: fetchPosts
   });
+
+  const handleStartChat = useCallback(() => {
+    const currentMate = mateResponse?.data[currentMateIndex];
+    if (currentMate && currentMate.users && currentMate.users[0]) {
+      startChat(currentMate.users[0].id, user, router);
+    }
+  }, [mateResponse, currentMateIndex, user, router]);
+
+  const nextMateSlide = useCallback(() => {
+    setCurrentMateIndex((prevIndex) => (prevIndex + 1) % (mateResponse?.data.length || 1));
+  }, [mateResponse]);
+
+  const prevMateSlide = useCallback(() => {
+    setCurrentMateIndex(
+      (prevIndex) => (prevIndex - 1 + (mateResponse?.data.length || 1)) % (mateResponse?.data.length || 1)
+    );
+  }, [mateResponse]);
 
   if (isLoading || isMateLoading) return <div>Loading...</div>;
   if (error || mateError) return <div>Error: {error?.message || mateError?.message}</div>;
@@ -49,6 +55,8 @@ export default function Home() {
   const OPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
   const SLIDE_COUNT = 7;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+
+  const currentMate = mateResponse?.data[currentMateIndex];
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-8 bg-gray-100 p-4 sm:p-6 md:p-10">
@@ -101,52 +109,56 @@ export default function Home() {
         {/* 산책메이트 */}
         <div className="w-full rounded-lg border border-gray-300 bg-white p-4 shadow-md sm:w-full md:w-1/2 md:p-6">
           <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/mate`}>
-            <h2 className="mb-4 border-b pb-2 text-xl font-bold hover:underline">산책메이트</h2>
+            <h2 className="mb-4 border-b pb-2 text-xl font-bold hover:underline">함께 산책할 친구를 찾아요!</h2>
           </Link>
-
-          <div className="space-y-4 overflow-x-auto pb-4 md:grid md:grid-cols-1 md:gap-4 md:space-y-0">
-            {mateResponse?.data.slice(0, 5).map((post, index) => {
-              const user = post.users[0];
-              return (
-                <Link key={post.id} href={`${process.env.NEXT_PUBLIC_SITE_URL}/mate/posts/${post.id}`}>
-                  <div
-                    className={`flex items-center justify-between rounded-lg bg-gray-50 p-2 ${index !== 0 ? "border-t border-gray-200 pt-3" : ""}`}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <img
-                        src={
-                          user?.profile_img ||
-                          "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/profile_img/default-profile.jpg"
-                        }
-                        alt="User Profile"
-                        className="h-10 w-10 rounded-md object-cover"
-                      />
-                      <div>
-                        <div className="font-semibold">{post.title}</div>
-                        <div className="text-xs text-gray-500">{post.place_name}</div>
-                        <div className="text-xs text-gray-500">
-                          {post.recruitment_start && new Date(post.recruitment_start).toLocaleDateString()} ~
-                          {post.recruitment_end && new Date(post.recruitment_end).toLocaleDateString()}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm">모집인원: {post.members}</div>
-                      {post.recruiting ? (
-                        <div className="rounded bg-green-200 px-2 py-1 text-xs text-green-700">모집중</div>
-                      ) : (
-                        <div className="rounded bg-gray-200 px-2 py-1 text-xs text-gray-700">모집완료</div>
-                      )}
-                    </div>
+          {currentMate && (
+            <div className="mb-4 rounded-lg bg-gray-50 p-4">
+              <div className="flex items-start">
+                <img
+                  src={
+                    currentMate.users[0]?.profile_img ||
+                    "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/profile_img/default-profile.jpg"
+                  }
+                  alt="User Profile"
+                  className="mr-4 h-16 w-16 rounded-full object-cover"
+                />
+                <div>
+                  <h3 className="text-lg font-semibold">{currentMate.title}</h3>
+                  <p className="text-sm text-gray-600">{currentMate.place_name}</p>
+                  <p className="text-sm text-gray-600">
+                    {currentMate.recruitment_start && new Date(currentMate.recruitment_start).toLocaleDateString()} ~
+                    {currentMate.recruitment_end && new Date(currentMate.recruitment_end).toLocaleDateString()}
+                  </p>
+                  <div className="mt-2 flex items-center">
+                    <p className="mr-2 text-sm">모집인원: {currentMate.members}</p>
+                    {currentMate.recruiting ? (
+                      <span className="rounded bg-green-200 px-2 py-1 text-xs text-green-700">모집중</span>
+                    ) : (
+                      <span className="rounded bg-gray-200 px-2 py-1 text-xs text-gray-700">모집완료</span>
+                    )}
                   </div>
-                </Link>
-              );
-            })}
+                </div>
+              </div>
+              <button
+                onClick={handleStartChat}
+                className="mt-4 w-full rounded-lg bg-blue-500 py-2 text-white transition duration-300 hover:bg-blue-600"
+              >
+                대화 시작하기
+              </button>
+            </div>
+          )}
+          <div className="mt-4 flex justify-between">
+            <button onClick={prevMateSlide} className="rounded-lg bg-gray-200 px-4 py-2">
+              ←
+            </button>
+            <button onClick={nextMateSlide} className="rounded-lg bg-gray-200 px-4 py-2">
+              →
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="flex w-full flex-col items-center justify-center sm:w-full md:w-8/12">
+      <div className="flex w-full flex-col items-center justify-center sm:w-auto md:w-8/12">
         <Image
           src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_img/banner003.png"
           alt="banner images"
@@ -156,8 +168,7 @@ export default function Home() {
           className="rounded-lg"
         />
 
-        {/* 캐러셀 주석 처리 */}
-        <div className="mt-2 w-full">
+        <div className="mt-1 w-full rounded-lg border-2 border-[#a4d555] p-4">
           <AnimalCarousel slides={SLIDES} options={OPTIONS} />
         </div>
       </div>

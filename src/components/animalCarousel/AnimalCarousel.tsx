@@ -89,12 +89,28 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
 
   return (
     <div className="mx-auto max-w-3xl px-2">
+      <div className={styles.toggleContainer}>
+        <button
+          className={`${styles.toggleButton} ${animalType === "dog" ? styles.active : ""}`}
+          onClick={() => setAnimalType("dog")}
+        >
+          🐶 강아지
+        </button>
+        <button
+          className={`${styles.toggleButton} ${animalType === "cat" ? styles.active : ""}`}
+          onClick={() => setAnimalType("cat")}
+        >
+          😺 고양이
+        </button>
+      </div>
+
       <div className={styles.toggleContainer}></div>
-      <div className={`${styles.embla} ${styles.shrink}`}>
-        <div className={styles.embla__viewport} ref={emblaRef}>
-          <div className={styles.embla__container}>
+    <div className="relative w-full overflow-hidden">
+      <div className={`${styles.embla} ${styles.shrink} w-full`}>
+        <div className={`${styles.embla__viewport} w-full`} ref={emblaRef}>
+          <div className={`${styles.embla__container} flex`}>
             {randomAnimals.map((animal, index) => (
-              <div className={styles.embla__slide} key={index}>
+              <div className={`${styles.embla__slide} flex-shrink-0 w-full`} key={index}>
                 <div className="m-2 rounded-lg bg-white p-3 shadow-md">
                   <h2 className="mb-1 text-center text-base font-semibold">{animal.careAddr}</h2>
                   <div className="mb-1 flex justify-center text-xs">
@@ -102,7 +118,7 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
                     <span>{animal.officetel}</span>
                   </div>
                   <div className="flex">
-                    <img src={animal.popfile} alt={animal.kindCd} className="h-32 w-1/2 rounded-lg object-cover" />{" "}
+                    <img src={animal.popfile} alt={animal.kindCd} className="h-32 w-1/2 rounded-lg object-cover" />
                     <div className="w-1/2 space-y-0.5 pl-2 text-xs">
                       <p>
                         <span className="font-medium">나이:</span> {animal.age}
@@ -129,10 +145,10 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
             ))}
           </div>
         </div>
-        {/* 버튼과 닷 부분은 그대로 유지 */}
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default AnimalCarousel;
