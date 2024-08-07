@@ -2,7 +2,8 @@ import { PositionData } from "./page";
 import { locationStore } from "@/zustand/locationStore";
 
 export const getCurrentPosition = (): Promise<PositionData> => {
-  console.log('ddd')
+
+  
   const { geoData, setGeoData } = locationStore();
 
   return new Promise((resolve) => {
