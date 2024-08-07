@@ -22,7 +22,7 @@ export type PositionData = {
 } | null;
 
 const MatePage = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);
   const [activeSearchTerm, setActiveSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState("");
@@ -49,8 +49,8 @@ const MatePage = () => {
 
   const handleSearchPosts = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setActiveSearchTerm(searchQuery);
-    setSearchQuery("");
+    setActiveSearchTerm(searchTerm);
+    setSearchTerm("");
   };
 
   const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
@@ -118,7 +118,7 @@ const MatePage = () => {
           {/* 글쓰기 버튼 영역 */}
           <Button onClick={handleLoginCheck} text="글쓰기" className="mb-4 flex h-12 w-full items-center justify-center rounded-lg bg-mainColor p-2" />
           {/* 검색 영역 */}
-          <SearchBar onSubmit={handleSearchPosts} value={searchQuery} setSearchQuery={setSearchQuery}  />
+          <SearchBar onSubmit={handleSearchPosts} value={searchTerm} setSearchTerm={setSearchTerm}  />
           <PostItemFilterTab updateFilter={updateFilter} filters={filters} onClick={handleResetFilter} />
         </div>
       </div>
