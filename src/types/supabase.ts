@@ -15,6 +15,7 @@ export type Database = {
           created_at: string
           id: string
           post_id: string | null
+          read: boolean | null
           user_id: string | null
         }
         Insert: {
@@ -22,6 +23,7 @@ export type Database = {
           created_at?: string
           id?: string
           post_id?: string | null
+          read?: boolean | null
           user_id?: string | null
         }
         Update: {
@@ -29,6 +31,7 @@ export type Database = {
           created_at?: string
           id?: string
           post_id?: string | null
+          read?: boolean | null
           user_id?: string | null
         }
         Relationships: [
@@ -159,6 +162,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          read: boolean | null
           receiver_id: string | null
           sender_id: string | null
         }
@@ -166,6 +170,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          read?: boolean | null
           receiver_id?: string | null
           sender_id?: string | null
         }
@@ -173,6 +178,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          read?: boolean | null
           receiver_id?: string | null
           sender_id?: string | null
         }

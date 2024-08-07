@@ -94,6 +94,36 @@ export default function ClientMessageComponent() {
     }
   }, [messages, selectedUser]);
 
+  const markMessagesAsRead = useCallback(
+    async (userId: string) => {
+      if (!user) return;
+
+      const { error } = await supabase
+        .from("messages")
+        .update({ read: true })
+        .eq("receiver_id", user.id)
+        .eq("sender_id", userId)
+        .eq("read", false);
+
+      if (error) {
+        console.error("Error marking messages as read:", error);
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["messages", user.id] });
+      }
+    },
+    [user, queryClient]
+  );
+
+  const setSelectedUserAndMarkRead = useCallback(
+    (userId: string) => {
+      setSelectedUser(userId);
+      if (userId) {
+        markMessagesAsRead(userId);
+      }
+    },
+    [markMessagesAsRead]
+  );
+
   const subscribeToMessages = useCallback(() => {
     if (!user) return;
 
@@ -112,6 +142,11 @@ export default function ClientMessageComponent() {
         async (payload) => {
           console.log("Received new message:", payload);
           await queryClient.invalidateQueries({ queryKey: ["messages", user.id] });
+
+          // 자동으로 읽음 처리
+          if (selectedUser && payload.new.sender_id === selectedUser && payload.new.receiver_id === user.id) {
+            await markMessagesAsRead(selectedUser);
+          }
         }
       )
       .subscribe((status) => {
@@ -124,7 +159,7 @@ export default function ClientMessageComponent() {
       console.log("Unsubscribing from messages channel");
       channel.unsubscribe();
     };
-  }, [user, queryClient]);
+  }, [user, queryClient, selectedUser, markMessagesAsRead]);
 
   useEffect(() => {
     const unsubscribe = subscribeToMessages();
@@ -143,6 +178,12 @@ export default function ClientMessageComponent() {
     };
   }, []);
 
+  useEffect(() => {
+    if (selectedUser) {
+      markMessagesAsRead(selectedUser);
+    }
+  }, [selectedUser, markMessagesAsRead]);
+
   const groupedMessages: GroupedMessages = messages
     ? messages.reduce((acc, message) => {
         const userId = message.sender_id === user?.id ? message.receiver_id : message.sender_id;
@@ -156,10 +197,26 @@ export default function ClientMessageComponent() {
       }, {} as GroupedMessages)
     : {};
 
+  const unreadCounts = messages
+    ? messages.reduce(
+        (acc, message) => {
+          if (!message.read && message.receiver_id === user?.id) {
+            const userId = message.sender_id;
+            if (!acc[userId]) {
+              acc[userId] = 0;
+            }
+            acc[userId]++;
+          }
+          return acc;
+        },
+        {} as { [userId: string]: number }
+      )
+    : {};
+
   if (isUserLoading) return <div className="p-4 text-center">사용자 정보를 불러오는 중...</div>;
   if (!user) return <div className="p-4 text-center">로그인이 필요합니다.</div>;
   if (isLoading) return <div className="p-4 text-center">메시지를 불러오는 중...</div>;
-  if (error) return <div className="p-4 text-center text-red-500">에러 발생: {(error as Error).message}</div>;
+  if (error) return <div className="p-4 text-center">메시지를 불러오는 중 오류가 발생했습니다.</div>;
 
   return (
     <div className="container mx-auto flex h-[calc(100vh-13rem)] max-w-4xl flex-col p-4">
@@ -172,11 +229,18 @@ export default function ClientMessageComponent() {
                 key={userId}
                 className={`cursor-pointer p-4 hover:bg-gray-100 ${
                   selectedUser === userId ? "bg-mainColor text-white" : ""
-                } border-b border-mainColor`}
-                onClick={() => setSelectedUser(userId)}
+                } flex items-center justify-between border-b border-mainColor`}
+                onClick={() => setSelectedUserAndMarkRead(userId)}
               >
-                <div className="font-bold">{userMessages[0].nickname}</div>
-                <div className="truncate text-sm text-gray-600">{userMessages[userMessages.length - 1].content}</div>
+                <div>
+                  <div className="font-bold">{userMessages[0].nickname}</div>
+                  <div className="truncate text-sm text-gray-600">{userMessages[userMessages.length - 1].content}</div>
+                </div>
+                {unreadCounts[userId] > 0 && (
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-200 text-xs font-bold text-red-800">
+                    {unreadCounts[userId]}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -226,7 +290,7 @@ export default function ClientMessageComponent() {
                   <div ref={messageEndRef} />
                 </div>
               </div>
-              <MessageForm receiverId={selectedUser} />
+              <MessageForm receiverId={selectedUser} markMessagesAsRead={markMessagesAsRead} />
             </>
           )}
         </div>

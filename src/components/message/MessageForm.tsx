@@ -7,17 +7,22 @@ const supabase = createClient();
 
 interface MessageFormProps {
   receiverId: string;
+  markMessagesAsRead: (userId: string) => Promise<void>;
 }
 
 interface MessageData {
   content: string;
 }
 
-export const MessageForm: React.FC<MessageFormProps> = ({ receiverId }) => {
+export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessagesAsRead }) => {
   const [content, setContent] = useState("");
   const { user } = useAuthStore();
 
   const queryClient = useQueryClient();
+
+  const handleFocus = () => {
+    markMessagesAsRead(receiverId);
+  };
 
   const sendMessage = useMutation({
     mutationFn: async (messageData: MessageData) => {
@@ -60,6 +65,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId }) => {
       <input
         type="text"
         value={content}
+        onFocus={handleFocus}
         onChange={(e) => setContent(e.target.value)}
         placeholder="메시지를 입력하세요"
         className="flex-grow rounded-l-md border border-mainColor px-3 py-2 focus:outline-none focus:ring-2 focus:ring-mainColor"
