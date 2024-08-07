@@ -5,7 +5,7 @@ import { useAuthStore } from "@/zustand/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/supabase/client";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const supabase = createClient();
 
@@ -57,7 +57,7 @@ const LogoutButton = () => {
   return (
     <div className="flex">
       <button onClick={handleMypageClick}>
-        <button className="mr-2">{nickname}</button>
+        <div className="mr-2">{nickname}</div>
       </button>
       <p>|</p>
       <button onClick={handleLogout} className="ml-2">
