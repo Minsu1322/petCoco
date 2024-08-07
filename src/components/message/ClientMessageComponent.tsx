@@ -95,8 +95,8 @@ export default function ClientMessageComponent() {
   } = useQuery({
     queryKey: ["messages", user?.id],
     queryFn: fetchMessages,
-    enabled: !!user && !isUserLoading
-    // refetchInterval: 1000
+    enabled: !!user && !isUserLoading,
+    refetchInterval: 1000
   });
 
   useEffect(() => {
@@ -254,50 +254,60 @@ export default function ClientMessageComponent() {
         >
           <div className="h-16 border-b border-mainColor"></div>
           <ul>
-            {Object.entries(groupedMessages).map(([userId, userMessages]) => (
-              <li
-                key={userId}
-                className={`cursor-pointer p-4 hover:bg-gray-100 ${
-                  selectedUser === userId ? "bg-mainColor text-white" : ""
-                } flex items-center justify-between border-b border-mainColor`}
-                onClick={() => {
-                  setSelectedUserAndMarkRead(userId);
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <div className="flex items-center">
-                  {userMessages[0].sender_profile?.profile_img ? (
-                    <Image
-                      src={userMessages[0].sender_profile.profile_img}
-                      alt="Profile"
-                      width={40}
-                      height={40}
-                      className="mr-3 rounded-full"
-                    />
-                  ) : (
-                    <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-mainColor">
-                      <span className="text-lg font-bold text-white">
-                        {userMessages[0].sender_profile?.nickname.charAt(0).toUpperCase()}
-                      </span>
+            {Object.entries(groupedMessages).map(([userId, userMessages]) => {
+              // 대화 상대의 프로필 사진을 결정
+              const message = userMessages[0];
+              const isSender = message.sender_id === user?.id;
+              const profile = isSender ? message.receiver_profile : message.sender_profile;
+
+              return (
+                <li
+                  key={userId}
+                  className={`cursor-pointer p-4 hover:bg-gray-100 ${
+                    selectedUser === userId ? "bg-mainColor text-white" : ""
+                  } flex items-center justify-between border-b border-mainColor`}
+                  onClick={() => {
+                    setSelectedUserAndMarkRead(userId);
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <div className="flex items-center">
+                    {/* 대화 상대의 프로필 사진 표시 */}
+                    {profile?.profile_img ? (
+                      <Image
+                        src={profile.profile_img}
+                        alt="Profile"
+                        width={40}
+                        height={40}
+                        className="mr-3 rounded-full"
+                      />
+                    ) : (
+                      <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-mainColor">
+                        <span className="text-lg font-bold text-white">
+                          {profile?.nickname.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                    <div>
+                      <div className="font-bold">
+                        {selectedUser === userId ? selectedUserProfile?.nickname : profile?.nickname}
+                      </div>
+                      <div className="truncate text-sm text-gray-600">
+                        {userMessages[userMessages.length - 1].content}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-2 text-sm text-gray-500" style={{ whiteSpace: "nowrap" }}>
+                    {getTimeDifference(userMessages[userMessages.length - 1].created_at)}
+                  </div>
+                  {unreadCounts[userId] > 0 && (
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-200 text-xs font-bold text-red-800">
+                      {unreadCounts[userId]}
                     </div>
                   )}
-                  <div>
-                    <div className="font-bold">{userMessages[0].nickname}</div>
-                    <div className="truncate text-sm text-gray-600">
-                      {userMessages[userMessages.length - 1].content}
-                    </div>
-                  </div>
-                </div>
-                <div className="mb-2 text-sm text-gray-500" style={{ whiteSpace: "nowrap" }}>
-                  {getTimeDifference(userMessages[userMessages.length - 1].created_at)}
-                </div>
-                {unreadCounts[userId] > 0 && (
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-200 text-xs font-bold text-red-800">
-                    {unreadCounts[userId]}
-                  </div>
-                )}
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
         </div>
 
