@@ -149,7 +149,7 @@ const AddMypetProfile = () => {
       <p className="mt-5 text-2xl font-bold">애완동물 추가하기</p>
       <div className="my-auto mt-5 flex max-h-[400px] max-w-[300px] flex-col items-center justify-center">
         <img
-          className="max-h-[200px] max-w-[200px] rounded-full object-cover"
+          className="max-h-[200px] rounded object-cover sm:max-w-[200px]"
           src={previewImage || defaultPetImg}
           alt="profile_img"
         />
@@ -164,7 +164,7 @@ const AddMypetProfile = () => {
         <input id="fileInput" type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
       </div>
       <br />
-      <div className="w-[600px]">
+      <div className="sm:w-[600px]">
         <p className="font-bold">이름(최대 8자)</p>
         <Input
           className="mt-2"
@@ -274,18 +274,18 @@ const AddMypetProfile = () => {
           onChange={handleIntroductionChange}
         />
       </div>
-      <div className="mb-20 mt-14 flex gap-[15px]">
-        <button
-          className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
-          onClick={toMyPet}
-        >
-          뒤로가기
-        </button>
+      <div className="mb-20 mt-14 flex flex-col gap-[15px] max-[639px]:w-full sm:flex-row">
         <button
           className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
           onClick={submitChange}
         >
           등록하기
+        </button>
+        <button
+          className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
+          onClick={toMyPet}
+        >
+          뒤로가기
         </button>
       </div>
     </div>
