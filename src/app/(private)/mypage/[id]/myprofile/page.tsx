@@ -105,9 +105,9 @@ const MyProfile = () => {
             </div>
           </div>
           <Link href={`/mypage/${user.id}/myprofile/fixMyProfile`} className="mt-[-20px] flex justify-center">
-            <p className="flex hidden h-[40px] w-[200px] items-center justify-center rounded-md bg-mainColor text-center sm:block">
+            <div className="flex hidden h-[40px] w-[200px] items-center justify-center rounded-md bg-mainColor text-center font-bold sm:block">
               변경하기
-            </p>
+            </div>
           </Link>
         </div>
         <div className="border-gray flex flex-col items-center gap-6 overflow-y-scroll rounded-[10px] py-4 scrollbar-hide sm:ml-20 sm:h-[500px] sm:w-[500px] sm:border">
@@ -129,7 +129,7 @@ const MyProfile = () => {
               </Link>
             ))}
           </div>
-          <div className="sm:fixed sm:mt-[420px]">
+          <div className="mb-5">
             <Link href={`/mypage/${id}/mypet/addmypetprofile`}>
               <div className="my-auto flex flex-row items-center justify-center gap-12 rounded-[20px] border-2 border-gray-400 bg-white px-[16px] py-[12px] font-bold sm:w-[420px]">
                 추가하기

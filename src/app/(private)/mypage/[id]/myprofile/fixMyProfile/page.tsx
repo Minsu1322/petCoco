@@ -165,17 +165,17 @@ const FixMyProfile = () => {
 
   return (
     <div className="flex w-full justify-center" onClick={(e) => e.stopPropagation()}>
-      <div className="w-[600px]">
-        <h1 className="mt-5 text-2xl font-bold">프로필 수정</h1>
-        <div className="my-auto mt-5 flex max-h-[400px] flex-col items-center justify-center">
+      <div className="w-full sm:w-[600px]">
+        <h1 className="mt-5 text-center font-bold sm:text-2xl">프로필 수정</h1>
+        <div className="my-auto mt-5 flex flex-col items-center justify-center sm:max-h-[400px]">
           <img
-            className="h-[170px] w-[170px] rounded-full bg-lime-300 object-cover"
+            className="max-h-[170px] max-w-[170px] rounded bg-lime-300 object-cover"
             src={previewImage || defaultUserImg}
             alt=""
           />
           <br></br>
           <button
-            className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
+            className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center font-semibold text-black sm:text-[16px]"
             type={"button"}
             onClick={() => document.getElementById("fileInput")?.click()}
           >
@@ -249,18 +249,18 @@ const FixMyProfile = () => {
             onChange={handleIntroductionChange}
           />
         </div>
-        <div className="mb-20 mt-10 flex flex-row-reverse gap-[15px]">
-          <button
-            className="rounded border border-[#C9C9C9] bg-[#D1D1D1] px-4 py-2 text-center font-bold text-black"
-            onClick={toMyProfile}
-          >
-            뒤로가기
-          </button>
+        <div className="mb-20 mt-10 flex flex-col gap-[15px] sm:flex-row">
           <button
             className="rounded border border-[#C9C9C9] bg-mainColor px-4 py-2 text-center text-[16px] font-semibold text-black"
             onClick={submitChange}
           >
             변경하기
+          </button>
+          <button
+            className="rounded border border-[#C9C9C9] bg-[#D1D1D1] px-4 py-2 text-center font-bold text-black"
+            onClick={toMyProfile}
+          >
+            뒤로가기
           </button>
         </div>
       </div>
