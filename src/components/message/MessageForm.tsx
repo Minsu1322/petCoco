@@ -23,22 +23,27 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId }) => {
     mutationFn: async (messageData: MessageData) => {
       if (!user) throw new Error("User not authenticated");
 
-      const { data, error } = await supabase.from("messages").insert([
-        {
-          sender_id: user.id,
-          receiver_id: receiverId,
-          content: messageData.content
-        }
-      ]);
+      const { data, error } = await supabase
+        .from("messages")
+        .insert([
+          {
+            sender_id: user.id,
+            receiver_id: receiverId,
+            content: messageData.content
+          }
+        ])
+        .select();
 
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["messages"] });
+    onSuccess: async (data) => {
+      console.log("Message sent successfully:", data);
       setContent("");
+      await queryClient.invalidateQueries({ queryKey: ["messages", user?.id] });
     },
     onError: (error) => {
+      console.error("Error sending message:", error);
       alert(error.message);
     }
   });

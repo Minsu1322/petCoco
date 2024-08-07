@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MessageForm } from "@/components/message/MessageForm";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { RealtimeChannel } from "@supabase/supabase-js";
 
 const supabase = createClient();
 
@@ -33,8 +34,9 @@ export default function ClientMessageComponent() {
   const [selectedUser, setSelectedUser] = useState<string | null>(initialSelectedUser);
   const { user, setUser } = useAuthStore();
   const messageEndRef = useRef<HTMLDivElement>(null);
-
   const [isUserLoading, setIsUserLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const [realtimeChannel, setRealtimeChannel] = useState<RealtimeChannel | null>(null);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -49,34 +51,37 @@ export default function ClientMessageComponent() {
     checkUser();
   }, [setUser]);
 
+  const fetchMessages = useCallback(async () => {
+    if (!user) return [];
+    const { data, error } = await supabase
+      .from("messages")
+      .select(
+        `
+        *,
+        sender:users!sender_id(nickname),
+        receiver:users!receiver_id(nickname)
+      `
+      )
+      .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
+      .order("created_at", { ascending: true });
+
+    if (error) throw error;
+    return data.map((message: any) => ({
+      ...message,
+      sender_nickname: message.sender.nickname,
+      receiver_nickname: message.receiver.nickname
+    }));
+  }, [user]);
+
   const {
     data: messages,
     isLoading,
     error
   } = useQuery({
     queryKey: ["messages", user?.id],
-    queryFn: async () => {
-      if (!user) return []; // 사용자가 없으면 빈 배열 반환
-      const { data, error } = await supabase
-        .from("messages")
-        .select(
-          `
-          *,
-          sender:users!sender_id(nickname),
-          receiver:users!receiver_id(nickname)
-        `
-        )
-        .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
-        .order("created_at", { ascending: true });
-
-      if (error) throw error;
-      return data.map((message: any) => ({
-        ...message,
-        sender_nickname: message.sender.nickname,
-        receiver_nickname: message.receiver.nickname
-      }));
-    },
-    enabled: !!user && !isUserLoading
+    queryFn: fetchMessages,
+    enabled: !!user && !isUserLoading,
+    refetchInterval: 1000
   });
 
   useEffect(() => {
@@ -88,6 +93,55 @@ export default function ClientMessageComponent() {
       messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, selectedUser]);
+
+  const subscribeToMessages = useCallback(() => {
+    if (!user) return;
+
+    console.log("Attempting to subscribe to messages channel");
+
+    const channel = supabase
+      .channel("messages")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `or(sender_id.eq.${user.id},receiver_id.eq.${user.id})`
+        },
+        async (payload) => {
+          console.log("Received new message:", payload);
+          await queryClient.invalidateQueries({ queryKey: ["messages", user.id] });
+        }
+      )
+      .subscribe((status) => {
+        console.log("Subscription status:", status);
+      });
+
+    setRealtimeChannel(channel);
+
+    return () => {
+      console.log("Unsubscribing from messages channel");
+      channel.unsubscribe();
+    };
+  }, [user, queryClient]);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToMessages();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [subscribeToMessages]);
+
+  useEffect(() => {
+    const subscription = supabase.channel("system").subscribe((status) => {
+      console.log(`Supabase realtime status: ${status}`);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const groupedMessages: GroupedMessages = messages
     ? messages.reduce((acc, message) => {
