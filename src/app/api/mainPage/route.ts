@@ -8,10 +8,10 @@ export async function GET(request: Request) {
   const animalType = searchParams.get("type") || "dog";
 
   const today = new Date();
-  const threeMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate());
+  const MonthsAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
 
   const endde = formatDate(today);
-  const bgnde = formatDate(threeMonthsAgo);
+  const bgnde = formatDate(MonthsAgo);
 
   const upkind = animalType === "cat" ? "422400" : "417000";
 

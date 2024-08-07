@@ -1,7 +1,8 @@
 import { UserType } from "./auth.type";
-import { Tables } from "./supabase";
+import { Database, Json, Tables } from "./supabase";
 export type MatePostType = Tables<"matePosts">;
 export type matepostpetsType = Tables<"matepostpets">;
+export type GetMatePostsWithDistance = Database['public']['Functions']['get_mate_posts_with_distance']['Returns']
 
 export type UserTypeForUsers = {
   id: string;
@@ -78,4 +79,26 @@ export type PostsResponse = {
   limit: number;
   total: number;
   totalPages: number;
+};
+
+export type valiMatePostAllTypeForItem = {
+  id: string
+          created_at: string
+          title: string
+          content: string
+          user_id: string
+          position: Json
+          members: string
+          date_time: string
+          recruiting: boolean
+          recruitment_start: string
+          recruitment_end: string
+          address: string
+          place_name: string
+          preferred_route: string
+          special_requirements: string
+          location: unknown
+          users: Json
+          matepostpets: Json
+          distance: number
 };

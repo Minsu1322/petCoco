@@ -3,7 +3,8 @@
 import FilterSelectChip from "../chip/filterSelectChip";
 import FilterDateChip from "../chip/filterDateChip";
 import FilterWeightChip from "../chip/filterWeightChip";
-import { gender, age, male_female, regions } from "../../selectOptionArray";
+import { gender, age, male_female, regions, times } from "../../selectOptionArray";
+import Button from "@/components/Button";
 
 interface PostItemFilterTabProps {
   updateFilter: (filterName: string, value: any) => void;
@@ -14,6 +15,7 @@ interface PostItemFilterTabProps {
     age: string | null;
     weight: string | null;
     regions: string | null;
+    times: string | null;
   };
   onClick: () => void;
 }
@@ -35,16 +37,22 @@ const PostItemFilterTab = ({ updateFilter, filters, onClick }: PostItemFilterTab
           selected={filters.age}
           onSelect={(items) => updateFilter("age", items)}
         />
+        <FilterSelectChip
+          label="지역별"
+          array={regions}
+          selected={filters.regions}
+          onSelect={(items) => updateFilter("regions", items)}
+        />
         <FilterDateChip
           label="산책일"
           selected={filters.date_time}
           onSelect={(items) => updateFilter("date_time", items)}
         />
         <FilterSelectChip
-          label="지역별"
-          array={regions}
-          selected={filters.regions}
-          onSelect={(items) => updateFilter("regions", items)}
+          label="시간대"
+          array={times}
+          selected={filters.times}
+          onSelect={(items) => updateFilter("times", items)}
         />
       </div>
       <div className="mt-5">
@@ -62,12 +70,7 @@ const PostItemFilterTab = ({ updateFilter, filters, onClick }: PostItemFilterTab
         />
       </div>
       <div className="mt-7 flex">
-        <div
-          className="flex mb-4 h-12 w-full cursor-pointer items-center rounded-lg border-2 border-mainColor p-2 justify-center"
-          onClick={onClick}
-        >
-          초기화
-        </div>
+        <Button className="flex mb-4 h-12 w-full cursor-pointer items-center rounded-lg border-2 border-mainColor p-2 justify-center" text="초기화" onClick={onClick} />
       </div>
     </div>
   );
