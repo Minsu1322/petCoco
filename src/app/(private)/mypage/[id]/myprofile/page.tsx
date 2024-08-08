@@ -68,7 +68,7 @@ const MyProfile = () => {
               {user.nickname}
               <Link
                 href={`/mypage/${user.id}/myprofile/fixMyProfile`}
-                className="mb-10 ml-20 min-h-[23px] overflow-hidden rounded-lg bg-[#EFEFF0] bg-zinc-100 px-1 py-1 text-xs leading-relaxed tracking-wide text-neutral-400"
+                className="mb-10 ml-20 min-h-[23px] overflow-hidden rounded-lg bg-[#EFEFF0] px-1 py-1 text-xs leading-relaxed tracking-wide text-neutral-400"
               >
                 내 프로필 수정
               </Link>
@@ -76,7 +76,7 @@ const MyProfile = () => {
             </span>
           </div>
 
-          <div className="flex hidden justify-center sm:block">
+          <div className="hidden justify-center sm:block">
             <div className="flex w-[90%] flex-col rounded-lg">
               <div className="mb-5 flex w-[50%] justify-between">
                 <span className="flex flex-col items-center gap-1">
@@ -101,7 +101,7 @@ const MyProfile = () => {
             </div>
           </div>
           <Link href={`/mypage/${user.id}/myprofile/fixMyProfile`} className="mt-[-20px] flex justify-center">
-            <div className="flex hidden items-center justify-center rounded-md bg-mainColor text-center font-bold sm:block">
+            <div className="hidden items-center justify-center rounded-md bg-mainColor text-center font-bold sm:block">
               내 프로필 수정
             </div>
           </Link>
@@ -111,41 +111,44 @@ const MyProfile = () => {
           <div className="self-start text-[#3e3e3e]">나의 반려동물 ({pets.length})</div>
           <Link
             href={`/mypage/${user.id}/myprofile/fixMyProfile`}
-            className="mb-8 ml-4 min-h-[23px] overflow-hidden rounded-lg bg-[#EFEFF0] bg-zinc-100 px-1 py-1 text-xs leading-relaxed tracking-wide text-neutral-400"
+            className="mb-8 ml-4 min-h-[23px] overflow-hidden rounded-lg bg-[#EFEFF0] px-1 py-1 text-xs leading-relaxed tracking-wide text-neutral-400"
           >
             반려동물 프로필 수정
           </Link>
         </div>
-        <div className="flex flex-col items-center gap-6 overflow-y-scroll rounded-[10px] bg-[#EFEFF0] py-4 scrollbar-hide">
+        <div className="flex flex-col items-center rounded-[10px] bg-[#EFEFF0]">
           <div>
-            {pets?.map((pet) => (
-              <Link key={pet.id} href={`/mypage/${id}/mypet/mypetprofile/${pet.id}`}>
-                <div className="my-auto mt-2 flex flex-row items-center gap-12 rounded-xl bg-[#EFEFF0] px-[16px] py-[12px]">
-                  <img
-                    className="h-[100px] w-[100px] rounded bg-lime-300 object-cover"
-                    src={pet.petImage ? pet.petImage : defaultPetImg}
-                    alt="..."
-                  />
-                  <div>
-                    <div className="text-lg font-semibold leading-normal">
-                      {pet.petName}({pet.majorClass})
-                    </div>
-                    <div className="inline-flex h-5 items-start justify-start gap-2">
-                      <div className="text-base font-normal leading-tight text-[#939396]">성별</div>
-                      <div className="shrink grow basis-0 text-base font-normal leading-tight text-[#444447]">
-                        {pet.male_female}
+            {pets?.map(
+              (pet, i) =>
+                i === 0 && (
+                  <Link key={pet.id} href={`/mypage/${id}/mypet/mypetprofile/${pet.id}`}>
+                    <div className="flex flex-row items-center rounded-xl bg-[#EFEFF0] p-2">
+                      <img
+                        className="h-[100px] w-[100px] rounded bg-lime-300 object-cover"
+                        src={pet.petImage ? pet.petImage : defaultPetImg}
+                        alt="..."
+                      />
+                      <div className="ml-4 flex flex-col">
+                        <div className="text-lg font-semibold leading-normal">
+                          {pet.petName}({pet.majorClass})
+                        </div>
+                        <div className="inline-flex h-5 items-start justify-start gap-2">
+                          <div className="text-base font-normal leading-tight text-[#939396]">성별</div>
+                          <div className="shrink grow basis-0 truncate text-base font-normal leading-tight text-[#444447]">
+                            {pet.male_female}
+                          </div>
+                        </div>
+                        <div className="inline-flex h-5 items-start justify-start gap-2">
+                          <div className="text-base font-normal leading-tight text-[#939396]">품종</div>
+                          <div className="shrink grow basis-0 text-base font-normal leading-tight text-[#444447]">
+                            {pet.minorClass}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="inline-flex h-5 items-start justify-start gap-2">
-                      <div className="text-base font-normal leading-tight text-[#939396]">품종</div>
-                      <div className="shrink grow basis-0 text-base font-normal leading-tight text-[#444447]">
-                        {pet.minorClass}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                  </Link>
+                )
+            )}
           </div>
           {/* <div className="mb-5">
             <Link href={`/mypage/${id}/mypet/addmypetprofile`}>
