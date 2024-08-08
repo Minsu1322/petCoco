@@ -46,7 +46,7 @@ const MapForm = ({ center }: MapComponentProps) => {
     <>
       <Map
         center={position.center}
-        style={{ width: "450px", height: "360px" }}
+        style={{ width: "358px", height: "254px" }}
         level={5}
         onClick={(_, mouseEvent) => {
           const latlng = mouseEvent.latLng;

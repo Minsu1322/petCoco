@@ -12,7 +12,9 @@ import { getConvertTime } from "@/app/utils/getConvertTime";
 import { getConvertDate } from "../../_components/getConvertDate";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
+import Button from "@/components/Button";
+import PetItem from "../../_components/petItem";
 
 interface DetailMatePostProps {
   post: MatePostAllType;
@@ -133,14 +135,14 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
         showCancelButton: true,
         confirmButtonText: "확인",
         cancelButtonText: "취소",
-        confirmButtonColor:'#1763e7',
-        cancelButtonColor: '#c0c0c0',
-        icon: 'question',
+        confirmButtonColor: "#1763e7",
+        cancelButtonColor: "#c0c0c0",
+        icon: "question"
       });
-  
+
       if (result.isConfirmed) {
         Swal.fire("완료!", "모집 상태가 변경되었습니다!", "success");
-        
+
         const response = await fetch(`/api/mate/post/${post.id}`, {
           method: "PUT",
           headers: {
@@ -148,12 +150,10 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           },
           body: JSON.stringify({ recruiting: !post.recruiting })
         });
-  
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        
       } else if (result.isDenied) {
         Swal.fire("오류!", "모집상태가 변경되지 않았습니다.", "error");
       }
@@ -162,7 +162,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       Swal.fire("오류!", "모집상태가 변경되지 않았습니다.", "error");
     }
   };
-  
 
   const deleteMutation = useMutation({
     mutationFn: deletePost,
@@ -223,14 +222,14 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   const handleDeletePost = (id: string) => {
     Swal.fire({
-      title: '게시글 삭제',
+      title: "게시글 삭제",
       text: "현재 게시글을 삭제하시겠어요?",
-      icon: 'question',
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor:'#d33',
-      cancelButtonColor: '#c0c0c0',
-      confirmButtonText: '삭제',
-      cancelButtonText: '취소'
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#c0c0c0",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소"
     }).then((result) => {
       if (result.isConfirmed) {
         deleteMutation.mutate(id);
@@ -245,14 +244,14 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   const handleEditPost = () => {
     Swal.fire({
-      title: '게시글 수정',
+      title: "게시글 수정",
       text: "현재 게시글을 수정하시겠어요?",
-      icon: 'question',
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: '#1763e7',
-      cancelButtonColor: '#c0c0c0',
-      confirmButtonText: '확인',
-      cancelButtonText: '취소'
+      confirmButtonColor: "#1763e7",
+      cancelButtonColor: "#c0c0c0",
+      confirmButtonText: "확인",
+      cancelButtonText: "취소"
     }).then((result) => {
       if (result.isConfirmed) {
         setIstEditting(true);
@@ -328,10 +327,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     }
   };
 
-
-
   return (
-    <div className="container mx-auto mb-5 mt-10 px-4">
+    <div className="container mx-auto">
       {isEditing ? (
         <form onSubmit={handleUpdatePost} className="mx-auto flex max-w-4xl flex-col items-center">
           <div className="mb-5 flex flex-col items-center justify-between">
@@ -492,13 +489,15 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           </div>
         </form>
       ) : (
-        <div className="mx-auto mb-5 mt-8 max-w-5xl rounded-lg border border-gray-200 bg-white p-2 lg:p-6 shadow-md">
+        <div className="mx-[1rem] mb-5 mt-[1.06rem]">
           {/* 제목 및 버튼 영역 */}
           <div className="mb-1 flex flex-col">
-            <div className="flex flex-col px-6">
-              <div className="flex justify-between mt-3">
-                <h1 className="text-3xl font-semibold">{post.title}</h1>
-                <div>
+            <div className="flex flex-col">
+              <div className="mt-3 flex justify-between">
+                <h1 className="mx-auto text-[1.125rem] font-semibold">
+                  [{post.date_time}]{post.title}
+                </h1>
+                {/* <div>
                   {userId === post.user_id ? (
                     <div className="mb-4 flex item-center gap-x-5">
                       <button
@@ -530,134 +529,185 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                       </button>
                       </div>
                   )}
-                </div>
+                </div> */}
               </div>
-              
-              {/* 프로필 영역 */}
-              <div className="mb-10 mt-4 flex">
-                <Image
-                  src={
-                    post.users && post.users?.profile_img
-                      ? post.users?.profile_img
-                      : "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/post_image/1722324396777_xo2ka9.jpg"
-                  }
-                  alt="사용자 프로필 이미지"
-                  width={50}
-                  height={50}
-                  className="rounded-full border border-[#e6efff]"
-                />
-                <div className="ml-3 flex flex-col justify-center">
-                  <div className="flex font-semibold">{post.users?.nickname}</div>
-                  <div className="flex text-gray-400">{new Date(post.created_at).toLocaleString()}</div>
-                </div>
-              </div>
-            </div>
 
-            <div className="overflow-hidden">
-              <div className="space-y-8 p-6">
-                {/* 희망 날짜/시간 및 모집 인원 */}
-                <div className="flex rounded-lg bg-gray-50 p-4">
-                  <div className="w-3/6">
-                    <p className="text-sm text-gray-500">희망 날짜 및 시간</p>
-                    <p className="mt-1 font-semibold">
-                      {post.date_time?.split("T")[0]} {getConvertTime({ date_time: post.date_time || "" })}
+              {/* 프로필 영역 */}
+              <div className=" mt-[1.5rem]">
+                <DynamicMapComponent
+                  center={{
+                    lat: Number(post.position?.center?.lat),
+                    lng: Number(post.position?.center?.lng)
+                  }}
+                  tag={post.place_name || ""}
+                  // onMapLoad={() => setIsMapLoading(false)}
+                />
+              </div>
+              <div className="mt-[0.5rem] flex items-center mb-[0.69rem]">
+                <img src="/assets/svg/ic_info.svg" />
+                <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">상세 위치는 참여 확정 후 확인할 수 있어요</p>
+              </div>
+              <div className="mb-[0.94rem] mt-[0.69rem] flex rounded-[0.75rem] bg-gray-100 px-[0.69rem] py-[0.75rem]">
+                <div className="mr-[2.16rem] flex flex-col">
+                  <div className="ml-[1.34rem] h-[3.75rem] w-[3.75rem]">
+                    <Image
+                      src={
+                        post.users && post.users?.profile_img
+                          ? post.users?.profile_img
+                          : "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/post_image/1722324396777_xo2ka9.jpg"
+                      }
+                      alt="사용자 프로필 이미지"
+                      width={60}
+                      height={60}
+                      className="h-full w-full rounded-full object-cover"
+                    />
+                  </div>
+                  <Button
+                    className="ml-[0.75rem] mt-[0.56rem] flex flex-shrink-0 flex-col items-center justify-center rounded-full bg-gray-400 px-[0.81rem] py-[0.19rem] text-[1rem] text-white"
+                    onClick={startChat}
+                    text="채팅하기"
+                  ></Button>
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="flex font-semibold">
+                    {post.users?.nickname} ({post.users?.gender}, {post.users?.age})
+                  </p>
+                  <div className="flex">
+                    <p className="mr-[0.5rem] text-gray-400">한 마디</p>
+                    <p className="flex w-[130px] overflow-hidden text-ellipsis whitespace-nowrap font-semibold">
+                      {post.users?.introduction}
                     </p>
                   </div>
-                  <div className="ml-8">
-                    <p className="text-sm text-gray-500">모집 인원 수</p>
-                    <p className="mt-1 font-semibold">{post.members}명</p>
-                  </div>
                 </div>
+              </div>
 
-                {/* 모집기간 */}
-                <div className="rounded-lg bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">모집기간</p>
-                  <p className="mt-1 font-semibold">
-                    {post.recruitment_start?.split("T")[0]}{" "}
-                    {getConvertTime({ date_time: post.recruitment_start || "" })}
-                    {" ~ "}
-                    {post.recruitment_end?.split("T")[0]} {getConvertTime({ date_time: post.recruitment_end || "" })}
+              <div className="border-t border-b border-gray-200 pt-[0.87rem] pb-[0.94rem] pl-[0.75rem]">
+                <div className="mb-[0.25rem] flex">
+                  <img src="/assets/svg/ic_location2.svg" />
+                  <p className="ml-[0.5rem] w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+                    {post.place_name || ""}
                   </p>
                 </div>
+                <div className="mb-[0.25rem] flex">
+                  <img src="/assets/svg/ic_calendar2.svg" />
+                  <p className="ml-[0.5rem] text-sm">
+                    {post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })}
+                  </p>
+                </div>
+                <div className="flex items-center">
+                  <img src="/assets/svg/ic_user2.svg" className="mr-[0.5rem]" />
+                  <p className="mr-[0.5rem] flex text-sm">{post.members}명 모집</p>
+                  <div
+                    className={`${post.recruiting ? "bg-[#7BC868]" : "bg-[#F47BB5]"} flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
+                  >
+                    <p className="text-[0.625rem]">{post.recruiting ? "모집중" : "모집 완료"}</p>
+                  </div>
+                </div>
+              </div>
 
-                {/* 산책 장소 정보 */}
-                <div className="flex flex-col gap-6 md:flex-row">
-                  <div className="w-full md:w-1/2">
-                    <p className="mb-2 font-semibold">산책 장소</p>
-                    <div className="overflow-hidden rounded-lg shadow-md">
-                      {/* {isMapLoading && <div className="h-[300px] w-full animate-pulse bg-gray-200"></div>} */}
+              <div className="ml-[0.75rem] mt-[0.37rem] flex items-center mb-[0.87rem]">
+                <img src="/assets/svg/ic_info.svg" />
+                <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">우천 시 일정이 변경되거나 취소될 수 있어요.</p>
+              </div>
+
+              <div className="flex">
+                {/* <div className="space-y-8 p-6"> */}
+                  {/* 희망 날짜/시간 및 모집 인원 */}
+                  {/* <div className="flex rounded-lg bg-gray-50 p-4">
+                    <div className="w-3/6">
+                      <p className="text-sm text-gray-500">희망 날짜 및 시간</p>
+                      <p className="mt-1 font-semibold">
+                        {post.date_time?.split("T")[0]} {getConvertTime({ date_time: post.date_time || "" })}
+                      </p>
+                    </div>
+                    <div className="ml-8">
+                      <p className="text-sm text-gray-500">모집 인원 수</p>
+                      <p className="mt-1 font-semibold">{post.members}명</p>
+                    </div>
+                  </div>
+
+                  {/* 모집기간 */}
+                  {/* <div className="rounded-lg bg-gray-50 p-4">
+                    <p className="text-sm text-gray-500">모집기간</p>
+                    <p className="mt-1 font-semibold">
+                      {post.recruitment_start?.split("T")[0]}{" "}
+                      {getConvertTime({ date_time: post.recruitment_start || "" })}
+                      {" ~ "}
+                      {post.recruitment_end?.split("T")[0]} {getConvertTime({ date_time: post.recruitment_end || "" })}
+                    </p>
+                  </div>  */}
+                  {/* 산책 장소 정보 */}
+                  {/* <div className="flex flex-col gap-6 md:flex-row">
+                    <div className="w-full md:w-1/2">
+                      <p className="mb-2 font-semibold">산책 장소</p>
+                      <div className="overflow-hidden rounded-lg shadow-md">
+                        {/* {isMapLoading && <div className="h-[300px] w-full animate-pulse bg-gray-200"></div>} */}
+                      {/* </div>
+                    </div>
+                    <div className="mt-7 w-full space-y-4 rounded-lg bg-gray-50 p-4 md:w-1/2">
                       <div>
-                        <DynamicMapComponent
-                          center={{
-                            lat: Number(post.position?.center?.lat),
-                            lng: Number(post.position?.center?.lng)
-                          }}
-                          // onMapLoad={() => setIsMapLoading(false)}
-                        />
+                        <p className="text-sm text-gray-500">만나기로 한 곳의 주소</p>
+                        <p className="mt-1 font-semibold">{post.address}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">산책 장소 추가 설명</p>
+                        <p className="font-semibold">{post.place_name}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">선호하는 산책 루트</p>
+                        <p className="mt-1 font-semibold">{post.preferred_route}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">특별한 요구사항</p>
+                        <p className="mt-1 font-semibold">{post.special_requirements}</p>
                       </div>
                     </div>
-                  </div>
-                  <div className="mt-7 w-full space-y-4 rounded-lg bg-gray-50 p-4 md:w-1/2">
-                    <div>
-                      <p className="text-sm text-gray-500">만나기로 한 곳의 주소</p>
-                      <p className="mt-1 font-semibold">{post.address}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">산책 장소 추가 설명</p>
-                      <p className="font-semibold">{post.place_name}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">선호하는 산책 루트</p>
-                      <p className="mt-1 font-semibold">{post.preferred_route}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">특별한 요구사항</p>
-                      <p className="mt-1 font-semibold">{post.special_requirements}</p>
-                    </div>
-                  </div>
-                </div>
+                  </div> */} 
 
-                {/* 내용 */}
-                <div>
-                  <p className="rounded-lg bg-gray-50 p-4 whitespace-pre-line">{post.content}</p>
-                </div>
+                  {/* 내용 */}
+                  {/* <div>
+                    <p className="whitespace-pre-line rounded-lg bg-gray-50 p-4">{post.content}</p>
+                  </div> */}
 
-                {/* 반려동물 정보 */}
-                <div>
-                  <div className="mb-3 flex items-center">
-                    <span className="mr-2 text-3xl">🐶</span>
-                    <h2 className="text-lg font-semibold">반려동물 정보</h2>
-                  </div>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-                    {post.matepostpets && post.matepostpets.length > 0 ? (
-                      post.matepostpets.map((pet) => (
-                        <div className="rounded-lg bg-gray-50 p-4 shadow-sm" key={pet.id}>
-                          <p className="mb-2">
-                            <span className="font-semibold">성별:</span>{" "}
-                            {pet.male_female === "male" ? "남" : pet.male_female === "female" ? "여" : ""}
-                          </p>
-                          <p className="mb-2">
-                            <span className="font-semibold">중성화 여부:</span>{" "}
-                            {pet.neutered ? "예" : pet.neutered === false ? "아니오" : ""}
-                          </p>
-                          <p className="mb-2">
-                            <span className="font-semibold">나이:</span> {pet.age ? `${pet.age}살` : ""}
-                          </p>
-                          <p className="mb-2">
-                            <span className="font-semibold">무게:</span> {pet.weight ? `${pet.weight} kg` : ""}
-                          </p>
-                          <p>
-                            <span className="font-semibold">성격 및 특징:</span> {pet.characteristics || ""}
-                          </p>
+                  {/* 반려동물 정보 */}
+                  {/* <div>
+                    <div className="mb-3 flex items-center">
+                      <span className="mr-2 text-3xl">🐶</span>
+                      <h2 className="text-lg font-semibold">반려동물 정보</h2>
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                      {post.matepostpets && post.matepostpets.length > 0 ? (
+                        post.matepostpets.map((pet) => (
+                          <div className="rounded-lg bg-gray-50 p-4 shadow-sm" key={pet.id}>
+                            <p className="mb-2">
+                              <span className="font-semibold">성별:</span>{" "}
+                              {pet.male_female === "male" ? "남" : pet.male_female === "female" ? "여" : ""}
+                            </p>
+                            <p className="mb-2">
+                              <span className="font-semibold">중성화 여부:</span>{" "}
+                              {pet.neutered ? "예" : pet.neutered === false ? "아니오" : ""}
+                            </p>
+                            <p className="mb-2">
+                              <span className="font-semibold">나이:</span> {pet.age ? `${pet.age}살` : ""}
+                            </p>
+                            <p className="mb-2">
+                              <span className="font-semibold">무게:</span> {pet.weight ? `${pet.weight} kg` : ""}
+                            </p>
+                            <p>
+                              <span className="font-semibold">성격 및 특징:</span> {pet.characteristics || ""}
+                            </p>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="col-span-full flex items-center justify-center rounded-lg bg-gray-100 p-4 text-gray-500">
+                          반려동물 정보가 없습니다.
                         </div>
-                      ))
-                    ) : (
-                      <div className="col-span-full flex items-center justify-center rounded-lg bg-gray-100 p-4 text-gray-500">
-                        반려동물 정보가 없습니다.
-                      </div>
-                    )}
-                  </div>
-                </div>
+                      )}
+                    </div>
+                  </div> */}
+                {/* </div> */}
+                <PetItem />
+                
               </div>
             </div>
           </div>

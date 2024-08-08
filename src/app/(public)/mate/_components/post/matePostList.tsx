@@ -111,7 +111,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
       // TODO: query안에 userLat, userLng 넣으면 좋을 거 같은데
       const response = await fetch(
-        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=6&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
+        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=4&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
       );
       const data = response.json();
       // console.log(data);
@@ -144,19 +144,19 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
   }
 
   return (
-    <div className="w-full">
-        <div className="flex flex-row flex-wrap justify-between gap-x-7">
+    <div className="w-full flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center mb-[24px]">
           {posts.length > 0 ? (
             posts.map((post) => <MatePostItem key={post.id} post={post} />)
           ) : (
-             <div className="flex items-center justify-center w-full h-screen">
+            <div className="flex items-center justify-center w-full h-screen">
               <div className="flex flex-col items-center">
                 <span className="mr-2 text-3xl">🐶</span>
                 <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
               </div>
-           </div>
+            </div>
           )}
-      </div>
+        </div>
 
       {/* pagination */}
       <div className="mt-8 flex flex-row items-center justify-center">

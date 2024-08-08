@@ -1,4 +1,5 @@
 import { Switch } from "@nextui-org/react";
+import Chip from "@/components/Chip";
 
 interface PostListFilterTabProps {
   isCurrentPosts: boolean;
@@ -11,15 +12,11 @@ const PostListFilterTab = ({isCurrentPosts, handleToggleAllPosts, handleDateSort
 
   return (
     <div>
-      <div className="mb-3 flex flex-row justify-between z-40 ">
-        <Switch defaultSelected size="sm" onClick={handleToggleAllPosts}>
-          <p className="cursor-pointer text-sm sm:text-base">{isCurrentPosts ? "모집 완료된 메이트도 보기" : "모집 중인 메이트만 보기"}</p>
-        </Switch>
-        <div className="flex items-center gap-x-2">
-          <div className="cursor-pointer text-sm sm:text-base" onClick={handleDateSort}>마감 임박순</div>
-          <p className="cursor-pointer text-sm sm:text-base">|</p>
-          <div className="cursor-pointer text-sm sm:text-base" onClick={handleDistanceSort}>가까운 순</div>
-        </div>
+      <div className="flex gap-x-[0.75rem] z-40 ml-[1.62rem]">
+        <Chip text="거리순" className="bg-gray-200 py-[0.4375rem] px-[0.625rem] rounded-full text-[12px] font-semibold" onClick={handleDistanceSort}></Chip>
+        <Chip text="모집중" className="bg-gray-200 py-[0.4375rem] px-[0.625rem] rounded-full text-[12px] font-semibold" onClick={handleToggleAllPosts}></Chip>
+        <Chip text="최신순" className="bg-gray-200 py-[0.4375rem] px-[0.625rem] rounded-full text-[12px] font-semibold"></Chip>
+        <Chip text="마감 임박순" className="bg-gray-200 py-[0.4375rem] px-[0.625rem] rounded-full text-[12px] font-semibold" onClick={handleDateSort}></Chip>
       </div>
     </div>
   );
