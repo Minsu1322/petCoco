@@ -7,8 +7,9 @@ import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { RealtimeChannel } from "@supabase/supabase-js";
 import { getTimeDifference } from "@/app/utils/getTimeDifference";
+import { ChatBubbleLeftRightIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import Swal from "sweetalert2";
 
 const supabase = createClient();
 
@@ -47,9 +48,8 @@ export default function ClientMessageComponent() {
   const messageEndRef = useRef<HTMLDivElement>(null);
   const [isUserLoading, setIsUserLoading] = useState(true);
   const queryClient = useQueryClient();
-  const [realtimeChannel, setRealtimeChannel] = useState<RealtimeChannel | null>(null);
   const [selectedUserProfile, setSelectedUserProfile] = useState<any>(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(true);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -100,6 +100,13 @@ export default function ClientMessageComponent() {
   });
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 640;
+    if (isMobile) {
+      setIsMobileMenuOpen(true);
+    }
+  }, []);
+
+  useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
@@ -131,6 +138,15 @@ export default function ClientMessageComponent() {
 
   const setSelectedUserAndMarkRead = useCallback(
     (userId: string) => {
+      if (userId === user?.id) {
+        Swal.fire({
+          title: "자신에게 채팅을 시작할 수 없습니다.",
+          text: "다른 사용자를 선택해 주세요.",
+          icon: "warning",
+          confirmButtonText: "확인"
+        });
+        return;
+      }
       setSelectedUser(userId);
       if (userId) {
         markMessagesAsRead(userId);
@@ -140,62 +156,8 @@ export default function ClientMessageComponent() {
         setSelectedUserProfile(userProfile);
       }
     },
-    [markMessagesAsRead, messages]
+    [markMessagesAsRead, messages, user?.id]
   );
-
-  const subscribeToMessages = useCallback(() => {
-    if (!user) return;
-
-    console.log("Attempting to subscribe to messages channel");
-
-    const channel = supabase
-      .channel("messages")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "messages",
-          filter: `or(sender_id.eq.${user.id},receiver_id.eq.${user.id})`
-        },
-        async (payload) => {
-          console.log("Received new message:", payload);
-          await queryClient.invalidateQueries({ queryKey: ["messages", user.id] });
-
-          // 자동으로 읽음 처리
-          if (selectedUser && payload.new.sender_id === selectedUser && payload.new.receiver_id === user.id) {
-            await markMessagesAsRead(selectedUser);
-          }
-        }
-      )
-      .subscribe((status) => {
-        console.log("Subscription status:", status);
-      });
-
-    setRealtimeChannel(channel);
-
-    return () => {
-      console.log("Unsubscribing from messages channel");
-      channel.unsubscribe();
-    };
-  }, [user, queryClient, selectedUser, markMessagesAsRead]);
-
-  useEffect(() => {
-    const unsubscribe = subscribeToMessages();
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
-  }, [subscribeToMessages]);
-
-  useEffect(() => {
-    const subscription = supabase.channel("system").subscribe((status) => {
-      console.log(`Supabase realtime status: ${status}`);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   useEffect(() => {
     if (selectedUser) {
@@ -215,6 +177,29 @@ export default function ClientMessageComponent() {
         return acc;
       }, {} as GroupedMessages)
     : {};
+
+  const loadUserProfile = useCallback(async (userId: string) => {
+    const { data, error } = await supabase.from("users").select("id, nickname, profile_img").eq("id", userId).single();
+
+    if (error) {
+      console.error("Error loading user profile:", error);
+    } else {
+      setSelectedUserProfile(data);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (initialSelectedUser) {
+      setSelectedUser(initialSelectedUser);
+      loadUserProfile(initialSelectedUser);
+    }
+  }, [initialSelectedUser, loadUserProfile]);
+
+  const sortedGroupedMessages = Object.entries(groupedMessages).sort((a, b) => {
+    const lastMessageA = a[1][a[1].length - 1];
+    const lastMessageB = b[1][b[1].length - 1];
+    return new Date(lastMessageB.created_at).getTime() - new Date(lastMessageA.created_at).getTime();
+  });
 
   const unreadCounts = messages
     ? messages.reduce(
@@ -239,23 +224,23 @@ export default function ClientMessageComponent() {
 
   return (
     <div className="container mx-auto flex h-[calc(100vh-10rem)] max-w-4xl flex-col p-4">
-      <div className="relative flex flex-grow overflow-hidden rounded-lg border border-mainColor">
+      {/*  border border-mainColor */}
+      <div className="relative flex flex-grow overflow-hidden rounded-lg">
         {/* 모바일 메뉴 토글 버튼 */}
         <button
-          className="absolute right-4 top-4 z-30 block rounded-full bg-mainColor p-2 text-white shadow-md sm:hidden"
+          className="absolute right-4 top-4 z-30 block rounded-full bg-black p-2 text-white shadow-md sm:hidden"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {isMobileMenuOpen ? "닫기" : "메뉴"}
+          {isMobileMenuOpen ? <XMarkIcon className="h-6 w-6" /> : <ChatBubbleLeftRightIcon className="h-6 w-6" />}
         </button>
 
         {/* 대화 목록 */}
         <div
-          className={`w-full overflow-y-auto border-r border-mainColor transition-all duration-300 ease-in-out sm:w-1/3 ${isMobileMenuOpen ? "absolute inset-y-0 left-0 z-20 bg-white" : "hidden sm:block"}`}
+          className={`w-full overflow-y-auto truncate border-r border-mainColor transition-all duration-300 ease-in-out sm:w-1/3 ${isMobileMenuOpen ? "absolute inset-y-0 left-0 z-20 bg-white" : "hidden sm:block"}`}
         >
           <div className="h-16 border-b border-mainColor"></div>
           <ul>
-            {Object.entries(groupedMessages).map(([userId, userMessages]) => {
-              // 대화 상대의 프로필 사진을 결정
+            {sortedGroupedMessages.map(([userId, userMessages]) => {
               const message = userMessages[0];
               const isSender = message.sender_id === user?.id;
               const profile = isSender ? message.receiver_profile : message.sender_profile;
@@ -272,7 +257,6 @@ export default function ClientMessageComponent() {
                   }}
                 >
                   <div className="flex items-center">
-                    {/* 대화 상대의 프로필 사진 표시 */}
                     {profile?.profile_img ? (
                       <Image
                         src={profile.profile_img}
@@ -292,11 +276,10 @@ export default function ClientMessageComponent() {
                       <div className="font-bold">
                         {selectedUser === userId ? selectedUserProfile?.nickname : profile?.nickname}
                       </div>
-                      <div className="truncate text-sm text-gray-600">
-                        {userMessages[userMessages.length - 1].content}
-                      </div>
+                      <div className="text-sm text-gray-600">{userMessages[userMessages.length - 1].content}</div>
                     </div>
                   </div>
+
                   <div className="mb-2 text-sm text-gray-500" style={{ whiteSpace: "nowrap" }}>
                     {getTimeDifference(userMessages[userMessages.length - 1].created_at)}
                   </div>
@@ -315,14 +298,14 @@ export default function ClientMessageComponent() {
         <div className="flex w-full flex-col sm:w-2/3">
           {selectedUser && selectedUserProfile && (
             <>
-              <div className="flex h-16 items-center justify-center border-b border-mainColor bg-[#d0dbee] p-3">
+              <div className="flex h-16 min-h-[4rem] items-center justify-center border-b border-mainColor bg-[#d0dbee] p-3">
                 {selectedUserProfile.profile_img ? (
                   <Image
                     src={selectedUserProfile.profile_img}
                     alt="Profile"
                     width={40}
                     height={40}
-                    className="mr-3 rounded-full"
+                    className="mr-3 h-10 w-10 rounded-full object-cover"
                   />
                 ) : (
                   <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-mainColor">
@@ -331,24 +314,34 @@ export default function ClientMessageComponent() {
                     </span>
                   </div>
                 )}
-                <span className="text-lg font-bold">{selectedUserProfile.nickname}</span>
+                <span className="truncate text-lg font-bold">{selectedUserProfile.nickname}</span>
               </div>
               <div className="relative flex-grow overflow-y-auto scrollbar-hide">
                 <div className="p-3">
                   {groupedMessages[selectedUser].map((message) => (
                     <div
                       key={message.id}
-                      className={`mb-4 ${message.sender_id === user.id ? "text-right" : "text-left"}`}
+                      className={`mb-4 flex ${message.sender_id === user.id ? "justify-end" : "justify-start"}`}
                     >
                       <div
-                        className={`relative inline-block p-2 ${
-                          message.sender_id === user.id
-                            ? "rounded-bl-2xl rounded-br-none rounded-tl-2xl rounded-tr-2xl bg-mainColor text-white"
-                            : "rounded-bl-2xl rounded-br-2xl rounded-tl-none rounded-tr-2xl bg-gray-200 text-black"
-                        }`}
+                        className={`flex max-w-[60%] items-end ${message.sender_id === user.id ? "flex-row-reverse" : "flex-row"}`}
                       >
-                        <p className="text-sm">{message.content}</p>
-                        <p className="mt-1 text-xs text-gray-500">{new Date(message.created_at).toLocaleString()}</p>
+                        <div
+                          className={`relative inline-block break-words p-2 ${
+                            message.sender_id === user.id
+                              ? "rounded-bl-2xl rounded-br-none rounded-tl-2xl rounded-tr-2xl bg-mainColor text-white"
+                              : "rounded-bl-2xl rounded-br-2xl rounded-tl-none rounded-tr-2xl bg-gray-200 text-black"
+                          }`}
+                        >
+                          <p className="text-sm">{message.content}</p>
+                        </div>
+                        <span className={`text-xs text-gray-500 ${message.sender_id === user.id ? "mr-2" : "ml-2"}`}>
+                          {new Date(message.created_at).toLocaleTimeString("ko-KR", {
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true
+                          })}
+                        </span>
                       </div>
                     </div>
                   ))}

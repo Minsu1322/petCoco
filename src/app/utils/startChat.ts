@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { createClient } from "@/supabase/client";
 import { User } from "@supabase/supabase-js";
+import { QueryClient } from "@tanstack/react-query";
 
 const startChat = async (receiverId: string, user: User | null, router: any) => {
   const supabase = createClient();

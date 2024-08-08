@@ -1,9 +1,8 @@
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
 
-// ClientMessageComponent를 동적으로 import합니다.
 const ClientMessageComponent = dynamic(() => import("@/components/message/ClientMessageComponent"), {
-  ssr: false // 서버 사이드 렌더링을 비활성화합니다.
+  ssr: false
 });
 
 export default function MessagePage() {
