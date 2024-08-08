@@ -20,6 +20,9 @@ const config: Config = {
         mainHoverLightColor: "#cbdcfa",
         editBtnColor: "#8CF2B7",
         delBtnColor: "#FFBCBC"
+      },
+      boxShadow: {
+        'custom': '2px 2px 4px 0px rgba(0, 0, 0, 0.25)',
       }
     }
   },
