@@ -1,7 +1,18 @@
 import Swal from "sweetalert2";
 import { createClient } from "@/supabase/client";
 import { User } from "@supabase/supabase-js";
+import { QueryClient } from "@tanstack/react-query";
 
+/**
+ * 특정사용자랑 대화를 시작하는 함수
+ * 사용자가 비로그인=로그인페이지로이동
+ * 예문 : startChat(currentMate.users[0].id, user, router);
+
+ * @param receiverId - 채팅상대의 ID
+ * @param user - 현재로그인한 유저(auth이용)
+ * @param router - navigation지정하면 됩니다
+ *
+ */
 const startChat = async (receiverId: string, user: User | null, router: any) => {
   const supabase = createClient();
 

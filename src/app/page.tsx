@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { fetchPostsMate, fetchPosts } from "./utils/mainPageFetch";
 import { useState, useCallback } from "react";
 import startChat from "./utils/startChat";
+import Swal from "sweetalert2";
 
 export default function Home() {
   const [currentMateIndex, setCurrentMateIndex] = useState(0);
@@ -35,6 +36,16 @@ export default function Home() {
   const handleStartChat = useCallback(() => {
     const currentMate = mateResponse?.data[currentMateIndex];
     if (currentMate && currentMate.users && currentMate.users[0]) {
+      // 본인 글일 경우
+      if (currentMate.users[0].id === user?.id) {
+        Swal.fire({
+          title: "자신에게 채팅을 시작할 수 없습니다.",
+          text: "다른 사용자를 선택해 주세요.",
+          icon: "warning",
+          confirmButtonText: "확인"
+        });
+        return;
+      }
       startChat(currentMate.users[0].id, user, router);
     }
   }, [mateResponse, currentMateIndex, user, router]);
