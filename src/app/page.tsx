@@ -12,6 +12,7 @@ import { fetchPostsMate, fetchPosts } from "./utils/mainPageFetch";
 import { useState, useCallback } from "react";
 import startChat from "./utils/startChat";
 import Swal from "sweetalert2";
+import MateCarousel from "@/components/mateCarousel/MateCarousel";
 
 export default function Home() {
   const [currentMateIndex, setCurrentMateIndex] = useState(0);
@@ -63,15 +64,19 @@ export default function Home() {
   if (isLoading || isMateLoading) return <div>Loading...</div>;
   if (error || mateError) return <div>Error: {error?.message || mateError?.message}</div>;
 
-  const OPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
-  const SLIDE_COUNT = 7;
-  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+  const AnimalOPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
+  const AnimalSLIDE_COUNT = 7;
+  const AnimalSLIDES = Array.from(Array(AnimalSLIDE_COUNT).keys());
+
+  const MateOPTIONS: EmblaOptionsType = { dragFree: true, loop: true };
+  const MateSLIDE_COUNT = 5;
+  const MateSLIDES = Array.from(Array(MateSLIDE_COUNT).keys());
 
   const currentMate = mateResponse?.data[currentMateIndex];
 
   return (
-    <div className="flex min-h-screen flex-col items-center gap-8 bg-gray-100 p-4 sm:p-6 md:p-10">
-      <div className="flex w-full flex-col items-center justify-center sm:w-full md:w-8/12">
+    <div className="flex min-h-screen flex-col items-center gap-8 sm:p-6 md:p-10">
+      <div className="flex w-full flex-col items-center justify-center sm:w-full">
         {/* 배너 영역 */}
         <Image
           src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_img/banner004.png"
@@ -84,7 +89,7 @@ export default function Home() {
       </div>
 
       {/* 게시글 영역 */}
-      <div className="flex w-full flex-col space-y-4 sm:space-y-6 md:w-8/12 md:flex-row md:space-x-4 md:space-y-0">
+      <div className="flex w-full flex-col px-4 space-y-4 sm:space-y-6 md:w-8/12 md:flex-row md:space-x-4 md:space-y-0">
         {/* 자유게시판 */}
         <div className="w-full rounded-lg border border-gray-300 bg-white p-4 shadow-md sm:w-full md:w-1/2 md:p-6">
           <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community`}>
@@ -169,6 +174,10 @@ export default function Home() {
         </div>
       </div>
 
+      <div className="mt-1 bg-white w-full rounded-lg border-2 border-[#a4d555] p-4">
+        <MateCarousel slides={MateSLIDES} options={MateOPTIONS} />
+      </div>
+
       <div className="flex w-full flex-col items-center justify-center sm:w-auto md:w-8/12">
         <Image
           src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_img/banner003.png"
@@ -180,7 +189,7 @@ export default function Home() {
         />
 
         <div className="mt-1 w-full rounded-lg border-2 border-[#a4d555] p-4">
-          <AnimalCarousel slides={SLIDES} options={OPTIONS} />
+          <AnimalCarousel slides={AnimalSLIDES} options={AnimalOPTIONS} />
         </div>
       </div>
     </div>
