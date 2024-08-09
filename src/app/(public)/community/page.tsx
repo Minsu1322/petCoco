@@ -70,7 +70,7 @@ const CommunityMainPage = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-4 py-2 focus:outline-none"
               />
-              <button type="submit" className="w-autopx-4 mx-4 py-2">
+              <button type="submit" className="w-auto px-4 mx-4 py-2">
                 <RiSearch2Line />
               </button>
             </div>
