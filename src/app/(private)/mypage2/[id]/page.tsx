@@ -85,7 +85,7 @@ function MyPage() {
           {pets?.map(
             (pet, i) =>
               i === 0 && (
-                <Link key={pet.id} href={`/mypage/${id}/mypet/mypetprofile/${pet.id}`}>
+                <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
                   <div className="ml-2 mt-2 flex flex-row rounded-xl bg-[#EFEFF0]">
                     <img
                       className="h-[100px] w-[100px] rounded bg-lime-300 object-cover"

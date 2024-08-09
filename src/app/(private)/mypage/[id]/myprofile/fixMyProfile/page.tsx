@@ -30,7 +30,7 @@ const FixMyProfile = () => {
   const router = useRouter();
 
   function toMyProfile() {
-    router.push(`/mypage/${user.id}/myprofile`);
+    router.push(`/mypage2/${user.id}`);
   }
 
   const ageOptions = [

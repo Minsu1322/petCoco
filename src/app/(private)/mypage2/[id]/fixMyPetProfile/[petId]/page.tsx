@@ -170,7 +170,7 @@ const FixMyPetProfile = () => {
   };
 
   function toMyPet() {
-    router.push(`/mypage/${id}/myprofile`);
+    router.push(`/mypage2/${id}`);
   }
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
