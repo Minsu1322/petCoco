@@ -222,12 +222,14 @@ const FixMyPetProfile = () => {
           ))}
         </div>
         <div className="mr-[18px] py-[22px]">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M15 0C6.72 0 0 6.72 0 15C0 23.28 6.72 30 15 30C23.28 30 30 23.28 30 15C30 6.72 23.28 0 15 0ZM21 16.5H16.5V21C16.5 21.825 15.825 22.5 15 22.5C14.175 22.5 13.5 21.825 13.5 21V16.5H9C8.175 16.5 7.5 15.825 7.5 15C7.5 14.175 8.175 13.5 9 13.5H13.5V9C13.5 8.175 14.175 7.5 15 7.5C15.825 7.5 16.5 8.175 16.5 9V13.5H21C21.825 13.5 22.5 14.175 22.5 15C22.5 15.825 21.825 16.5 21 16.5Z"
-              fill="#61646B"
-            />
-          </svg>
+          <Link href={`/mypage2/${id}/addMyPetProfile`}>
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M15 0C6.72 0 0 6.72 0 15C0 23.28 6.72 30 15 30C23.28 30 30 23.28 30 15C30 6.72 23.28 0 15 0ZM21 16.5H16.5V21C16.5 21.825 15.825 22.5 15 22.5C14.175 22.5 13.5 21.825 13.5 21V16.5H9C8.175 16.5 7.5 15.825 7.5 15C7.5 14.175 8.175 13.5 9 13.5H13.5V9C13.5 8.175 14.175 7.5 15 7.5C15.825 7.5 16.5 8.175 16.5 9V13.5H21C21.825 13.5 22.5 14.175 22.5 15C22.5 15.825 21.825 16.5 21 16.5Z"
+                fill="#61646B"
+              />
+            </svg>
+          </Link>
         </div>
       </div>
       <div className="mt-[22px] flex flex-col items-center justify-center">
@@ -328,7 +330,7 @@ const FixMyPetProfile = () => {
               className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-4 py-3 text-[15px] font-normal leading-[20px]"
               placeholder="예방접종 및 기타 의료 기록(최대 200자)"
               maxLength={200}
-              defaultValue={filteredProfile![0].introduction || ""}
+              defaultValue={filteredProfile![0].medicalRecords || ""}
               onChange={handleMedicalRecords}
             />
           </div>
