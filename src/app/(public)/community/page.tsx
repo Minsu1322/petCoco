@@ -2,8 +2,7 @@
 import {
   handleTabIntroduction,
   sortCategory,
-  tabs,
-  tags
+  tabs
 } from "@/components/community/communityTabAndSortTab/TabAndCategory";
 import PostList from "./_components/PostList";
 import React, { useState } from "react";
@@ -106,7 +105,7 @@ const CommunityMainPage = () => {
           </div>
 
           {/* 희귀 동물 게시판 */}
-          <div>
+          {/* <div>
             <h4 className="mb-4 text-lg font-semibold">희귀 동물 게시판</h4>
             <div className="grid grid-cols-3 gap-2">
               {tags.slice(0, showMoreKeywords ? undefined : 3).map((keyword) => (
@@ -121,9 +120,9 @@ const CommunityMainPage = () => {
                 >
                   {keyword}
                 </button>
-              ))}
-            </div>
-          </div>
+              ))} */}
+          {/* </div> */}
+          {/* </div> */}
         </div>
       </div>
     </div>

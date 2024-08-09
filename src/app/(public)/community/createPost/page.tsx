@@ -6,20 +6,22 @@ import { usePostStore } from "@/zustand/post";
 import { createClient } from "@/supabase/client";
 import Image from "next/image";
 import { useAuthStore } from "@/zustand/useAuth";
-import { tabs, tags } from "@/components/community/communityTabAndSortTab/TabAndCategory";
+import { tabs } from "@/components/community/communityTabAndSortTab/TabAndCategory";
 import { Input, Textarea, Button } from "@nextui-org/react";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const supabase = createClient();
 
-const CATEGORIES = tabs.filter((tab) => tab !== "전체" && tab !== "인기글").map((tab) => ({ value: tab, label: tab })); // "전체"와 "인기글" 제외
-const CATEGORIESANIMAL = tags
-  .filter((tab) => tab !== "전체" && tab !== "인기글")
-  .map((tab) => ({ value: tab, label: tab }));
+const CATEGORIES = tabs.filter((tab) => tab !== "전체").map((tab) => ({ value: tab, label: tab })); // "전체"제외
+// const CATEGORIES = tabs.filter((tab) => tab !== "전체" && tab !== "인기글").map((tab) => ({ value: tab, label: tab })); // "전체"와 "인기글" 제외
+// const CATEGORIESANIMAL = tags
+// .filter((tab) => tab !== "전체" && tab !== "인기글")
+// .map((tab) => ({ value: tab, label: tab }));
 
 // Zustand store에서 필요한 상태와 함수들을 가져옵니다.
 const CreatePostPage = () => {
-  const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage, initPost } = usePostStore();
+  const { title, content, category, images, setTitle, setContent, setCategory, addImage, removeImage, initPost } =
+    usePostStore();
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const [deleteFiles, setDeleteFiles] = useState<string[]>([]);
   const router = useRouter();
@@ -69,6 +71,10 @@ const CreatePostPage = () => {
       const existingUrls = new Set(uploadFiles.map((file) => file.name)); // 이미 업로드된 이미지 이름 추적
 
       for (const url of urls) {
+        if (uploadFiles.length >= 3) {
+          console.warn("이미지는 최대 3개까지만 업로드 가능합니다.");
+          break;
+        }
         if (!existingUrls.has(url)) {
           // 중복된 이미지 URL이 아닌 경우에만 처리
           // 이미지 URL을 data url 형태로 변환
@@ -96,14 +102,22 @@ const CreatePostPage = () => {
   // 이미지 업로드 처리 함수
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
+    if (uploadFiles.length + files.length > 3) {
+      Swal.fire({
+        title: "주의!",
+        text: "이미지는 최대 3개까지만 업로드 가능합니다.",
+        icon: "warning"
+      });
+      return;
+    }
+
     files.forEach((file) => {
       if (file.size > 5000000) {
-        // alert("파일 크기가 5MB를 초과합니다!!!.");
         Swal.fire({
           title: "주의!",
           text: "파일 크기가 5MB를 초과합니다!!!",
           icon: "warning"
-        })
+        });
 
         return;
       }
@@ -191,7 +205,7 @@ const CreatePostPage = () => {
         text: "게시글이 성공적으로 저장되었습니다.",
         icon: "success"
       });
-      
+
       router.push(postId ? `/community/${postId}` : "/community");
     } catch (error) {
       console.error("게시글 처리 중 오류가 발생했습니다:", error);
@@ -243,22 +257,22 @@ const CreatePostPage = () => {
               </Button>
             </div>
           ))}
-          {CATEGORIESANIMAL.map((cat) => (
+          {/* {CATEGORIESANIMAL.map((cat) => (
             <div key={cat.value} className="mb-2 mr-2">
               <Button radius="full" size="md" onClick={() => setCategory(cat.value)}>
                 {cat.label}
-              </Button>
-              {/* <button
+              </Button> */}
+          {/* <button
                 type="button"
                 onClick={() => setCategory(cat.value)}
                 className={`rounded-full border px-4 py-2 ${category === cat.value ? "bg-gray-300" : "hover:bg-gray-200"}`}
               >
                 {cat.label}
               </button> */}
-            </div>
-          ))}
         </div>
+        {/* ))} */}
       </div>
+      {/* </div> */}
       {/* 제목 입력 필드 */}
       <div className="mb-4 flex">
         <label htmlFor="title" className="mr-5 block w-[140px] font-semibold">
