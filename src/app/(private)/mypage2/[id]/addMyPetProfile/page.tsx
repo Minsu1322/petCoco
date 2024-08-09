@@ -13,7 +13,7 @@ import ButtonGroup from "../../_components/ButtonGroup";
 
 type PetType = UsersPetType;
 
-const addMyPetProfile = () => {
+const AddMyPetProfile = () => {
   const [petName, setPetNickName] = useState("");
   const [age, setAge] = useState("");
   const [majorClass, setMajorClass] = useState("");
@@ -270,4 +270,4 @@ const addMyPetProfile = () => {
   );
 };
 
-export default addMyPetProfile;
+export default AddMyPetProfile;
