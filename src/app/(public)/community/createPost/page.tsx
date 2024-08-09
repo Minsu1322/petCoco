@@ -26,6 +26,7 @@ const CreatePostPage = () => {
   const [deleteFiles, setDeleteFiles] = useState<string[]>([]);
   const router = useRouter();
   const searchParams = useSearchParams();
+  //게시글 수정페이지(createPost)로 이동해서 id값을 가져와서 postId에 저장
   const postId = searchParams.get("id");
   const { user } = useAuthStore();
   // const user_id = user && user.id;
