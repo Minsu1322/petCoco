@@ -77,66 +77,33 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
   const sortedPosts = sortPosts([...(data?.data || [])]);
 
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="mb-5 text-2xl font-bold">게시글 목록</h1>
+    <div className="flex w-full items-center gap-[1.06rem] border-b-[1px] py-[0.75rem]">
+      {/* 일상 */}
+      <p className="whitespace-nowrap rounded-full bg-yellow-200 px-[0.5rem] py-[0.25rem] text-[0.75rem] text-mainColor">
+        일상
+      </p>
 
-      <div className="space-y-6">
-        {sortedPosts.map((post) => (
-          <Link key={post.id} href={`/community/${post.id}`}>
-            <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-mainColor p-3 shadow-sm">
-              <div className="flex flex-grow flex-col justify-between p-4">
-                <div>
-                  <div className="mb-4 rounded-md bg-[#f7faff] p-1">
-                    <h2 className="text-lg font-semibold">{post.title}</h2>
-                  </div>
-                  <div className="mb-2 rounded-md bg-[#f7faff] p-4">
-                    <p className="mb-2 line-clamp-3 text-sm text-gray-600">{post.content}</p>
-                  </div>
-                </div>
+      {/* 가운데 내용 */}
+      <div className="w-full">
+        <div className="text-[1rem] leading-6">우리 뽀미 머리 어때요?</div>
 
-                <div className="flex items-end justify-between">
-                  <p className="text-xs text-gray-500">
-                    {post.users?.nickname} | {new Date(post.created_at).toLocaleDateString()}
-                  </p>
-                  <p className="text-xs text-gray-500">댓글 {post.comments.length}개</p>
-                </div>
-              </div>
-              <div className="flex">
-                {post.post_imageURL && post.post_imageURL.length && post.post_imageURL[0] && (
-                  <div className="my-auto ml-6 mr-3 h-[140px] w-[140px] flex-shrink-0 rounded-md border border-[#e6efff]">
-                    <img
-                      src={post.post_imageURL[0]}
-                      alt={`게시글 이미지 `}
-                      className="h-full w-full rounded-md object-cover"
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          </Link>
-        ))}
+        {/* 가운데 내용 아랫줄 */}
+        <div className="flex gap-[0.25rem] text-[0.75rem] text-[#D2CDF6]">
+          <div className="text-mainColor">닉네임</div>
+          <div className="flex gap-[0.25rem]">
+            <img src="/assets/svg/comment.svg" />
+            <div>12</div>
+          </div>
+          <div className="flex gap-[0.25rem]">
+            <img src="/assets/svg/heart.svg" />
+            <div>12</div>
+          </div>
+        </div>
       </div>
 
-      <div className="mt-8 flex justify-center space-x-2">
-        <button
-          onClick={() => setPage((old) => Math.max(old - 1, 1))}
-          disabled={page === 1}
-          className="rounded bg-mainColor px-4 py-2 text-white disabled:bg-mainColor"
-        >
-          이전
-        </button>
-
-        <span className="px-4 py-2">
-          페이지 {page} / {data?.totalPages}
-        </span>
-
-        <button
-          onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
-          disabled={data?.totalPages !== undefined && page === data.totalPages}
-          className="rounded bg-mainColor px-4 py-2 text-white disabled:bg-mainColor"
-        >
-          다음
-        </button>
+      {/* 이미지 */}
+      <div>
+        <div className="rounded-[0.22rem h-[2.75rem] w-[2.75rem] bg-blue-200"></div>
       </div>
     </div>
   );
