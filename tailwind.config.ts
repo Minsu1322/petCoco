@@ -27,7 +27,8 @@ const config: Config = {
         mainHoverColor: "#7292cc",
         mainHoverLightColor: "#cbdcfa",
         editBtnColor: "#8CF2B7",
-        delBtnColor: "#FFBCBC"
+        delBtnColor: "#FFBCBC",
+        background: "#D2CDF6"
       }
     }
   },

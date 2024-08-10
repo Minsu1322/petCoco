@@ -37,6 +37,16 @@ const startChat = async (receiverId: string, user: User | null, router: any) => 
 
     if (chatError) throw chatError;
 
+    if (receiverId === user?.id) {
+      Swal.fire({
+        title: "자신에게 채팅을 시작할 수 없습니다.",
+        text: "다른 사용자를 선택해 주세요.",
+        icon: "warning",
+        confirmButtonText: "확인"
+      });
+      return;
+    }
+
     if (existingChat && existingChat.length > 0) {
       // 이미 채팅방이 존재하면 해당 채팅방으로 이동
       router.push(`/message?selectedUser=${receiverId}`);
