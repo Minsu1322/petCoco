@@ -45,11 +45,19 @@ export const useDotButton = (emblaApi: EmblaCarouselType | undefined): UseDotBut
 
 type PropType = ComponentPropsWithRef<"button">;
 
-export const DotButton: React.FC<PropType> = (props) => {
-  const { children, className, ...restProps } = props;
+type DotButtonProps = {
+  selected: boolean;
+} & ComponentPropsWithRef<"button">;
+
+export const DotButton: React.FC<DotButtonProps> = (props) => {
+  const { children, className, selected, ...restProps } = props;
 
   return (
-    <button type="button" className={`${carouselStyles.embla__dot} ${className}`} {...restProps}>
+    <button
+      type="button"
+      className={`${carouselStyles.embla__dot} ${selected ? carouselStyles["embla__dot--selected"] : ""} ${className}`}
+      {...restProps}
+    >
       {children}
     </button>
   );

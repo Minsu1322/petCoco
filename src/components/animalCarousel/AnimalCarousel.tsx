@@ -88,7 +88,7 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
   if (error) return <div className="py-8 text-center text-red-500">Error: {(error as Error).message}</div>;
 
   return (
-    <div className="mx-auto max-w-3xl px-2">
+    <div className="mx-auto max-w-3xl">
       <div className={styles.toggleContainer}>
         <button
           className={`${styles.toggleButton} ${animalType === "dog" ? styles.active : ""}`}
