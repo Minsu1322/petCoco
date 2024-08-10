@@ -25,15 +25,12 @@ export const handleTabIntroduction = (tab: string) => {
 
 export const tabs = [
   "전체",
-  "인기글",
-  "자유게시판",
-  "고양이",
-  "강아지",
-  "희귀동물",
-  "자랑하기",
-  "고민있어요",
+  // "인기글",
+  "자유",
+  "자랑",
+  "고민",
   "실종/신고"
 ];
 
-export const tags = ["거북이", "도마뱀", "앵무새"];
-export const sortCategory = ["최신순", "댓글많은순"];
+// export const tags = ["거북이", "도마뱀", "앵무새"];
+export const sortCategory = ["최신순", "댓글순", "좋아요순"];
