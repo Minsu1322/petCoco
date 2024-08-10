@@ -19,7 +19,7 @@ const RecentPosts: React.FC<MainPageRecentPostsProps> = ({ postCount }) => {
   if (error) return <div>Error: {error?.message}</div>;
 
   return (
-    <div className="w-full rounded-lg border border-gray-300 bg-white p-4 shadow-md sm:w-full md:w-1/2 md:p-6">
+    <div className="w-full rounded-lg border border-gray-300 bg-white p-4 shadow-md">
       {data?.data.slice(0, postCount).map((post, index) => (
         <div key={post.id} className={`mb-3 w-full ${index !== 0 ? "border-t border-gray-200 pt-3" : ""}`}>
           <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community/${post.id}`}>
