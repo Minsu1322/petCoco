@@ -33,4 +33,4 @@ export const tabs = [
 ];
 
 // export const tags = ["거북이", "도마뱀", "앵무새"];
-export const sortCategory = ["최신순", "댓글많은순", "조회수순"];
+export const sortCategory = ["최신순", "댓글순", "좋아요순"];

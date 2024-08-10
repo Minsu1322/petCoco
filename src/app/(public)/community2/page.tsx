@@ -2,7 +2,7 @@
 
 import SearchBar from "@/components/SearchBar";
 import { useState } from "react";
-import PostList from "./PostList";
+import PostList from "./_components/PostList";
 import {
   handleTabIntroduction,
   sortCategory,
@@ -24,7 +24,7 @@ const CommunityMainPage = () => {
 
   return (
     <>
-      <div className="mx-auto h-full w-[375px] border px-[1.5rem]">
+      <div className="mx-auto h-full w-[375px] px-[1.5rem]">
         <h2 className="mb-[1rem] mt-[2rem] text-[2rem] font-semibold">커뮤니티</h2>
         <div className="mb-[1rem] text-[1rem]">
           여러분의 소중한 반려동물 이야기를 <br />
@@ -32,17 +32,13 @@ const CommunityMainPage = () => {
         </div>
         <SearchBar onSubmit={handleSearchSubmit} value={searchTerm} setSearchTerm={setSearchTerm} />
         {/* 최근 핫 키워드 */}
-        <div className="">
-          <div className="py-[0.62rem] flex w-full gap-[0.62rem]">
+        <div>
+          <div className="flex w-full gap-[0.62rem] py-[0.62rem]">
             {tabs.slice(0, showMoreKeywords ? undefined : 9).map((keyword, index) => (
               <button
                 key={keyword}
-                className={`border px-[0.62rem] py-[0.38rem] text-[0.9rem] rounded-full  ${
-                  selectedTab === keyword
-                    ? "bg-mainColor text-white"
-                    // : index === 8 && !showMoreKeywords
-                    //   ? "border border-mainColor text-mainColor"
-                      : "border border-mainColor text-mainColor"
+                className={`rounded-full border px-[0.62rem] py-[0.38rem] text-[0.89rem] ${
+                  selectedTab === keyword ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
                 }`}
                 onClick={() => {
                   if (index === 8 && !showMoreKeywords) {
@@ -57,6 +53,27 @@ const CommunityMainPage = () => {
             ))}
           </div>
         </div>
+
+        <div className="flex">
+          <div className="">
+            {/* 정렬영역 - components의 TabAndCategory에서 관리 */}
+            <div className="">
+              <div className="flex gap-[0.62rem]">
+                {sortCategory.map((sort) => (
+                  <button
+                    key={sort}
+                    className={`py-[0.62rem] text-[1rem] ${selectedSort === sort ? "font-bold" : ""}`}
+                    onClick={() => setSelectedSort(sort)}
+                  >
+                    {sort}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        <PostList selectedCategory={selectedTab} searchTerm={activeSearchTerm} selectedSort={selectedSort} />
+        <PostList selectedCategory={selectedTab} searchTerm={activeSearchTerm} selectedSort={selectedSort} />
         <PostList selectedCategory={selectedTab} searchTerm={activeSearchTerm} selectedSort={selectedSort} />
       </div>
     </>

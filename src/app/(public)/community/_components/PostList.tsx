@@ -12,7 +12,7 @@ interface PostListProps {
 
 const fetchPosts = async (page: number, category: string, searchTerm: string, sort: string): Promise<PostsResponse> => {
   const url =
-    sort === "댓글많은순"
+    sort === "댓글순"
       ? `/api/sortByComments?page=${page}&limit=3&category=${category}&search=${searchTerm}`
       : `/api/community?page=${page}&limit=3&category=${category}&search=${searchTerm}`;
 
@@ -37,7 +37,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
   const sortPosts = (posts: any[]) => {
     if (selectedSort === "최신순") {
       return [...posts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    } else if (selectedSort === "댓글많은순") {
+    } else if (selectedSort === "댓글순") {
       return [...posts].sort((a, b) => (b.comments?.length || 0) - (a.comments?.length || 0));
     }
     return posts;
@@ -83,7 +83,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
       <div className="space-y-6">
         {sortedPosts.map((post) => (
           <Link key={post.id} href={`/community/${post.id}`}>
-            <div className="mb-6 flex h-[220px]  overflow-hidden rounded-lg border border-mainColor p-3 shadow-sm ">
+            <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-mainColor p-3 shadow-sm">
               <div className="flex flex-grow flex-col justify-between p-4">
                 <div>
                   <div className="mb-4 rounded-md bg-[#f7faff] p-1">
