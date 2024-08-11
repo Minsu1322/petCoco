@@ -82,14 +82,14 @@ export const useAuthStore = create<useAuth>((set, get) => ({
     const { email, password } = credentials;
 
     try {
-      const { data: user, error } = await supabase.auth.signInWithPassword({
+      const { data: loginInfo, error } = await supabase.auth.signInWithPassword({
         email: email as string,
         password
       });
       if (error) {
         throw new Error(error.message);
       }
-      set({ user, error: null });
+      set({ user: loginInfo.user, error: null });
 
       setTimeout(() => {
         console.log("user signin: ", get().user);

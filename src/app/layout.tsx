@@ -20,10 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex min-h-screen flex-col`}>
+      <body className={`${inter.className} flex min-h-screen flex-col bg-background`}>
         <QueryProvider>
           <Header />
-          <main className="flex-grow">{children}</main>
+          <main className="mx-auto w-full max-w-[375px] flex-grow">{children}</main>
         </QueryProvider>
         <Script
           strategy="beforeInteractive"

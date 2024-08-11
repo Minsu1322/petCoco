@@ -10,11 +10,19 @@ interface PostListProps {
   selectedSort: string;
 }
 
+const categoryStyles: { [key: string]: string } = {
+  자유: "bg-[#D1FFA2] text-[#8E6EE8]",
+  자랑: "bg-[#B1D0FF] text-[#8E6EE8]",
+  고민: "bg-[#D2CDF6] text-[#8E6EE8]",
+  신고: "bg-[#FFB9B9] text-[#8E6EE8]"
+  // 추가적인 카테고리가 필요한 경우 여기에 추가 가능
+};
+
 const fetchPosts = async (page: number, category: string, searchTerm: string, sort: string): Promise<PostsResponse> => {
   const url =
     sort === "댓글순"
-      ? `/api/sortByComments?page=${page}&limit=3&category=${category}&search=${searchTerm}`
-      : `/api/community?page=${page}&limit=3&category=${category}&search=${searchTerm}`;
+      ? `/api/sortByComments?page=${page}&limit=10&category=${category}&search=${searchTerm}`
+      : `/api/community?page=${page}&limit=10&category=${category}&search=${searchTerm}`;
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -74,70 +82,38 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
     );
   }
 
-  const sortedPosts = sortPosts([...(data?.data || [])]);
-
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="mb-5 text-2xl font-bold">게시글 목록</h1>
-
-      <div className="space-y-6">
-        {sortedPosts.map((post) => (
-          <Link key={post.id} href={`/community/${post.id}`}>
-            <div className="mb-6 flex h-[220px] overflow-hidden rounded-lg border border-mainColor p-3 shadow-sm">
-              <div className="flex flex-grow flex-col justify-between p-4">
+    <div className="w-full rounded-lg bg-white p-4 shadow-md">
+      {data?.data.slice(0, 10).map((post, index) => (
+        <div key={post.id} className={`mb-3 w-full ${index !== 0 ? "border-t border-gray-200 pt-3" : ""}`}>
+          <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community/${post.id}`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span
+                  className={`rounded-full px-2 py-1 text-sm font-bold ${
+                    categoryStyles[post.category] || "bg-gray-200 text-black"
+                  }`}
+                >
+                  {post.category}
+                </span>
                 <div>
-                  <div className="mb-4 rounded-md bg-[#f7faff] p-1">
-                    <h2 className="text-lg font-semibold">{post.title}</h2>
+                  <div className="max-w-[200px] cursor-pointer truncate text-black hover:underline">{post.title}</div>
+                  <div className="flex items-center space-x-2 text-xs text-[#8E6EE8]">
+                    <span>{post.users.nickname}</span>
+                    <span>-</span>
+                    <span>댓글 {post.comments?.length}</span>
                   </div>
-                  <div className="mb-2 rounded-md bg-[#f7faff] p-4">
-                    <p className="mb-2 line-clamp-3 text-sm text-gray-600">{post.content}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-end justify-between">
-                  <p className="text-xs text-gray-500">
-                    {post.users?.nickname} | {new Date(post.created_at).toLocaleDateString()}
-                  </p>
-                  <p className="text-xs text-gray-500">댓글 {post.comments.length}개</p>
                 </div>
               </div>
-              <div className="flex">
-                {post.post_imageURL && post.post_imageURL.length && post.post_imageURL[0] && (
-                  <div className="my-auto ml-6 mr-3 h-[140px] w-[140px] flex-shrink-0 rounded-md border border-[#e6efff]">
-                    <img
-                      src={post.post_imageURL[0]}
-                      alt={`게시글 이미지 `}
-                      className="h-full w-full rounded-md object-cover"
-                    />
-                  </div>
+              <div className="flex items-center space-x-2">
+                {post?.post_imageURL?.[0] && (
+                  <img src={post?.post_imageURL[0]} alt="Post Image" className="h-12 w-12 rounded-md object-cover" />
                 )}
               </div>
             </div>
           </Link>
-        ))}
-      </div>
-
-      <div className="mt-8 flex justify-center space-x-2">
-        <button
-          onClick={() => setPage((old) => Math.max(old - 1, 1))}
-          disabled={page === 1}
-          className="rounded bg-mainColor px-4 py-2 text-white disabled:bg-mainColor"
-        >
-          이전
-        </button>
-
-        <span className="px-4 py-2">
-          페이지 {page} / {data?.totalPages}
-        </span>
-
-        <button
-          onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
-          disabled={data?.totalPages !== undefined && page === data.totalPages}
-          className="rounded bg-mainColor px-4 py-2 text-white disabled:bg-mainColor"
-        >
-          다음
-        </button>
-      </div>
+        </div>
+      ))}
     </div>
   );
 };

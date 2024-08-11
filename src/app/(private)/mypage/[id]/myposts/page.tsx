@@ -27,9 +27,9 @@ const myPost: React.FC<PageProps> = async ({ params }) => {
   if (!post) return;
 
   return (
-    <div className="mb-[30px] flex h-[80%] w-[640px] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] scrollbar-hide">
+    <div className="mb-[30px] flex h-[80%] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] scrollbar-hide sm:w-[640px]">
       {post.map((post) => (
-        <div key={post.id} className="border-gray w-[440px] rounded-[10px] border bg-white">
+        <div key={post.id} className="border-gray rounded-[10px] border bg-white sm:w-[440px]">
           <Link href={`/community/${post.id}`} className="flex flex-col items-center justify-center">
             <div className="h-[90%] w-[90%] py-5">
               <h1 className="mb-4 text-2xl font-semibold">{post.title}</h1>

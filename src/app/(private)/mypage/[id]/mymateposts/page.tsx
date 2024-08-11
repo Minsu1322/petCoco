@@ -30,13 +30,13 @@ const MyMate = () => {
   if (error) return <div>에러 발생: {error.message}</div>;
 
   return (
-    <div className="mb-[30px] flex h-[80%] w-[640px] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] scrollbar-hide">
+    <div className="mb-[30px] flex h-[80%] flex-col items-center gap-4 overflow-y-scroll rounded-[10px] scrollbar-hide sm:w-[640px]">
       {data.map((data) => (
-        <div key={data.id} className="border-gray w-[440px] rounded-[10px] border bg-white">
+        <div key={data.id} className="border-gray rounded-[10px] border bg-white sm:w-[440px]">
           <Link href={`/mate/posts/${data.id}`} className="mt-5 flex flex-col items-center justify-center">
             <div className="h-[90%] w-[90%] py-5">
-              <p className="mb-4 text-2xl font-semibold">{data.title}</p>
-              <p className="mt-2 h-[150px] overflow-y-auto rounded-lg bg-[#eef4ff] p-4 scrollbar-hide">
+              <p className="mb-4 font-semibold sm:text-2xl">{data.title}</p>
+              <p className="mt-2 overflow-y-auto rounded-lg bg-[#eef4ff] p-4 scrollbar-hide sm:h-[150px]">
                 {data.content}
               </p>
               <div className="mt-5 flex">

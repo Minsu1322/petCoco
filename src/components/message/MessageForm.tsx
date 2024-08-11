@@ -7,38 +7,48 @@ const supabase = createClient();
 
 interface MessageFormProps {
   receiverId: string;
+  markMessagesAsRead: (userId: string) => Promise<void>;
 }
 
 interface MessageData {
   content: string;
 }
 
-export const MessageForm: React.FC<MessageFormProps> = ({ receiverId }) => {
+export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessagesAsRead }) => {
   const [content, setContent] = useState("");
   const { user } = useAuthStore();
 
   const queryClient = useQueryClient();
 
+  const handleFocus = () => {
+    markMessagesAsRead(receiverId);
+  };
+
   const sendMessage = useMutation({
     mutationFn: async (messageData: MessageData) => {
       if (!user) throw new Error("User not authenticated");
 
-      const { data, error } = await supabase.from("messages").insert([
-        {
-          sender_id: user.id,
-          receiver_id: receiverId,
-          content: messageData.content
-        }
-      ]);
+      const { data, error } = await supabase
+        .from("messages")
+        .insert([
+          {
+            sender_id: user.id,
+            receiver_id: receiverId,
+            content: messageData.content
+          }
+        ])
+        .select();
 
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["messages"] });
+    onSuccess: async (data) => {
+      console.log("Message sent successfully:", data);
       setContent("");
+      await queryClient.invalidateQueries({ queryKey: ["messages", user?.id] });
     },
     onError: (error) => {
+      console.error("Error sending message:", error);
       alert(error.message);
     }
   });
@@ -51,18 +61,19 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex border-t border-mainColor p-2">
+    <form onSubmit={handleSubmit} className="flex p-2">
       <input
         type="text"
         value={content}
+        onFocus={handleFocus}
         onChange={(e) => setContent(e.target.value)}
         placeholder="메시지를 입력하세요"
-        className="flex-grow rounded-l-md border border-mainColor px-3 py-2 focus:outline-none focus:ring-2 focus:ring-mainColor"
+        className="flex-grow rounded-l-2xl border border-mainColor px-3 py-2 focus:outline-none focus:ring-2 focus:ring-mainColor"
       />
       <button
         type="submit"
         disabled={sendMessage.isPending}
-        className={`rounded-r-md px-4 py-2 text-white ${
+        className={`rounded-r-2xl px-4 py-2 text-white ${
           sendMessage.isPending ? "bg-gray-400" : "bg-mainColor hover:bg-mainHoverColor"
         }`}
       >
