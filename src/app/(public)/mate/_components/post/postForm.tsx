@@ -10,7 +10,7 @@ import { getConvertAddress } from "../../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType, Pets } from "@/types/mate.type";
 import { characteristicsArr } from "../../selectOptionArray";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapForm"), { ssr: false });
@@ -29,12 +29,8 @@ const PostForm = () => {
     date_time: "",
     members: "",
     recruiting: true,
-    recruitment_start: "",
-    recruitment_end: "",
     address: "",
     place_name: "",
-    preferred_route: "",
-    special_requirements: "",
     location: ""
   };
 
@@ -50,7 +46,6 @@ const PostForm = () => {
   const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
   // console.log(formPosts);
-
 
   // 게시물 등록
   const addPost = async (formAllData: { post: MateNextPostType; pets: Pets[] }) => {
@@ -106,24 +101,21 @@ const PostForm = () => {
     (addressData && addressData?.documents[0]?.road_address?.address_name) ||
     addressData?.documents[0]?.address?.address_name ||
     "주소 정보를 찾을 수 없어요";
-   // console.log(addressData)
+  // console.log(addressData)
 
   const address = (addressData && addressData?.documents[0]?.address?.address_name) || "주소 정보를 찾을 수 없어요";
 
   const handleUploadPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { title, date_time, members, recruitment_start, recruitment_end, place_name, preferred_route, content } =
+    const { title, date_time, members, place_name, content } =
       formPosts;
 
     if (
       !title ||
       !date_time ||
       !members ||
-      !recruitment_start ||
-      !recruitment_end ||
       !place_name ||
-      !preferred_route ||
       !content
     ) {
       // alert("모든 항목을 입력해 주세요!");
@@ -167,103 +159,105 @@ const PostForm = () => {
   };
 
   const handleAddPets = () => {
-      setFormPets([
-        ...formPets,
-        {
-          male_female: "",
-          neutered: null,
-          weight: null,
-          characteristics: "",
-          age: ""
-        }
-      ]);
-  }
+    setFormPets([
+      ...formPets,
+      {
+        male_female: "",
+        neutered: null,
+        weight: null,
+        characteristics: "",
+        age: ""
+      }
+    ]);
+  };
 
-  if(isPending) {
-    return <p>사용자의 현재 위치를 계산하는 중입니다...!</p>
+  if (isPending) {
+    return <p>사용자의 현재 위치를 계산하는 중입니다...!</p>;
   }
-
 
   return (
     <div className="">
-    <form onSubmit={handleUploadPost} className="flex flex-col">
-      {/* 소개 부분 */}
-      <div className="flex flex-col mt-[2.69rem] px-[1.5rem]">
-        <h1 className="mb-[1rem] text-[2rem] font-[600]">글 작성하기</h1>
-        <div className="text-[1rem] font-[500]">
-          <p>함께 산책할 메이트를 구하는 글을 올려요!</p>
-          <p>내용이 더 자세할수록 다른 메이트 분들에게
-          <br />도움이 되어요.</p>
+      <form onSubmit={handleUploadPost} className="flex flex-col">
+        {/* 소개 부분 */}
+        <div className="mt-[2.69rem] flex flex-col px-[1.5rem]">
+          <h1 className="mb-[1rem] text-[2rem] font-[600]">글 작성하기</h1>
+          <div className="text-[1rem] font-[500]">
+            <p>함께 산책할 메이트를 구하는 글을 올려요!</p>
+            <p>
+              내용이 더 자세할수록 다른 메이트 분들에게
+              <br />
+              도움이 되어요.
+            </p>
+          </div>
         </div>
-      </div>
-      {/* 제목, 산책 일시, 모집 인원 수 */}
-      <div className="mt-[2.69rem] flex flex-col justify-center px-[1.5rem]">
-        <div className="flex flex-col mb-[1rem] gap-y-[0.5rem]">
-          <label htmlFor="title" className="w-full text-[1rem] font-[500]">
-            제목
-          </label>
-          <input
-            type="text"
-            value={formPosts.title || ""}
-            onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
-            placeholder="제목을 입력해 주세요"
-            className="p-[0.75rem] rounded-[0.5rem] border border-subTitle2"
-            id="title"
-          />
-        </div>
-        <div className="flex w-full flex-col mb-[1rem] gap-y-[0.5rem]">
-          <label htmlFor="date_time" className="w-fulltext-[1rem] font-[500] ">
-            산책 일시
-          </label>
-          <input
-            type="datetime-local"
-            id="date_time"
-            value={formPosts.date_time || ""}
-            onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
-            className="p-[0.75rem] rounded-[0.5rem] border border-subTitle2 text-subTitle1"
-          />
-        </div>
-        <div className="flex  flex-col gap-y-[0.5rem]">
-          <label htmlFor="members" className="text-[1rem] font-[500]">
-            모집 인원 수
-          </label>
+        {/* 제목, 산책 일시, 모집 인원 수 */}
+        <div className="mt-[2.69rem] flex flex-col justify-center px-[1.5rem]">
+          <div className="mb-[1rem] flex flex-col gap-y-[0.5rem]">
+            <label htmlFor="title" className="w-full text-[1rem] font-[500]">
+              제목
+            </label>
+            <input
+              type="text"
+              value={formPosts.title || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
+              placeholder="제목을 입력해 주세요"
+              className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
+              id="title"
+            />
+          </div>
+          <div className="mb-[1rem] flex w-full flex-col gap-y-[0.5rem]">
+            <label htmlFor="date_time" className="w-fulltext-[1rem] font-[500]">
+              산책 일시
+            </label>
+            <input
+              type="datetime-local"
+              id="date_time"
+              value={formPosts.date_time || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, date_time: e.target.value })}
+              className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
+            />
+          </div>
+          <div className="flex flex-col gap-y-[0.5rem]">
+            <label htmlFor="members" className="text-[1rem] font-[500]">
+              모집 인원 수
+            </label>
             <input
               type="number"
               id="members"
-              placeholder="0명"
-              className="p-[0.75rem] rounded-[0.5rem] border border-subTitle2"
+              placeholder="0"
+              className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
               value={formPosts.members || ""}
               onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
             />
+          </div>
         </div>
-      </div>
-      {/* 산책 장소 */}
-      <div className="mt-[1.94rem] flex flex-col gap-y-[0.5rem] mb-[1rem] px-[1.5rem]">
-        <label className="text-[1rem] font-[500]">산책 장소</label>
+        {/* 산책 장소 */}
+        <div className="mb-[1rem] mt-[1.94rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
+          <label className="text-[1rem] font-[500]">산책 장소</label>
           <div>
             <DynamicMapComponent center={{ lat: 37.5556236021213, lng: 126.992199507869 }} />
           </div>
-      </div>
-      <div className="px-[1.5rem]">
-        <div className="flex flex-col gap-y-[0.5rem] mb-[2rem]">
-          <p className="text-[1rem] font-[500]">주소</p> 
-          <div className="p-[0.75rem] border-b border-subTitle2">
-            <p className="text-subTitle1">{roadAddress}</p>
+        </div>
+        <div className="px-[1.5rem]">
+          <div className="mb-[2rem] flex flex-col gap-y-[0.5rem]">
+            <p className="text-[1rem] font-[500]">주소</p>
+            <div className="border-b border-subTitle2 p-[0.75rem]">
+              <p className="text-subTitle1">{roadAddress}</p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-y-[0.5rem]">
+            <label>장소 정보</label>
+            <input
+              type="text"
+              className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
+              value={formPosts.place_name || ""}
+              onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
+              placeholder="장소 정보를 추가로 기입해 주세요"
+            />
           </div>
         </div>
-        <div className="flex flex-col gap-y-[0.5rem]">
-        <label>장소 정보</label>
-        <input
-          type="text"
-          className="p-[0.75rem] rounded-[0.5rem] border border-subTitle2"
-          value={formPosts.place_name || ""}
-          onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
-          placeholder="장소 정보를 추가로 기입해 주세요"
-        />
-        </div>
-      </div>
-      {/* 한마디 */}
-      <div className="flex flex-col mt-[1.06rem] mb-[1rem] gap-y-[0.5rem] px-[1.5rem]">
+        {/* 한마디 */}
+        <div className="mb-[1rem] mt-[1.06rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
           <label htmlFor="content" className="text-[1rem] font-[600]">
             한 마디
           </label>
@@ -272,121 +266,123 @@ const PostForm = () => {
             onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
             placeholder="선호하는 산책 동선이나 총 예상 산책 시간,    
             혹은 특별한 요구 사항이 있다면 적어주세요."
-            className="p-[0.75rem] rounded-[0.5rem] w-full border border-subTitle2 h-[6.0625rem] resize-none"
+            className="h-[6.0625rem] w-full resize-none rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
             id="content"
             maxLength={200}
           ></textarea>
           <p className="flex justify-end text-subTitle2">0/200</p>
-      </div>
+        </div>
 
+        {/* 반려견 정보 */}
+        <div className="flex justify-between px-[1.5rem]">
+          {/* TODO: 폰트 정해지면 간격 재조절 필요 */}
+          <p className="mt-[2.19rem] text-[1rem] font-[500]">반려견 정보 입력</p>
+          <button
+            type="button"
+            className="mt-[1.63rem] rounded-full bg-[#D2CDF6] px-[2.34rem] py-[0.5rem] text-[1rem] font-[600] text-[#77746E]"
+            onClick={handleAddPets}
+          >
+            반려동물 정보 추가
+          </button>
+        </div>
+        {formPets.map((pet, index) => (
+          <div className="px-[0.75rem]" key={index}>
+          <div className="mt-[0.81rem] rounded-[0.5rem] border border-[#E0E0E0] px-[0.75rem]">
+            <div className="mb-[1rem] mt-[0.69rem] flex flex-col gap-y-[0.5rem]">
+              <label htmlFor="title" className="w-full text-[1rem] font-[500]">
+                반려견 성별
+              </label>
+              <input
+                type="text"
+                value={pet.age || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
+                placeholder="반려견의 성별을 입력해주세요"
+                className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
+                id="title"
+              />
+            </div>
+            <div className="mb-[1rem] flex flex-col gap-y-[0.5rem]">
+              <label htmlFor="title" className="w-full text-[1rem] font-[500]">
+                반려견 무게
+              </label>
+              <input
+                type="text"
+                value={formPosts.title || ""}
+                onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
+                placeholder="반려견의 무게를 입력해주세요"
+                className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
+                id="title"
+              />
+            </div>
+            <div className="mb-[1rem] flex flex-col gap-y-[0.5rem]">
+              <label htmlFor="title" className="w-full text-[1rem] font-[500]">
+                중성화 여부
+              </label>
+              <select
+                value={formPosts.title || ""}
+                // onChange={(e) => {
+                //   const newPets = [...formPets];
+                //   newPets[index].characteristics = e.target.value;
+                //   setFormPets(newPets);
+                // }}
+                className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
+                id="title"
+              >
+                <option value="전체">중성화 여부 상관 없음</option>
+                <option value="male">남아</option>
+                <option value="female">여아</option>
+              </select>
+            </div>
+            <div className="flex w-full flex-col gap-y-2">
+              <label
+                // htmlFor={`characteristics_${index}`}
+                className="text-[1rem] font-[500]"
+              >
+                반려견 성향
+              </label>
+              <select
+                // id={`characteristics_${index}`}
+                className="mb-[1.5rem] rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
+                // value={pet.characteristics || ""}
+                // onChange={(e) => {
+                //   const newPets = [...formPets];
+                //   newPets[index].characteristics = e.target.value;
+                //   setFormPets(newPets);
+                // }}
+              >
+                <option value="">반려견의 성향을 선택해 주세요</option>
+                {characteristicsArr.map((characteristic) => (
+                  <option key={characteristic} value={characteristic}>
+                    {characteristic}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>  
+        ))}
+        
 
-
-      {/* 반려견 정보 */}
-      <div className="flex px-[1.5rem] justify-between"> 
-      {/* TODO: 폰트 정해지면 간격 재조절 필요 */}
-        <p className="mt-[2.19rem] text-[1rem] font-[500]">반려견 정보 입력</p>
-        <button
-          type="button"
-          className="rounded-full text-[#77746E] font-[600]  bg-[#D2CDF6] text-[1rem]  px-[2.34rem] py-[0.5rem] mt-[1.63rem]"
-          onClick={handleAddPets}
-        >
-          반려동물 정보 추가
-        </button>
-      </div>
-<div className="px-[0.75rem]">
-<div className="border rounded-[0.5rem] border-[#E0E0E0] px-[0.75rem] mt-[0.81rem]"> 
-      <div className="flex flex-col mb-[1rem] gap-y-[0.5rem] mt-[0.69rem]">
-        <label htmlFor="title" className="w-full text-[1rem] font-[500]">
-        반려견 성별
-        </label>
-        <input
-          type="text"
-          value={formPosts.title || ""}
-          onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
-          placeholder="반려견의 성별을 입력해주세요"
-          className="p-[0.75rem] rounded-[0.5rem] border border-subTitle2"
-          id="title"
-        />
-      </div>
-      <div className="flex flex-col mb-[1rem] gap-y-[0.5rem]">
-        <label htmlFor="title" className="w-full text-[1rem] font-[500]">
-        반려견 무게
-        </label>
-        <input
-          type="text"
-          value={formPosts.title || ""}
-          onChange={(e) => setFormPosts({ ...formPosts, title: e.target.value })}
-          placeholder="반려견의 무게를 입력해주세요"
-          className="p-[0.75rem] rounded-[0.5rem] border border-subTitle2"
-          id="title"
-        />
-      </div>
-      <div className="flex flex-col mb-[1rem] gap-y-[0.5rem]">
-        <label htmlFor="title" className="w-full text-[1rem] font-[500]">
-          중성화 여부
-        </label>
-        <select
-          value={formPosts.title || ""}
-          // onChange={(e) => {
-          //   const newPets = [...formPets];
-          //   newPets[index].characteristics = e.target.value;
-          //   setFormPets(newPets);
-          // }}
-          className="p-[0.75rem] text-subTitle1 rounded-[0.5rem] border border-subTitle2"
-          id="title"
-        >
-          <option value="전체">중성화 여부 상관 없음</option>
-          <option value="male">남아</option>
-          <option value="female">여아</option>
-        </select>
-      </div>   
-      <div className="flex w-full flex-col gap-y-2">
-                      <label 
-                      // htmlFor={`characteristics_${index}`} 
-                      className="text-[1rem] font-[500]">
-                        반려견 성향
-                      </label>
-                      <select
-                        // id={`characteristics_${index}`}
-                        className="p-[0.75rem] text-subTitle1 rounded-[0.5rem] border border-subTitle2 mb-[1.5rem]"
-                        // value={pet.characteristics || ""}
-                        // onChange={(e) => {
-                        //   const newPets = [...formPets];
-                        //   newPets[index].characteristics = e.target.value;
-                        //   setFormPets(newPets);
-                        // }}
-                      >
-                        <option value="">반려견의 성향을 선택해 주세요</option>
-                        {characteristicsArr.map((characteristic) => (
-                          <option key={characteristic} value={characteristic}>
-                            {characteristic}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-      </div>
-     
-</div>
-      
         {/* 작성하기 버튼 */}
-        <div className="flex w-full justify-center items-center mb-[1.94rem] mt-[6.44rem] px-[1.5rem]">
-        <button
-          type="submit"
-          className="w-full cursor-pointer bg-mainColor py-[0.75rem] px-[1.5rem] rounded-full text-white"
-        >
-          작성완료
-        </button>
-      </div>
+        <div className="mb-[1.94rem] mt-[6.44rem] flex w-full items-center justify-center px-[1.5rem]">
+          <button
+            type="submit"
+            className="w-full cursor-pointer rounded-full bg-mainColor px-[1.5rem] py-[0.75rem] text-white"
+          >
+            작성완료
+          </button>
+        </div>
       </form>
-  </div>
-
-);
+    </div>
+  );
 };
 
-
 export default PostForm;
-       {/* <div className="mt-[2.69rem] flex w-full flex-col justify-center"> */}
-        {/* <div className="flex flex-col">
+{
+  /* <div className="mt-[2.69rem] flex w-full flex-col justify-center"> */
+}
+{
+  /* <div className="flex flex-col">
           <label htmlFor="title" className="w-full text-lg font-semibold">
             제목
           </label>
@@ -477,8 +473,10 @@ export default PostForm;
                 onChange={(e) => setFormPosts({ ...formPosts, special_requirements: e.target.value })}
               />
             </div>
-        </div> */}
-        {/* <div className="mt-[20px] flex flex-col items-start">
+        </div> */
+}
+{
+  /* <div className="mt-[20px] flex flex-col items-start">
           <label htmlFor="content" className="text-lg font-semibold">
             내용
           </label>
@@ -489,10 +487,14 @@ export default PostForm;
             className="mt-4 h-40 w-full resize-none rounded-md border border-gray-300 p-1"
             id="content"
           ></textarea>
-        </div> */}
+        </div> */
+}
 
-        {/* 반려동물 정보 */}
-        {/* <div className="mt-3 flex w-full flex-col gap-y-5">
+{
+  /* 반려동물 정보 */
+}
+{
+  /* <div className="mt-3 flex w-full flex-col gap-y-5">
           <div className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-between gap-x-2">
             <div className="flex items-center mb-3 lg:mb-0">
               <span className="mr-2 text-3xl mt-1 lg:mt-0">🐶</span>
@@ -666,9 +668,8 @@ export default PostForm;
               </div>
             ))}
           </div>
-        </div> */}
-      {/* </div> */}
-      
-
-
-
+        </div> */
+}
+{
+  /* </div> */
+}
