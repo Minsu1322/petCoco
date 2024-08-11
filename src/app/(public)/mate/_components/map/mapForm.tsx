@@ -18,10 +18,10 @@ const MapForm = ({ center }: MapComponentProps) => {
           setPosition({
             center: {
               lat: position.coords.latitude, // 위도
-              lng: position.coords.longitude // 경도
+              lng: position.coords.longitude, // 경도
             },
-            isLoading: false
-          });
+            isLoading: false,
+          })
         },
         (error) => {
           setPosition({
@@ -30,17 +30,17 @@ const MapForm = ({ center }: MapComponentProps) => {
             isLoading: false
           });
         }
-      );
-    }
-    if (!navigator.geolocation) {
+      )
+    } else {
+      // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
       setPosition({
         center: center,
         errMsg: "geolocation을 사용할수 없어요..",
-        isLoading: false
-      });
+        isLoading: false,
+      })
     }
-    // console.log('geo',navigator);
-  }, []);
+  }, [])
+
 
   return (
     <>
@@ -73,7 +73,7 @@ const MapForm = ({ center }: MapComponentProps) => {
           }}
         >
         </MapMarker>
-        <CustomOverlayMap position={center} yAnchor={1} xAnchor={0}>
+        <CustomOverlayMap position={position.center} yAnchor={1} xAnchor={0}>
         <div className="bg-[#61646B] text-white py-[0.5rem] px-[1rem] rounded-[1rem] relative -translate-y-10 before:content-[''] before:absolute before:left-[10px] before:bottom-[-10px] before:w-0 before:h-0 before:border-t-[0.5rem] before:border-t-[#61646B] before:border-r-[0.5rem] before:border-r-transparent before:border-b-[0.5rem] before:border-b-transparent before:border-l-[0.5rem] before:border-l-[#61646B]">
   <span>산책 장소</span>
 </div>
