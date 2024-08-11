@@ -104,13 +104,15 @@ const MatePage = () => {
               sortBy={sortBy}
             />
           </div>
-          <SearchBar setSearchTerm={setSearchTerm} value={searchTerm} onSubmit={handleSearchPosts} />
-            <MatePostList
-              activeSearchTerm={activeSearchTerm}
-              isCurrentPosts={isCurrentPosts}
-              sortBy={sortBy}
-              filters={filters}
-            />
+          <div className="m-[1.5rem]">
+            <SearchBar setSearchTerm={setSearchTerm} value={searchTerm} onSubmit={handleSearchPosts} />
+          </div>
+          <MatePostList
+            activeSearchTerm={activeSearchTerm}
+            isCurrentPosts={isCurrentPosts}
+            sortBy={sortBy}
+            filters={filters}
+          />
         </div>
         {/* 가운데 사이드 선 */}
         <div className="mx-3 hidden h-screen border-l-2 border-gray-100 lg:block">
