@@ -7,6 +7,7 @@ import { getConvertTime } from "@/app/utils/getConvertTime";
 
 import { MatePostAllType } from "@/types/mate.type";
 import { UserPetWithUsersType } from "@/types/usersPet.type";
+import PetCarousel from '../../_components/petCarousel/petCarousel';
 
 interface DetailViewProps {
   post: MatePostAllType;
@@ -140,7 +141,10 @@ const DetailView = ({post, userId, handleEditPost, handleDeletePost, handleToggl
           <img src="/assets/svg/ic_info.svg" />
           <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">우천 시 일정이 변경되거나 취소될 수 있어요.</p>
         </div>
-        <div className="flex"> {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}</div>
+        <div className="flex gap-x-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide "> 
+        {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
+        {/* <PetCarousel pets={post.matepostpets || []}  /> */}
+        </div>
       </div>
     </div>
   </div>

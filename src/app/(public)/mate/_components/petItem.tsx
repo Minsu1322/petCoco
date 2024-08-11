@@ -9,7 +9,7 @@ interface PetItemProps {
 
 const PetItem = ({ pet }: PetItemProps) => {
   return (
-    <div className="flex gap-x-[0.625rem] w-full rounded-[0.85rem] border-[#C2C0BD] border px-[0.75rem] py-[0.69rem]">
+    <div className="flex gap-x-[0.625rem] w-max  rounded-[0.85rem] border-[#C2C0BD] border px-[0.75rem] py-[0.69rem]">
       <div className="flex flex-col items-center justify-center mx-[1.19rem]">
         <div className="mt-[0.44rem] flex items-center justify-center rounded-full bg-gray-100 px-[0.75rem] py-[0.12rem]">
           <p className="text-[0.625rem] text-mainColor">호스트 반려견</p>
