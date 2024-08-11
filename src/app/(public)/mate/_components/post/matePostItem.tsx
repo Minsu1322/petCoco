@@ -106,7 +106,8 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   return (
-    <div className="shadow-custom mx-[1rem] mb-5 flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem]">
+    <div className="shadow-custom mx-[1.5rem] mb-5 flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem]">
+      <Link href={`/mate/posts/${post.id}`}>
       <div className="flex justify-between px-[1rem]">
         <p className="flex items-center text-xs text-gray-400">{post.created_at.split("T")[0]}</p>
         {post.distance !== null && (
@@ -128,7 +129,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             />
           </div>
           <div className="mt-[0.44rem] flex items-center justify-center rounded-full bg-gray-100 px-[0.75rem] py-[0.12rem]">
-            <p className="w-15 overflow-hidden text-ellipsis whitespace-nowrap text-[0.625rem] text-gray-400">
+            <p className="w-15 overflow-hidden text-ellipsis whitespace-nowrap text-[0.625rem] text-mainColor">
               {post.users[0]?.nickname}
             </p>
           </div>
@@ -153,23 +154,24 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             <img src="/assets/svg/ic_user2.svg" className="mr-[0.5rem]" />
             <p className="mr-[0.5rem] flex text-sm">{post.members}명 모집</p>
             <div
-              className={`${post.recruiting ? "bg-[#7BC868]" : "bg-[#F47BB5]"} flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
+              className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-[#FFB9B9]"} text-white flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
             >
               <p className="text-[0.625rem]">{post.recruiting ? "모집중" : "모집 완료"}</p>
             </div>
           </div>
         </div>
       </div>
+      </Link>
       <div className="mx-auto mt-[0.88rem] flex items-center">
         <Button
-          className="mr-[0.75rem] flex flex-shrink-0 flex-col items-center justify-center rounded-full bg-gray-300 px-[2.78rem] py-[0.5rem]"
+          className="ml-[8.19rem] mr-[0.97rem] flex flex-shrink-0 flex-col items-center justify-center rounded-full bg-mainColor text-white px-[3.88rem] py-[0.5rem]"
           onClick={startChat}
           text="채팅하기"
         ></Button>
-        <Link
-          className="flex flex-shrink-0 flex-col items-center justify-center rounded-full bg-gray-300 p-2.5 px-[2.25rem] py-[0.5rem]"
-          href={`/mate/posts/${post.id}`}
-        >자세히 보기</Link>
+          {/* <Link
+            className="flex flex-shrink-0 flex-col items-center justify-center rounded-full bg-gray-300 p-2.5 px-[2.25rem] py-[0.5rem]"
+            href={`/mate/posts/${post.id}`}
+          >자세히 보기</Link> */}
       </div>
     </div>
   );
