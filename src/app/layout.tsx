@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={`${inter.className} flex min-h-screen flex-col bg-background`}>
         <QueryProvider>
           <Header />
-          <main className="mx-auto max-w-[375px] flex-grow">{children}</main>
+          <main className="mx-auto w-full max-w-[375px] flex-grow">{children}</main>
         </QueryProvider>
         <Script
           strategy="beforeInteractive"

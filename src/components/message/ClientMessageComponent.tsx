@@ -49,7 +49,7 @@ export default function ClientMessageComponent() {
   const [isUserLoading, setIsUserLoading] = useState(true);
   const queryClient = useQueryClient();
   const [selectedUserProfile, setSelectedUserProfile] = useState<any>(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -95,8 +95,8 @@ export default function ClientMessageComponent() {
   } = useQuery({
     queryKey: ["messages", user?.id],
     queryFn: fetchMessages,
-    enabled: !!user && !isUserLoading,
-    refetchInterval: 1000
+    enabled: !!user && !isUserLoading
+    // refetchInterval: 1000
   });
 
   useEffect(() => {
@@ -201,6 +201,19 @@ export default function ClientMessageComponent() {
     return new Date(lastMessageB.created_at).getTime() - new Date(lastMessageA.created_at).getTime();
   });
 
+  const getOtherUserInfo = useCallback(
+    (userMessages: any) => {
+      const otherUser =
+        userMessages[0].sender_id === user?.id ? userMessages[0].receiver_profile : userMessages[0].sender_profile;
+      return {
+        id: otherUser.id,
+        nickname: otherUser.nickname,
+        profile_img: otherUser.profile_img
+      };
+    },
+    [user]
+  );
+
   const unreadCounts = messages
     ? messages.reduce(
         (acc, message) => {
@@ -223,135 +236,152 @@ export default function ClientMessageComponent() {
   if (error) return <div className="p-4 text-center">메시지를 불러오는 중 오류가 발생했습니다.</div>;
 
   return (
-    <div className="container mx-auto flex h-[calc(100vh-10rem)] max-w-4xl flex-col p-4">
-      {/*  border border-mainColor */}
-      <div className="relative flex flex-grow overflow-hidden rounded-lg">
-        {/* 모바일 메뉴 토글 버튼 */}
-        <button
-          className="absolute right-4 top-4 z-30 block rounded-full bg-black p-2 text-white shadow-md sm:hidden"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <XMarkIcon className="h-6 w-6" /> : <ChatBubbleLeftRightIcon className="h-6 w-6" />}
-        </button>
-
-        {/* 대화 목록 */}
-        <div
-          className={`w-full overflow-y-auto truncate border-r border-mainColor transition-all duration-300 ease-in-out sm:w-1/3 ${isMobileMenuOpen ? "absolute inset-y-0 left-0 z-20 bg-white" : "hidden sm:block"}`}
-        >
-          <div className="h-16 border-b border-mainColor"></div>
-          <ul>
-            {sortedGroupedMessages.map(([userId, userMessages]) => {
-              const message = userMessages[0];
-              const isSender = message.sender_id === user?.id;
-              const profile = isSender ? message.receiver_profile : message.sender_profile;
-
-              return (
-                <li
-                  key={userId}
-                  className={`cursor-pointer p-4 hover:bg-gray-100 ${
-                    selectedUser === userId ? "bg-mainColor text-white" : ""
-                  } flex items-center justify-between border-b border-mainColor`}
-                  onClick={() => {
-                    setSelectedUserAndMarkRead(userId);
-                    setIsMobileMenuOpen(false);
-                  }}
-                >
-                  <div className="flex items-center">
-                    {profile?.profile_img ? (
-                      <Image
-                        src={profile.profile_img}
-                        alt="Profile"
-                        width={40}
-                        height={40}
-                        className="mr-3 rounded-full"
-                      />
-                    ) : (
-                      <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-mainColor">
-                        <span className="text-lg font-bold text-white">
-                          {profile?.nickname.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    )}
-                    <div>
-                      <div className="font-bold">
-                        {selectedUser === userId ? selectedUserProfile?.nickname : profile?.nickname}
-                      </div>
-                      <div className="text-sm text-gray-600">{userMessages[userMessages.length - 1].content}</div>
-                    </div>
-                  </div>
-
-                  <div className="mb-2 text-sm text-gray-500" style={{ whiteSpace: "nowrap" }}>
-                    {getTimeDifference(userMessages[userMessages.length - 1].created_at)}
-                  </div>
-                  {unreadCounts[userId] > 0 && (
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-200 text-xs font-bold text-red-800">
-                      {unreadCounts[userId]}
-                    </div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-
-        {/* 메시지 영역 */}
-        <div className="flex w-full flex-col sm:w-2/3">
-          {selectedUser && selectedUserProfile && (
-            <>
-              <div className="flex h-16 min-h-[4rem] items-center justify-center border-b border-mainColor bg-[#d0dbee] p-3">
+    <div className="flex h-screen w-full flex-col bg-white">
+      <div className="flex h-full flex-col">
+        {/* 상단 바 */}
+        <div className="flex h-20 items-center justify-between border-b border-gray-500 bg-white px-4 shadow-md">
+          {selectedUserProfile && !isMobileMenuOpen && (
+            <div className="flex flex-grow items-center">
+              <div className="mr-3 h-12 w-12 overflow-hidden rounded-full">
                 {selectedUserProfile.profile_img ? (
                   <Image
                     src={selectedUserProfile.profile_img}
                     alt="Profile"
-                    width={40}
-                    height={40}
-                    className="mr-3 h-10 w-10 rounded-full object-cover"
+                    width={48}
+                    height={48}
+                    className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-mainColor">
-                    <span className="text-lg font-bold text-white">
+                  <div className="flex h-full w-full items-center justify-center bg-gray-500">
+                    <span className="text-xl font-bold text-white">
                       {selectedUserProfile.nickname.charAt(0).toUpperCase()}
                     </span>
                   </div>
                 )}
-                <span className="truncate text-lg font-bold">{selectedUserProfile.nickname}</span>
               </div>
-              <div className="relative flex-grow overflow-y-auto scrollbar-hide">
-                <div className="p-3">
+              <span className="text-lg font-bold">{selectedUserProfile.nickname}</span>
+            </div>
+          )}
+          {/* 대화방 목록 버튼 */}
+          <button
+            className="rounded bg-blue-500 px-6 py-3 text-lg text-white"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? "닫기" : "목록"}
+          </button>
+        </div>
+
+        {/* 대화방 목록 */}
+        {isMobileMenuOpen ? (
+          <div className="flex-grow overflow-y-auto bg-white">
+            <ul className="w-full">
+              {sortedGroupedMessages.length === 0 ? (
+                <div className="flex h-full w-full items-center justify-center p-4 text-gray-500">
+                  <span>대화 상대가 없습니다. 위 버튼을 눌러 대화를 시작해 보세요.</span>
+                </div>
+              ) : (
+                sortedGroupedMessages.map(([userId, userMessages]) => {
+                  const otherUser = getOtherUserInfo(userMessages);
+                  return (
+                    <li
+                      key={userId}
+                      className="flex w-full cursor-pointer items-center border-b p-4 hover:bg-gray-100"
+                      onClick={() => {
+                        setSelectedUserAndMarkRead(userId);
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      <div className="mr-3 h-12 w-12 overflow-hidden rounded-full">
+                        {otherUser.profile_img ? (
+                          <Image
+                            src={otherUser.profile_img}
+                            alt="Profile"
+                            width={48}
+                            height={48}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-gray-500">
+                            <span className="text-xl font-bold text-white">
+                              {otherUser.nickname.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-grow">
+                        <div className="font-bold">{otherUser.nickname}</div>
+                        <div className="truncate text-sm text-gray-600">
+                          {userMessages[userMessages.length - 1].content}
+                        </div>
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {getTimeDifference(userMessages[userMessages.length - 1].created_at)}
+                      </div>
+                      {unreadCounts[userId] > 0 && (
+                        <div className="ml-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                          {unreadCounts[userId]}
+                        </div>
+                      )}
+                    </li>
+                  );
+                })
+              )}
+            </ul>
+          </div>
+        ) : (
+          /* 채팅 영역 */
+          <div className="flex flex-grow flex-col overflow-hidden">
+            {selectedUser ? (
+              <>
+                {/* 메시지 영역 */}
+                <div className="flex-grow overflow-y-auto bg-white p-3" style={{ height: "calc(100vh - 20rem)" }}>
                   {groupedMessages[selectedUser].map((message) => (
                     <div
                       key={message.id}
                       className={`mb-4 flex ${message.sender_id === user.id ? "justify-end" : "justify-start"}`}
                     >
-                      <div
-                        className={`flex max-w-[60%] items-end ${message.sender_id === user.id ? "flex-row-reverse" : "flex-row"}`}
-                      >
+                      <div className="flex items-end">
+                        {message.sender_id === user.id && (
+                          <span className="mr-2 text-xs text-gray-500">
+                            {new Date(message.created_at).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true
+                            })}
+                          </span>
+                        )}
                         <div
-                          className={`relative inline-block break-words p-2 ${
-                            message.sender_id === user.id
-                              ? "rounded-bl-2xl rounded-br-none rounded-tl-2xl rounded-tr-2xl bg-mainColor text-white"
-                              : "rounded-bl-2xl rounded-br-2xl rounded-tl-none rounded-tr-2xl bg-gray-200 text-black"
+                          className={`rounded-2xl p-2 ${
+                            message.sender_id === user.id ? "bg-[#8E6EE8] text-white" : "bg-gray-200 text-black"
                           }`}
                         >
                           <p className="text-sm">{message.content}</p>
                         </div>
-                        <span className={`text-xs text-gray-500 ${message.sender_id === user.id ? "mr-2" : "ml-2"}`}>
-                          {new Date(message.created_at).toLocaleTimeString("ko-KR", {
-                            hour: "numeric",
-                            minute: "2-digit",
-                            hour12: true
-                          })}
-                        </span>
+                        {message.sender_id !== user.id && (
+                          <span className="ml-2 text-xs text-gray-500">
+                            {new Date(message.created_at).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true
+                            })}
+                          </span>
+                        )}
                       </div>
                     </div>
                   ))}
                   <div ref={messageEndRef} />
                 </div>
+
+                {/* 메시지 입력 폼 */}
+                <MessageForm receiverId={selectedUser} markMessagesAsRead={markMessagesAsRead} />
+              </>
+            ) : (
+              <div className="flex w-full flex-grow items-center justify-center p-4 text-gray-500">
+                <span>대화 상대를 선택해 주세요.</span>
               </div>
-              <MessageForm receiverId={selectedUser} markMessagesAsRead={markMessagesAsRead} />
-            </>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

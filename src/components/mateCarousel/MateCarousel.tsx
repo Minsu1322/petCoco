@@ -47,11 +47,6 @@ const MateCarousel: React.FC<PropType> = (props) => {
     }
   }, [emblaApi, handleSelect]);
 
-  const formatDateTime = (dateTime: string) => {
-    const date = parseISO(dateTime);
-    return format(date, "yyyy.MM.dd | h:mm a");
-  };
-
   return (
     <section className={carouselStyles.embla}>
       <div className={carouselStyles.embla__viewport} ref={emblaRef}>
@@ -65,7 +60,7 @@ const MateCarousel: React.FC<PropType> = (props) => {
             return (
               <div className={`${carouselStyles.embla__slide}`} key={post.id}>
                 <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/mate/posts/${post.id}`}>
-                  {/* Recruitment Period */}
+                  {/* 모집기간 */}
                   <div className="mb-4 text-sm text-gray-600">
                     {post.recruitment_start && post.recruitment_end && (
                       <p className="whitespace-nowrap">
@@ -76,9 +71,9 @@ const MateCarousel: React.FC<PropType> = (props) => {
                   </div>
                   <div className="rounded-lg bg-white p-4 shadow-md">
                     <div className="relative flex">
-                      {/* Left Column for Recruitment Dates and Profile Image */}
+                      {/* 좌우구분 */}
                       <div className="flex w-1/3 flex-col items-center justify-between">
-                        {/* Profile Image */}
+                        {/* 프로필이미지 */}
                         <img
                           src={
                             users?.profile_img ||
@@ -87,7 +82,7 @@ const MateCarousel: React.FC<PropType> = (props) => {
                           alt="User Profile"
                           className="mb-2 h-24 w-24 rounded-full object-cover"
                         />
-                        {/* Nickname and Likes */}
+                        {/* 닉네임&좋아요 */}
                         <div className="mb-4 flex flex-col items-center">
                           <p className="mb-1 text-sm text-gray-600">{users?.nickname || "닉네임"}</p>
                           <div className="flex items-center">
@@ -99,9 +94,9 @@ const MateCarousel: React.FC<PropType> = (props) => {
                         </div>
                       </div>
 
-                      {/* Right Column for Title and Details */}
+                      {/* 우측영역 */}
                       <div className="ml-4 w-2/3">
-                        {/* Title and Details */}
+                        {/* 제목&세부사항 */}
                         <h3 className="mb-2 text-lg font-semibold">{post.title}</h3>
                         <p className="mb-2 text-sm text-gray-600">{post.place_name}</p>
                         <p className="mb-2 text-sm text-gray-600">{formattedDateTime}</p>
