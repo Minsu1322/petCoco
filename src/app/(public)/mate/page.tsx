@@ -11,6 +11,7 @@ import PostItemFilterTab from "./_components/tab/postItemFilterTab";
 import Swal from 'sweetalert2';
 import Button from "@/components/Button";
 import SearchBar from "@/components/SearchBar";
+import Link from "next/link";
 
 export type PositionData = {
   center: {
@@ -56,6 +57,7 @@ const MatePage = () => {
   const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
   const handleDateSort = () => setSortBy("recruitment_end");
   const handleDistanceSort = () => setSortBy("distance");
+  const handleNewSort = () => setSortBy("new");
 
   const handleResetFilter = () => {
     setFilters({
@@ -87,27 +89,28 @@ const MatePage = () => {
   };
 
   return (
-    <div className="container mb-10 min-h-screen">
-      {/* <h1 className="mb-7 mt-5 p-2 text-2xl font-semibold md:text-3xl">산책 메이트</h1> */}
+    <div className="w-[375px]">
+    {/* <div className="container  min-h-screen"> */}
       <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-5">
         {/* 왼쪽 메인 컨텐츠 영역 */}
-        <div className="mx-0 w-full lg:mx-2 lg:w-3/4 mt-[1.19rem]">
-          <div className="mb-[0.56rem]">
+        <div className="mx-0 w-full lg:mx-2 lg:w-3/4">
+          <div className="mt-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide ">
             <PostListFilterTab
               isCurrentPosts={isCurrentPosts}
               handleToggleAllPosts={handleToggleAllPosts}
               handleDateSort={handleDateSort}
               handleDistanceSort={handleDistanceSort}
+              handleNewSort={handleNewSort}
+              sortBy={sortBy}
             />
           </div>
-          <div>
+          <SearchBar setSearchTerm={setSearchTerm} value={searchTerm} onSubmit={handleSearchPosts} />
             <MatePostList
               activeSearchTerm={activeSearchTerm}
               isCurrentPosts={isCurrentPosts}
               sortBy={sortBy}
               filters={filters}
             />
-          </div>
         </div>
         {/* 가운데 사이드 선 */}
         <div className="mx-3 hidden h-screen border-l-2 border-gray-100 lg:block">
@@ -116,12 +119,16 @@ const MatePage = () => {
         {/* 오른쪽 사이드바 영역 */}
         <div className="mr-0 w-full pl-0 lg:mr-8 lg:w-1/4 lg:pl-5">
           {/* 글쓰기 버튼 영역 */}
-          <Button onClick={handleLoginCheck} text="글쓰기" className="mb-4 flex h-12 w-full items-center justify-center rounded-lg bg-mainColor p-2" />
+          {/* <Button onClick={handleLoginCheck} text="글쓰기" className="mb-4 flex h-12 w-full items-center justify-center rounded-lg bg-mainColor p-2" /> */}
           {/* 검색 영역 */}
-          <SearchBar onSubmit={handleSearchPosts} value={searchTerm} setSearchTerm={setSearchTerm}  />
-          <PostItemFilterTab updateFilter={updateFilter} filters={filters} onClick={handleResetFilter} />
+          {/* <SearchBar onSubmit={handleSearchPosts} value={searchTerm} setSearchTerm={setSearchTerm}  /> */}
+          {/* <PostItemFilterTab updateFilter={updateFilter} filters={filters} onClick={handleResetFilter} /> */}
         </div>
       </div>
+      <div className="fixed z-50 bottom-[6.815rem] right-[0.56rem] p-[0.81rem] shadow-plusBtn rounded-full bg-mainColor" onClick={handleLoginCheck}>
+        <img src="/assets/svg/plus-01.svg" alt="plus icon" />
+      </div>
+      {/* 하단 탭바 생기면 수정해 bottom, right 위치 수정 필요 */}
     </div>
   );
 };
