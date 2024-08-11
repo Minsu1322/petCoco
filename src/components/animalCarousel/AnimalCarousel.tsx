@@ -3,8 +3,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import styles from "./styles/AnimalCarousel.module.css";
 import { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
-import { NextButton, PrevButton, usePrevNextButtons } from "./components/AnimalCarouselArrowButtons";
-import { DotButton, useDotButton } from "./components/AnimalCarouselDotButtons";
+import { usePrevNextButtons } from "./components/AnimalCarouselArrowButtons";
+import { useDotButton } from "./components/AnimalCarouselDotButtons";
 import { useQuery } from "@tanstack/react-query";
 
 type AnimalData = {
@@ -88,7 +88,7 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
   if (error) return <div className="py-8 text-center text-red-500">Error: {(error as Error).message}</div>;
 
   return (
-    <div className="mx-auto max-w-3xl px-2">
+    <div className="mx-auto max-w-3xl">
       <div className={styles.toggleContainer}>
         <button
           className={`${styles.toggleButton} ${animalType === "dog" ? styles.active : ""}`}
@@ -105,50 +105,50 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
       </div>
 
       <div className={styles.toggleContainer}></div>
-    <div className="relative w-full overflow-hidden">
-      <div className={`${styles.embla} ${styles.shrink} w-full`}>
-        <div className={`${styles.embla__viewport} w-full`} ref={emblaRef}>
-          <div className={`${styles.embla__container} flex`}>
-            {randomAnimals.map((animal, index) => (
-              <div className={`${styles.embla__slide} flex-shrink-0 w-full`} key={index}>
-                <div className="m-2 rounded-lg bg-white p-3 shadow-md">
-                  <h2 className="mb-1 text-center text-base font-semibold">{animal.careAddr}</h2>
-                  <div className="mb-1 flex justify-center text-xs">
-                    <span className="font-medium">{animal.careNm} 📞</span>
-                    <span>{animal.officetel}</span>
-                  </div>
-                  <div className="flex">
-                    <img src={animal.popfile} alt={animal.kindCd} className="h-32 w-1/2 rounded-lg object-cover" />
-                    <div className="w-1/2 space-y-0.5 pl-2 text-xs">
-                      <p>
-                        <span className="font-medium">나이:</span> {animal.age}
-                      </p>
-                      <p>
-                        <span className="font-medium">색상:</span> {animal.colorCd}
-                      </p>
-                      <p>
-                        <span className="font-medium">중성화:</span> {animal.neuterYn === "Y" ? "예" : "아니오"}
-                      </p>
-                      <p>
-                        <span className="font-medium">성별:</span> {animal.sexCd === "M" ? "수컷" : "암컷"}
-                      </p>
-                      <p>
-                        <span className="font-medium">체중:</span> {animal.weight}
-                      </p>
+      <div className="relative w-full overflow-hidden">
+        <div className={`${styles.embla} ${styles.shrink} w-full`}>
+          <div className={`${styles.embla__viewport} w-full`} ref={emblaRef}>
+            <div className={`${styles.embla__container} flex`}>
+              {randomAnimals.map((animal, index) => (
+                <div className={`${styles.embla__slide} w-full flex-shrink-0`} key={index}>
+                  <div className="m-2 rounded-lg bg-white p-3 shadow-md">
+                    <h2 className="mb-1 text-center text-base font-semibold">{animal.careAddr}</h2>
+                    <div className="mb-1 flex justify-center text-xs">
+                      <span className="font-medium">{animal.careNm} 📞</span>
+                      <span>{animal.officetel}</span>
                     </div>
+                    <div className="flex">
+                      <img src={animal.popfile} alt={animal.kindCd} className="h-32 w-1/2 rounded-lg object-cover" />
+                      <div className="w-1/2 space-y-0.5 pl-2 text-xs">
+                        <p>
+                          <span className="font-medium">나이:</span> {animal.age}
+                        </p>
+                        <p>
+                          <span className="font-medium">색상:</span> {animal.colorCd}
+                        </p>
+                        <p>
+                          <span className="font-medium">중성화:</span> {animal.neuterYn === "Y" ? "예" : "아니오"}
+                        </p>
+                        <p>
+                          <span className="font-medium">성별:</span> {animal.sexCd === "M" ? "수컷" : "암컷"}
+                        </p>
+                        <p>
+                          <span className="font-medium">체중:</span> {animal.weight}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="mt-1 text-xs">
+                      <span className="font-medium">특징:</span> {animal.specialMark}
+                    </p>
                   </div>
-                  <p className="mt-1 text-xs">
-                    <span className="font-medium">특징:</span> {animal.specialMark}
-                  </p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default AnimalCarousel;

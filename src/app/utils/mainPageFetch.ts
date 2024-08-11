@@ -9,7 +9,7 @@ export const fetchPostsMate = async () => {
 };
 
 export const fetchPosts = async () => {
-  const response = await fetch("/api/community?page=1&limit=5");
+  const response = await fetch("/api/community?page=1&limit=10");
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

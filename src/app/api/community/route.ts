@@ -40,11 +40,9 @@ export async function GET(request: Request) {
 
     const { data, error, count } = await query.range((page - 1) * limit, page * limit - 1);
 
-    // console.log("before : ", data);
     data?.map((post: any) => {
       post.post_imageURL = post.post_imageURL?.split(",") || [];
     });
-    // console.log("after : ", data);
 
     if (error) {
       throw error;
