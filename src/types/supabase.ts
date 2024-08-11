@@ -51,6 +51,42 @@ export type Database = {
           },
         ]
       }
+      likes: {
+        Row: {
+          created_at: string
+          id: string
+          postid: string
+          userid: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          postid?: string
+          userid?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          postid?: string
+          userid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "likes_postid_fkey"
+            columns: ["postid"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "likes_userid_fkey"
+            columns: ["userid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       matepostpets: {
         Row: {
           age: string | null
@@ -103,11 +139,7 @@ export type Database = {
           members: string | null
           place_name: string | null
           position: Json | null
-          preferred_route: string | null
           recruiting: boolean | null
-          recruitment_end: string | null
-          recruitment_start: string | null
-          special_requirements: string | null
           title: string | null
           user_id: string | null
         }
@@ -121,11 +153,7 @@ export type Database = {
           members?: string | null
           place_name?: string | null
           position?: Json | null
-          preferred_route?: string | null
           recruiting?: boolean | null
-          recruitment_end?: string | null
-          recruitment_start?: string | null
-          special_requirements?: string | null
           title?: string | null
           user_id?: string | null
         }
@@ -139,11 +167,7 @@ export type Database = {
           members?: string | null
           place_name?: string | null
           position?: Json | null
-          preferred_route?: string | null
           recruiting?: boolean | null
-          recruitment_end?: string | null
-          recruitment_start?: string | null
-          special_requirements?: string | null
           title?: string | null
           user_id?: string | null
         }
@@ -373,39 +397,12 @@ export type Database = {
           members: string
           date_time: string
           recruiting: boolean
-          recruitment_start: string
-          recruitment_end: string
           address: string
           place_name: string
-          preferred_route: string
-          special_requirements: string
           location: unknown
           users: Json
           matepostpets: Json
           distance: number
-        }[]
-      }
-      get_mate_posts_with_location: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          id: string
-          created_at: string
-          title: string
-          content: string
-          user_id: string
-          POSITION: Json
-          members: string
-          date_time: string
-          recruiting: boolean
-          recruitment_start: string
-          recruitment_end: string
-          address: string
-          place_name: string
-          preferred_route: string
-          special_requirements: string
-          location: unknown
-          users: Json
-          matepostpets: Json
         }[]
       }
     }
