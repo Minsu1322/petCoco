@@ -127,7 +127,7 @@ const MatePage = () => {
           {/* <PostItemFilterTab updateFilter={updateFilter} filters={filters} onClick={handleResetFilter} /> */}
         </div>
       </div>
-      <div className="fixed z-50 bottom-[6.815rem] right-[0.56rem] p-[0.81rem] shadow-plusBtn rounded-full bg-mainColor" onClick={handleLoginCheck}>
+      <div className="fixed z-50 bottom-[6.815rem] right-[0.56rem] p-[0.81rem] shadow-plusBtn rounded-full bg-mainColor cursor-pointer" onClick={handleLoginCheck}>
         <img src="/assets/svg/plus-01.svg" alt="plus icon" />
       </div>
       {/* 하단 탭바 생기면 수정해 bottom, right 위치 수정 필요 */}
