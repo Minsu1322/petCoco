@@ -32,11 +32,13 @@ export default function Home() {
       {/* 게시글 영역 */}
       <div className="flex w-full flex-col px-4">
         {/* 자유게시판 */}
-        <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community`}>
-          <h2 className="text-xl font-bold hover:underline">방금 올라온 반려이야기😀</h2>
-        </Link>
+        <div className="mt-6 w-full rounded-lg bg-white p-4">
+          <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community`}>
+            <h2 className="text-xl font-bold text-[#7FA6EE] hover:underline">방금 올라온 반려이야기😀</h2>
+          </Link>
 
-        <RecentPosts postCount={5} />
+          <RecentPosts postCount={5} />
+        </div>
 
         {/* 산책메이트 */}
         <div className="mt-6 w-full rounded-lg bg-white p-4">

@@ -9,6 +9,14 @@ interface MainPageRecentPostsProps {
   postCount: number;
 }
 
+const categoryStyles: { [key: string]: string } = {
+  자유: "bg-[#D1FFA2] text-[#8E6EE8]",
+  자랑: "bg-[#B1D0FF] text-[#8E6EE8]",
+  고민: "bg-[#D2CDF6] text-[#8E6EE8]",
+  신고: "bg-[#FFB9B9] text-[#8E6EE8]"
+  // 추가적인 카테고리가 필요한 경우 여기에 추가 가능
+};
+
 const RecentPosts: React.FC<MainPageRecentPostsProps> = ({ postCount }) => {
   const { data, isLoading, error } = useQuery<PostsResponse, Error>({
     queryKey: ["posts"],
@@ -19,16 +27,22 @@ const RecentPosts: React.FC<MainPageRecentPostsProps> = ({ postCount }) => {
   if (error) return <div>Error: {error?.message}</div>;
 
   return (
-    <div className="w-full rounded-lg border border-gray-300 bg-white p-4 shadow-md">
+    <div className="w-full rounded-lg bg-white p-4 shadow-md">
       {data?.data.slice(0, postCount).map((post, index) => (
         <div key={post.id} className={`mb-3 w-full ${index !== 0 ? "border-t border-gray-200 pt-3" : ""}`}>
           <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community/${post.id}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <img src={post.users.profile_img} alt="User Profile" className="h-8 w-8 rounded-md" />
+                <span
+                  className={`rounded-full px-2 py-1 text-sm font-bold ${
+                    categoryStyles[post.category] || "bg-gray-200 text-black"
+                  }`}
+                >
+                  {post.category}
+                </span>
                 <div>
-                  <div className="cursor-pointer text-black hover:underline">{post.title}</div>
-                  <div className="flex items-center space-x-2 text-xs text-gray-500">
+                  <div className="max-w-[200px] cursor-pointer truncate text-black hover:underline">{post.title}</div>
+                  <div className="flex items-center space-x-2 text-xs text-[#8E6EE8]">
                     <span>{post.users.nickname}</span>
                     <span>-</span>
                     <span>댓글 {post.comments.length}</span>

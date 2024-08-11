@@ -10,11 +10,19 @@ interface PostListProps {
   selectedSort: string;
 }
 
+const categoryStyles: { [key: string]: string } = {
+  자유: "bg-[#D1FFA2] text-[#8E6EE8]",
+  자랑: "bg-[#B1D0FF] text-[#8E6EE8]",
+  고민: "bg-[#D2CDF6] text-[#8E6EE8]",
+  신고: "bg-[#FFB9B9] text-[#8E6EE8]"
+  // 추가적인 카테고리가 필요한 경우 여기에 추가 가능
+};
+
 const fetchPosts = async (page: number, category: string, searchTerm: string, sort: string): Promise<PostsResponse> => {
   const url =
     sort === "댓글순"
-      ? `/api/sortByComments?page=${page}&limit=3&category=${category}&search=${searchTerm}`
-      : `/api/community?page=${page}&limit=3&category=${category}&search=${searchTerm}`;
+      ? `/api/sortByComments?page=${page}&limit=10&category=${category}&search=${searchTerm}`
+      : `/api/community?page=${page}&limit=10&category=${category}&search=${searchTerm}`;
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -74,37 +82,38 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
     );
   }
 
-  const sortedPosts = sortPosts([...(data?.data || [])]);
-
   return (
-    <div className="flex w-full items-center gap-[1.06rem] border-b-[1px] py-[0.75rem]">
-      {/* 일상 */}
-      <p className="whitespace-nowrap rounded-full bg-yellow-200 px-[0.5rem] py-[0.25rem] text-[0.75rem] text-mainColor">
-        일상
-      </p>
-
-      {/* 가운데 내용 */}
-      <div className="w-full">
-        <div className="text-[1rem] leading-6">우리 뽀미 머리 어때요?</div>
-
-        {/* 가운데 내용 아랫줄 */}
-        <div className="flex gap-[0.25rem] text-[0.75rem] text-[#D2CDF6]">
-          <div className="text-mainColor">닉네임</div>
-          <div className="flex gap-[0.25rem]">
-            <img src="/assets/svg/comment.svg" />
-            <div>12</div>
-          </div>
-          <div className="flex gap-[0.25rem]">
-            <img src="/assets/svg/heart.svg" />
-            <div>12</div>
-          </div>
+    <div className="w-full rounded-lg bg-white p-4 shadow-md">
+      {data?.data.slice(0, 10).map((post, index) => (
+        <div key={post.id} className={`mb-3 w-full ${index !== 0 ? "border-t border-gray-200 pt-3" : ""}`}>
+          <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community/${post.id}`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span
+                  className={`rounded-full px-2 py-1 text-sm font-bold ${
+                    categoryStyles[post.category] || "bg-gray-200 text-black"
+                  }`}
+                >
+                  {post.category}
+                </span>
+                <div>
+                  <div className="max-w-[200px] cursor-pointer truncate text-black hover:underline">{post.title}</div>
+                  <div className="flex items-center space-x-2 text-xs text-[#8E6EE8]">
+                    <span>{post.users.nickname}</span>
+                    <span>-</span>
+                    <span>댓글 {post.comments?.length}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                {post?.post_imageURL?.[0] && (
+                  <img src={post?.post_imageURL[0]} alt="Post Image" className="h-12 w-12 rounded-md object-cover" />
+                )}
+              </div>
+            </div>
+          </Link>
         </div>
-      </div>
-
-      {/* 이미지 */}
-      <div>
-        <div className="rounded-[0.22rem h-[2.75rem] w-[2.75rem] bg-blue-200"></div>
-      </div>
+      ))}
     </div>
   );
 };
