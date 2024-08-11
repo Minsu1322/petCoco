@@ -73,8 +73,8 @@ const CommunityMainPage = () => {
           </div>
         </div>
         <PostList selectedCategory={selectedTab} searchTerm={activeSearchTerm} selectedSort={selectedSort} />
-        <PostList selectedCategory={selectedTab} searchTerm={activeSearchTerm} selectedSort={selectedSort} />
-        <PostList selectedCategory={selectedTab} searchTerm={activeSearchTerm} selectedSort={selectedSort} />
+        {/* <PostList selectedCategory={selectedTab} searchTerm={activeSearchTerm} selectedSort={selectedSort} />
+        <PostList selectedCategory={selectedTab} searchTerm={activeSearchTerm} selectedSort={selectedSort} /> */}
       </div>
     </>
   );
