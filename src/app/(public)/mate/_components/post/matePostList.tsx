@@ -109,12 +109,12 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
       const userLat = geoData?.center.lat || 0;
       const userLng = geoData?.center.lng || 0;
 
-      // TODO: query안에 userLat, userLng 넣으면 좋을 거 같은데
+      const defaultSortBy = sortBy && sortBy !== 'distance' ? sortBy : 'distance';
+      // TODO: query안에 userLat, userLng 넣기
       const response = await fetch(
-        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=4&search=${activeSearchTerm}&sort=${sortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
+        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=4&search=${activeSearchTerm}&sort=${defaultSortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
       );
       const data = response.json();
-      // console.log(data);
       return data;
     },
     enabled: !!geolocationData
@@ -145,7 +145,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
-        <div className="flex flex-col justify-center mb-[24px]">
+        <div className="flex flex-col justify-center">
           {posts.length > 0 ? (
             posts.map((post) => <MatePostItem key={post.id} post={post} />)
           ) : (
@@ -159,7 +159,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
         </div>
 
       {/* pagination */}
-      <div className="mt-8 flex flex-row items-center justify-center">
+      <div className=" flex flex-row items-center justify-center">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
