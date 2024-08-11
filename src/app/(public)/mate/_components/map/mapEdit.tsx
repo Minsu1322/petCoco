@@ -16,18 +16,18 @@ interface MapComponentProps {
 const MapEdit = ({ center, isEditing, dbPosition }: MapComponentProps) => {
   const { position, setPosition } = locationStore();
 
-  const {
-    data: addressData,
-    isPending,
-    error
-  } = useQuery({
-    queryKey: ["address", position.center],
-    queryFn: async () => {
-      const response = await getConvertAddress(position.center);
-      return response;
-    },
-    enabled: !!position.center
-  });
+  // const {
+  //   data: addressData,
+  //   isPending,
+  //   error
+  // } = useQuery({
+  //   queryKey: ["address", position.center],
+  //   queryFn: async () => {
+  //     const response = await getConvertAddress(position.center);
+  //     return response;
+  //   },
+  //   enabled: !!position.center
+  // });
 
   // console.log("주소 변환 데이터 확인", addressData);
 
@@ -79,7 +79,7 @@ const MapEdit = ({ center, isEditing, dbPosition }: MapComponentProps) => {
           }}
         >
         </MapMarker>
-        <CustomOverlayMap position={center} yAnchor={1} xAnchor={0}>
+        <CustomOverlayMap position={position.center} yAnchor={1} xAnchor={0}>
         <div className="bg-[#61646B] text-white py-[0.5rem] px-[1rem] rounded-[1rem] relative -translate-y-10 before:content-[''] before:absolute before:left-[10px] before:bottom-[-10px] before:w-0 before:h-0 before:border-t-[0.5rem] before:border-t-[#61646B] before:border-r-[0.5rem] before:border-r-transparent before:border-b-[0.5rem] before:border-b-transparent before:border-l-[0.5rem] before:border-l-[#61646B]">
   <span>산책 장소</span>
 </div>
