@@ -2,7 +2,7 @@
 
 import { locationStore } from "@/zustand/locationStore";
 import { useEffect } from "react";
-import { Map, MapMarker, MapTypeControl, ZoomControl } from "react-kakao-maps-sdk";
+import { Map, MapMarker, MapTypeControl, ZoomControl, CustomOverlayMap } from "react-kakao-maps-sdk";
 
 interface MapComponentProps {
   center: { lat: number; lng: number };
@@ -46,7 +46,7 @@ const MapForm = ({ center }: MapComponentProps) => {
     <>
       <Map
         center={position.center}
-        style={{ width: "358px", height: "254px" }}
+        style={{ width: "20.4375rem", height: "19.3125rem", borderRadius:"0.5rem" }}
         level={5}
         onClick={(_, mouseEvent) => {
           const latlng = mouseEvent.latLng;
@@ -63,20 +63,22 @@ const MapForm = ({ center }: MapComponentProps) => {
           image={{
             src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU",
             size: {
-              width: 64,
-              height: 69
+              width: 30,
+              height: 30
             },
             options: {
               offset: {
-                x: 27,
-                y: 69
-              }
-            }
+                x: 15, 
+                y: 30}}
           }}
         >
-          <div className="w-[150px] bg-mainColor text-center">산책 장소</div>
         </MapMarker>
-        <MapTypeControl position={"TOPRIGHT"} />
+        <CustomOverlayMap position={center} yAnchor={1} xAnchor={0}>
+        <div className="bg-[#61646B] text-white py-[0.5rem] px-[1rem] rounded-[1rem] relative -translate-y-10 before:content-[''] before:absolute before:left-[10px] before:bottom-[-10px] before:w-0 before:h-0 before:border-t-[0.5rem] before:border-t-[#61646B] before:border-r-[0.5rem] before:border-r-transparent before:border-b-[0.5rem] before:border-b-transparent before:border-l-[0.5rem] before:border-l-[#61646B]">
+  <span>산책 장소</span>
+</div>
+        </CustomOverlayMap>
+        <MapTypeControl position={"BOTTOMLEFT"} />
         <ZoomControl position={"RIGHT"} />
       </Map>
     </>
