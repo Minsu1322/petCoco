@@ -56,27 +56,28 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
     loadPost();
   }, [id]);
 
+  // 이 페이지에서 수정페이지(createPost)로 유저를 이동시킴
   const handleEdit = () => {
     router.push(`/community/createPost/?id=${id}`);
   };
 
   const handleDelete = async (id: string) => {
     Swal.fire({
-      title: '게시물 삭제',
+      title: "게시물 삭제",
       text: "정말로 이 게시물을 삭제하시겠습니까?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#c0c0c0',
-      confirmButtonText: '삭제',
-      cancelButtonText: '취소'
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#c0c0c0",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소"
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
           const response = await fetch(`/api/detailCommunity/${id}`, {
             method: "DELETE"
           });
-  
+
           if (response.ok) {
             Swal.fire({
               title: "완료!",
