@@ -8,7 +8,6 @@ import { createClient } from "@/supabase/client";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { getTimeDifference } from "@/app/utils/getTimeDifference";
-import { ChatBubbleLeftRightIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Swal from "sweetalert2";
 
 const supabase = createClient();
@@ -49,7 +48,8 @@ export default function ClientMessageComponent() {
   const [isUserLoading, setIsUserLoading] = useState(true);
   const queryClient = useQueryClient();
   const [selectedUserProfile, setSelectedUserProfile] = useState<any>(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const openChat = searchParams.get("openChat") === "true";
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(!openChat);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -95,7 +95,7 @@ export default function ClientMessageComponent() {
   } = useQuery({
     queryKey: ["messages", user?.id],
     queryFn: fetchMessages,
-    enabled: !!user && !isUserLoading
+    enabled: !!user && !isUserLoading,
     // refetchInterval: 1000
   });
 
@@ -192,6 +192,9 @@ export default function ClientMessageComponent() {
     if (initialSelectedUser) {
       setSelectedUser(initialSelectedUser);
       loadUserProfile(initialSelectedUser);
+      if (openChat) {
+        setIsMobileMenuOpen(false);
+      }
     }
   }, [initialSelectedUser, loadUserProfile]);
 
