@@ -6,8 +6,8 @@ import Button from "@/components/Button";
 import { getConvertTime } from "@/app/utils/getConvertTime";
 
 import { MatePostAllType } from "@/types/mate.type";
-import { UserPetWithUsersType } from "@/types/usersPet.type";
-import PetCarousel from '../../_components/petCarousel/petCarousel';
+
+
 
 interface DetailViewProps {
   post: MatePostAllType;
@@ -143,7 +143,6 @@ const DetailView = ({post, userId, handleEditPost, handleDeletePost, handleToggl
         </div>
         <div className="flex gap-x-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide "> 
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
-        {/* <PetCarousel pets={post.matepostpets || []}  /> */}
         </div>
       </div>
     </div>
