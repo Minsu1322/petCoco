@@ -356,7 +356,7 @@ export default function ClientMessageComponent() {
             {selectedUser ? (
               <>
                 {/* 메시지 영역 */}
-                <div className="flex-grow overflow-y-auto bg-white p-3" style={{ height: "calc(100vh - 20rem)" }}>
+                <div className="flex-grow overflow-y-auto bg-white p-3" style={{ height: "calc(100vh - 25rem)" }}>
                   {groupedMessages[selectedUser].map((message) => (
                     <div
                       key={message.id}
