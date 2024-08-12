@@ -1,6 +1,7 @@
 import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { MateNextPostType, Pets } from "@/types/mate.type";
+import { UserType } from "@/types/auth.type";
 import { getTiemRage } from "@/app/(public)/mate/getTimeRange";
 
 export type CreateMatePostWithPetsData = {
@@ -26,7 +27,7 @@ export const GET = async (request: NextRequest) => {
   // 매일 그날 기준으로
   const today = new Date().setHours(0, 0, 0, 0);
 
-  // console.log(filter);
+  console.log(filter);
 
   try {
     // RPC 호출
@@ -75,8 +76,22 @@ export const GET = async (request: NextRequest) => {
     }
 
     // 게시글 필터링
-    if (filter.date_time) {
-      validPosts = validPosts.filter((post) => post.date_time.includes(filter.date_time));
+    if (filter.gender && filter.gender !== "전체") {
+      validPosts = validPosts.filter((post) => {
+        if (Array.isArray(post.users)) {
+          return (post.users as UserType[]).some((pet) => pet.gender === filter.gender);
+        }
+        return false;
+      });
+    }
+
+    if (filter.age && filter.age !== "전체") {
+      validPosts = validPosts.filter((post) => {
+        if (Array.isArray(post.users)) {
+          return (post.users as UserType[]).some((pet) => pet.age === filter.age);
+        }
+        return false;
+      });
     }
 
     if (filter.regions && filter.regions !== "전체") {
@@ -84,10 +99,15 @@ export const GET = async (request: NextRequest) => {
       validPosts = validPosts.filter((post) => post.address.startsWith(regionPrefix));
     }
 
+    if (filter.date_time) {
+      validPosts = validPosts.filter((post) => post.date_time.includes(filter.date_time));
+    }
+
     if (filter.times) {
       validPosts = getTiemRage(validPosts, filter.times);
     }
 
+    // 반려견 필터
     if (filter.weight) {
       const weightValue = parseFloat(filter.weight);
       validPosts = validPosts.filter((post) => {
