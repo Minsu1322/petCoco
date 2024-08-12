@@ -8,12 +8,10 @@ const ClientMessageComponent = dynamic(() => import("@/components/message/Client
 
 export default function MessagePage() {
   return (
-    <RootLayout hideHeaderFooter>
-      <div className="container mx-auto w-full">
-        <Suspense fallback={<div className="text-center">로딩 중...</div>}>
-          <ClientMessageComponent />
-        </Suspense>
-      </div>
-    </RootLayout>
+    <div className="container mx-auto w-full">
+      <Suspense fallback={<div className="text-center">로딩 중...</div>}>
+        <ClientMessageComponent />
+      </Suspense>
+    </div>
   );
 }
