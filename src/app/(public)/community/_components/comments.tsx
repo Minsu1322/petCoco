@@ -96,28 +96,28 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
 
   const handleDelete = async (id: string) => {
     Swal.fire({
-      title: '댓글 삭제',
+      title: "댓글 삭제",
       text: "정말로 이 댓글을 삭제하시겠습니까?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor:'#d33',
-      cancelButtonColor: '#c0c0c0',
-      confirmButtonText: '삭제',
-      cancelButtonText: '취소'
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#c0c0c0",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소"
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
           const response = await fetch(`/api/comments?id=${id}`, {
             method: "DELETE"
           });
-  
+
           if (response.ok) {
             Swal.fire({
               title: "완료!",
               text: "댓글이 삭제되었습니다",
               icon: "success"
             });
-            
+
             queryClient.invalidateQueries({ queryKey: ["comments", postId] });
           } else {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -142,7 +142,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
           type="text"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          placeholder="댓글을 입력하세요"
+          placeholder="댓글을 입력해주세요"
           className="h-[50px] w-[800px] rounded-md border pl-5"
         />
         <button onClick={handleAddComment} className="ml-5 h-[50px] w-[150px] rounded-md bg-mainColor">
@@ -151,7 +151,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
       </div>
 
       {!comments || comments.length === 0 ? (
-        <div  className="mt-5">아무 댓글이 없어요. 댓글을 남겨보세요!</div>
+        <div className="mt-5">아무 댓글이 없어요. 댓글을 남겨보세요!</div>
       ) : (
         comments
           .slice() // 원본 배열을 변경하지 않기 위해 복사본을 만듭니다.

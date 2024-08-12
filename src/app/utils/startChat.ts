@@ -37,9 +37,19 @@ const startChat = async (receiverId: string, user: User | null, router: any) => 
 
     if (chatError) throw chatError;
 
+    if (receiverId === user?.id) {
+      Swal.fire({
+        title: "자신에게 채팅을 시작할 수 없습니다.",
+        text: "다른 사용자를 선택해 주세요.",
+        icon: "warning",
+        confirmButtonText: "확인"
+      });
+      return;
+    }
+
     if (existingChat && existingChat.length > 0) {
       // 이미 채팅방이 존재하면 해당 채팅방으로 이동
-      router.push(`/message?selectedUser=${receiverId}`);
+      router.push(`/message?selectedUser=${receiverId}&openChat=true`);
     } else {
       // 새로운 채팅방 생성
       const { error: insertError } = await supabase.from("messages").insert([
@@ -53,14 +63,15 @@ const startChat = async (receiverId: string, user: User | null, router: any) => 
       if (insertError) throw insertError;
 
       // 새로 생성된 채팅방으로 이동
-      router.push(`/message?selectedUser=${receiverId}`);
+      router.push(`/message?selectedUser=${receiverId}&openChat=true`);
     }
   } catch (error) {
     console.error("채팅 시작 오류:", error);
     Swal.fire({
       title: "채팅 시작 오류",
       text: "채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.",
-      icon: "error"
+      icon: "error",
+      confirmButtonText: "확인"
     });
   }
 };

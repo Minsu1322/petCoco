@@ -7,8 +7,8 @@ const ClientMessageComponent = dynamic(() => import("@/components/message/Client
 
 export default function MessagePage() {
   return (
-    <div className="container mx-auto max-w-4xl p-4">
-      <Suspense fallback={<div className="p-4 text-center">로딩 중...</div>}>
+    <div className="container mx-auto w-full">
+      <Suspense fallback={<div className="text-center">로딩 중...</div>}>
         <ClientMessageComponent />
       </Suspense>
     </div>

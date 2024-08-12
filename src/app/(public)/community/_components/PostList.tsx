@@ -12,7 +12,7 @@ interface PostListProps {
 
 const fetchPosts = async (page: number, category: string, searchTerm: string, sort: string): Promise<PostsResponse> => {
   const url =
-    sort === "댓글많은순"
+    sort === "댓글순"
       ? `/api/sortByComments?page=${page}&limit=3&category=${category}&search=${searchTerm}`
       : `/api/community?page=${page}&limit=3&category=${category}&search=${searchTerm}`;
 
@@ -37,7 +37,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
   const sortPosts = (posts: any[]) => {
     if (selectedSort === "최신순") {
       return [...posts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    } else if (selectedSort === "댓글많은순") {
+    } else if (selectedSort === "댓글순") {
       return [...posts].sort((a, b) => (b.comments?.length || 0) - (a.comments?.length || 0));
     }
     return posts;
