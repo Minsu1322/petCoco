@@ -313,14 +313,14 @@ export default function ClientMessageComponent() {
                         setIsMobileMenuOpen(false);
                       }}
                     >
-                      <div className="mr-3 h-12 w-12 overflow-hidden rounded-full">
+                      <div className="mr-3 h-12 min-w-12 overflow-hidden rounded-full">
                         {otherUser.profile_img ? (
                           <Image
                             src={otherUser.profile_img}
                             alt="Profile"
                             width={48}
                             height={48}
-                            className="h-full w-full object-cover"
+                            className="h-full object-cover"
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center bg-gray-500">
@@ -330,13 +330,13 @@ export default function ClientMessageComponent() {
                           </div>
                         )}
                       </div>
-                      <div className="flex-grow">
+                      <div className="min-w-0 flex-grow">
                         <div className="font-bold">{otherUser.nickname}</div>
-                        <div className="truncate text-sm text-gray-600">
+                        <div className="line-clamp-2 truncate whitespace-normal text-sm text-gray-600">
                           {userMessages[userMessages.length - 1].content}
                         </div>
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="min-w-[4rem] text-xs text-gray-500">
                         {getTimeDifference(userMessages[userMessages.length - 1].created_at)}
                       </div>
                       {unreadCounts[userId] > 0 && (
