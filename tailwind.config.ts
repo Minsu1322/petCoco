@@ -21,13 +21,13 @@ const config: Config = {
       //   'xl': '1280px',
       //   '2xl': '1536px',
       // },
-
       colors: {
         mainColor: "#8E6EE8",
         mainHoverColor: "#7292cc",
         mainHoverLightColor: "#cbdcfa",
         editBtnColor: "#8CF2B7",
         delBtnColor: "#FFBCBC",
+        bgGray400: "#A9A7A2",
         bgGray500: "#918E88",
         subTitle1: "#61646B",
         subTitle2: "#AFB1B6",
@@ -36,7 +36,7 @@ const config: Config = {
       boxShadow: {
         custom: "2px 2px 10px 0px rgba(0, 0, 0, 0.10)",
         plusBtn: "2px 4px 4px 0px rgba(0, 0, 0, 0.25)"
-      }
+      },
     }
   },
   plugins: [nextui(), require("tailwind-scrollbar-hide")]
