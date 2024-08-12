@@ -90,8 +90,8 @@ export default function ClientMessageComponent() {
   } = useQuery({
     queryKey: ["messages", user?.id],
     queryFn: fetchMessages,
-    enabled: !!user && !isUserLoading,
-    refetchInterval: 1000
+    enabled: !!user && !isUserLoading
+    // refetchInterval: 1000
   });
 
   const groupedMessages: GroupedMessages = messages
@@ -379,7 +379,7 @@ export default function ClientMessageComponent() {
                               : "rounded-bl-2xl rounded-br-2xl rounded-tl-none rounded-tr-2xl bg-gray-200 text-black"
                           }`}
                         >
-                          <p className="text-sm">{message.content}</p>
+                          <p className="whitespace-pre-wrap text-sm">{message.content}</p>
                         </div>
                         {message.sender_id !== user.id && (
                           <span className="ml-2 text-xs text-gray-500">
