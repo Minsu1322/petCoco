@@ -21,11 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-<<<<<<< HEAD
       <body className={`${inter.className} flex min-h-screen flex-col bg-white`}>
-=======
-      <body className={`${inter.className} flex min-h-screen flex-col`}>
->>>>>>> dev
         <QueryProvider>
           <Header />
           <main className="mx-auto w-full flex-grow">{children}</main>
