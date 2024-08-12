@@ -1,4 +1,4 @@
-export const characteristicsArr = ["선택", "온순함", "활발함", "소심함", "적극적", "외향적", "내향적", "낯가림"];
+export const characteristicsArr = ["온순함", "활발함", "소심함", "적극적", "외향적", "내향적", "낯가림"];
 
 export const gender = [
   { key: "전체", label: "전체" },
@@ -48,4 +48,10 @@ export const male_female = [
   { key: "전체", label: "전체" },
   { key: "male", label: "남" },
   { key: "female", label: "여" }
+];
+
+export const neutered = [
+  { key: "전체", label: "무관해요" },
+  { key: "male", label: "했어요" },
+  { key: "female", label: "안 했어요" }
 ];
