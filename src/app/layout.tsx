@@ -5,6 +5,7 @@ import QueryProvider from "./provider";
 import Header from "@/components/Header";
 import Script from "next/script";
 import Footer from "@/components/Footer";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,12 +15,14 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-  hideHeaderFooter
+  children
 }: Readonly<{
   children: React.ReactNode;
-  hideHeaderFooter?: boolean;
 }>) {
+  const headersList = headers();
+  const pathname = headersList.get("x-invoke-path") || "";
+  const hideHeaderFooter = pathname.includes("/message");
+
   return (
     <html lang="en">
       <body className={`${inter.className} flex min-h-screen flex-col bg-background`}>
