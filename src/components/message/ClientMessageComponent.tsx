@@ -90,8 +90,8 @@ export default function ClientMessageComponent() {
   } = useQuery({
     queryKey: ["messages", user?.id],
     queryFn: fetchMessages,
-    enabled: !!user && !isUserLoading
-    // refetchInterval: 1000
+    enabled: !!user && !isUserLoading,
+    refetchInterval: 1000
   });
 
   const groupedMessages: GroupedMessages = messages
