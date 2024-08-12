@@ -26,7 +26,7 @@ const ButtonGroup = ({ label, buttonInfos, defaultValue, onChange }: ButtonGroup
   };
   return (
     <>
-      <label className="text-base font-normal leading-tight">{label}</label>
+      <label className="text-base font-normal leading-tight text-[#292826]">{label}</label>
       <div className="mt-1 flex justify-between">
         {buttonInfos.map((info, i) => {
           return (
@@ -51,7 +51,7 @@ const Button = ({ children, enable, onClick }: ButtonProps) => {
     return (
       <button
         onClick={(e) => onClick()}
-        className="h-[56px] w-[156px] rounded-2xl bg-[#AFB1B6] text-center text-base text-[#FFFFFF]"
+        className="h-[56px] w-[156px] rounded-2xl bg-[#8E6EE8] text-center text-base font-normal text-[#FFFFFF]"
       >
         {children}
       </button>
@@ -60,7 +60,7 @@ const Button = ({ children, enable, onClick }: ButtonProps) => {
     return (
       <button
         onClick={(e) => onClick()}
-        className="h-[56px] w-[156px] rounded-2xl bg-[#EFEFF0] text-center text-base text-[#999999]"
+        className="h-[56px] w-[156px] rounded-2xl bg-[#EFEFF0] text-center text-base font-normal text-[#999999]"
       >
         {children}
       </button>

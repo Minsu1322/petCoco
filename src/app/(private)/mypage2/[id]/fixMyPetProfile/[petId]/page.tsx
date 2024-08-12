@@ -206,157 +206,188 @@ const FixMyPetProfile = () => {
   }
 
   return (
-    <div className="flex w-full flex-col justify-center">
-      <div className="flex justify-between">
-        <div className="mb-[14px] ml-[23px] mt-2 flex gap-[27px]">
+    <>
+      <div className="flex justify-between bg-[#F3F2F2]">
+        <div className="mb-[14px] ml-[23px] mt-[14px] flex gap-[31px]">
           {pet?.map((pet) => (
             <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
               <div className="mt-2">
-                <img
+                <div className="rounded-lg bg-[#8E6EE8] px-3 py-2 text-xs font-semibold text-[#FFFFFF]">
+                  {pet.petName}
+                </div>
+                {/* <img
                   className="h-[50px] w-[50px] rounded bg-lime-300 object-cover"
                   src={pet.petImage ? pet.petImage : defaultPetImg}
                   alt="..."
-                />
+                /> */}
               </div>
             </Link>
           ))}
         </div>
         <div className="mr-[18px] py-[22px]">
           <Link href={`/mypage2/${id}/addMyPetProfile`}>
-            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
               <path
-                d="M15 0C6.72 0 0 6.72 0 15C0 23.28 6.72 30 15 30C23.28 30 30 23.28 30 15C30 6.72 23.28 0 15 0ZM21 16.5H16.5V21C16.5 21.825 15.825 22.5 15 22.5C14.175 22.5 13.5 21.825 13.5 21V16.5H9C8.175 16.5 7.5 15.825 7.5 15C7.5 14.175 8.175 13.5 9 13.5H13.5V9C13.5 8.175 14.175 7.5 15 7.5C15.825 7.5 16.5 8.175 16.5 9V13.5H21C21.825 13.5 22.5 14.175 22.5 15C22.5 15.825 21.825 16.5 21 16.5Z"
-                fill="#61646B"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M10.75 15.1541C10.336 15.1541 10 14.8181 10 14.4041V7.07715C10 6.66315 10.336 6.32715 10.75 6.32715C11.164 6.32715 11.5 6.66315 11.5 7.07715V14.4041C11.5 14.8181 11.164 15.1541 10.75 15.1541Z"
+                fill="#42413D"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M14.4165 11.4902H7.0835C6.6685 11.4902 6.3335 11.1542 6.3335 10.7402C6.3335 10.3262 6.6685 9.99023 7.0835 9.99023H14.4165C14.8305 9.99023 15.1665 10.3262 15.1665 10.7402C15.1665 11.1542 14.8305 11.4902 14.4165 11.4902Z"
+                fill="#42413D"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M6.064 1.5C3.292 1.5 1.5 3.397 1.5 6.335V15.165C1.5 18.103 3.292 20 6.064 20H15.436C18.209 20 20 18.103 20 15.165V6.335C20 3.397 18.209 1.5 15.436 1.5H6.064ZM15.436 21.5H6.064C2.437 21.5 0 18.954 0 15.165V6.335C0 2.546 2.437 0 6.064 0H15.436C19.063 0 21.5 2.546 21.5 6.335V15.165C21.5 18.954 19.063 21.5 15.436 21.5Z"
+                fill="#42413D"
               />
             </svg>
           </Link>
         </div>
       </div>
-      <div className="mt-[22px] flex flex-col items-center justify-center">
-        <img
-          className="h-[100px] w-[100px] rounded-xl bg-lime-300 object-cover"
-          src={previewImage || defaultPetImg}
-          alt=""
-        />
-        <div className="inline-flex px-[9px] py-[7px]">
-          <button
-            className="h-[26px] w-[82px] rounded-lg border border-[#C9C9C9] bg-[#CCCCCC] text-center text-xs font-normal leading-tight text-[#FFFFFF] drop-shadow-lg"
-            type={"button"}
-            onClick={() => document.getElementById("fileInput")?.click()}
-          >
-            사진 변경
-          </button>
-          <input id="fileInput" type="file" accept="image/*" onChange={handleImageChange} style={{ display: "none" }} />
-        </div>
-        <div className="flex w-full flex-col justify-center px-[24px]">
-          <div className="mt-[37px]">
-            <MyInput
-              label="이름"
-              ref={null}
-              id="changePetName"
-              placeholder="변경할 이름(최대 8자)"
-              maxLength={8}
-              defaultValue={filteredProfile![0].petName || ""}
-              onChange={handlePetNameChange}
-            />
-          </div>
-          <div className="mt-[35px]">
-            <MyInput
-              label="종류"
-              ref={null}
-              id="changeMajorClass"
-              placeholder="개, 고양이, 물고기 등등"
-              maxLength={8}
-              defaultValue={filteredProfile![0].majorClass || ""}
-              onChange={handleMajorClassChange}
-            />
-          </div>
-          <div className="mt-[35px]">
-            <MyInput
-              label="품종"
-              ref={null}
-              id="changeMajorClass"
-              placeholder="치와와, 랙돌, 금붕어 등등"
-              maxLength={8}
-              defaultValue={filteredProfile![0].minorClass || ""}
-              onChange={handleMinorClassChange}
-            />
-          </div>
-          <div className="mt-[23px]">
-            <ButtonGroup
-              label="성별"
-              buttonInfos={[
-                { text: "남아", value: "수" },
-                { text: "여아", value: "암" }
-              ]}
-              defaultValue={filteredProfile![0].male_female || ""}
-              onChange={handleMaleFemaleChange}
-            ></ButtonGroup>
-          </div>
-          <div className="mt-[23px]">
-            <ButtonGroup
-              label="중성화 여부"
-              buttonInfos={[
-                { text: "했어요", value: "YES" },
-                { text: "안 했어요", value: "NO" }
-              ]}
-              defaultValue={filteredProfile![0].neutralized || ""}
-              onChange={handleNeutralize}
-            ></ButtonGroup>
-          </div>
-          <div className="mt-[35px]">
-            <MyInput
-              label="연령"
-              ref={null}
-              id="changeAge"
-              placeholder="나이"
-              maxLength={20}
-              defaultValue={filteredProfile![0].age || ""}
-              onChange={handleAgeChange}
-            />
-          </div>
-          <div className="mt-[35px]">
-            <MyInput
-              label="무게"
-              ref={null}
-              id="changeWeight"
-              placeholder="1kg 미만은 소수점으로 표기"
-              maxLength={20}
-              defaultValue={filteredProfile![0].weight + "kg" || ""}
-              onChange={handleWeight}
-            />
-          </div>
-          <div className="mt-[23px] flex flex-col">
-            <label className="text-base font-normal leading-tight">의료기록</label>
-            <textarea
-              className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-4 py-3 text-[15px] font-normal leading-[20px]"
-              placeholder="예방접종 및 기타 의료 기록(최대 200자)"
-              maxLength={200}
-              defaultValue={filteredProfile![0].medicalRecords || ""}
-              onChange={handleMedicalRecords}
-            />
-          </div>
-          <div className="mt-[22px] flex flex-col">
-            <label className="text-base font-normal leading-tight">자기소개</label>
-            <textarea
-              className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-4 py-3 text-[15px] font-normal leading-[20px]"
-              placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
-              maxLength={200}
-              defaultValue={filteredProfile![0].introduction || ""}
-              onChange={handleIntroductionChange}
-            />
-          </div>
-          <div className="py-[70px]">
+      <div className="flex w-full flex-col justify-center">
+        <div className="mt-[27px] flex flex-col items-center justify-center">
+          <img
+            className="h-[100px] w-[100px] rounded-xl bg-lime-300 object-cover"
+            src={previewImage || defaultPetImg}
+            alt=""
+          />
+          <div className="inline-flex px-[9px] py-[7px]">
             <button
-              className="CCCCCC w-full rounded-lg bg-[#999999] py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
-              onClick={submitChange}
+              className="rounded-lg bg-[#8E6EE8] px-3 py-2 text-center text-xs font-normal leading-tight text-[#FFFFFF] drop-shadow-lg"
+              type={"button"}
+              onClick={() => document.getElementById("fileInput")?.click()}
             >
-              수정완료
+              사진 변경
             </button>
+            <input
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+            />
+          </div>
+          <div className="flex w-full flex-col justify-center px-[24px]">
+            <div className="mt-[19px]">
+              <MyInput
+                label="이름"
+                ref={null}
+                id="changePetName"
+                placeholder="변경할 이름(최대 8자)"
+                maxLength={8}
+                defaultValue={filteredProfile![0].petName || ""}
+                onChange={handlePetNameChange}
+              />
+            </div>
+            <div className="mt-[35px]">
+              <MyInput
+                label="종류"
+                ref={null}
+                id="changeMajorClass"
+                placeholder="개, 고양이, 물고기 등등"
+                maxLength={8}
+                defaultValue={filteredProfile![0].majorClass || ""}
+                onChange={handleMajorClassChange}
+              />
+            </div>
+            <div className="mt-[35px]">
+              <MyInput
+                label="품종"
+                ref={null}
+                id="changeMajorClass"
+                placeholder="치와와, 랙돌, 금붕어 등등"
+                maxLength={8}
+                defaultValue={filteredProfile![0].minorClass || ""}
+                onChange={handleMinorClassChange}
+              />
+            </div>
+            <div className="mt-[23px]">
+              <ButtonGroup
+                label="성별"
+                buttonInfos={[
+                  { text: "남아", value: "수" },
+                  { text: "여아", value: "암" }
+                ]}
+                defaultValue={filteredProfile![0].male_female || ""}
+                onChange={handleMaleFemaleChange}
+              ></ButtonGroup>
+            </div>
+            <div className="mt-[23px]">
+              <ButtonGroup
+                label="중성화 여부"
+                buttonInfos={[
+                  { text: "했어요", value: "YES" },
+                  { text: "안 했어요", value: "NO" }
+                ]}
+                defaultValue={filteredProfile![0].neutralized || ""}
+                onChange={handleNeutralize}
+              ></ButtonGroup>
+            </div>
+            <div className="mt-[35px]">
+              <MyInput
+                label="나이 (살)"
+                ref={null}
+                id="changeAge"
+                placeholder="나이"
+                maxLength={20}
+                defaultValue={filteredProfile![0].age || ""}
+                onChange={handleAgeChange}
+              />
+            </div>
+            <div className="mt-[35px]">
+              <MyInput
+                label="무게"
+                ref={null}
+                id="changeWeight"
+                placeholder="1kg 미만은 소수점으로 표기"
+                maxLength={20}
+                defaultValue={filteredProfile![0].weight + "kg" || ""}
+                onChange={handleWeight}
+              />
+            </div>
+            <div className="mt-[23px] flex flex-col">
+              <label className="text-base font-medium leading-normal text-[#61646B]">의료기록</label>
+              <textarea
+                className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
+                placeholder="예방접종 및 기타 의료 기록(최대 200자)"
+                maxLength={200}
+                defaultValue={filteredProfile![0].medicalRecords || ""}
+                onChange={handleMedicalRecords}
+              />
+              <div className="flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
+                {introduction?.length}/200
+              </div>
+            </div>
+            <div className="mt-[22px] flex flex-col">
+              <label className="text-base font-medium leading-normal text-[#61646B]">자기소개</label>
+              <textarea
+                className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
+                placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
+                maxLength={200}
+                defaultValue={filteredProfile![0].introduction || ""}
+                onChange={handleIntroductionChange}
+              />
+              <div className="flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
+                {introduction?.length}/200
+              </div>
+            </div>
+            <div className="py-[70px]">
+              <button
+                className="CCCCCC w-full rounded-lg bg-[#8E6EE8] py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
+                onClick={submitChange}
+              >
+                수정완료
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

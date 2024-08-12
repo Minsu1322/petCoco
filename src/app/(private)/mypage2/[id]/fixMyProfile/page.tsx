@@ -36,13 +36,13 @@ const FixMyProfile = () => {
 
   const ageOptions = [
     { value: "null", label: "미공개" },
+    { value: "10대 미만", label: "10대 미만" },
     { value: "10대", label: "10대" },
     { value: "20대", label: "20대" },
     { value: "30대", label: "30대" },
     { value: "40대", label: "40대" },
     { value: "50대", label: "50대" },
-    { value: "60대", label: "60대" },
-    { value: "70대 이상", label: "70대 이상" }
+    { value: "60대 이상", label: "60대 이상" }
   ];
 
   const getProfileData = async () => {
@@ -165,7 +165,7 @@ const FixMyProfile = () => {
 
   return (
     <>
-      <div className="flex w-full flex-col justify-center px-[24px]" onClick={(e) => e.stopPropagation()}>
+      <div className="flex w-full flex-col justify-center px-6" onClick={(e) => e.stopPropagation()}>
         <div className="mt-[21px] flex flex-col items-center justify-center">
           <img
             className="h-[100px] w-[100px] rounded-xl bg-lime-300 object-cover"
@@ -174,7 +174,7 @@ const FixMyProfile = () => {
           />
           <div className="inline-flex px-[9px] py-[7px]">
             <button
-              className="h-[26px] w-[82px] rounded-lg border border-[#C9C9C9] bg-[#CCCCCC] text-center text-xs font-normal leading-tight text-[#FFFFFF] drop-shadow-lg"
+              className="rounded-lg bg-[#8E6EE8] px-3 py-2 text-center text-xs font-normal leading-tight text-[#FFFFFF] drop-shadow-lg"
               type={"button"}
               onClick={() => document.getElementById("fileInput")?.click()}
             >
@@ -200,7 +200,7 @@ const FixMyProfile = () => {
             onChange={handleNickNameChange}
           />
         </div>
-        <div className="mt-[26px]">
+        <div className="mt-[29px]">
           <ButtonGroup
             label="성별"
             buttonInfos={[
@@ -210,6 +210,21 @@ const FixMyProfile = () => {
             defaultValue={user.gender || ""}
             onChange={handleGenderChange}
           ></ButtonGroup>
+          <div className="mt-[29px]">
+            <p className="text-base font-normal leading-tight">연령대</p>
+            <select
+              className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-sm font-normal"
+              onChange={handleAgeChange}
+              value={age}
+              defaultValue={user.age}
+            >
+              {ageOptions.map((option) => (
+                <option key={option.label} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="mt-[29px]">
             <MyInput
               label="MBTI"
@@ -230,10 +245,13 @@ const FixMyProfile = () => {
               defaultValue={user.introduction}
               onChange={handleIntroductionChange}
             />
+            <div className="flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
+              {introduction?.length}/200
+            </div>
           </div>
           <div className="py-[30px]">
             <button
-              className="CCCCCC w-full rounded-lg bg-[#999999] py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
+              className="CCCCCC w-full rounded-lg bg-[#8E6EE8] py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
               onClick={submitChange}
             >
               수정완료

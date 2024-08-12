@@ -81,7 +81,7 @@ function MyPage() {
           <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 반려동물 ({pets.length})</div>
 
           <Link href={`/mypage2/${user.id}/fixMyPetProfile/${pets[0].id}`}>
-            <button className="ml-2 rounded-lg bg-[#8E6EE8] px-4 py-[6px] text-[10px] font-semibold leading-[16px] tracking-wide text-[#FFFFFF]">
+            <button className="ml-2 rounded-lg bg-[#8E6EE8] px-4 py-[6px] text-sm font-semibold tracking-wide text-[#FFFFFF]">
               반려동물 프로필 수정
             </button>
           </Link>

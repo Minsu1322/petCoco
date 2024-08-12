@@ -152,7 +152,7 @@ const AddMyPetProfile = () => {
           alt=""
         />
         <button
-          className="mt-2 h-[26px] w-[82px] rounded-lg border border-[#C9C9C9] bg-[#CCCCCC] text-center text-xs font-normal leading-tight text-[#FFFFFF] drop-shadow-lg"
+          className="mt-2 rounded-lg bg-[#8E6EE8] px-3 py-2 text-xs font-semibold text-[#FFFFFF]"
           type={"button"}
           onClick={() => document.getElementById("fileInput")?.click()}
         >
@@ -240,28 +240,34 @@ const AddMyPetProfile = () => {
           />
         </div>
         <div className="mt-[23px] flex flex-col">
-          <label className="text-base font-normal leading-tight">의료기록</label>
+          <label className="text-base font-medium leading-normal text-[#61646B]">의료기록</label>
           <textarea
-            className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-4 py-3 text-[15px] font-normal leading-[20px]"
+            className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
             placeholder="예방접종 및 기타 의료 기록(최대 200자)"
             maxLength={200}
             defaultValue={medicalRecords}
             onChange={handleMedicalRecords}
           />
+          <div className="flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
+            {introduction?.length}/200
+          </div>
         </div>
         <div className="mt-[22px] flex flex-col">
-          <label className="text-base font-normal leading-tight">자기소개</label>
+          <label className="text-base font-medium leading-normal text-[#61646B]">자기소개</label>
           <textarea
-            className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-4 py-3 text-[15px] font-normal leading-[20px]"
+            className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
             placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
             maxLength={200}
             defaultValue={introduction}
             onChange={handleIntroductionChange}
           />
+          <div className="flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
+            {introduction?.length}/200
+          </div>
         </div>
         <div className="py-[70px]">
           <button
-            className="CCCCCC w-full rounded-lg bg-[#999999] py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
+            className="CCCCCC w-full rounded-lg bg-[#8E6EE8] py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
             onClick={submitChange}
           >
             작성완료
