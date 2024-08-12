@@ -88,6 +88,8 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessag
     }
 
     sendMessage.mutate({ content, imageUrl });
+    setSelectedImage(null);
+    setImagePreviewUrl(null);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
