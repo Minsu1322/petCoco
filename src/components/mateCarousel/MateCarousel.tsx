@@ -61,14 +61,7 @@ const MateCarousel: React.FC<PropType> = (props) => {
               <div className={`${carouselStyles.embla__slide}`} key={post.id}>
                 <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/mate/posts/${post.id}`}>
                   {/* 모집기간 */}
-                  <div className="mb-4 text-sm text-gray-600">
-                    {post.recruitment_start && post.recruitment_end && (
-                      <p className="whitespace-nowrap">
-                        {format(parseISO(post.recruitment_start), "yyyy.MM.dd")} ~
-                        {format(parseISO(post.recruitment_end), "yyyy.MM.dd")}
-                      </p>
-                    )}
-                  </div>
+
                   <div className="rounded-lg bg-white p-4 shadow-md">
                     <div className="relative flex">
                       {/* 좌우구분 */}
@@ -86,8 +79,8 @@ const MateCarousel: React.FC<PropType> = (props) => {
                         <div className="mb-4 flex flex-col items-center">
                           <p className="mb-1 text-sm text-gray-600">{users?.nickname || "닉네임"}</p>
                           <div className="flex items-center">
-                            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-xl text-gray-700">
-                              A
+                            <div className="flex h-6 w-6 items-center justify-center rounded-full text-xl">
+                              <img src="/assets/svg/heart.svg" />
                             </div>
                             <span className="ml-2 text-sm">15</span>
                           </div>

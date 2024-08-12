@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { getTimeDifference } from "@/app/utils/getTimeDifference";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const supabase = createClient();
 
@@ -40,29 +41,23 @@ interface GroupedMessages {
 }
 
 export default function ClientMessageComponent() {
+  const router = useRouter();
+
   const searchParams = useSearchParams();
+
   const initialSelectedUser = searchParams.get("selectedUser");
-  const [selectedUser, setSelectedUser] = useState<string | null>(initialSelectedUser);
-  const { user, setUser } = useAuthStore();
-  const messageEndRef = useRef<HTMLDivElement>(null);
-  const [isUserLoading, setIsUserLoading] = useState(true);
-  const queryClient = useQueryClient();
-  const [selectedUserProfile, setSelectedUserProfile] = useState<any>(null);
   const openChat = searchParams.get("openChat") === "true";
+
+  const [selectedUser, setSelectedUser] = useState<string | null>(initialSelectedUser);
+  const [selectedUserProfile, setSelectedUserProfile] = useState<any>(null);
+  const [isUserLoading, setIsUserLoading] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(!openChat);
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
-      if (user) {
-        setUser(user);
-      }
-      setIsUserLoading(false);
-    };
-    checkUser();
-  }, [setUser]);
+  const { user, setUser } = useAuthStore();
+
+  const queryClient = useQueryClient();
+
+  const messageEndRef = useRef<HTMLDivElement>(null);
 
   const fetchMessages = useCallback(async () => {
     if (!user) return [];
@@ -96,25 +91,66 @@ export default function ClientMessageComponent() {
     queryKey: ["messages", user?.id],
     queryFn: fetchMessages,
     enabled: !!user && !isUserLoading,
-    // refetchInterval: 1000
+    refetchInterval: 1000
   });
 
-  useEffect(() => {
-    const isMobile = window.innerWidth < 640;
-    if (isMobile) {
-      setIsMobileMenuOpen(true);
+  const groupedMessages: GroupedMessages = messages
+    ? messages.reduce((acc, message) => {
+        const userId = message.sender_id === user?.id ? message.receiver_id : message.sender_id;
+        const nickname = message.sender_id === user?.id ? message.receiver_nickname : message.sender_nickname;
+
+        if (!acc[userId]) {
+          acc[userId] = [];
+        }
+        acc[userId].push({ ...message, nickname });
+        return acc;
+      }, {} as GroupedMessages)
+    : {};
+
+  const sortedGroupedMessages = Object.entries(groupedMessages).sort((a, b) => {
+    const lastMessageA = a[1][a[1].length - 1];
+    const lastMessageB = b[1][b[1].length - 1];
+    return new Date(lastMessageB.created_at).getTime() - new Date(lastMessageA.created_at).getTime();
+  });
+
+  const getOtherUserInfo = useCallback(
+    (userMessages: any) => {
+      const otherUser =
+        userMessages[0].sender_id === user?.id ? userMessages[0].receiver_profile : userMessages[0].sender_profile;
+      return {
+        id: otherUser.id,
+        nickname: otherUser.nickname,
+        profile_img: otherUser.profile_img
+      };
+    },
+    [user]
+  );
+
+  const unreadCounts = messages
+    ? messages.reduce(
+        (acc, message) => {
+          if (!message.read && message.receiver_id === user?.id) {
+            const userId = message.sender_id;
+            if (!acc[userId]) {
+              acc[userId] = 0;
+            }
+            acc[userId]++;
+          }
+          return acc;
+        },
+        {} as { [userId: string]: number }
+      )
+    : {};
+
+  const loadUserProfile = useCallback(async (userId: string) => {
+    const { data, error } = await supabase.from("users").select("id, nickname, profile_img").eq("id", userId).single();
+
+    if (error) {
+      console.error("Error loading user profile:", error);
+    } else {
+      setSelectedUserProfile(data);
     }
   }, []);
-
-  useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  useEffect(() => {
-    if (messages && selectedUser) {
-      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages, selectedUser]);
 
   const markMessagesAsRead = useCallback(
     async (userId: string) => {
@@ -159,34 +195,49 @@ export default function ClientMessageComponent() {
     [markMessagesAsRead, messages, user?.id]
   );
 
+  const handleGoBack = () => {
+    router.back();
+  };
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+      if (user) {
+        setUser(user);
+      }
+      setIsUserLoading(false);
+    };
+    checkUser();
+  }, [setUser]);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 640;
+    if (isMobile) {
+      setIsMobileMenuOpen(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }, [messages, selectedUser]);
+
+  useEffect(() => {
+    if (messages && selectedUser) {
+      setTimeout(() => {
+        messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [messages, selectedUser]);
+
   useEffect(() => {
     if (selectedUser) {
       markMessagesAsRead(selectedUser);
     }
   }, [selectedUser, markMessagesAsRead]);
-
-  const groupedMessages: GroupedMessages = messages
-    ? messages.reduce((acc, message) => {
-        const userId = message.sender_id === user?.id ? message.receiver_id : message.sender_id;
-        const nickname = message.sender_id === user?.id ? message.receiver_nickname : message.sender_nickname;
-
-        if (!acc[userId]) {
-          acc[userId] = [];
-        }
-        acc[userId].push({ ...message, nickname });
-        return acc;
-      }, {} as GroupedMessages)
-    : {};
-
-  const loadUserProfile = useCallback(async (userId: string) => {
-    const { data, error } = await supabase.from("users").select("id, nickname, profile_img").eq("id", userId).single();
-
-    if (error) {
-      console.error("Error loading user profile:", error);
-    } else {
-      setSelectedUserProfile(data);
-    }
-  }, []);
 
   useEffect(() => {
     if (initialSelectedUser) {
@@ -198,79 +249,47 @@ export default function ClientMessageComponent() {
     }
   }, [initialSelectedUser, loadUserProfile]);
 
-  const sortedGroupedMessages = Object.entries(groupedMessages).sort((a, b) => {
-    const lastMessageA = a[1][a[1].length - 1];
-    const lastMessageB = b[1][b[1].length - 1];
-    return new Date(lastMessageB.created_at).getTime() - new Date(lastMessageA.created_at).getTime();
-  });
-
-  const getOtherUserInfo = useCallback(
-    (userMessages: any) => {
-      const otherUser =
-        userMessages[0].sender_id === user?.id ? userMessages[0].receiver_profile : userMessages[0].sender_profile;
-      return {
-        id: otherUser.id,
-        nickname: otherUser.nickname,
-        profile_img: otherUser.profile_img
-      };
-    },
-    [user]
-  );
-
-  const unreadCounts = messages
-    ? messages.reduce(
-        (acc, message) => {
-          if (!message.read && message.receiver_id === user?.id) {
-            const userId = message.sender_id;
-            if (!acc[userId]) {
-              acc[userId] = 0;
-            }
-            acc[userId]++;
-          }
-          return acc;
-        },
-        {} as { [userId: string]: number }
-      )
-    : {};
-
   if (isUserLoading) return <div className="p-4 text-center">사용자 정보를 불러오는 중...</div>;
   if (!user) return <div className="p-4 text-center">로그인이 필요합니다.</div>;
   if (isLoading) return <div className="p-4 text-center">메시지를 불러오는 중...</div>;
   if (error) return <div className="p-4 text-center">메시지를 불러오는 중 오류가 발생했습니다.</div>;
-
   return (
     <div className="flex h-screen w-full flex-col bg-white">
       <div className="flex h-full flex-col">
         {/* 상단 바 */}
-        <div className="flex h-20 items-center justify-between border-b border-gray-500 bg-white px-4 shadow-md">
+        <div className="flex h-16 items-center justify-between border-b border-gray-500 bg-white px-4 shadow-md">
+          <button onClick={handleGoBack} className="text-xl font-bold">
+            <img src="/assets/svg/Arrow - Left 2.svg" alt="Back" />
+          </button>
+
           {selectedUserProfile && !isMobileMenuOpen && (
-            <div className="flex flex-grow items-center">
-              <div className="mr-3 h-12 w-12 overflow-hidden rounded-full">
-                {selectedUserProfile.profile_img ? (
-                  <Image
-                    src={selectedUserProfile.profile_img}
-                    alt="Profile"
-                    width={48}
-                    height={48}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-gray-500">
-                    <span className="text-xl font-bold text-white">
-                      {selectedUserProfile.nickname.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                )}
+            <div className="flex flex-grow items-center justify-center">
+              <div className="flex items-center">
+                <div className="mr-3 h-12 w-12 overflow-hidden rounded-full">
+                  {selectedUserProfile.profile_img ? (
+                    <Image
+                      src={selectedUserProfile.profile_img}
+                      alt="Profile"
+                      width={48}
+                      height={48}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-gray-500">
+                      <span className="text-xl font-bold text-white">
+                        {selectedUserProfile.nickname.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <span className="text-lg font-bold">{selectedUserProfile.nickname}</span>
               </div>
-              <span className="text-lg font-bold">{selectedUserProfile.nickname}</span>
             </div>
           )}
+
           {/* 대화방 목록 버튼 */}
-          <button
-            className="rounded bg-blue-500 px-6 py-3 text-lg text-white"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? "닫기" : "목록"}
+          <button className="rounded text-lg text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? null : <img src="/assets/svg/chat(message).svg" />}
           </button>
         </div>
 
@@ -337,7 +356,7 @@ export default function ClientMessageComponent() {
             {selectedUser ? (
               <>
                 {/* 메시지 영역 */}
-                <div className="flex-grow overflow-y-auto bg-white p-3" style={{ height: "calc(100vh - 20rem)" }}>
+                <div className="flex-grow overflow-y-auto bg-white p-3" style={{ height: "calc(100vh - 25rem)" }}>
                   {groupedMessages[selectedUser].map((message) => (
                     <div
                       key={message.id}
@@ -354,11 +373,13 @@ export default function ClientMessageComponent() {
                           </span>
                         )}
                         <div
-                          className={`rounded-2xl p-2 ${
-                            message.sender_id === user.id ? "bg-[#8E6EE8] text-white" : "bg-gray-200 text-black"
+                          className={`relative inline-block p-2 ${
+                            message.sender_id === user.id
+                              ? "rounded-bl-2xl rounded-br-none rounded-tl-2xl rounded-tr-2xl bg-mainColor text-white"
+                              : "rounded-bl-2xl rounded-br-2xl rounded-tl-none rounded-tr-2xl bg-gray-200 text-black"
                           }`}
                         >
-                          <p className="text-sm">{message.content}</p>
+                          <p className="whitespace-pre-wrap text-sm">{message.content}</p>
                         </div>
                         {message.sender_id !== user.id && (
                           <span className="ml-2 text-xs text-gray-500">
