@@ -1,7 +1,6 @@
 import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { MateNextPostType, Pets } from "@/types/mate.type";
-import { UserType } from "@/types/auth.type";
 import { getTiemRage } from "@/app/(public)/mate/getTimeRange";
 
 export type CreateMatePostWithPetsData = {
@@ -16,7 +15,7 @@ export const GET = async (request: NextRequest) => {
   const search = searchParams.get("search");
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "8");
-  const isCurrentPosts = searchParams.get("current");
+  // const isCurrentPosts = searchParams.get("current");
   const filter = Object.fromEntries(searchParams.entries());
   const userLat = parseFloat(searchParams.get("userLat") || "0");
   const userLng = parseFloat(searchParams.get("userLng") || "0");
@@ -108,7 +107,7 @@ export const GET = async (request: NextRequest) => {
       });
     }
 
-    if (filter.neutered) {
+    if (filter.neutered && filter.neutered !== "all") {
       validPosts = validPosts.filter((post) => {
         if (Array.isArray(post.matepostpets)) {
           return (post.matepostpets as Pets[]).some((pet) => 
