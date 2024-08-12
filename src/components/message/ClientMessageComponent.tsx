@@ -44,6 +44,7 @@ export default function ClientMessageComponent() {
   const router = useRouter();
 
   const searchParams = useSearchParams();
+
   const initialSelectedUser = searchParams.get("selectedUser");
   const openChat = searchParams.get("openChat") === "true";
 
@@ -89,8 +90,8 @@ export default function ClientMessageComponent() {
   } = useQuery({
     queryKey: ["messages", user?.id],
     queryFn: fetchMessages,
-    enabled: !!user && !isUserLoading,
-    refetchInterval: 1000
+    enabled: !!user && !isUserLoading
+    // refetchInterval: 1000
   });
 
   const groupedMessages: GroupedMessages = messages
@@ -219,12 +220,16 @@ export default function ClientMessageComponent() {
   }, []);
 
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    setTimeout(() => {
+      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }, [messages, selectedUser]);
 
   useEffect(() => {
     if (messages && selectedUser) {
-      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     }
   }, [messages, selectedUser]);
 

@@ -1,7 +1,6 @@
 import Swal from "sweetalert2";
 import { createClient } from "@/supabase/client";
 import { User } from "@supabase/supabase-js";
-import { QueryClient } from "@tanstack/react-query";
 
 /**
  * 특정사용자랑 대화를 시작하는 함수
