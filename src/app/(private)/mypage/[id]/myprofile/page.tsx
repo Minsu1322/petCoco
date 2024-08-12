@@ -59,28 +59,24 @@ const MyProfile = () => {
 
   return (
     <div className="">
-      <div className="flex flex-col items-center gap-2 sm:flex-row">
-        <div className="border-gray flex w-full flex-col gap-[50px] rounded-lg border sm:h-[500px] sm:w-[500px]">
-          <div className="mt-5 flex items-center">
-            <img
-              className="ml-5 mr-5 h-[60px] w-[60px] rounded bg-mainColor object-cover"
-              src={user.profile_img || defaultUserImg}
-              alt=""
-            />
-            <div className="flex flex-col">
-              <span className="flex items-center gap-3 font-bold text-[#4885f8] sm:text-[30px]">
-                {user.nickname}
-                <Link
-                  href={`/mypage/${user.id}/myprofile/fixMyProfile`}
-                  className="block inline-flex h-[23px] w-[73px] flex-col items-center justify-center gap-1.5 rounded-lg bg-[#efeff0] px-3 py-2 sm:hidden"
-                >
-                  <p className="text-[10px] font-normal leading-none tracking-wide text-[#999999]">변경하기</p>
-                </Link>
-                <div className="ml-2 hidden text-[30px] text-black sm:block">님 반갑습니다.</div>
-              </span>
-            </div>
+      <div className="ml-4 flex flex-col items-center gap-2 sm:flex-row">
+        <div className="h-px w-full border-[#DEE5ED] bg-[#DEE5ED] opacity-60" />
+        <div className="flex w-full gap-4 whitespace-nowrap text-lg leading-tight text-neutral-800">
+          <img className="aspect-square w-11 shrink-0 rounded" src={user.profile_img || defaultUserImg} alt="" />
+          <div className="flex flex-col">
+            <span className="my-auto w-[52px] self-stretch font-semibold">
+              {user.nickname}
+              <Link
+                href={`/mypage/${user.id}/myprofile/fixMyProfile`}
+                className="mb-10 ml-20 min-h-[23px] overflow-hidden rounded-lg bg-[#EFEFF0] px-1 py-1 text-xs leading-relaxed tracking-wide text-neutral-400"
+              >
+                내 프로필 수정
+              </Link>
+              <div className="ml-2 hidden text-[30px] text-black sm:block">님 반갑습니다.</div>
+            </span>
           </div>
-          <div className="flex hidden justify-center sm:block">
+
+          <div className="hidden justify-center sm:block">
             <div className="flex w-[90%] flex-col rounded-lg">
               <div className="mb-5 flex w-[50%] justify-between">
                 <span className="flex flex-col items-center gap-1">
@@ -105,37 +101,62 @@ const MyProfile = () => {
             </div>
           </div>
           <Link href={`/mypage/${user.id}/myprofile/fixMyProfile`} className="mt-[-20px] flex justify-center">
-            <div className="flex hidden h-[40px] w-[200px] items-center justify-center rounded-md bg-mainColor text-center font-bold sm:block">
-              변경하기
+            <div className="hidden items-center justify-center rounded-md bg-mainColor text-center font-bold sm:block">
+              내 프로필 수정
             </div>
           </Link>
         </div>
-        <div className="border-gray flex flex-col items-center gap-6 overflow-y-scroll rounded-[10px] py-4 scrollbar-hide sm:ml-20 sm:h-[500px] sm:w-[500px] sm:border">
+        <div className="my-4 h-px w-full border-[#DEE5ED] bg-[#DEE5ED] opacity-60" />
+        <div className="flex flex-row">
+          <div className="self-start text-[#3e3e3e]">나의 반려동물 ({pets.length})</div>
+          <Link
+            href={`/mypage/${user.id}/myprofile/fixMyProfile`}
+            className="mb-8 ml-4 min-h-[23px] overflow-hidden rounded-lg bg-[#EFEFF0] px-1 py-1 text-xs leading-relaxed tracking-wide text-neutral-400"
+          >
+            반려동물 프로필 수정
+          </Link>
+        </div>
+        <div className="flex flex-col items-center rounded-[10px] bg-[#EFEFF0]">
           <div>
-            {pets?.map((pet) => (
-              <Link key={pet.id} href={`/mypage/${id}/mypet/mypetprofile/${pet.id}`}>
-                <div className="border-gray my-auto mt-2 flex flex-row items-center gap-12 rounded-xl border-2 bg-white px-[16px] py-[12px] sm:w-[400px]">
-                  <img
-                    className="h-[100px] w-[100px] rounded bg-lime-300 object-cover"
-                    src={pet.petImage ? pet.petImage : defaultPetImg}
-                    alt="..."
-                  />
-                  <div>
-                    <div className="text-[24px] text-[#000000] sm:text-[20px]">이름:{pet.petName}</div>
-                    <div className="text-[24px] text-mainColor sm:text-[20px]">{pet.majorClass}</div>
-                    <div className="text-[24px] text-mainColor sm:text-[20px]">{pet.minorClass}</div>
-                  </div>
-                </div>
-              </Link>
-            ))}
+            {pets?.map(
+              (pet, i) =>
+                i === 0 && (
+                  <Link key={pet.id} href={`/mypage/${id}/mypet/mypetprofile/${pet.id}`}>
+                    <div className="flex flex-row items-center rounded-xl bg-[#EFEFF0] p-2">
+                      <img
+                        className="h-[100px] w-[100px] rounded bg-lime-300 object-cover"
+                        src={pet.petImage ? pet.petImage : defaultPetImg}
+                        alt="..."
+                      />
+                      <div className="ml-4 flex flex-col">
+                        <div className="text-lg font-semibold leading-normal">
+                          {pet.petName}({pet.majorClass})
+                        </div>
+                        <div className="inline-flex h-5 items-start justify-start gap-2">
+                          <div className="text-base font-normal leading-tight text-[#939396]">성별</div>
+                          <div className="shrink grow basis-0 truncate text-base font-normal leading-tight text-[#444447]">
+                            {pet.male_female}
+                          </div>
+                        </div>
+                        <div className="inline-flex h-5 items-start justify-start gap-2">
+                          <div className="text-base font-normal leading-tight text-[#939396]">품종</div>
+                          <div className="shrink grow basis-0 text-base font-normal leading-tight text-[#444447]">
+                            {pet.minorClass}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                )
+            )}
           </div>
-          <div className="mb-5">
+          {/* <div className="mb-5">
             <Link href={`/mypage/${id}/mypet/addmypetprofile`}>
               <div className="my-auto flex flex-row items-center justify-center gap-12 rounded-[20px] border-2 border-gray-400 bg-white px-[16px] py-[12px] font-bold sm:w-[420px]">
                 추가하기
               </div>
             </Link>
-          </div>
+          </div> */}
         </div>
         <div className="mt-5 flex w-full flex-col items-center sm:hidden">
           <div className="flex w-full flex-col items-center">
