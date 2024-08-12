@@ -1,3 +1,6 @@
+import { format, parseISO } from 'date-fns';
+import { ko } from 'date-fns/locale';
+
 interface GetConvertTimeProps {
   date_time: string;
 }
@@ -12,3 +15,25 @@ export const getConvertTime = ({ date_time }: GetConvertTimeProps) => {
 
   return `${convertPeriod} ${convertHour}:${convertMin}`;
 };
+
+export const formatDateTimeTitle = (dateTimeString: string | null) => {
+  if (!dateTimeString) return '';
+    
+  const date = parseISO(dateTimeString);
+  
+  const formattedDate = format(date, "M/d(eee)", { locale: ko });
+  const formattedTime = format(date, "h:mma").toLowerCase();
+  
+  return `${formattedDate} ${formattedTime}`;
+}
+
+export const  formatDateTimeContent = (dateTimeString: string | null) => {
+  if (!dateTimeString) return '';
+    
+  const date = parseISO(dateTimeString);
+  
+  const formattedDate = format(date, "M/d(eee)", { locale: ko });
+  const formattedTime = format(date, "h:mma").toLowerCase();
+  
+  return `${formattedDate} | ${formattedTime}`;
+}
