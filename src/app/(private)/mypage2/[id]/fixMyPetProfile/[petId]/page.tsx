@@ -355,12 +355,12 @@ const FixMyPetProfile = () => {
               <textarea
                 className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
                 placeholder="예방접종 및 기타 의료 기록(최대 200자)"
-                maxLength={200}
+                maxLength={199}
                 defaultValue={filteredProfile![0].medicalRecords || ""}
                 onChange={handleMedicalRecords}
               />
               <div className="flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
-                {introduction?.length}/200
+                {medicalRecords?.length}/200
               </div>
             </div>
             <div className="mt-[22px] flex flex-col">
@@ -368,7 +368,7 @@ const FixMyPetProfile = () => {
               <textarea
                 className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
                 placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
-                maxLength={200}
+                maxLength={199}
                 defaultValue={filteredProfile![0].introduction || ""}
                 onChange={handleIntroductionChange}
               />
