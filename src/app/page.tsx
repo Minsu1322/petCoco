@@ -27,7 +27,7 @@ export default function Home() {
       </div>
 
       {/* 게시글 영역 */}
-      <div className="flex w-full flex-col px-4">
+      <div className="flex w-full flex-col bg-background px-4">
         {/* 자유게시판 */}
         <div className="mt-6 w-full rounded-xl bg-white p-4">
           <h2 className="text-xl font-bold text-[#7FA6EE] hover:underline">방금 올라온 반려이야기😀</h2>

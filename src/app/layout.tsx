@@ -5,6 +5,7 @@ import QueryProvider from "./provider";
 import Header from "@/components/Header";
 import Script from "next/script";
 import Footer from "@/components/Footer";
+import TabBar from "@/components/TabBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex min-h-screen flex-col bg-background`}>
+      <body className={`${inter.className} flex min-h-screen flex-col`}>
         <QueryProvider>
           <Header />
           <main className="mx-auto w-full max-w-[375px] flex-grow">{children}</main>
@@ -29,7 +30,7 @@ export default function RootLayout({
           strategy="beforeInteractive"
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAO_MAPS_API}&autoload=false`}
         />
-        <Footer />
+        <TabBar />
       </body>
     </html>
   );
