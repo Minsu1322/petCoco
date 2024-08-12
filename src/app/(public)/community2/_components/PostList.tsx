@@ -23,8 +23,8 @@ const categoryStyles: { [key: string]: string } = {
 const fetchPosts = async (page: number, category: string, searchTerm: string, sort: string): Promise<PostsResponse> => {
   const url =
     sort === "댓글순"
-      ? `/api/sortByComments?page=${page}&limit=10&category=${category}&search=${searchTerm}`
-      : `/api/community?page=${page}&limit=10&category=${category}&search=${searchTerm}`;
+      ? `/api/sortByComments?page=${page}&limit=100&category=${category}&search=${searchTerm}`
+      : `/api/community?page=${page}&limit=100&category=${category}&search=${searchTerm}`;
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -88,7 +88,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
 
   return (
     <>
-      {data?.data.slice(0, 10).map((post, index) => (
+      {data?.data.map((post, index) => (
         <div key={post.id}>
           <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community2/${post.id}`}>
             <div className="flex w-full items-center gap-[1.06rem] border-b-[1px] py-[0.75rem]">
