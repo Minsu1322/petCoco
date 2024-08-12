@@ -9,20 +9,20 @@ const MatePost = ({ params }: { params: { id: string } }) => {
   const {
     data: post,
     isPending,
-    error,
+    error
   } = useQuery({
     queryKey: ["matePosts", id],
     queryFn: async () => {
       const response = await fetch(`/api/mate/post/${id}`);
       const data = response.json();
-    //  console.log(data);
+      //  console.log(data);
       return data;
     }
   });
 
   //console.log(post);
 
-  if(!post) return;
+  if (!post) return;
 
   if (isPending) {
     return <div>로딩 중...</div>;
@@ -32,9 +32,11 @@ const MatePost = ({ params }: { params: { id: string } }) => {
     return <div>{error.message}</div>;
   }
 
-  return (<>
-    <DetailMatePost post={post}/>
-  </>);
+  return (
+    <div className="w-[375px]">
+      <DetailMatePost post={post} />
+    </div>
+  );
 };
 
 export default MatePost;

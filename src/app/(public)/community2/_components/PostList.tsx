@@ -1,8 +1,10 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { PostsResponse } from "@/types/TypeOfCommunity/CommunityTypes";
+import { scrollToTop } from "@/app/utils/scrollToTop";
 
 interface PostListProps {
   selectedCategory: string;
@@ -82,39 +84,71 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
     );
   }
 
+  const sortedPosts = sortPosts([...(data?.data || [])]);
+
   return (
-    <div className="w-full rounded-lg bg-white p-4 shadow-md">
+    <>
       {data?.data.slice(0, 10).map((post, index) => (
-        <div key={post.id} className={`mb-3 w-full ${index !== 0 ? "border-t border-gray-200 pt-3" : ""}`}>
-          <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community/${post.id}`}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <span
-                  className={`rounded-full px-2 py-1 text-sm font-bold ${
-                    categoryStyles[post.category] || "bg-gray-200 text-black"
-                  }`}
-                >
-                  {post.category}
-                </span>
-                <div>
-                  <div className="max-w-[200px] cursor-pointer truncate text-black hover:underline">{post.title}</div>
-                  <div className="flex items-center space-x-2 text-xs text-[#8E6EE8]">
-                    <span>{post.users.nickname}</span>
-                    <span>-</span>
-                    <span>댓글 {post.comments?.length}</span>
+        <div key={post.id}>
+          <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community2/${post.id}`}>
+            <div className="flex w-full items-center gap-[1.06rem] border-b-[1px] py-[0.75rem]">
+              {/* 일상 */}
+              <span
+                className={`whitespace-nowrap rounded-full px-[0.5rem] py-[0.25rem] text-[0.75rem] ${
+                  categoryStyles[post.category] || "bg-gray-200 text-black"
+                }`}
+              >
+                {post.category}
+              </span>
+              {/* <p className="whitespace-nowrap rounded-full bg-yellow-200 px-[0.5rem] py-[0.25rem] text-[0.75rem] text-mainColor">
+                {post.category}
+              </p> */}
+
+              {/* 가운데 내용 */}
+              <div className="w-full">
+                <div className="text-[1rem] leading-6">{post.title}</div>
+
+                {/* 가운데 내용 아랫줄 */}
+                <div className="flex gap-[0.25rem] text-[0.75rem] text-[#D2CDF6]">
+                  <div className="text-mainColor">{post.users.nickname}</div>
+                  <div className="flex gap-[0.25rem]">
+                    <img src="/assets/svg/comment.svg" />
+                    <div>{post.comments?.length}</div>
+                  </div>
+                  <div className="flex gap-[0.25rem]">
+                    <img src="/assets/svg/heart.svg" />
+                    <div>12</div>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center space-x-2">
+
+              {/* 이미지 */}
+              <div>
                 {post?.post_imageURL?.[0] && (
-                  <img src={post?.post_imageURL[0]} alt="Post Image" className="h-12 w-12 rounded-md object-cover" />
+                  <img
+                    src={post?.post_imageURL[0]}
+                    alt="Post Image"
+                    className="h-[2.75rem] w-[2.75rem] rounded-[0.22rem] bg-blue-200"
+                  />
                 )}
               </div>
             </div>
           </Link>
         </div>
       ))}
-    </div>
+      <div>
+        {/* 기존 코드 */}
+        <div className="flex w-full justify-center">
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-5 flex items-center gap-[0.25rem] rounded-full bg-[#F3F2F2] px-[0.5rem] py-[0.25rem] text-[1rem] text-mainColor shadow-lg"
+          >
+            <p>맨위로</p>
+            <img src="/assets/svg/chevron-left.svg" alt="..." />
+          </button>
+        </div>
+      </div>
+    </>
   );
 };
 
