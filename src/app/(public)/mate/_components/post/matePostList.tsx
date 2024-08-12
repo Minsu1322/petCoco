@@ -18,7 +18,7 @@ export type PositionData = {
 
 interface MatePostListProps {
   activeSearchTerm: string;
-  isCurrentPosts: boolean;
+  // isCurrentPosts: boolean;
   sortBy: string;
   filters: {
     gender: string | null;
@@ -28,10 +28,11 @@ interface MatePostListProps {
     weight: string | null;
     regions: string | null;
     times: string | null;
+    neutered: string | null;
   };
 }
 
-const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: MatePostListProps) => {
+const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) => {
   const { geoData, setIsUseGeo, setGeoData } = locationStore();
   const [page, setPage] = useState(1);
   //console.log(geoData)
@@ -91,7 +92,7 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
   });
 
   const { data, isPending, error } = useQuery<PostsResponse>({
-    queryKey: ["matePosts", isCurrentPosts, page, activeSearchTerm, sortBy, filters, geoData],
+    queryKey: ["matePosts", page, activeSearchTerm, sortBy, filters, geoData],
     queryFn: async () => {
       //console.log('sortBy값 확인', sortBy);
       const getValidFilters = Object.fromEntries(
@@ -109,10 +110,10 @@ const MatePostList = ({ activeSearchTerm, isCurrentPosts, sortBy, filters }: Mat
       const userLat = geoData?.center.lat || 0;
       const userLng = geoData?.center.lng || 0;
 
-      const defaultSortBy = sortBy && sortBy !== 'distance' ? sortBy : 'distance';
+      const defaultSortBy = sortBy && sortBy !== 'all' ? sortBy : 'all';
       // TODO: query안에 userLat, userLng 넣기
       const response = await fetch(
-        `/api/mate?current=${isCurrentPosts}&page=${page}&limit=4&search=${activeSearchTerm}&sort=${defaultSortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
+        `/api/mate?page=${page}&limit=4&search=${activeSearchTerm}&sort=${defaultSortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
       );
       const data = response.json();
       return data;
