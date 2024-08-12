@@ -5,6 +5,7 @@ import Image from "next/image";
 import MateCarousel from "@/components/mateCarousel/MateCarousel";
 import RecentPosts from "@/components/community/CommunityMain";
 import Link from "next/link";
+import BannerCarousel from "./../components/bannerCarousel/BannerCarousel";
 
 export default function Home() {
   const AnimalOPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
@@ -15,18 +16,14 @@ export default function Home() {
   const MateSLIDE_COUNT = 5;
   const MateSLIDES = Array.from(Array(MateSLIDE_COUNT).keys());
 
+  const BannerOPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
+  const BannerSLIDE_COUNT = 2;
+  const BannerSLIDES = Array.from(Array(BannerSLIDE_COUNT).keys());
+
   return (
     <div className="flex min-h-screen flex-col items-center gap-2">
       <div className="w-screen">
-        <div className="relative w-full pb-[45%]">
-          <Image
-            src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_img/banner004.png"
-            alt="banner images"
-            layout="fill"
-            objectFit="cover"
-            className="rounded-lg"
-          />
-        </div>
+        <BannerCarousel slides={BannerSLIDES} options={BannerOPTIONS} />
       </div>
 
       {/* 게시글 영역 */}
@@ -53,7 +50,7 @@ export default function Home() {
         {/* 유기견 배너+캐러셀*/}
         <div className="mt-6 flex w-auto flex-col items-center justify-center">
           <Image
-            src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_img/banner003.png"
+            src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_sub/Mainbanner003.png"
             alt="banner images"
             width={600}
             height={150}
