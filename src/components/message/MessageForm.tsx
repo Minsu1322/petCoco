@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, KeyboardEvent, useRef, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
+import Image from "next/image";
 
 const supabase = createClient();
 
@@ -17,6 +18,7 @@ interface MessageData {
 export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessagesAsRead }) => {
   const [content, setContent] = useState("");
   const { user } = useAuthStore();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const queryClient = useQueryClient();
 
@@ -46,6 +48,9 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessag
       console.log("Message sent successfully:", data);
       setContent("");
       await queryClient.invalidateQueries({ queryKey: ["messages", user?.id] });
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "36px";
+      }
     },
     onError: (error) => {
       console.error("Error sending message:", error);
@@ -60,25 +65,47 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessag
     }
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "36px";
+      const scrollHeight = textareaRef.current.scrollHeight;
+      textareaRef.current.style.height = `${Math.min(scrollHeight, 100)}px`;
+    }
+  };
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [content]);
+
   return (
-    <form onSubmit={handleSubmit} className="flex p-2">
-      <input
-        type="text"
-        value={content}
-        onFocus={handleFocus}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder="메시지를 입력하세요"
-        className="flex-grow rounded-l-2xl border border-mainColor px-3 py-2 focus:outline-none focus:ring-2 focus:ring-mainColor"
-      />
-      <button
-        type="submit"
-        disabled={sendMessage.isPending}
-        className={`rounded-r-2xl px-4 py-2 text-white ${
-          sendMessage.isPending ? "bg-gray-400" : "bg-mainColor hover:bg-mainHoverColor"
-        }`}
-      >
-        전송
-      </button>
+    <form onSubmit={handleSubmit} className="p-2">
+      <div className="relative flex items-center">
+        <textarea
+          ref={textareaRef}
+          value={content}
+          onFocus={handleFocus}
+          onChange={(e) => setContent(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="메시지를 입력하세요"
+          className="max-h-[100px] min-h-[36px] w-full resize-none overflow-hidden rounded-full border border-mainColor px-4 py-2 pr-12 text-base leading-6 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-mainColor"
+        />
+        <button
+          type="submit"
+          disabled={sendMessage.isPending}
+          className={`absolute right-2 flex items-center justify-center rounded-full transition-opacity duration-300 ${
+            sendMessage.isPending ? "opacity-50" : "opacity-100"
+          }`}
+        >
+          <Image src="/assets/svg/Send.svg" alt="Send" width={20} height={20} />
+        </button>
+      </div>
     </form>
   );
 };

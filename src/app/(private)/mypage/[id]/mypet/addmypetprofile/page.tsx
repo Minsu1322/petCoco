@@ -258,7 +258,7 @@ const AddMypetProfile = () => {
         <br />
         <p className="mt-6 font-bold">의료기록(최대 200자)</p>
         <Textarea
-          className="mt-2"
+          className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
           placeholder="예방접종 및 기타 의료 기록(최대 200자)"
           maxLength={200}
           defaultValue={medicalRecords}
@@ -267,7 +267,7 @@ const AddMypetProfile = () => {
         <br />
         <p className="mt-2 font-bold">특징(최대 200자)</p>
         <Textarea
-          className="mt-2"
+          className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
           placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
           maxLength={200}
           defaultValue={introduction}

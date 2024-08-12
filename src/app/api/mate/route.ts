@@ -22,9 +22,10 @@ export const GET = async (request: NextRequest) => {
   const userLng = parseFloat(searchParams.get("userLng") || "0");
 
   // 모집 마감 순 정렬
-  const date = new Date();
-  const currentTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-  const formattedDate = currentTime.toISOString();
+  const sixHoursInMs = 6 * 60 * 60 * 1000; 
+  const currentTimeMs = new Date().getTime();
+  // 매일 그날 기준으로
+  const today = new Date().setHours(0, 0, 0, 0);
 
   // console.log(filter);
 
@@ -58,15 +59,21 @@ export const GET = async (request: NextRequest) => {
     }
 
     // 정렬 조건 적용
-    if (filter.sort === "distance" && userLat !== 0 && userLng !== 0) {
-      validPosts = validPosts.sort((a, b) => (a.distance || 0) - (b.distance || 0));
-    } else if (filter.sort === "recruitment_end") {
-      validPosts = validPosts.filter((post) => new Date(post.recruitment_end) >= new Date(formattedDate));
-      validPosts = validPosts.sort(
-        (a, b) => new Date(a.recruitment_end).getTime() - new Date(b.recruitment_end).getTime()
+    if (filter.sort === "recruitment_end") {
+      validPosts = validPosts.filter((post) => {
+        const postDateTime = new Date(post.date_time).getTime();
+        const postDate = new Date(post.date_time).setHours(0, 0, 0, 0); 
+        return postDateTime >= currentTimeMs - sixHoursInMs && postDate >= today;
+      });
+
+      validPosts = validPosts.filter((post) => post.recruiting).sort(
+        (a, b) => new Date(a.date_time).getTime() - new Date(b.date_time).getTime()
       );
-    } else {
+    } else if (filter.sort === "new") {
       validPosts = validPosts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    } else {
+      // 기본값으로 거리순 정렬
+      validPosts = validPosts.sort((a, b) => (a.distance || 0) - (b.distance || 0));
     }
 
     if (filter.date_time) {

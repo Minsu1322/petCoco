@@ -1,26 +1,60 @@
 import { Switch } from "@nextui-org/react";
+import Chip from "@/components/Chip";
 
 interface PostListFilterTabProps {
   isCurrentPosts: boolean;
   handleToggleAllPosts: () => void;
   handleDateSort: () => void;
   handleDistanceSort: () => void;
+  handleNewSort: () => void;
+  sortBy: string;
 }
 
-const PostListFilterTab = ({isCurrentPosts, handleToggleAllPosts, handleDateSort, handleDistanceSort}: PostListFilterTabProps) => {
-
+const PostListFilterTab = ({
+  sortBy,
+  handleToggleAllPosts,
+  handleDateSort,
+  handleDistanceSort,
+  handleNewSort,
+  isCurrentPosts
+}: PostListFilterTabProps) => {
   return (
-    <div>
-      <div className="mb-3 flex flex-row justify-between z-40 ">
-        <Switch defaultSelected size="sm" onClick={handleToggleAllPosts}>
-          <p className="cursor-pointer text-sm sm:text-base">{isCurrentPosts ? "모집 완료된 메이트도 보기" : "모집 중인 메이트만 보기"}</p>
-        </Switch>
-        <div className="flex items-center gap-x-2">
-          <div className="cursor-pointer text-sm sm:text-base" onClick={handleDateSort}>마감 임박순</div>
-          <p className="cursor-pointer text-sm sm:text-base">|</p>
-          <div className="cursor-pointer text-sm sm:text-base" onClick={handleDistanceSort}>가까운 순</div>
-        </div>
-      </div>
+    <div className="z-40 ml-[1.5rem] flex w-max gap-x-[0.62rem]">
+      <Chip
+        text="전체"
+        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.5rem] text-[1.125rem] font-semibold ${
+          sortBy === "all" ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
+        }`}
+        // onClick={handleAllSort}
+      ></Chip>
+      <Chip
+        text="거리순"
+        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.5rem] text-[1.125rem] ${
+          sortBy === "distance" ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
+        }`}
+        onClick={handleDistanceSort}
+      ></Chip>
+      <Chip
+        text="모집중"
+        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.5rem] text-[1.125rem] ${
+          isCurrentPosts ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
+        }`}
+        onClick={handleToggleAllPosts}
+      ></Chip>
+      <Chip
+        text="최신순"
+        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.5rem] text-[1.125rem] ${
+          sortBy === "new" ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
+        }`}
+        onClick={handleNewSort}
+      ></Chip>
+      <Chip
+        text="마감 임박순"
+        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.5rem] text-[1.125rem] ${
+          sortBy === "recruitment_end" ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
+        }`}
+        onClick={handleDateSort}
+      ></Chip>
     </div>
   );
 };
