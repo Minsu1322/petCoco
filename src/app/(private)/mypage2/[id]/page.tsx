@@ -58,65 +58,63 @@ function MyPage() {
   }
   return (
     <div className="flex flex-col items-center">
-      <div className="flex w-full gap-4 whitespace-nowrap border-b-1 px-[24px] py-[34px] text-lg leading-tight text-neutral-800">
-        <img className="aspect-square w-11 shrink-0 rounded" src={user.profile_img || defaultUserImg} alt="" />
-        <div className="my-auto w-[52px] self-stretch font-semibold">{user.nickname}</div>
-        <div>
-          <Link
-            href={`/mypage2/${user.id}/fixMyProfile`}
-            className="ml-32 min-h-[23px] rounded-lg bg-[#EFEFF0] px-[10.5px] py-[3.5px] text-xs leading-relaxed tracking-wide text-neutral-400"
-          >
-            내 프로필 수정
-          </Link>
+      <div className="flex w-full justify-between whitespace-nowrap border-b-1 px-[24px] py-[34px] text-lg leading-tight text-neutral-800">
+        <div className="flex gap-6">
+          <img
+            className="aspect-square h-[60px] w-[60px] shrink-0 rounded-full"
+            src={user.profile_img || defaultUserImg}
+            alt=""
+          />
+          <div className="my-auto w-[52px] self-stretch text-[18px] font-semibold leading-[23.4px]">
+            {user.nickname}
+          </div>
         </div>
+        <Link href={`/mypage2/${user.id}/fixMyProfile`}>
+          <div className="rounded-lg bg-[#8E6EE8] px-4 py-[6px] text-xs font-semibold leading-relaxed tracking-wide text-[#FFFFFF]">
+            내 프로필 수정
+          </div>
+        </Link>
       </div>
 
       <div className="w-full border-b-1 px-[14px] py-[15px]">
-        <div className="flex w-full flex-row items-center px-[12px]">
+        <div className="flex w-full flex-row items-center justify-between px-[12px]">
           <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 반려동물 ({pets.length})</div>
 
           <Link href={`/mypage2/${user.id}/fixMyPetProfile/${pets[0].id}`}>
-            <button className="ml-2 rounded-lg bg-[#EFEFF0] px-[5.5px] py-[3.5px] text-[10px] leading-[16px] tracking-wide text-neutral-400">
+            <button className="ml-2 rounded-lg bg-[#8E6EE8] px-4 py-[6px] text-[10px] font-semibold leading-[16px] tracking-wide text-[#FFFFFF]">
               반려동물 프로필 수정
             </button>
           </Link>
         </div>
-        <div className="mt-[13px] flex w-full flex-col rounded-[10px] bg-[#EFEFF0]">
+        <div className="mt-3 flex w-full flex-col rounded-[10px] bg-[#EFEFF0] p-3">
           {pets?.map(
             (pet, i) =>
               i === 0 && (
                 <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
-                  <div className="ml-2 mt-2 flex flex-row rounded-xl bg-[#EFEFF0]">
-                    <img
-                      className="h-[100px] w-[100px] rounded bg-lime-300 object-cover"
-                      src={pet.petImage ? pet.petImage : defaultPetImg}
-                      alt="..."
-                    />
-                    <div className="ml-4 flex flex-col">
-                      <div className="font-semibold leading-normal">
-                        <span className="text-lg">{pet.petName}</span>
-                        <span>
-                          ({pet.minorClass},{pet.age}살)
-                        </span>
+                  <div className="flex gap-[10px]">
+                    <div className="my-2 px-5">
+                      <img
+                        className="h-[60px] w-[60px] rounded-full bg-lime-300 object-cover"
+                        src={pet.petImage ? pet.petImage : defaultPetImg}
+                        alt="..."
+                      />
+                    </div>
+                    <div className="pl-2">
+                      <div>
+                        <span className="text-lg font-normal">{pet.petName}</span>
+                        <span className="text-sm font-normal">({pet.male_female})</span>
                       </div>
-                      <div className="inline-flex h-5 items-start justify-start gap-2">
-                        <div className="text-base font-normal leading-tight text-[#939396]">성별</div>
-                        <div className="shrink grow basis-0 truncate text-base font-normal leading-tight text-[#444447]">
-                          {pet.male_female}
-                          <span className="text-sm">(중성화 여부:{pet.neutralized})</span>
-                        </div>
+                      <div>
+                        <span className="text-base font-normal text-[#939396]">몸무게</span>
+                        <span className="text-base font-normal">{pet.weight}kg</span>
                       </div>
-                      <div className="inline-flex h-5 items-start justify-start gap-2">
-                        <div className="text-base font-normal leading-tight text-[#939396]">의료기록</div>
-                        <div className="shrink grow basis-0 truncate text-base font-normal leading-tight text-[#444447]">
-                          {pet.medicalRecords}
-                        </div>
+                      <div>
+                        <span className="text-base font-normal text-[#939396]">중성화 여부</span>
+                        <span className="text-base font-normal">{pet.neutralized}</span>
                       </div>
-                      <div className="inline-flex h-5 items-start justify-start gap-2">
-                        <div className="text-base font-normal leading-tight text-[#939396]">메모</div>
-                        <div className="shrink grow basis-0 truncate text-base font-normal leading-tight text-[#444447]">
-                          {pet.introduction}
-                        </div>
+                      <div>
+                        <span className="text-base font-normal text-[#939396]">성향</span>
+                        <span className="text-base font-normal">{pet.introduction}</span>
                       </div>
                     </div>
                   </div>

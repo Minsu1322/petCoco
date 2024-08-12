@@ -202,6 +202,7 @@ const AddMyPetProfile = () => {
               { text: "남아", value: "수" },
               { text: "여아", value: "암" }
             ]}
+            defaultValue={""}
             onChange={handleMaleFemaleChange}
           ></ButtonGroup>
         </div>
@@ -212,6 +213,7 @@ const AddMyPetProfile = () => {
               { text: "했어요", value: "YES" },
               { text: "안 했어요", value: "NO" }
             ]}
+            defaultValue={""}
             onChange={handleNeutralize}
           ></ButtonGroup>
         </div>

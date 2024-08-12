@@ -207,6 +207,7 @@ const FixMyProfile = () => {
               { text: "남성", value: "남" },
               { text: "여성", value: "여" }
             ]}
+            defaultValue={user.gender || ""}
             onChange={handleGenderChange}
           ></ButtonGroup>
           <div className="mt-[29px]">
@@ -223,7 +224,7 @@ const FixMyProfile = () => {
           <div className="mt-[29px] flex flex-col">
             <label className="text-base font-normal leading-tight">자기소개</label>
             <textarea
-              className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-4 py-3 text-[15px] font-normal leading-[20px]"
+              className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
               placeholder="자기소개(최대 200자)"
               maxLength={200}
               defaultValue={user.introduction}

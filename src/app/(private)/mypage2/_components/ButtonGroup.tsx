@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type ButtonGroupInfo = {
   label: string;
   buttonInfos: ButtonInfo[];
+  defaultValue: string;
   onChange: (value: string) => void;
 };
 
@@ -11,8 +12,14 @@ type ButtonInfo = {
   value: string; // supabase에서 사용하는 용
 };
 
-const ButtonGroup = ({ label, buttonInfos, onChange }: ButtonGroupInfo) => {
+const ButtonGroup = ({ label, buttonInfos, defaultValue, onChange }: ButtonGroupInfo) => {
   const [selectIndex, setSelectIndex] = useState<number>();
+
+  useEffect(() => {
+    const index = buttonInfos.findIndex((f) => f.value === defaultValue);
+    setSelectIndex(index);
+  }, []);
+
   const handleEvent = (info: ButtonInfo, index: number) => {
     setSelectIndex(index);
     onChange(info.value);
@@ -23,7 +30,7 @@ const ButtonGroup = ({ label, buttonInfos, onChange }: ButtonGroupInfo) => {
       <div className="mt-1 flex justify-between">
         {buttonInfos.map((info, i) => {
           return (
-            <Button onClick={() => handleEvent(info, i)} enable={i === selectIndex}>
+            <Button key={i} onClick={() => handleEvent(info, i)} enable={i === selectIndex}>
               {info.text}
             </Button>
           );

@@ -289,6 +289,7 @@ const FixMyPetProfile = () => {
                 { text: "남아", value: "수" },
                 { text: "여아", value: "암" }
               ]}
+              defaultValue={filteredProfile![0].male_female || ""}
               onChange={handleMaleFemaleChange}
             ></ButtonGroup>
           </div>
@@ -299,6 +300,7 @@ const FixMyPetProfile = () => {
                 { text: "했어요", value: "YES" },
                 { text: "안 했어요", value: "NO" }
               ]}
+              defaultValue={filteredProfile![0].neutralized || ""}
               onChange={handleNeutralize}
             ></ButtonGroup>
           </div>
