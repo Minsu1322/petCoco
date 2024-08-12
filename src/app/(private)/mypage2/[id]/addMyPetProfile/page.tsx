@@ -249,7 +249,7 @@ const AddMyPetProfile = () => {
             onChange={handleMedicalRecords}
           />
           <div className="flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
-            {introduction?.length}/200
+            {medicalRecords?.length}/200
           </div>
         </div>
         <div className="mt-[22px] flex flex-col">

@@ -241,7 +241,7 @@ const FixMyProfile = () => {
             <textarea
               className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
               placeholder="자기소개(최대 200자)"
-              maxLength={200}
+              maxLength={199}
               defaultValue={user.introduction}
               onChange={handleIntroductionChange}
             />

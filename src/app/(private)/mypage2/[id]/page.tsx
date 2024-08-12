@@ -101,19 +101,19 @@ function MyPage() {
                     </div>
                     <div className="pl-2">
                       <div>
-                        <span className="text-lg font-normal">{pet.petName}</span>
+                        <span className="text-lg font-normal">{pet.petName} </span>
                         <span className="text-sm font-normal">({pet.male_female})</span>
                       </div>
                       <div>
-                        <span className="text-base font-normal text-[#939396]">몸무게</span>
+                        <span className="text-base font-normal text-[#939396]">몸무게 </span>
                         <span className="text-base font-normal">{pet.weight}kg</span>
                       </div>
                       <div>
-                        <span className="text-base font-normal text-[#939396]">중성화 여부</span>
+                        <span className="text-base font-normal text-[#939396]">중성화 여부 </span>
                         <span className="text-base font-normal">{pet.neutralized}</span>
                       </div>
                       <div>
-                        <span className="text-base font-normal text-[#939396]">성향</span>
+                        <span className="text-base font-normal text-[#939396]">성향 </span>
                         <span className="text-base font-normal">{pet.introduction}</span>
                       </div>
                     </div>
