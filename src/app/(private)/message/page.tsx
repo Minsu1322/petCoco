@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
-import RootLayout from "@/app/layout";
 
 const ClientMessageComponent = dynamic(() => import("@/components/message/ClientMessageComponent"), {
   ssr: false

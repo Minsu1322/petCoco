@@ -9,6 +9,7 @@ import { createClient } from "@/supabase/client";
 import { HiOutlineUserCircle, HiMenu } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 import { button } from "@nextui-org/react";
+import { usePathname } from "next/navigation";
 
 const supabase = createClient();
 
@@ -20,6 +21,7 @@ const Header = () => {
     user: state.user
   }));
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const checkUser = async () => {
@@ -70,8 +72,10 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  return (
-    <header className="flex w-full items-center justify-between bg-mainColor px-4 py-1 text-black md:px-12 z-50">
+  return pathname === "/message" ? (
+    <></>
+  ) : (
+    <header className="z-50 flex w-full items-center justify-between bg-mainColor px-4 py-1 text-black md:px-12">
       <div className="flex w-full items-center justify-between md:w-auto">
         <img
           src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/logo_img/PetCocoLogo5.png?t=2024-08-01T11%3A47%3A18.222Z"
