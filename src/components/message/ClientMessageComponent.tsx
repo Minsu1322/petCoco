@@ -96,9 +96,64 @@ export default function ClientMessageComponent() {
     queryKey: ["messages", user?.id],
     queryFn: fetchMessages,
     enabled: !!user && !isUserLoading,
-    // refetchInterval: 1000
+    refetchInterval: 1000
+  });
+  const groupedMessages: GroupedMessages = messages
+    ? messages.reduce((acc, message) => {
+        const userId = message.sender_id === user?.id ? message.receiver_id : message.sender_id;
+        const nickname = message.sender_id === user?.id ? message.receiver_nickname : message.sender_nickname;
+
+        if (!acc[userId]) {
+          acc[userId] = [];
+        }
+        acc[userId].push({ ...message, nickname });
+        return acc;
+      }, {} as GroupedMessages)
+    : {};
+
+  const loadUserProfile = useCallback(async (userId: string) => {
+    const { data, error } = await supabase.from("users").select("id, nickname, profile_img").eq("id", userId).single();
+
+    if (error) {
+      console.error("Error loading user profile:", error);
+    } else {
+      setSelectedUserProfile(data);
+    }
+  }, []);
+  const sortedGroupedMessages = Object.entries(groupedMessages).sort((a, b) => {
+    const lastMessageA = a[1][a[1].length - 1];
+    const lastMessageB = b[1][b[1].length - 1];
+    return new Date(lastMessageB.created_at).getTime() - new Date(lastMessageA.created_at).getTime();
   });
 
+  const getOtherUserInfo = useCallback(
+    (userMessages: any) => {
+      const otherUser =
+        userMessages[0].sender_id === user?.id ? userMessages[0].receiver_profile : userMessages[0].sender_profile;
+      return {
+        id: otherUser.id,
+        nickname: otherUser.nickname,
+        profile_img: otherUser.profile_img
+      };
+    },
+    [user]
+  );
+
+  const unreadCounts = messages
+    ? messages.reduce(
+        (acc, message) => {
+          if (!message.read && message.receiver_id === user?.id) {
+            const userId = message.sender_id;
+            if (!acc[userId]) {
+              acc[userId] = 0;
+            }
+            acc[userId]++;
+          }
+          return acc;
+        },
+        {} as { [userId: string]: number }
+      )
+    : {};
   useEffect(() => {
     const isMobile = window.innerWidth < 640;
     if (isMobile) {
@@ -165,29 +220,6 @@ export default function ClientMessageComponent() {
     }
   }, [selectedUser, markMessagesAsRead]);
 
-  const groupedMessages: GroupedMessages = messages
-    ? messages.reduce((acc, message) => {
-        const userId = message.sender_id === user?.id ? message.receiver_id : message.sender_id;
-        const nickname = message.sender_id === user?.id ? message.receiver_nickname : message.sender_nickname;
-
-        if (!acc[userId]) {
-          acc[userId] = [];
-        }
-        acc[userId].push({ ...message, nickname });
-        return acc;
-      }, {} as GroupedMessages)
-    : {};
-
-  const loadUserProfile = useCallback(async (userId: string) => {
-    const { data, error } = await supabase.from("users").select("id, nickname, profile_img").eq("id", userId).single();
-
-    if (error) {
-      console.error("Error loading user profile:", error);
-    } else {
-      setSelectedUserProfile(data);
-    }
-  }, []);
-
   useEffect(() => {
     if (initialSelectedUser) {
       setSelectedUser(initialSelectedUser);
@@ -197,41 +229,6 @@ export default function ClientMessageComponent() {
       }
     }
   }, [initialSelectedUser, loadUserProfile]);
-
-  const sortedGroupedMessages = Object.entries(groupedMessages).sort((a, b) => {
-    const lastMessageA = a[1][a[1].length - 1];
-    const lastMessageB = b[1][b[1].length - 1];
-    return new Date(lastMessageB.created_at).getTime() - new Date(lastMessageA.created_at).getTime();
-  });
-
-  const getOtherUserInfo = useCallback(
-    (userMessages: any) => {
-      const otherUser =
-        userMessages[0].sender_id === user?.id ? userMessages[0].receiver_profile : userMessages[0].sender_profile;
-      return {
-        id: otherUser.id,
-        nickname: otherUser.nickname,
-        profile_img: otherUser.profile_img
-      };
-    },
-    [user]
-  );
-
-  const unreadCounts = messages
-    ? messages.reduce(
-        (acc, message) => {
-          if (!message.read && message.receiver_id === user?.id) {
-            const userId = message.sender_id;
-            if (!acc[userId]) {
-              acc[userId] = 0;
-            }
-            acc[userId]++;
-          }
-          return acc;
-        },
-        {} as { [userId: string]: number }
-      )
-    : {};
 
   if (isUserLoading) return <div className="p-4 text-center">사용자 정보를 불러오는 중...</div>;
   if (!user) return <div className="p-4 text-center">로그인이 필요합니다.</div>;
