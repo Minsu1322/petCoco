@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import Link from "next/link";
 import MyInput from "../../../_components/MyInput";
 import ButtonGroup from "../../../_components/ButtonGroup";
+import MyPageTabHeader from "./../../../_components/MyPageTabHeader";
 
 type PetType = UsersPetType;
 
@@ -207,6 +208,7 @@ const FixMyPetProfile = () => {
 
   return (
     <>
+      <MyPageTabHeader />
       <div className="flex justify-between bg-[#F3F2F2]">
         <div className="mb-[14px] ml-[23px] mt-[14px] flex gap-[31px]">
           {pet?.map((pet) => (

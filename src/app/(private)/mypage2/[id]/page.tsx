@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { defaultUserImg, defaultPetImg } from "@/components/DefaultImg";
 import NavLink from "../../mypage/navLink";
+import { EmblaOptionsType } from "embla-carousel";
+import MyPetCarousel from "./../MyPetCarousel/MyPetCarousel";
 
 type PetType = UsersPetType;
 
@@ -56,6 +58,11 @@ function MyPage() {
   if (isError || isPetError) {
     return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
   }
+
+  const OPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
+  const SLIDE_COUNT = 5;
+  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+
   return (
     <div className="flex flex-col items-center">
       <div className="flex w-full justify-between whitespace-nowrap border-b-1 px-[24px] py-[34px] text-lg leading-tight text-neutral-800">
@@ -86,7 +93,9 @@ function MyPage() {
             </button>
           </Link>
         </div>
-        <div className="mt-3 flex w-full flex-col rounded-[10px] bg-[#EFEFF0] p-3">
+
+        {/* 여기부터 */}
+        {/* <div className="mt-3 flex w-full flex-col rounded-[10px] bg-[#EFEFF0] p-3">
           {pets?.map(
             (pet, i) =>
               i === 0 && (
@@ -121,6 +130,10 @@ function MyPage() {
                 </Link>
               )
           )}
+        </div> */}
+        {/* 여기까지 */}
+        <div className="min-w-25">
+          <MyPetCarousel slides={SLIDES} options={OPTIONS} />
         </div>
       </div>
       <div className="w-full px-[14px] py-[16px]">
