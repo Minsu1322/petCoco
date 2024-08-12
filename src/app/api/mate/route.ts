@@ -22,7 +22,7 @@ export const GET = async (request: NextRequest) => {
   const userLng = parseFloat(searchParams.get("userLng") || "0");
 
   // 모집 마감 순 정렬
-  const sixHoursInMs = 6 * 60 * 60 * 1000; 
+  const sixHoursInMs = 6 * 60 * 60 * 1000;
   const currentTimeMs = new Date().getTime();
   // 매일 그날 기준으로
   const today = new Date().setHours(0, 0, 0, 0);
@@ -45,7 +45,7 @@ export const GET = async (request: NextRequest) => {
     let validPosts = posts || [];
     // console.log(validPosts)
 
-    // 필터링
+    // 검색
     if (search) {
       validPosts = validPosts.filter(
         (post) =>
@@ -54,28 +54,28 @@ export const GET = async (request: NextRequest) => {
       );
     }
 
-    if (isCurrentPosts === "true") {
-      validPosts = validPosts.filter((post) => post.recruiting);
-    }
-
     // 정렬 조건 적용
     if (filter.sort === "recruitment_end") {
       validPosts = validPosts.filter((post) => {
         const postDateTime = new Date(post.date_time).getTime();
-        const postDate = new Date(post.date_time).setHours(0, 0, 0, 0); 
+        const postDate = new Date(post.date_time).setHours(0, 0, 0, 0);
         return postDateTime >= currentTimeMs - sixHoursInMs && postDate >= today;
       });
 
-      validPosts = validPosts.filter((post) => post.recruiting).sort(
-        (a, b) => new Date(a.date_time).getTime() - new Date(b.date_time).getTime()
-      );
+      validPosts = validPosts
+        .filter((post) => post.recruiting)
+        .sort((a, b) => new Date(a.date_time).getTime() - new Date(b.date_time).getTime());
     } else if (filter.sort === "new") {
+      validPosts = validPosts
+        .filter((post) => post.recruiting)
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    } else if (filter.sort === "distance" || filter.sort === "recruiting") {
+      validPosts = validPosts.filter((post) => post.recruiting).sort((a, b) => (a.distance || 0) - (b.distance || 0));
+    } else if (filter.sort === "all") {
       validPosts = validPosts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    } else {
-      // 기본값으로 거리순 정렬
-      validPosts = validPosts.sort((a, b) => (a.distance || 0) - (b.distance || 0));
     }
 
+    // 게시글 필터링
     if (filter.date_time) {
       validPosts = validPosts.filter((post) => post.date_time.includes(filter.date_time));
     }
@@ -85,26 +85,8 @@ export const GET = async (request: NextRequest) => {
       validPosts = validPosts.filter((post) => post.address.startsWith(regionPrefix));
     }
 
-    if (filter.gender && filter.gender !== "전체") {
-      validPosts = validPosts.filter((post) => {
-        if (Array.isArray(post.users)) {
-          return (post.users as UserType[]).some((pet) => pet.gender === filter.gender);
-        }
-        return false;
-      });
-    }
-
     if (filter.times) {
       validPosts = getTiemRage(validPosts, filter.times);
-    }
-
-    if (filter.age && filter.age !== "전체") {
-      validPosts = validPosts.filter((post) => {
-        if (Array.isArray(post.users)) {
-          return (post.users as UserType[]).some((pet) => pet.age === filter.age);
-        }
-        return false;
-      });
     }
 
     if (filter.weight) {
@@ -121,6 +103,17 @@ export const GET = async (request: NextRequest) => {
       validPosts = validPosts.filter((post) => {
         if (Array.isArray(post.matepostpets)) {
           return (post.matepostpets as Pets[]).some((pet) => pet.male_female === filter.male_female);
+        }
+        return false;
+      });
+    }
+
+    if (filter.neutered) {
+      validPosts = validPosts.filter((post) => {
+        if (Array.isArray(post.matepostpets)) {
+          return (post.matepostpets as Pets[]).some((pet) => 
+            pet.neutered === filter.neutered
+          );
         }
         return false;
       });
