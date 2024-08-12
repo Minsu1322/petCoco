@@ -94,7 +94,7 @@ export type Database = {
           created_at: string
           id: string
           male_female: string | null
-          neutered: boolean | null
+          neutered: string | null
           post_id: string | null
           weight: number | null
         }
@@ -104,7 +104,7 @@ export type Database = {
           created_at?: string
           id: string
           male_female?: string | null
-          neutered?: boolean | null
+          neutered?: string | null
           post_id?: string | null
           weight?: number | null
         }
@@ -114,7 +114,7 @@ export type Database = {
           created_at?: string
           id?: string
           male_female?: string | null
-          neutered?: boolean | null
+          neutered?: string | null
           post_id?: string | null
           weight?: number | null
         }
