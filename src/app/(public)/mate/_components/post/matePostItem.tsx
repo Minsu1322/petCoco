@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
-import { getConvertTime } from "@/app/utils/getConvertTime";
+import { formatDateTimeContent } from "@/app/utils/getConvertTime";
 import Swal from "sweetalert2";
 import Chip from "@/components/Chip";
 import Button from "@/components/Button";
@@ -147,14 +147,15 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           <div className="mb-[0.25rem] flex">
             <img src="/assets/svg/ic_calendar2.svg" />
             <p className="ml-[0.5rem] text-sm">
-              {post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })}
+              {/* {post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })} */}
+              {formatDateTimeContent(post.date_time)}
             </p>
           </div>
           <div className="flex items-center">
             <img src="/assets/svg/ic_user2.svg" className="mr-[0.5rem]" />
             <p className="mr-[0.5rem] flex text-sm">{post.members}명 모집</p>
             <div
-              className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-[#FFB9B9]"} text-white flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
+              className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400]"} text-white flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
             >
               <p className="text-[0.625rem]">{post.recruiting ? "모집중" : "모집 완료"}</p>
             </div>
