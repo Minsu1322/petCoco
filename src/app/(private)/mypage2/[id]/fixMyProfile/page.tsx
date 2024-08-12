@@ -9,6 +9,7 @@ import { defaultUserImg } from "@/components/DefaultImg";
 import Swal from "sweetalert2";
 import ButtonGroup from "../../_components/ButtonGroup";
 import MyInput from "../../_components/MyInput";
+import MyPageTabHeader from "./../../_components/MyPageTabHeader";
 
 type UserType = UserInfoType;
 
@@ -165,6 +166,7 @@ const FixMyProfile = () => {
 
   return (
     <>
+      <MyPageTabHeader />
       <div className="flex w-full flex-col justify-center px-6" onClick={(e) => e.stopPropagation()}>
         <div className="mt-[21px] flex flex-col items-center justify-center">
           <img
