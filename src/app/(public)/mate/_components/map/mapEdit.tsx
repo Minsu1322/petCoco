@@ -1,11 +1,11 @@
 "use client";
 
-import { Position, locationStore } from "@/zustand/locationStore";
-import { useQuery } from "@tanstack/react-query";
+import { locationStore } from "@/zustand/locationStore";
+// import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 //import { useRef, useState } from "react";
 import { Map, MapMarker, MapTypeControl, ZoomControl, CustomOverlayMap } from "react-kakao-maps-sdk";
-import { getConvertAddress } from "../../getConvertAddress";
+// import { getConvertAddress } from "../../getConvertAddress";
 
 interface MapComponentProps {
   center: { lat: number; lng: number };
