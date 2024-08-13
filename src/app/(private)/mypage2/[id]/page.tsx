@@ -69,6 +69,8 @@ function MyPage() {
         <div className="flex gap-6">
           <Image
             className="aspect-square h-[60px] w-[60px] shrink-0 rounded-full"
+            width={60}
+            height={60}
             src={user.profile_img || defaultUserImg}
             alt=""
           />

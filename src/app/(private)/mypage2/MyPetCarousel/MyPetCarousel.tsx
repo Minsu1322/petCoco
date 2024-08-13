@@ -74,6 +74,8 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
                     <div className="my-2 px-6">
                       <Image
                         className="h-[60px] w-[60px] rounded-full bg-lime-300 object-cover"
+                        width={60}
+                        height={60}
                         src={pet.petImage ? pet.petImage : defaultPetImg}
                         alt="..."
                       />

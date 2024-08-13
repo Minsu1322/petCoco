@@ -11,6 +11,7 @@ import Link from "next/link";
 import MyInput from "../../../_components/MyInput";
 import ButtonGroup from "../../../_components/ButtonGroup";
 import MyPageTabHeader from "./../../../_components/MyPageTabHeader";
+import Image from "next/image";
 
 type PetType = UsersPetType;
 
@@ -301,8 +302,10 @@ const FixMyPetProfile = () => {
       </div>
       <div className="flex w-full flex-col justify-center">
         <div className="mt-[27px] flex flex-col items-center justify-center">
-          <img
+          <Image
             className="h-[100px] w-[100px] rounded-xl bg-lime-300 object-cover"
+            width={100}
+            height={100}
             src={previewImage || defaultPetImg}
             alt=""
           />

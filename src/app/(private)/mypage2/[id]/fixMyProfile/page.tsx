@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import ButtonGroup from "../../_components/ButtonGroup";
 import MyInput from "../../_components/MyInput";
 import MyPageTabHeader from "./../../_components/MyPageTabHeader";
+import Image from "next/image";
 
 type UserType = UserInfoType;
 
@@ -169,8 +170,10 @@ const FixMyProfile = () => {
       <MyPageTabHeader />
       <div className="flex w-full flex-col justify-center px-6" onClick={(e) => e.stopPropagation()}>
         <div className="mt-[21px] flex flex-col items-center justify-center">
-          <img
+          <Image
             className="h-[100px] w-[100px] rounded-xl bg-lime-300 object-cover"
+            width={100}
+            height={100}
             src={previewImage || defaultUserImg}
             alt=""
           />
