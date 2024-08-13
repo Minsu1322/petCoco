@@ -76,7 +76,7 @@ const MateCarousel: React.FC<PropType> = (props) => {
                             }
                             alt="User Profile"
                             fill
-                            objectFit="cover"
+                            style={{ objectFit: "cover" }}
                             className="rounded-full"
                           />
                         </div>
