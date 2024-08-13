@@ -151,7 +151,7 @@ const DetailView = ({
           {/* <div className="flex gap-x-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide "> 
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
         </div> */}
-          <div className="flex">
+          <div className="flex w-full mb-[5.95rem]">
             {post.matepostpets && post.matepostpets.length > 0 && <PetCarousel pets={post.matepostpets} slides={SLIDES} options={OPTIONS} />}
           </div>
         </div>

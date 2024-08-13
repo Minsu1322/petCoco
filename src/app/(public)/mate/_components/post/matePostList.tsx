@@ -145,7 +145,7 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
   }
 
   return (
-    <div className="w-full flex flex-col justify-center items-center">
+    <div className="w-full flex flex-col justify-center items-center mb-14">
         <div className="flex flex-col justify-center">
           {posts.length > 0 ? (
             posts.map((post) => <MatePostItem key={post.id} post={post} />)
