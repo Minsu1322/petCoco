@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import startChat from "@/app/utils/startChat";
 import Link from "next/link";
 import { format, parseISO } from "date-fns";
+import Image from "next/image";
 
 type PropType = {
   slides: number[];
@@ -67,20 +68,24 @@ const MateCarousel: React.FC<PropType> = (props) => {
                       {/* 좌우구분 */}
                       <div className="flex w-1/3 flex-col items-center justify-between">
                         {/* 프로필이미지 */}
-                        <img
-                          src={
-                            users?.profile_img ||
-                            "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/profile_img/default-profile.jpg"
-                          }
-                          alt="User Profile"
-                          className="mb-2 h-24 w-24 rounded-full object-cover"
-                        />
+                        <div className="relative mb-2 h-24 w-24">
+                          <Image
+                            src={
+                              users?.profile_img ||
+                              "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/profile_img/default-profile.jpg"
+                            }
+                            alt="User Profile"
+                            fill
+                            objectFit="cover"
+                            className="rounded-full"
+                          />
+                        </div>
                         {/* 닉네임&좋아요 */}
                         <div className="mb-4 flex flex-col items-center">
                           <p className="mb-1 text-sm text-gray-600">{users?.nickname || "닉네임"}</p>
                           <div className="flex items-center">
                             <div className="flex h-6 w-6 items-center justify-center rounded-full text-xl">
-                              <img src="/assets/svg/heart.svg" />
+                              <Image src="/assets/svg/heart.svg" width={24} height={24} alt="Heart Icon" />
                             </div>
                             <span className="ml-2 text-sm">15</span>
                           </div>
