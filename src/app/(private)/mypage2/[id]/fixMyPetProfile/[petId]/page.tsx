@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
 import { defaultPetImg } from "@/components/DefaultImg";
 import Swal from "sweetalert2";
@@ -31,6 +31,7 @@ const FixMyPetProfile = () => {
   const params = useParams();
   const supabase = createClient();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const id = params?.id || 0;
   const petId = params?.petId || 0;
@@ -136,7 +137,8 @@ const FixMyPetProfile = () => {
   };
 
   const updateMutate = useMutation({
-    mutationFn: updateProfileWithSupabase
+    mutationFn: updateProfileWithSupabase,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pet"] })
   });
 
   useEffect(() => {
@@ -173,6 +175,52 @@ const FixMyPetProfile = () => {
   function toMyPet() {
     router.push(`/mypage2/${id}`);
   }
+
+  const deleteProfile = async (id: string) => {
+    const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(id)
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  };
+
+  const { mutate: deleteMutation } = useMutation<UsersPetType, Error, string>({
+    mutationFn: (id) => deleteProfile(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pet"] })
+  });
+
+  const handleDelte = async (id: string) => {
+    Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      icon: "warning",
+
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소",
+
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        try {
+          deleteMutation(id);
+        } catch (error) {
+          console.log("삭제에 실패했습니다.", error);
+        }
+
+        Swal.fire({
+          title: "success!",
+          text: "삭제가 완료되었습니다."
+        });
+
+        toMyPet();
+      }
+    });
+  };
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
@@ -378,12 +426,18 @@ const FixMyPetProfile = () => {
                 {introduction?.length}/200
               </div>
             </div>
-            <div className="py-[70px]">
+            <div className="flex w-full justify-evenly gap-[11px] pb-[80px] pt-[30px]">
               <button
-                className="CCCCCC w-full rounded-lg bg-[#8E6EE8] py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
+                className="min-w-[155px] rounded-lg border border-[#8E6EE8] bg-[#FFFFFF] px-8 py-3 text-center text-[16px] font-semibold text-[#8E6EE8]"
+                onClick={() => handleDelte(filteredProfile[0]?.id)}
+              >
+                프로필 삭제
+              </button>
+              <button
+                className="min-w-[155px] rounded-lg bg-[#8E6EE8] px-8 py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
                 onClick={submitChange}
               >
-                수정완료
+                수정 완료
               </button>
             </div>
           </div>
