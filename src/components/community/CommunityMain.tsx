@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PostsResponse } from "@/types/mainPageTypes/MainPageTypes";
 import { fetchPosts } from "@/app/utils/mainPageFetch";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 
 // 메인커뮤니티 글 호출 컴포넌트
 
@@ -45,14 +46,16 @@ const RecentPosts: React.FC<MainPageRecentPostsProps> = ({ postCount }) => {
                 </div>
                 <div className="flex items-center space-x-2 text-xs text-[#8E6EE8]">
                   <span>{post.users.nickname}</span>
-                  <img src="/assets/svg/comment.svg" />
+                  <Image src="/assets/svg/comment.svg" alt="Comment Icon" width={16} height={16} />
                   {post.comments.length}
                 </div>
               </div>
               {post.post_imageURL[0] && (
-                <img
+                <Image
                   src={post.post_imageURL[0]}
                   alt="Post Image"
+                  width={48}
+                  height={48}
                   className="h-12 w-12 shrink-0 rounded-md object-cover"
                 />
               )}

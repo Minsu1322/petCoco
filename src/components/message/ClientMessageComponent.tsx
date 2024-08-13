@@ -260,7 +260,7 @@ export default function ClientMessageComponent() {
         {/* 상단 바 */}
         <div className="flex h-16 items-center justify-between border-b border-gray-500 bg-white px-4 shadow-md">
           <button onClick={handleGoBack} className="text-xl font-bold">
-            <img src="/assets/svg/Arrow - Left 2.svg" alt="Back" />
+            <Image src="/assets/svg/Arrow - Left 2.svg" alt="Back" width={24} height={24} />
           </button>
 
           {selectedUserProfile && !isMobileMenuOpen && (
@@ -290,7 +290,7 @@ export default function ClientMessageComponent() {
 
           {/* 대화방 목록 버튼 */}
           <button className="rounded text-lg text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            {isMobileMenuOpen ? null : <img src="/assets/svg/chat(message).svg" />}
+            {isMobileMenuOpen ? null : <Image src="/assets/svg/chat(message).svg" alt="Chat" width={24} height={24} />}
           </button>
         </div>
 
@@ -308,13 +308,15 @@ export default function ClientMessageComponent() {
                   return (
                     <li
                       key={userId}
-                      className="flex w-full cursor-pointer items-center border-b p-4 hover:bg-gray-100"
+                      className={`flex w-full cursor-pointer items-center border-b p-4 hover:bg-gray-100 ${
+                        selectedUser === userId ? "bg-[#D2CDF6]" : ""
+                      }`}
                       onClick={() => {
                         setSelectedUserAndMarkRead(userId);
                         setIsMobileMenuOpen(false);
                       }}
                     >
-                      <div className="mr-3 h-12 min-w-12 overflow-hidden rounded-full">
+                      <div className="mr-3 h-12 min-w-12 overflow-hidden rounded-2xl">
                         {otherUser.profile_img ? (
                           <Image
                             src={otherUser.profile_img}
@@ -332,9 +334,11 @@ export default function ClientMessageComponent() {
                         )}
                       </div>
                       <div className="min-w-0 flex-grow">
-                        <div className="font-bold">{otherUser.nickname}</div>
-                        <div className="line-clamp-2 truncate whitespace-normal text-sm text-gray-600">
-                          {userMessages[userMessages.length - 1].content}
+                        <div className="text-sm font-bold">{otherUser.nickname}</div>
+                        <div className="line-clamp-2 truncate whitespace-normal text-xs text-gray-600">
+                          {userMessages[userMessages.length - 1].image_url
+                            ? "[이미지파일]"
+                            : userMessages[userMessages.length - 1].content}
                         </div>
                       </div>
                       <div className="min-w-[4rem] text-xs text-gray-500">
