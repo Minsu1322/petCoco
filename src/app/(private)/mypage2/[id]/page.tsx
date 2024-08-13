@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { defaultUserImg, defaultPetImg } from "@/components/DefaultImg";
 import { EmblaOptionsType } from "embla-carousel";
 import MyPetCarousel from "./../MyPetCarousel/MyPetCarousel";
+import Image from "next/image";
 
 type PetType = UsersPetType;
 
@@ -66,7 +67,7 @@ function MyPage() {
     <div className="flex flex-col items-center">
       <div className="flex w-full justify-between whitespace-nowrap border-y-1 px-[24px] py-[34px] text-lg leading-tight text-neutral-800">
         <div className="flex gap-6">
-          <img
+          <Image
             className="aspect-square h-[60px] w-[60px] shrink-0 rounded-full"
             src={user.profile_img || defaultUserImg}
             alt=""

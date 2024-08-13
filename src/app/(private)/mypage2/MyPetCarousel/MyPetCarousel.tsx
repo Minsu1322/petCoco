@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
 import Link from "next/link";
 import { defaultPetImg } from "@/components/DefaultImg";
+import Image from "next/image";
 
 type PropType = {
   slides: number[];
@@ -71,7 +72,7 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
                 <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
                   <div className="flex">
                     <div className="my-2 px-6">
-                      <img
+                      <Image
                         className="h-[60px] w-[60px] rounded-full bg-lime-300 object-cover"
                         src={pet.petImage ? pet.petImage : defaultPetImg}
                         alt="..."
