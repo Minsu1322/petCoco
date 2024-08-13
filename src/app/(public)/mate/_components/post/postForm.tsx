@@ -164,6 +164,7 @@ const PostForm = () => {
     }
   };
 
+
   return (
     <div className="">
       <form onSubmit={handleUploadPost} className="flex flex-col">
@@ -221,7 +222,7 @@ const PostForm = () => {
         </div>
         <div className="mb-[1rem] mt-[1.94rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
           <label className="text-[1rem] font-[500]">산책 장소</label>
-          <div>
+          <div className="relative z-10">
             <DynamicMapComponent center={{ lat: 37.5556236021213, lng: 126.992199507869 }} />
           </div>
         </div>
@@ -259,7 +260,7 @@ const PostForm = () => {
           ></textarea>
           <p className="flex justify-end text-subTitle2">0/200</p>
         </div>
-
+        {/* 반려동물 정보 등록 */}
         <div>
           {/* 반려동물 정보 */}
           <div className="flex justify-between px-[1.5rem]">
@@ -277,9 +278,10 @@ const PostForm = () => {
             <div className="grid grid-cols-1 ">
               {formPets.map((pet, index) => (
                 <div key={index} className="rounded-lg border border-[#E0E0E0] px-[0.75rem] py-[0.69rem]">
-                  <div className="grid grid-cols-1">
-                    <div className="flex flex-col ">
-                      <label className="text-md font-semibold">반려견 성별</label>
+                  <p>반려견 {index+1}</p>
+                  <div className="grid grid-cols-1 gap-y-[1rem]">
+                    <div className="flex flex-col gap-y-[0.5rem]">
+                      <label className="text-md font-semibold">성별</label>
                       <select
                         name={`male_female_${index}`}
                         value={pet.male_female}
@@ -295,7 +297,7 @@ const PostForm = () => {
                         <option value="male">수컷</option>
                       </select>
                     </div>
-                    <div className="flex flex-col gap-y-2">
+                    <div className="flex flex-col gap-y-[0.5rem]">
                       <label className="text-md font-semibold">중성화 여부</label>
                       <select
                         name={`neutered_${index}`}
@@ -312,9 +314,9 @@ const PostForm = () => {
                         <option value="false">아니오</option>
                       </select>
                     </div>
-                    <div className="flex w-full flex-col gap-y-[0.5rem]">
+                    <div className="flex flex-col gap-y-[0.5rem]">
                       <label htmlFor={`age_${index}`} className="text-md font-semibold">
-                        반려견 나이
+                        나이
                       </label>
                       <input
                         type="text"
@@ -331,7 +333,7 @@ const PostForm = () => {
                     </div>
                     <div className="flex w-full flex-col gap-y-2">
                       <label htmlFor={`weight_${index}`} className="text-md font-semibold">
-                        반려견 무게
+                        무게
                       </label>
                       <input
                         type="number"
@@ -349,7 +351,7 @@ const PostForm = () => {
                     </div>
                     <div className="flex w-full flex-col gap-y-2">
                       <label htmlFor={`characteristics_${index}`} className="text-md font-semibold">
-                        반려견 성향
+                        성향
                       </label>
                       <select
                         id={`characteristics_${index}`}
@@ -373,7 +375,7 @@ const PostForm = () => {
                   <div className="flex w-full justify-end">
                     <button
                       type="button"
-                      className="mt-8 h-[30px] w-[120px] rounded-md bg-red-100 text-red-600 transition-colors hover:bg-red-200"
+                      className="mt-[0.76rem]  px-[0.75rem] py-[0.5rem] rounded-[0.5rem] bg-mainColor text-white"
                       onClick={() => {
                         const newPets = formPets.filter((_, i) => i !== index);
                         setFormPets(newPets);
@@ -388,7 +390,7 @@ const PostForm = () => {
           </div>
         </div>
         {/* 작성하기 버튼 */}
-        <div className="mb-[1.94rem] mt-[6.44rem] flex w-full items-center justify-center px-[1.5rem]">
+        <div className="mb-[5.5rem] mt-[1.5rem] flex w-full items-center justify-center px-[1.5rem]">
           <button
             type="submit"
             className="w-full cursor-pointer rounded-full bg-mainColor px-[1.5rem] py-[0.75rem] text-white"
