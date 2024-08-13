@@ -24,3 +24,7 @@
   display: block;
   overflow: hidden;
 }
+
+.toggleContainer {
+  text-align: center;
+}
