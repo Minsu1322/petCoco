@@ -23,8 +23,6 @@ const config: Config = {
       // },
       colors: {
         mainColor: "#8E6EE8",
-        mainHoverColor: "#7292cc",
-        mainHoverLightColor: "#cbdcfa",
         editBtnColor: "#8CF2B7",
         delBtnColor: "#FFBCBC",
         bgGray400: "#A9A7A2",
