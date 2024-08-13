@@ -112,9 +112,9 @@ const MateContent = () => {
   return (
     <div className="w-[375px] relative mx-auto">
     {/* <div className="container  min-h-screen"> */}
-      <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-5">
+      <div className="flex">
         {/* 왼쪽 메인 컨텐츠 영역 */}
-        <div className="mx-0 w-full lg:mx-2 lg:w-3/4">
+        <div className="w-full">
           <div className="mt-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide ">
             <PostListFilterTab
               handleAllPosts={handleAllPosts} 
@@ -135,18 +135,14 @@ const MateContent = () => {
             filters={filters}
           />
         </div>
-        {/* 가운데 사이드 선 */}
-        <div className="mx-3 hidden h-screen border-l-2 border-gray-100 lg:block">
-          <br />
-        </div>
         {/* 오른쪽 사이드바 영역 */}
-        <div className="mr-0 w-full pl-0 lg:mr-8 lg:w-1/4 lg:pl-5">
+        {/* <div className="mr-0 w-full pl-0 lg:mr-8 lg:w-1/4 lg:pl-5"> */}
           {/* 글쓰기 버튼 영역 */}
           {/* <Button onClick={handleLoginCheck} text="글쓰기" className="mb-4 flex h-12 w-full items-center justify-center rounded-lg bg-mainColor p-2" /> */}
           {/* 검색 영역 */}
           {/* <SearchBar onSubmit={handleSearchPosts} value={searchTerm} setSearchTerm={setSearchTerm}  /> */}
           {/* <PostItemFilterTab updateFilter={updateFilter} filters={filters} onClick={handleResetFilter} /> */}
-        </div>
+        {/* </div> */}
       </div>
       <div className="fixed z-50 bottom-[6.815rem] p-[0.81rem] shadow-plusBtn rounded-full bg-mainColor cursor-pointer"   
           style={{
