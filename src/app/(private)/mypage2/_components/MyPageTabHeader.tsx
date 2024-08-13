@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
@@ -56,11 +55,19 @@ const MyPageTabHeader = () => {
   return (
     <div className="border-y border-gray-300">
       <div className="flex items-center justify-center py-3">
-        <Link href={`/mypage2/${id}/fixMyPetProfile/${pets?.[0]?.id || ""}`}>
-          <span className={`cursor-pointer px-4 ${isViewingPetProfile ? "font-bold" : "text-gray-600"}`}>
-            동물 프로필
-          </span>
-        </Link>
+        {pets && pets.length ? (
+          <Link href={`/mypage2/${id}/fixMyPetProfile/${pets?.[0]?.id || ""}`}>
+            <span className={`cursor-pointer px-4 ${isViewingPetProfile ? "font-bold" : "text-gray-600"}`}>
+              동물 프로필
+            </span>
+          </Link>
+        ) : (
+          <Link href={`/mypage2/${id}/addMyPetProfile`}>
+            <span className={`cursor-pointer px-4 ${isViewingPetProfile ? "font-bold" : "text-gray-600"}`}>
+              동물 프로필
+            </span>
+          </Link>
+        )}
         <div className="h-6 w-px bg-gray-300"></div>
         <Link href={`/mypage2/${id}/fixMyProfile`}>
           <span className={`cursor-pointer px-4 ${!isViewingPetProfile ? "font-bold" : "text-gray-600"}`}>

@@ -6,7 +6,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TabBar = () => {
-  const { user } = useAuthStore();
+  const { user } = useAuthStore((state) => ({
+    user: state.user
+  }));
   const pathname = usePathname();
 
   return pathname === "/message" ? (

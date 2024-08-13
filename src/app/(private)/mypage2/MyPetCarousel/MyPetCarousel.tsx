@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { DotButton, useDotButton } from "./components/MyPetCarouselDotButtons";
@@ -55,43 +55,55 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
     }
   }, [emblaApi, handleSelect]);
 
+  if (isPetPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
+
+  if (isPetError) {
+    return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
+  }
+
   return (
     <section className={styles.embla}>
       <div className={styles.embla__viewport} ref={emblaRef}>
-        <div className={styles.embla__container}>
-          {pets?.map((pet, i) => (
-            <div className={`${styles.embla__slide}`} key={i}>
-              <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
-                <div className="flex gap-[10px]">
-                  <div className="my-2 px-5">
-                    <img
-                      className="h-[60px] w-[60px] rounded-full bg-lime-300 object-cover"
-                      src={pet.petImage ? pet.petImage : defaultPetImg}
-                      alt="..."
-                    />
+        <div className={`${styles.embla__container} mt-3`}>
+          {pets && pets.length ? (
+            pets?.map((pet, i) => (
+              <div className={`${styles.embla__slide} ml-2 rounded-lg border-1 border-[#C2C0BD]`} key={i}>
+                <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
+                  <div className="flex">
+                    <div className="my-2 px-6">
+                      <img
+                        className="h-[60px] w-[60px] rounded-full bg-lime-300 object-cover"
+                        src={pet.petImage ? pet.petImage : defaultPetImg}
+                        alt="..."
+                      />
+                    </div>
+                    <div className="pl-2">
+                      <div>
+                        <span className="text-lg font-normal">{pet.petName} </span>
+                        <span className="text-sm font-normal">({pet.male_female})</span>
+                      </div>
+                      <div>
+                        <span className="text-base font-normal text-[#939396]">몸무게 </span>
+                        <span className="text-base font-normal">{pet.weight}kg</span>
+                      </div>
+                      <div>
+                        <span className="text-base font-normal text-[#939396]">중성화 여부 </span>
+                        <span className="text-base font-normal">{pet.neutralized}</span>
+                      </div>
+                      <div>
+                        <span className="text-base font-normal text-[#939396]">성향 </span>
+                        <span className="text-base font-normal">{pet.introduction}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="pl-2">
-                    <div>
-                      <span className="text-lg font-normal">{pet.petName} </span>
-                      <span className="text-sm font-normal">({pet.male_female})</span>
-                    </div>
-                    <div>
-                      <span className="text-base font-normal text-[#939396]">몸무게 </span>
-                      <span className="text-base font-normal">{pet.weight}kg</span>
-                    </div>
-                    <div>
-                      <span className="text-base font-normal text-[#939396]">중성화 여부 </span>
-                      <span className="text-base font-normal">{pet.neutralized}</span>
-                    </div>
-                    <div>
-                      <span className="text-base font-normal text-[#939396]">성향 </span>
-                      <span className="text-base font-normal">{pet.introduction}</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <div className="mt-3 flex w-full flex-col rounded-[10px] bg-[#EFEFF0] p-3 text-center">
+              <Link href={`/mypage2/${id}/addMyPetProfile`}>아직 아무 동물이 없어요!</Link>
             </div>
-          ))}
+          )}
         </div>
       </div>
 
