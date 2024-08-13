@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/supabase/client";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import LoginButton from "./auth/LoginBtn";
+import LogoutButton from "./auth/LogoutBtn";
+import Link from "next/link";
 
 const supabase = createClient();
 
@@ -43,6 +46,10 @@ const Header = () => {
   };
 
   const getHeaderTitle = () => {
+    if (pathname.startsWith("/mate/posts")) {
+      return "산책메이트";
+    }
+
     switch (pathname) {
       case "/":
         return "홈";
@@ -60,7 +67,25 @@ const Header = () => {
   return pathname === "/message" ? (
     <></>
   ) : (
-    <header className="z-50 flex min-h-[4rem] w-full items-center justify-between px-4 py-2 text-black">
+    pathname === "/mate" ? (
+    <header className="z-50 bg-gray-50 flex min-h-[4rem] w-full items-center justify-between px-4 py-2 text-black">
+    
+      <div className="flex items-center">
+        <button onClick={handleGoBack} className="ml-2">
+          <img src="/assets/svg/Arrow - Left 2.svg" alt="Back" />
+        </button>
+      </div>
+
+      <div className="absolute left-1/2 -translate-x-1/2 transform text-lg font-bold">{getHeaderTitle()}</div>
+
+      <div className="flex items-center">
+        <Link href="/mate/filter" className="ml-2">
+            <img src="/assets/svg/filter-lines.svg" alt="filter 이미지" />
+        </Link>
+      </div>
+    </header>
+    ) : (
+      <header className="z-50 bg-gray-50 flex min-h-[4rem] w-full items-center justify-between px-4 py-2 text-black">
       {pathname !== "/" && (
         <div className="flex items-center">
           <button onClick={handleGoBack} className="ml-2">
@@ -72,7 +97,9 @@ const Header = () => {
       <div className="absolute left-1/2 -translate-x-1/2 transform text-lg font-bold">{getHeaderTitle()}</div>
 
       <div className="flex items-center"></div>
+      {isUser ? <LogoutButton /> : <LoginButton />}
     </header>
+    )
   );
 };
 

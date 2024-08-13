@@ -5,8 +5,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
-import Comments from "@/components/community/[id]/Comment";
+import Comments from "../_components/comments";
 import Swal from "sweetalert2";
+import Like from "../_components/like";
 
 interface PageProps {
   params: { id: string };
@@ -155,7 +156,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
             {/* 가운데 내용 부분 */}
             <div className="flex w-full flex-col">
               <div className="text-[1rem] text-mainColor">{post.users.nickname}</div>
-              <div className="text-[0.625rem]">{new Date(post.created_at).toLocaleString()}</div>
+              <div className="text-[0.625rem]">{new Date(post.created_at).toLocaleDateString()}</div>
             </div>
           </div>
           {/* 수정 삭제 */}
@@ -178,24 +179,31 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
 
         {/* 게시글 이미지 */}
         {post?.post_imageURL && (
-          <div className="mt-4 flex overflow-x-auto rounded-md">
+          <div className="mt-4 flex gap-[0.75rem] overflow-x-auto rounded-md">
             {post.post_imageURL.split(",").map((img, index) => (
-              <div key={index} style={{ position: "relative", width: "220px", height: "220px" }} className="rounded-md">
+              <div
+                key={index}
+                style={{ position: "relative", width: "6.25rem", height: "6.25rem" }}
+                className="rounded-md"
+              >
                 <Image
                   key={index}
                   src={img}
                   alt={`${post.title} - 이미지 ${index + 1}`}
-                  sizes="100vw"
                   fill
                   style={{
                     objectFit: "cover"
                   }}
-                  className={`rounded ${index === 0 ? "" : "ml-2"} rounded-md border border-[#e6efff]`}
+                  className={`rounded ${index === 0 ? "" : ""} rounded-md border border-[#e6efff]`}
                 />
               </div>
             ))}
           </div>
         )}
+
+        <Like />
+
+        <Comments postId={post.id} />
       </div>
     </>
   );

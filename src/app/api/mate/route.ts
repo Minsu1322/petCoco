@@ -16,18 +16,17 @@ export const GET = async (request: NextRequest) => {
   const search = searchParams.get("search");
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "8");
-  const isCurrentPosts = searchParams.get("current");
+  // const isCurrentPosts = searchParams.get("current");
   const filter = Object.fromEntries(searchParams.entries());
   const userLat = parseFloat(searchParams.get("userLat") || "0");
   const userLng = parseFloat(searchParams.get("userLng") || "0");
 
   // 모집 마감 순 정렬
-  const sixHoursInMs = 6 * 60 * 60 * 1000; 
+  const sixHoursInMs = 6 * 60 * 60 * 1000;
   const currentTimeMs = new Date().getTime();
   // 매일 그날 기준으로
   const today = new Date().setHours(0, 0, 0, 0);
 
-  // console.log(filter);
 
   try {
     // RPC 호출
@@ -45,7 +44,7 @@ export const GET = async (request: NextRequest) => {
     let validPosts = posts || [];
     // console.log(validPosts)
 
-    // 필터링
+    // 검색
     if (search) {
       validPosts = validPosts.filter(
         (post) =>
@@ -54,37 +53,28 @@ export const GET = async (request: NextRequest) => {
       );
     }
 
-    if (isCurrentPosts === "true") {
-      validPosts = validPosts.filter((post) => post.recruiting);
-    }
-
     // 정렬 조건 적용
     if (filter.sort === "recruitment_end") {
       validPosts = validPosts.filter((post) => {
         const postDateTime = new Date(post.date_time).getTime();
-        const postDate = new Date(post.date_time).setHours(0, 0, 0, 0); 
+        const postDate = new Date(post.date_time).setHours(0, 0, 0, 0);
         return postDateTime >= currentTimeMs - sixHoursInMs && postDate >= today;
       });
 
-      validPosts = validPosts.filter((post) => post.recruiting).sort(
-        (a, b) => new Date(a.date_time).getTime() - new Date(b.date_time).getTime()
-      );
+      validPosts = validPosts
+        .filter((post) => post.recruiting)
+        .sort((a, b) => new Date(a.date_time).getTime() - new Date(b.date_time).getTime());
     } else if (filter.sort === "new") {
+      validPosts = validPosts
+        .filter((post) => post.recruiting)
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    } else if (filter.sort === "distance" || filter.sort === "recruiting") {
+      validPosts = validPosts.filter((post) => post.recruiting).sort((a, b) => (a.distance || 0) - (b.distance || 0));
+    } else if (filter.sort === "all") {
       validPosts = validPosts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    } else {
-      // 기본값으로 거리순 정렬
-      validPosts = validPosts.sort((a, b) => (a.distance || 0) - (b.distance || 0));
     }
 
-    if (filter.date_time) {
-      validPosts = validPosts.filter((post) => post.date_time.includes(filter.date_time));
-    }
-
-    if (filter.regions && filter.regions !== "전체") {
-      const regionPrefix = filter.regions.slice(0, 2);
-      validPosts = validPosts.filter((post) => post.address.startsWith(regionPrefix));
-    }
-
+    // 게시글 필터링
     if (filter.gender && filter.gender !== "전체") {
       validPosts = validPosts.filter((post) => {
         if (Array.isArray(post.users)) {
@@ -92,10 +82,6 @@ export const GET = async (request: NextRequest) => {
         }
         return false;
       });
-    }
-
-    if (filter.times) {
-      validPosts = getTiemRage(validPosts, filter.times);
     }
 
     if (filter.age && filter.age !== "전체") {
@@ -107,6 +93,20 @@ export const GET = async (request: NextRequest) => {
       });
     }
 
+    if (filter.regions && filter.regions !== "전체") {
+      const regionPrefix = filter.regions.slice(0, 2);
+      validPosts = validPosts.filter((post) => post.address.startsWith(regionPrefix));
+    }
+
+    if (filter.date_time) {
+      validPosts = validPosts.filter((post) => post.date_time.includes(filter.date_time));
+    }
+
+    if (filter.times) {
+      validPosts = getTiemRage(validPosts, filter.times);
+    }
+
+    // 반려견 필터
     if (filter.weight) {
       const weightValue = parseFloat(filter.weight);
       validPosts = validPosts.filter((post) => {
@@ -121,6 +121,17 @@ export const GET = async (request: NextRequest) => {
       validPosts = validPosts.filter((post) => {
         if (Array.isArray(post.matepostpets)) {
           return (post.matepostpets as Pets[]).some((pet) => pet.male_female === filter.male_female);
+        }
+        return false;
+      });
+    }
+
+    if (filter.neutered && filter.neutered !== "all") {
+      validPosts = validPosts.filter((post) => {
+        if (Array.isArray(post.matepostpets)) {
+          return (post.matepostpets as Pets[]).some((pet) => 
+            pet.neutered === filter.neutered
+          );
         }
         return false;
       });
