@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/supabase/client";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import LoginButton from "./auth/LoginBtn";
+import LogoutButton from "./auth/LogoutBtn";
 
 const supabase = createClient();
 
@@ -72,6 +74,7 @@ const Header = () => {
       <div className="absolute left-1/2 -translate-x-1/2 transform text-lg font-bold">{getHeaderTitle()}</div>
 
       <div className="flex items-center"></div>
+      {isUser ? <LogoutButton /> : <LoginButton />}
     </header>
   );
 };
