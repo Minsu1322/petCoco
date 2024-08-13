@@ -24,6 +24,7 @@ interface Message {
   receiver_nickname: string;
   nickname: string;
   profile_img: string;
+  image_url: string;
   sender_profile?: {
     id: string;
     nickname: string;
@@ -379,6 +380,17 @@ export default function ClientMessageComponent() {
                               : "rounded-bl-2xl rounded-br-2xl rounded-tl-none rounded-tr-2xl bg-gray-200 text-black"
                           }`}
                         >
+                          {message.image_url && (
+                            <div className="mb-2">
+                              <Image
+                                src={message.image_url}
+                                alt="Message image"
+                                width={200}
+                                height={200}
+                                className="rounded-lg"
+                              />
+                            </div>
+                          )}
                           <p className="whitespace-pre-wrap text-sm">{message.content}</p>
                         </div>
                         {message.sender_id !== user.id && (
