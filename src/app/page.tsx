@@ -21,8 +21,8 @@ export default function Home() {
   const BannerSLIDES = Array.from(Array(BannerSLIDE_COUNT).keys());
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-red">
-      <div className="w-screen">
+    <div className="flex min-h-screen flex-col items-center bg-mainColor">
+      <div className="w-full">
         <BannerCarousel slides={BannerSLIDES} options={BannerOPTIONS} />
       </div>
 
@@ -49,14 +49,16 @@ export default function Home() {
 
         {/* 유기견 배너+캐러셀*/}
         <div className="mt-6 flex w-auto flex-col items-center justify-center">
-          <Image
-            src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_sub/Mainbanner003.png"
-            alt="banner images"
-            width={600}
-            height={150}
-            layout="responsive"
-            className="rounded-lg"
-          />
+          <div className="mt-6 flex w-auto flex-col items-center justify-center">
+            <Image
+              src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_sub/Mainbanner003.png"
+              alt="banner images"
+              width={600}
+              height={150}
+              style={{ width: "100%", height: "auto", maxWidth: "600px" }}
+              className="rounded-lg"
+            />
+          </div>
 
           <div className="mb-16 mt-1 w-full rounded-lg bg-white">
             <AnimalCarousel slides={AnimalSLIDES} options={AnimalOPTIONS} />
