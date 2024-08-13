@@ -251,9 +251,9 @@ const FixMyProfile = () => {
               {introduction?.length}/200
             </div>
           </div>
-          <div className="py-[30px]">
+          <div className="pb-[80px] pt-[30px]">
             <button
-              className="CCCCCC w-full rounded-lg bg-[#8E6EE8] py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
+              className="w-full rounded-lg bg-[#8E6EE8] py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
               onClick={submitChange}
             >
               수정완료

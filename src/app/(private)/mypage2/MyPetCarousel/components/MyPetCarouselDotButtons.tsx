@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithRef, useCallback, useEffect, useState } from "react";
+import { ComponentPropsWithRef, useCallback, useEffect, useState } from "react";
 import { EmblaCarouselType } from "embla-carousel";
 import styles from "../style/MyPetCarousel.module.css";
 
