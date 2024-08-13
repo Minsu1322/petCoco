@@ -3,9 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import { ChangeEvent, MouseEvent, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
-import { Input, Textarea } from "@nextui-org/input";
 import { defaultPetImg } from "@/components/DefaultImg";
 import Swal from "sweetalert2";
 import MyInput from "../../_components/MyInput";
@@ -28,6 +27,7 @@ const AddMyPetProfile = () => {
   const params = useParams();
   const supabase = createClient();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const updateProfileWithSupabase = async ({
     petName,
     petImage,
@@ -72,7 +72,8 @@ const AddMyPetProfile = () => {
   };
 
   const updateMutate = useMutation({
-    mutationFn: updateProfileWithSupabase
+    mutationFn: updateProfileWithSupabase,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pet"] })
   });
 
   if (params === null) {
@@ -244,7 +245,7 @@ const AddMyPetProfile = () => {
           <textarea
             className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
             placeholder="예방접종 및 기타 의료 기록(최대 200자)"
-            maxLength={200}
+            maxLength={199}
             defaultValue={medicalRecords}
             onChange={handleMedicalRecords}
           />
@@ -257,7 +258,7 @@ const AddMyPetProfile = () => {
           <textarea
             className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
             placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
-            maxLength={200}
+            maxLength={199}
             defaultValue={introduction}
             onChange={handleIntroductionChange}
           />

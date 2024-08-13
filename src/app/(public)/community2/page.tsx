@@ -25,8 +25,8 @@ const CommunityMainPage = () => {
   return (
     <>
       <div className="mx-auto h-full w-[375px] bg-white px-[1.5rem]">
-        <h2 className="mb-[1rem] mt-[2rem] text-[2rem] font-semibold">커뮤니티</h2>
-        <div className="mb-[1rem] text-[1rem]">
+        <h2 className="mb-4 mt-[2rem] text-[2rem] font-semibold">커뮤니티</h2>
+        <div className="mb-4 text-[1rem]">
           여러분의 소중한 반려동물 이야기를 <br />
           자유롭게 들려주세요
         </div>
