@@ -155,7 +155,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
             <img src="/assets/svg/ic_user2.svg" className="mr-[0.5rem]" />
             <p className="mr-[0.5rem] flex text-sm">{post.members}명 모집</p>
             <div
-              className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400]"} text-white flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
+              className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} text-white flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
             >
               <p className="text-[0.625rem]">{post.recruiting ? "모집중" : "모집 완료"}</p>
             </div>
