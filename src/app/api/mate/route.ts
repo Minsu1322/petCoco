@@ -27,7 +27,6 @@ export const GET = async (request: NextRequest) => {
   // 매일 그날 기준으로
   const today = new Date().setHours(0, 0, 0, 0);
 
-  console.log(filter);
 
   try {
     // RPC 호출
