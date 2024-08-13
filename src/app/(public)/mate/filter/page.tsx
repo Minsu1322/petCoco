@@ -45,6 +45,9 @@ const FilterPage = () => {
     times: null,
     neutered: null
   });
+  const [selectedGender, setSelectedGender] = useState<string | null>(null);
+  const [selectedNeutered, setSelectedNeutered] = useState<string | null>(null);
+
   const router = useRouter();
 
   const updateFilter = (filterName: string, value: string) => {
@@ -78,8 +81,10 @@ const FilterPage = () => {
       times: null,
       neutered: null
     });
+    setSelectedGender(null);
+    setSelectedNeutered(null);
 
-    // router.push('/mate');
+    router.push('/mate');
   };
 
   // console.log(filters);
@@ -121,8 +126,8 @@ const FilterPage = () => {
         </div>
         <p className="ml-[1rem] mt-[3.38rem] text-[1.5rem] font-[600]">반려견 정보 필터</p>
         <div className="mt-5 px-[1.5rem]">
-          <Male_femaleFilter onSelect={(items) => updateFilter("male_female", items)} />
-          <NeuteredFilter onSelect={(items) => updateFilter("neutered", items)} />
+          <Male_femaleFilter selectedGender={selectedGender} setSelectedGender={setSelectedGender} onSelect={(items) => updateFilter("male_female", items)} />
+          <NeuteredFilter selectedNeutered={selectedNeutered} setSelectedNeutered={setSelectedNeutered} onSelect={(items) => updateFilter("neutered", items)} />
           <FilterWeightChip
             label="몸무게"
             selected={filters.weight}
