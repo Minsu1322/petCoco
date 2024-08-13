@@ -130,7 +130,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessag
       {imagePreviewUrl && (
         <div className="relative mb-3 flex justify-center">
           <div className="relative max-w-sm">
-            <img src={imagePreviewUrl} alt="Preview" className="w-[10rem] rounded-lg" />
+            <Image src={imagePreviewUrl} alt="Preview" width={160} height={160} className="rounded-lg" />{" "}
             <button
               type="button"
               className="absolute right-0 top-0 m-2 rounded-full bg-red-500 p-1 text-white"
