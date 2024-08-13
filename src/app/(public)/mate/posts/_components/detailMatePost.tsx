@@ -43,12 +43,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     date_time: post.date_time || "",
     members: post.members || "",
     recruiting: post.recruiting || true,
-    recruitment_start: getConvertDate(post.recruitment_start || ""),
-    recruitment_end: getConvertDate(post.recruitment_end || ""),
     address: post.address || "",
     place_name: post.place_name || "",
-    preferred_route: post.preferred_route || "",
-    special_requirements: post.special_requirements || "",
     location: post.location || ""
   };
 
@@ -87,7 +83,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const address = (addressData && addressData?.documents[0]?.address?.address_name) || "주소 정보를 찾을 수 없어요";
 
   //console.log("주소 변환 데이터 확인", addressData);
-
 
   const updatePost = {
     ...formPosts,
@@ -434,25 +429,24 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             <p className="flex justify-end text-subTitle2">0/200</p>
           </div>
 
-          <div className="flex flex-col gap-y-[0.5rem] mt-[6.44rem] mb-[2rem] ">
-          <div className="flex w-full justify-center items-center px-[1.5rem]">
-            <button
-              className="w-full cursor-pointer bg-mainColor py-[0.75rem] px-[1.5rem] rounded-full text-white"
-              type="submit"
-            >
-              수정 완료
-            </button>
-            
-          </div>
-          <div className="flex w-full justify-center items-center px-[1.5rem]">
-          <button
-              className="w-full cursor-pointer border border-mainColor py-[0.75rem] px-[1.5rem] rounded-full text-mainColor"
-              type="button"
-              onClick={handleResetEditPost}
-            >
-              수정 취소
-            </button>
-          </div>
+          <div className="mb-[2rem] mt-[6.44rem] flex flex-col gap-y-[0.5rem]">
+            <div className="flex w-full items-center justify-center px-[1.5rem]">
+              <button
+                className="w-full cursor-pointer rounded-full bg-mainColor px-[1.5rem] py-[0.75rem] text-white"
+                type="submit"
+              >
+                수정 완료
+              </button>
+            </div>
+            <div className="flex w-full items-center justify-center px-[1.5rem]">
+              <button
+                className="w-full cursor-pointer rounded-full border border-mainColor px-[1.5rem] py-[0.75rem] text-mainColor"
+                type="button"
+                onClick={handleResetEditPost}
+              >
+                수정 취소
+              </button>
+            </div>
           </div>
         </form>
       ) : (

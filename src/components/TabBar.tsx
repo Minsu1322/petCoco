@@ -14,7 +14,7 @@ const TabBar = () => {
   return pathname === "/message" ? (
     <></>
   ) : (
-    <div className="fixed bottom-0 w-full border border-bgGray500 bg-white pb-[0.7rem] pt-[0.3rem]">
+    <div className="fixed bottom-0 w-full border border-bgGray500 bg-white pb-[0.7rem] pt-[0.3rem] z-50">
       <div className="flex justify-between gap-x-[1.2rem] px-[0.8rem] py-[0.2rem]">
         <Link href="/" passHref>
           <div className="flex flex-col items-center justify-center gap-y-[0.2rem]">

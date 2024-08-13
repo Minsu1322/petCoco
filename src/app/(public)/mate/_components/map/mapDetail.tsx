@@ -15,7 +15,7 @@ const MapDetail = ({ center, tag }: MapDetailProps) => {
         <MapMarker
           position={center}
           image={{
-            src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN26a7CVa5ryzx5psOXRzK2a-OfomhbbUbw-zxRX7D835ImjsmTOc2tIgkc-LXQ2cFrf0&usqp=CAU",
+            src: "/assets/svg/ph_paw.svg",
             size: {
               width: 30,
               height: 30
