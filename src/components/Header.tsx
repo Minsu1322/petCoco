@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import LoginButton from "./auth/LoginBtn";
 import LogoutButton from "./auth/LogoutBtn";
+import Link from "next/link";
 
 const supabase = createClient();
 
