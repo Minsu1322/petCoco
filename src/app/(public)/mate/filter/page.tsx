@@ -82,11 +82,11 @@ const FilterPage = () => {
     // router.push('/mate');
   };
 
-  console.log(filters);
+  // console.log(filters);
 
   return (
     <div>
-      <div className="w-full">
+      <div className="w-[375px] mx-auto">
         <p className="ml-[1rem] mt-[1rem] text-[1.5rem] font-[600]">산책 메이트 상세 필터</p>
         <div className="w-full px-[1.5rem]">
           <FilterSelectChip
@@ -129,7 +129,7 @@ const FilterPage = () => {
             onSelect={(items) => updateFilter("weight", items)}
           />
         </div>
-        <div className="mb-[3.63rem] mt-[3.63rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
+        <div className="mb-[6.63rem] mt-[3.63rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
           <Button
             className="flex w-full cursor-pointer items-center justify-center rounded-[0.5rem] bg-mainColor px-[8.53rem] py-[0.75rem] text-[0.9375rem] font-[590] text-white"
             text="저장하기"

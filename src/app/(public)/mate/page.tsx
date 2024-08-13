@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 // import Button from "@/components/Button";
 import SearchBar from "@/components/SearchBar";
 import { Filters } from "./filter/page";
-// import Link from "next/link";
+
 
 export type PositionData = {
   center: {
@@ -108,7 +108,7 @@ const MatePage = () => {
   }, [searchParams]);
 
   return (
-    <div className="w-[375px] relative">
+    <div className="w-[375px] relative mx-auto">
     {/* <div className="container  min-h-screen"> */}
       <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-5">
         {/* 왼쪽 메인 컨텐츠 영역 */}
