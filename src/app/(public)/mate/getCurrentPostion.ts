@@ -1,5 +1,6 @@
-import { PositionData } from "./page";
+
 import { locationStore } from "@/zustand/locationStore";
+import { PositionData } from "./_components/mateContent";
 
 export const getCurrentPosition = (): Promise<PositionData> => {
 
