@@ -41,10 +41,10 @@ const DetailView = ({
   const SLIDE_COUNT = 5;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
-  const toggleMenu = () => {
-    // console.log("toggleMenu called");
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // const toggleMenu = () => {
+  //   // console.log("toggleMenu called");
+  //   setIsMenuOpen(!isMenuOpen);
+  // };
 
   const handleStartChat = () => {
     startChat(post.user_id, user, router);
