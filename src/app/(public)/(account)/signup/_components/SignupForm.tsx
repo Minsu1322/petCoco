@@ -77,7 +77,7 @@ const SignupForm = () => {
               <label className="w-[100px] text-center text-[15px] font-semibold">닉네임</label>
               <div className="flex w-full items-center">
                 <input
-                  className="flex-grow rounded-[8px] border px-[16px] py-[12px] text-[15px]"
+                  className="flex-grow rounded-[8px] border px-[16px] py-[12px] text-[0.9375rem] placeholder-[#999]"
                   type="text"
                   value={nickname}
                   onChange={(e) => setNickname(e.target.value)}
@@ -92,7 +92,7 @@ const SignupForm = () => {
               <div className="flex w-full items-center">
                 <div className="flex flex-grow items-center">
                   <input
-                    className="flex-grow rounded-[8px] border px-[16px] py-[12px] text-[15px]"
+                    className="flex-grow rounded-[8px] border px-[16px] py-[12px] text-[0.9375rem] placeholder-[#999]"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -101,20 +101,28 @@ const SignupForm = () => {
                   />
                   <button
                     type="button"
-                    className="ml-[4px] rounded-[10px] border border-[#05CA7E]"
+                    className="ml-[4px] rounded-[10px] border border-mainColor"
                     onClick={handleEmailCheck}
                   >
-                    <p className="flex-grow px-[16px] py-[12px] text-[15px] text-[#767676]">중복 확인</p>
+                    <p className="flex-grow px-[16px] py-[12px] text-[15px] text-mainColor">중복 확인</p>
                   </button>
                 </div>
               </div>
-              {isEmailChecked && emailError && <p className="mt-1 text-[12px] text-red-500">{emailError}</p>}
+              {isEmailChecked && emailError && (
+                <p
+                  className={`mt-1 text-[12px] ${
+                    emailError === "사용 가능한 이메일입니다." ? "text-blue-500" : "text-red-500"
+                  }`}
+                >
+                  {emailError}
+                </p>
+              )}
             </div>
             <div className="mt-[12px] h-[90px]">
               <label className="w-[100px] text-center text-[15px] font-semibold">비밀번호</label>
               <div className="flex w-full items-center">
                 <input
-                  className="flex-grow rounded-[8px] border px-[16px] py-[12px] text-[15px]"
+                  className="flex-grow rounded-[8px] border px-[16px] py-[12px] text-[0.9375rem] placeholder-[#999]"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -129,7 +137,7 @@ const SignupForm = () => {
                 <label className="w-[100px] text-center text-[15px] font-semibold">비밀번호 확인</label>
                 <div className="flex w-full items-center">
                   <input
-                    className="flex-grow rounded-[8px] border px-[16px] py-[12px] text-[15px]"
+                    className="flex-grow rounded-[8px] border px-[16px] py-[12px] text-[0.9375rem] placeholder-[#999]"
                     type="password"
                     value={passwordCheck}
                     onChange={(e) => setPasswordCheck(e.target.value)}
@@ -151,7 +159,7 @@ const SignupForm = () => {
             </div>
 
             <button
-              className="mt-[32px] h-[44px] w-full rounded-[8px] border bg-black text-[16px] text-white"
+              className="mt-[32px] h-[44px] w-full rounded-[8px] border bg-mainColor text-[16px] text-white"
               type="submit"
             >
               회원가입 하기
