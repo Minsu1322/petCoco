@@ -16,7 +16,7 @@ const PetItem = ({ pet }: PetItemProps) => {
       <div>
       <p className="text-[1rem]">{pet.age}살, {pet.male_female === "수" ? "남" : "여"}아</p>
         <div className="flex gap-x-[0.5rem]">
-          <p className="text-[#939396] font-[400]">몸무게</p>ㅁ
+          <p className="text-[#939396] font-[400]">몸무게</p>
           <p className="text-[1rem] font-[400]">{pet.weight}kg</p>
         </div>
         <div className="flex gap-x-[0.5rem]">
