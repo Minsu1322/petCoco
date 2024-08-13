@@ -5,7 +5,7 @@ import { useAuthStore } from "@/zustand/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/supabase/client";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const supabase = createClient();
 

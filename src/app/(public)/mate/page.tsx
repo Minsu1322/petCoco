@@ -1,17 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 
 import MatePostList from "./_components/post/matePostList";
 import PostListFilterTab from "./_components/tab/postListFilterTab";
-import PostItemFilterTab from "./_components/tab/postItemFilterTab";
+// import PostItemFilterTab from "./_components/tab/postItemFilterTab";
 
 import Swal from 'sweetalert2';
-import Button from "@/components/Button";
+// import Button from "@/components/Button";
 import SearchBar from "@/components/SearchBar";
-import Link from "next/link";
+import { Filters } from "./filter/page";
+
 
 export type PositionData = {
   center: {
@@ -24,12 +25,14 @@ export type PositionData = {
 
 const MatePage = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);
+  // const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);
   const [activeSearchTerm, setActiveSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState("");
+  const defaultSort = "all";
 
   const { user } = useAuthStore();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [filters, setFilters] = useState({
     gender: null,
@@ -39,14 +42,17 @@ const MatePage = () => {
     weight: null,
     regions: null,
     times: null,
+    neutered: null,
   });
 
-  const updateFilter = (filterName: string, value: string) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [filterName]: value
-    }));
-  };
+  // console.log('All query params:', searchParams.toString());
+
+  // const updateFilter = (filterName: string, value: string) => {
+  //   setFilters((prevFilters) => ({
+  //     ...prevFilters,
+  //     [filterName]: value
+  //   }));
+  // };
 
   const handleSearchPosts = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,24 +60,27 @@ const MatePage = () => {
     setSearchTerm("");
   };
 
-  const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
+  // const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
+  const handleAllPosts = () => setSortBy("all");
+  const handleRecruiting = () => setSortBy("recruiting");
   const handleDateSort = () => setSortBy("recruitment_end");
   const handleDistanceSort = () => setSortBy("distance");
   const handleNewSort = () => setSortBy("new");
 
-  const handleResetFilter = () => {
-    setFilters({
-      gender: null,
-      age: null,
-      date_time: undefined,
-      male_female: null,
-      weight: null,
-      regions: null,
-      times: null,
-    });
-    setSortBy("");
-    setActiveSearchTerm("");
-  };
+  // const handleResetFilter = () => {
+  //   setFilters({
+  //     gender: null,
+  //     age: null,
+  //     date_time: undefined,
+  //     male_female: null,
+  //     weight: null,
+  //     regions: null,
+  //     times: null,
+  //     neutered: null,
+  //   });
+  //   setSortBy("");
+  //   setActiveSearchTerm("");
+  // };
 
   const handleLoginCheck = () => {
     if (user) {
@@ -88,20 +97,31 @@ const MatePage = () => {
     } 
   };
 
+  useEffect(() => {
+    const newFilters = { ...filters };
+    searchParams.forEach((value, key) => {
+      if (key in newFilters) {
+        (newFilters as Filters)[key as keyof Filters] = value;
+      }
+    });
+    setFilters(newFilters);
+  }, [searchParams]);
+
   return (
-    <div className="w-[375px]">
+    <div className="w-[375px] relative mx-auto">
     {/* <div className="container  min-h-screen"> */}
       <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-5">
         {/* 왼쪽 메인 컨텐츠 영역 */}
         <div className="mx-0 w-full lg:mx-2 lg:w-3/4">
           <div className="mt-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide ">
             <PostListFilterTab
-              isCurrentPosts={isCurrentPosts}
-              handleToggleAllPosts={handleToggleAllPosts}
+              handleAllPosts={handleAllPosts} 
+              handleRecruiting={handleRecruiting}
               handleDateSort={handleDateSort}
               handleDistanceSort={handleDistanceSort}
               handleNewSort={handleNewSort}
-              sortBy={sortBy}
+              sortBy={sortBy || defaultSort}
+              defaultSort={defaultSort}
             />
           </div>
           <div className="m-[1.5rem]">
@@ -109,7 +129,6 @@ const MatePage = () => {
           </div>
           <MatePostList
             activeSearchTerm={activeSearchTerm}
-            isCurrentPosts={isCurrentPosts}
             sortBy={sortBy}
             filters={filters}
           />
@@ -127,7 +146,11 @@ const MatePage = () => {
           {/* <PostItemFilterTab updateFilter={updateFilter} filters={filters} onClick={handleResetFilter} /> */}
         </div>
       </div>
-      <div className="fixed z-50 bottom-[6.815rem] right-[0.56rem] p-[0.81rem] shadow-plusBtn rounded-full bg-mainColor" onClick={handleLoginCheck}>
+      <div className="fixed z-50 bottom-[6.815rem] p-[0.81rem] shadow-plusBtn rounded-full bg-mainColor cursor-pointer"   
+          style={{
+           right: 'calc(50% - 187.5px + 0.56rem)'
+          }} 
+          onClick={handleLoginCheck}>
         <img src="/assets/svg/plus-01.svg" alt="plus icon" />
       </div>
       {/* 하단 탭바 생기면 수정해 bottom, right 위치 수정 필요 */}

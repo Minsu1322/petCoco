@@ -2,7 +2,6 @@ import { UserType } from "./auth.type";
 import { Database, Json, Tables } from "./supabase";
 export type MatePostType = Tables<"matePosts">;
 export type matepostpetsType = Tables<"matepostpets">;
-export type GetMatePostsWithDistance = Database['public']['Functions']['get_mate_posts_with_distance']['Returns']
 
 export type UserTypeForUsers = {
   id: string;
@@ -60,14 +59,14 @@ export type MateNextPostType = Omit<MatePostFullType, "id" | "created_at" | "use
 export type MatePostPetType = {
   post_id?: number; // post_id를 추가
   male_female: string;
-  neutered: boolean | null;
+  neutered: string | null;
   weight: string;
   characteristics: string;
 };
 
 export type Pets = {
   male_female: string;
-  neutered: null | boolean;
+  neutered: null | string;
   weight: number | null;
   characteristics: string;
   age: string;
@@ -83,22 +82,18 @@ export type PostsResponse = {
 
 export type valiMatePostAllTypeForItem = {
   id: string
-          created_at: string
-          title: string
-          content: string
-          user_id: string
-          position: Json
-          members: string
-          date_time: string
-          recruiting: boolean
-          recruitment_start: string
-          recruitment_end: string
-          address: string
-          place_name: string
-          preferred_route: string
-          special_requirements: string
-          location: unknown
-          users: Json
-          matepostpets: Json
-          distance: number
+  created_at: string
+  title: string
+  content: string
+  user_id: string
+  position: Json
+  members: string
+  date_time: string
+  recruiting: boolean
+  address: string
+  place_name: string
+  location: unknown
+  users: Json
+  matepostpets: Json
+  distance: number
 };
