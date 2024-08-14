@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 interface NeuteredFilterProps {
   onSelect: (value: string) => void;
+  selectedNeutered: string | null;
+  setSelectedNeutered:  Dispatch<SetStateAction<string | null>>;
 }
 
-const NeuteredFilter = ({ onSelect }: NeuteredFilterProps) => {
-  const [selectedNeutered, setSelectedNeutered] = useState<string | null>(null);
-
+const NeuteredFilter = ({ onSelect, selectedNeutered, setSelectedNeutered }: NeuteredFilterProps) => {
+ 
   const handleSelect = (neutered: string) => {
     setSelectedNeutered(neutered);
     onSelect(neutered);
@@ -20,24 +22,24 @@ const NeuteredFilter = ({ onSelect }: NeuteredFilterProps) => {
     
     <div className="flex gap-x-[1rem]">
       <div
-        className={`px-[1.66rem] py-[1rem] rounded-[1rem] text-[1rem] tracking-[0.0125rem] cursor-pointer ${
-          selectedNeutered === "true" ? 'bg-mainColor' : 'bg-[#EFEFF0]' 
+        className={`px-[1.66rem] py-[1rem] rounded-[1rem] text-[1rem] text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
+          selectedNeutered === "true" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
         onClick={() => handleSelect("true")}
       >
         했어요 
       </div>
       <div
-        className={`px-[1.66rem] py-[1rem] rounded-[1rem] text-[1rem] tracking-[0.0125rem] cursor-pointer ${
-          selectedNeutered === "false" ? 'bg-mainColor' : 'bg-[#EFEFF0]' 
+        className={`px-[1.25rem] py-[1rem] rounded-[1rem] text-[1rem] text-[#999]  font-[500] tracking-[0.0125rem] cursor-pointer ${
+          selectedNeutered === "false" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
         onClick={() => handleSelect("false")}
       >
-        안했어요
+        안 했어요
       </div>
       <div
-        className={`px-[1.66rem] py-[1rem] rounded-[1rem] text-[1rem] tracking-[0.0125rem] cursor-pointer ${
-          selectedNeutered === "all" ? 'bg-mainColor' : 'bg-[#EFEFF0]' 
+        className={`px-[1.25rem] py-[1rem] rounded-[1rem] text-[1rem] text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
+          selectedNeutered === "all" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
         onClick={() => handleSelect("all")}
       >

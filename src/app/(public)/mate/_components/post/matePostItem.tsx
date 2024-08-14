@@ -10,6 +10,7 @@ import { formatDateTimeContent } from "@/app/utils/getConvertTime";
 import Swal from "sweetalert2";
 import Chip from "@/components/Chip";
 import Button from "@/components/Button";
+import startChat from "@/app/utils/startChat";
 
 interface MatePostItemPorps {
   post: MatePostAllTypeForItem;
@@ -33,61 +34,14 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   // };
   // const distance = calculateDistance();
 
-  const extractDong = (address: string) => {
-    const match = address?.match(/(\S+(?:동\d*가?|읍|면))(?=\s|$)/);
-    return match ? match[0] : "";
-  };
+  // const extractDong = (address: string) => {
+  //   const match = address?.match(/(\S+(?:동\d*가?|읍|면))(?=\s|$)/);
+  //   return match ? match[0] : "";
+  // };
 
   //console.log(post);
-  const startChat = async () => {
-    if (!user) {
-      Swal.fire({
-        title: "로그인이 필요합니다!",
-        text: "1:1 대화를 하려면 로그인이 필요합니다.",
-        icon: "warning"
-      });
-      router.replace("/signin");
-      return;
-    }
-
-    try {
-      // 채팅방이 이미 존재하는지 확인
-      const { data: existingChat, error: chatError } = await supabase
-        .from("messages")
-        .select("*")
-        .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
-        .or(`sender_id.eq.${post.user_id},receiver_id.eq.${post.user_id}`)
-        .limit(1);
-
-      if (chatError) throw chatError;
-
-      if (existingChat && existingChat.length > 0) {
-        // 이미 채팅방이 존재하면 해당 채팅방으로 이동
-        router.push(`/message?selectedUser=${post.user_id}`);
-      } else {
-        // 새로운 채팅방 생성
-        const { error: insertError } = await supabase.from("messages").insert([
-          {
-            sender_id: user.id,
-            receiver_id: post.user_id,
-            content: "채팅이 시작되었습니다."
-          }
-        ]);
-
-        if (insertError) throw insertError;
-
-        // 새로 생성된 채팅방으로 이동
-        router.push(`/message?selectedUser=${post.user_id}`);
-      }
-    } catch (error) {
-      console.error("채팅 시작 오류:", error);
-      // alert("채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.");
-      Swal.fire({
-        title: "채팅 시작 오류",
-        text: "채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.",
-        icon: "error"
-      });
-    }
+  const handleStartChat = () => {
+    startChat(post.user_id, user, router);
   };
 
   const handleLoginCheck = () => {
@@ -106,7 +60,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   return (
-    <div className="shadow-custom mx-[1.5rem] mb-5 flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem]">
+    <div className="shadow-custom mb-5 flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem]">
       <Link href={`/mate/posts/${post.id}`}>
       <div className="flex justify-between px-[1rem]">
         <p className="flex items-center text-xs text-gray-400">{post.created_at.split("T")[0]}</p>
@@ -140,7 +94,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           </p>
           <div className="mb-[0.25rem] flex">
             <img src="/assets/svg/ic_location2.svg" />
-            <p className="ml-[0.5rem] w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+            <p className="ml-[0.5rem] w-[145px] overflow-hidden text-ellipsis whitespace-nowrap text-sm">
               {post.place_name || ""}
             </p>
           </div>
@@ -165,8 +119,8 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
       </Link>
       <div className="mx-auto mt-[0.88rem] flex items-center">
         <Button
-          className="ml-[8.19rem] mr-[0.97rem] flex flex-shrink-0 flex-col items-center justify-center rounded-full bg-mainColor text-white px-[3.88rem] py-[0.5rem]"
-          onClick={startChat}
+          className="ml-[8.19rem] mr-[0.97rem] flex flex-shrink-0 flex-col items-center justify-center cursor-pointer rounded-full bg-mainColor text-white px-[3.88rem] py-[0.5rem]"
+          onClick={handleStartChat}
           text="채팅하기"
         ></Button>
           {/* <Link

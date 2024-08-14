@@ -8,9 +8,12 @@ import Button from "@/components/Button";
 import { useState } from "react";
 import { formatDateTimeTitle, formatDateTimeContent } from "@/app/utils/getConvertTime";
 import { EmblaOptionsType } from "embla-carousel";
+import { useRouter } from "next/navigation";
 
 import { MatePostAllType } from "@/types/mate.type";
 import PetCarousel from "../../_components/petCarousel/petCarousel";
+import startChat from "@/app/utils/startChat";
+import { useAuthStore } from "@/zustand/useAuth";
 
 interface DetailViewProps {
   post: MatePostAllType;
@@ -18,7 +21,7 @@ interface DetailViewProps {
   handleEditPost: () => void;
   handleDeletePost: (id: string) => void;
   handleTogglePost: (id: string) => void;
-  startChat: () => void;
+  // startChat: () => void;
 }
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapDetail"), { ssr: false });
 
@@ -27,19 +30,26 @@ const DetailView = ({
   userId,
   handleEditPost,
   handleDeletePost,
-  handleTogglePost,
-  startChat
+  handleTogglePost
+  // startChat
 }: DetailViewProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    console.log("toggleMenu called");
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+  const { user } = useAuthStore();
 
   const OPTIONS: EmblaOptionsType = { align: "start", dragFree: true, loop: true };
   const SLIDE_COUNT = 5;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+
+  // const toggleMenu = () => {
+  //   // console.log("toggleMenu called");
+  //   setIsMenuOpen(!isMenuOpen);
+  // };
+
+  const handleStartChat = () => {
+    startChat(post.user_id, user, router);
+  };
+
 
   return (
     <div className="mx-[1rem] mt-[1.06rem]">
@@ -49,12 +59,12 @@ const DetailView = ({
           <div className="flex flex-col">
             {userId === post.user_id && (
               <div className="mb-[0.5rem] flex justify-end gap-x-[0.625rem]">
-                <button onClick={handleEditPost} className="text-sm text-gray-700 hover:text-mainColor">
+                <button onClick={handleEditPost} className="text-sm text-editBtnColor hover:text-mainColor">
                   수정
                 </button>
                 <button
                   onClick={() => handleDeletePost(post.id)}
-                  className="text-sm text-gray-700 hover:text-mainColor"
+                  className="text-sm text-delBtnColor hover:text-mainColor"
                 >
                   삭제
                 </button>
@@ -102,8 +112,8 @@ const DetailView = ({
                 />
               </div>
               <Button
-                className="ml-[0.75rem] mt-[0.56rem] flex flex-shrink-0 flex-col items-center justify-center rounded-full bg-mainColor px-[0.81rem] py-[0.19rem] text-[1rem] text-white"
-                onClick={startChat}
+                className="ml-[0.75rem] mt-[0.56rem] flex flex-shrink-0  cursor-pointer  flex-col items-center justify-center rounded-full bg-mainColor px-[0.81rem] py-[0.19rem] text-[1rem] text-white"
+                onClick={handleStartChat}
                 text="채팅하기"
               ></Button>
             </div>
@@ -113,7 +123,7 @@ const DetailView = ({
               </p>
               <div className="flex flex-col">
                 <p className="mr-[0.5rem] text-gray-400">한 마디</p>
-                <p className="whitespace-wrap flex w-[170px] overflow-hidden text-ellipsis font-semibold">
+                <p className="whitespace-wrap flex w-[185px] overflow-hidden text-ellipsis font-semibold">
                   {post.content}
                 </p>
               </div>
@@ -151,9 +161,12 @@ const DetailView = ({
           {/* <div className="flex gap-x-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide "> 
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
         </div> */}
-          <div className="flex w-full mb-[5.95rem]">
-            {post.matepostpets && post.matepostpets.length > 0 && <PetCarousel pets={post.matepostpets} slides={SLIDES} options={OPTIONS} />}
-          </div>
+           <div className="mb-[5.95rem]">
+            {post.matepostpets && post.matepostpets.length > 0 && (
+              <PetCarousel pets={post.matepostpets} slides={SLIDES} options={OPTIONS} />
+            )}
+          </div> 
+         
         </div>
       </div>
     </div>
