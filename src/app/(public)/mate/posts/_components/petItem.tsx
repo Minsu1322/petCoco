@@ -15,7 +15,7 @@ const PetItem = ({ pet }: PetItemProps) => {
 
   return (
     <div className="mb-[0.44rem] flex w-full justify-between gap-x-[1rem] rounded-[0.85rem] border border-[#C2C0BD] px-[0.75rem] py-[0.69rem]">
-      <div className="w-full ml-[0.75rem] w-[55%]">
+      <div className="ml-[0.75rem] w-[55%]">
         <p className="text-[1rem]">
           {age}, {gender}아
         </p>
