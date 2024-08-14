@@ -29,7 +29,7 @@ const PetItem = ({ pet }: PetItemProps) => {
         </div>
         <div className="flex gap-x-[0.5rem]">
           <p className="font-[400] text-[#939396]">성향</p>
-          <p className="w-auto max-w-[70px] overflow-hidden text-ellipsis whitespace-nowrap text-[1rem] font-[400]">
+          <p className="w-[148px] overflow-hidden text-ellipsis whitespace-nowrap text-[1rem] font-[400]">
             {characteristics}
           </p>
         </div>

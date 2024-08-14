@@ -375,7 +375,17 @@ const PostForm = () => {
                       <label htmlFor={`characteristics_${index}`} className="text-md font-semibold">
                         성향
                       </label>
-                      <select
+                      <input type="text" id={`characteristics_${index}`} value={pet.characteristics || ""} 
+                        onChange={(e) => {
+                          const newPets = [...formPets];
+                          newPets[index].characteristics = e.target.value;
+                          setFormPets(newPets);
+                        }} 
+                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
+                        maxlength={10}
+                        placeholder="반려견의 성향을 10자 이내로 적어주세요"
+                      />
+                      {/* <select
                         id={`characteristics_${index}`}
                         className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
                         value={pet.characteristics || ""}
@@ -391,7 +401,7 @@ const PostForm = () => {
                             {characteristic}
                           </option>
                         ))}
-                      </select>
+                      </select> */}
                     </div>
                   </div>
                   <div className="flex w-full justify-end">
