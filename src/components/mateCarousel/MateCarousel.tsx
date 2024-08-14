@@ -76,6 +76,7 @@ const MateCarousel: React.FC<PropType> = (props) => {
                             }
                             alt="User Profile"
                             fill
+                            sizes="96px"
                             style={{ objectFit: "cover" }}
                             className="rounded-full"
                           />
@@ -85,7 +86,13 @@ const MateCarousel: React.FC<PropType> = (props) => {
                           <p className="mb-1 text-sm text-gray-600">{users?.nickname || "닉네임"}</p>
                           <div className="flex items-center">
                             <div className="flex h-6 w-6 items-center justify-center rounded-full text-xl">
-                              <Image src="/assets/svg/heart.svg" width={24} height={24} alt="Heart Icon" />
+                              <Image
+                                src="/assets/svg/heart.svg"
+                                width={24}
+                                height={24}
+                                alt="Heart Icon"
+                                style={{ width: "auto", height: "auto" }}
+                              />
                             </div>
                             <span className="ml-2 text-sm">15</span>
                           </div>

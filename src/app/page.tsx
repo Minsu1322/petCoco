@@ -6,6 +6,7 @@ import MateCarousel from "@/components/mateCarousel/MateCarousel";
 import RecentPosts from "@/components/community/CommunityMain";
 import Link from "next/link";
 import BannerCarousel from "./../components/bannerCarousel/BannerCarousel";
+import { BannerImages } from "./utils/Banner";
 
 export default function Home() {
   const AnimalOPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
@@ -17,24 +18,26 @@ export default function Home() {
   const MateSLIDES = Array.from(Array(MateSLIDE_COUNT).keys());
 
   const BannerOPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
-  const BannerSLIDE_COUNT = 2;
+  const BannerSLIDE_COUNT = BannerImages.length;
   const BannerSLIDES = Array.from(Array(BannerSLIDE_COUNT).keys());
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-mainColor">
+    <div className="flex min-h-screen flex-col items-center bg-[#D2CDF6]">
       <div className="w-full">
         <BannerCarousel slides={BannerSLIDES} options={BannerOPTIONS} />
       </div>
 
       {/* 게시글 영역 */}
-      <div className="flex w-full flex-col bg-background px-4">
+      <div className="mb-4 flex w-full flex-col bg-background px-2">
         {/* 자유게시판 */}
         <div className="mt-6 w-full rounded-xl bg-white p-4">
-          <h2 className="text-xl font-bold text-[#7FA6EE] hover:underline">방금 올라온 반려이야기😀</h2>
+          <div>
+            <h2 className="text-xl font-bold text-[#7FA6EE] hover:underline">방금 올라온 따뜻한 반려이야기</h2>
+          </div>
 
           <RecentPosts postCount={5} />
 
-          <div className="border-t border-gray-200 py-2">
+          <div className="border-t border-gray-200 py-3">
             <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community`}>
               <h2 className="text-center text-lg text-gray-400 hover:underline">{`커뮤니티 더보기 >`}</h2>
             </Link>
@@ -49,17 +52,6 @@ export default function Home() {
 
         {/* 유기견 배너+캐러셀*/}
         <div className="mt-6 flex w-auto flex-col items-center justify-center">
-          <div className="mt-6 flex w-auto flex-col items-center justify-center">
-            <Image
-              src="https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_sub/Mainbanner003.png"
-              alt="banner images"
-              width={600}
-              height={150}
-              style={{ width: "100%", height: "auto", maxWidth: "600px" }}
-              className="rounded-lg"
-            />
-          </div>
-
           <div className="mb-16 mt-1 w-full rounded-lg bg-white">
             <AnimalCarousel slides={AnimalSLIDES} options={AnimalOPTIONS} />
           </div>
