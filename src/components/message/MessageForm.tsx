@@ -23,6 +23,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessag
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const { user } = useAuthStore();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -68,20 +69,25 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessag
       setContent("");
       setSelectedImage(null);
       setImagePreviewUrl(null);
-      await queryClient.invalidateQueries({ queryKey: ["messages", user?.id] });
+      queryClient.setQueryData(["messages", user?.id], (oldData: any) => {
+        return [...oldData, data[0]];
+      });
       if (textareaRef.current) {
         textareaRef.current.style.height = "36px";
       }
+      setIsSubmitting(false);
     },
     onError: (error) => {
       Swal.fire("Error", error.message, "error");
+      setIsSubmitting(false);
     }
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!content.trim() && !selectedImage) return;
+    if (isSubmitting || (!content.trim() && !selectedImage)) return;
 
+    setIsSubmitting(true);
     let imageUrl;
     if (selectedImage) {
       imageUrl = await handleImageUpload(selectedImage);
@@ -164,7 +170,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessag
         {/* 전송 버튼 */}
         <button
           type="submit"
-          disabled={sendMessage.isPending}
+          disabled={isSubmitting}
           className={`absolute right-2 flex items-center justify-center rounded-full transition-opacity duration-300 ${
             sendMessage.isPending ? "opacity-50" : "opacity-100"
           }`}

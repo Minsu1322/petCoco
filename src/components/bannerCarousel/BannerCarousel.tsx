@@ -4,6 +4,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import styles from "./styles/BannerCarousel.module.css";
 import Image from "next/image";
 import { BannerImages } from "@/app/utils/Banner";
+import Autoplay from "embla-carousel-autoplay";
 
 type PropType = {
   slides: number[];
@@ -12,7 +13,9 @@ type PropType = {
 
 const BannerCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
-  const [emblaRef, emblaApi] = useEmblaCarousel(options);
+  const autoplay = Autoplay({ delay: 5000, stopOnInteraction: false });
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ ...options, loop: true }, [autoplay]);
 
   const handleSelect = useCallback(() => {
     if (emblaApi) {
@@ -25,7 +28,22 @@ const BannerCarousel: React.FC<PropType> = (props) => {
     if (emblaApi) {
       emblaApi.on("select", handleSelect);
     }
+    return () => {
+      if (emblaApi) {
+        emblaApi.off("select", handleSelect);
+      }
+    };
   }, [emblaApi, handleSelect]);
+
+  useEffect(() => {
+    if (emblaApi) {
+      emblaApi.on("pointerDown", () => {
+        const autoplay = emblaApi?.plugins()?.autoplay;
+        if (!autoplay) return;
+        autoplay.stop();
+      });
+    }
+  }, [emblaApi]);
 
   return (
     <section className={styles.embla}>
