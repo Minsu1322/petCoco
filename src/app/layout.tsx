@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   title: "PetCoco",
   description: "PetCoco",
   icons: {
-    icon: "/assets/svg/petcoco.ico",
-  },
+    icon: "/assets/svg/petcoco.ico"
+  }
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex mx-auto min-h-screen w-[375px] flex-col bg-white`}>
+      <body className={`${inter.className} mx-auto flex min-h-screen max-w-[420px] flex-col bg-white`}>
         <QueryProvider>
           <Header />
           <main className="mx-auto w-full flex-grow">{children}</main>
