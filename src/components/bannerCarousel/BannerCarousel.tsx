@@ -3,16 +3,12 @@ import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import styles from "./styles/BannerCarousel.module.css";
 import Image from "next/image";
+import { BannerImages } from "@/app/utils/Banner";
 
 type PropType = {
   slides: number[];
   options?: EmblaOptionsType;
 };
-
-const BannerImages = [
-  "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_img/Mainbanner001.png",
-  "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/banner_img/Mainbanner002.png"
-];
 
 const BannerCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
@@ -42,8 +38,9 @@ const BannerCarousel: React.FC<PropType> = (props) => {
                   src={BannerImages[index]}
                   alt={`Banner ${index + 1}`}
                   fill
+                  sizes="100vw"
                   style={{ objectFit: "cover" }}
-                  priority={index === 0}
+                  priority
                 />
               </div>
             </div>

@@ -207,11 +207,18 @@ export default function ClientMessageComponent() {
       } = await supabase.auth.getUser();
       if (user) {
         setUser(user);
+      } else {
+        Swal.fire({
+          title: "로그인이 필요합니다!",
+          text: "채팅을 이용하기 위해서는 로그인이 필요합니다!",
+          icon: "warning"
+        });
+        router.push(`${process.env.NEXT_PUBLIC_SITE_URL}/signin`);
       }
       setIsUserLoading(false);
     };
     checkUser();
-  }, [setUser]);
+  }, [router, setUser]);
 
   useEffect(() => {
     const isMobile = window.innerWidth < 640;
@@ -254,6 +261,7 @@ export default function ClientMessageComponent() {
   if (!user) return <div className="p-4 text-center">로그인이 필요합니다.</div>;
   if (isLoading) return <div className="p-4 text-center">메시지를 불러오는 중...</div>;
   if (error) return <div className="p-4 text-center">메시지를 불러오는 중 오류가 발생했습니다.</div>;
+  if (!user) return null;
   return (
     <div className="flex h-screen w-full flex-col bg-white">
       <div className="flex h-full flex-col">
@@ -308,8 +316,8 @@ export default function ClientMessageComponent() {
                   return (
                     <li
                       key={userId}
-                      className={`flex w-full cursor-pointer items-center border-b p-4 hover:bg-gray-100 ${
-                        selectedUser === userId ? "bg-[#D2CDF6]" : ""
+                      className={`flex w-full cursor-pointer items-center border-b p-4 hover:rounded-xl hover:bg-[#d4d1ea] ${
+                        selectedUser === userId ? "rounded-xl bg-[#D2CDF6]" : ""
                       }`}
                       onClick={() => {
                         setSelectedUserAndMarkRead(userId);
@@ -392,6 +400,7 @@ export default function ClientMessageComponent() {
                                 width={200}
                                 height={200}
                                 className="rounded-lg"
+                                style={{ width: "auto", height: "auto" }}
                               />
                             </div>
                           )}

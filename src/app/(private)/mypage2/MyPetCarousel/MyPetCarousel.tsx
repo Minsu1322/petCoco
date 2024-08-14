@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/auth.type";
 import Link from "next/link";
 import { defaultPetImg } from "@/components/DefaultImg";
+import Image from "next/image";
 
 type PropType = {
   slides: number[];
@@ -69,10 +70,12 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
             pets?.map((pet, i) => (
               <div className={`${styles.embla__slide} ml-2 rounded-lg border-1 border-[#C2C0BD]`} key={i}>
                 <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
-                  <div className="flex">
-                    <div className="my-2 px-6">
-                      <img
-                        className="h-[60px] w-[60px] rounded-full bg-lime-300 object-cover"
+                  <div className="flex items-center">
+                    <div className="px-6">
+                      <Image
+                        className="h-[80px] w-[80px] rounded-full bg-lime-300 object-cover"
+                        width={100}
+                        height={100}
                         src={pet.petImage ? pet.petImage : defaultPetImg}
                         alt="..."
                       />
@@ -91,8 +94,8 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
                         <span className="text-base font-normal">{pet.neutralized}</span>
                       </div>
                       <div>
-                        <span className="text-base font-normal text-[#939396]">성향 </span>
-                        <span className="text-base font-normal">{pet.introduction}</span>
+                        <span className="text-base font-normal text-[#939396]">나이 </span>
+                        <span className="text-base font-normal">{pet.age}살</span>
                       </div>
                     </div>
                   </div>
