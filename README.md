@@ -44,8 +44,8 @@
   - 커뮤니티 및 산책 메이트로부터 개인과 대화할 수 있는 쪽지함 UI 제공
 
 ## 🛠️ 프로젝트 핵심 사용 기술
-<img src="https://img.shields.io/badge/Next.js-#000000?style=for-the-badge&logo=Next.js&logoColor=white" />
-<img src="https://img.shields.io/badge/TypeScript-#3178C6?style=for-the-badge&logo=TypeScript-&logoColor=white" />
+<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white" />
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript-&logoColor=white" />
 <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB"/> 
 
 
@@ -56,8 +56,8 @@
 <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" /> 
 <img src="https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white" />
 
-<img src="https://img.shields.io/badge/Tailwind CSS##06B6D4?style=for-the-badge&logo=Tailwind CSS&logoColor=white" />
-<img src="https://img.shields.io/badge/TypeScript-#3178C6?style=for-the-badge&logo=TypeScript-&logoColor=white" />
+<img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=for-the-badge&logo=Tailwind CSS&logoColor=white" />
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript-&logoColor=white" />
 
 
 - **🟦 TypeScript**: 정적 타이핑을 통해 안정적인 코드를 작성
