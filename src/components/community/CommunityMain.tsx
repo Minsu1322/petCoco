@@ -54,6 +54,15 @@ const RecentPosts: React.FC<MainPageRecentPostsProps> = ({ postCount }) => {
                     style={{ width: "16px", height: "16px" }}
                   />
                   {post.comments.length}
+
+                  <Image
+                    src="/assets/svg/heart.svg"
+                    alt="Comment Icon"
+                    width={16}
+                    height={16}
+                    style={{ width: "16px", height: "16px" }}
+                  />
+                  {post.likes.length}
                 </div>
               </div>
               {post.post_imageURL[0] && (
