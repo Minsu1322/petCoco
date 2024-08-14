@@ -14,7 +14,7 @@ const PetItem = ({ pet }: PetItemProps) => {
   const characteristics = pet.characteristics || "";
 
   return (
-    <div className="mb-[0.44rem] flex w-fulljustify-between gap-x-[1rem] rounded-[0.85rem] border border-[#C2C0BD] px-[0.75rem] py-[0.69rem]">
+    <div className="mb-[0.44rem] flex w-full justify-between gap-x-[1rem] rounded-[0.85rem] border border-[#C2C0BD] px-[0.75rem] py-[0.69rem]">
       <div className="w-full ml-[0.75rem]">
         <p className="text-[1rem]">
           {age}, {gender}아
