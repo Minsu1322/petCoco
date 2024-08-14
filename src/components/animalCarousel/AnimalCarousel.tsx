@@ -89,6 +89,7 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
 
   return (
     <div className="mx-auto max-w-3xl">
+      <h2 className="p-4 pb-2 text-xl font-bold text-[#e67e6c] hover:underline">아이들을 입양해주세요!</h2>
       <div className={styles.toggleContainer}>
         <button
           className={`${styles.toggleButton} ${animalType === "dog" ? styles.active : ""}`}
