@@ -57,14 +57,9 @@
 | **Zustand** | ![Zustand](https://img.shields.io/badge/Zustand-DC7C26?style=for-the-badge&logo=zustand&logoColor=white) | 경량화된 상태 관리 라이브러리 |
 | **Tailwind CSS** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=for-the-badge&logo=Tailwind%20CSS&logoColor=white) | 유틸리티 퍼스트 CSS 프레임워크로 빠르고 효율적인 스타일링 구현 |
 
+## 🗺️ 아키텍처
+![image](https://github.com/user-attachments/assets/8c277102-bc30-45cd-8923-0b31c44f3823)
 
-- **🟦 TypeScript**: 
-- **⚛️ Next.js**
-- **🔗 Supabase**: 
-- **🔧 React**: 
-- **📦 Zustand**: 경량화된 상태 관리 라이브러리
-- **📡 ReactQuery (TanstackQuery)**: 
-- **🎨 Tailwind CSS**: 
 
 ## 🔗 링크
 (프로젝트 배포 후 추가 예정)
