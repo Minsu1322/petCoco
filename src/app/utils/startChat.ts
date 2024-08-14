@@ -12,7 +12,7 @@ import { User } from "@supabase/supabase-js";
  * @param router - navigation지정하면 됩니다
  *
  */
-const startChat = async (receiverId: string, user: User | null, router: any) => {
+const startChat = async (receiverId: string | null, user: User | null, router: any) => {
   const supabase = createClient();
 
   if (!user) {

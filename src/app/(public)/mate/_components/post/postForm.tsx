@@ -164,6 +164,29 @@ const PostForm = () => {
     }
   };
 
+  const handleDelPet = (index: number) => {
+    Swal.fire({
+      title: `반려견 ${index+1} 을 삭제할까요?`,
+      showCancelButton: true,
+      confirmButtonColor: "mainColor",
+      cancelButtonColor: "#c0c0c0",
+      confirmButtonText: "삭제하기",
+      cancelButtonText: "취소하기",
+      customClass: {
+        confirmButton: 'swal-confirm-button',
+        cancelButton: 'swal-cancel-button',
+        title: 'swal-title',
+        container: 'swal-container', 
+        actions: 'swal2-actions',
+      },
+      buttonsStyling: false // 기본 스타일링을 비활성화
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const newPets = formPets.filter((_, i) => i !== index);
+        setFormPets(newPets);
+      }
+    });
+  };
 
   return (
     <div className="">
@@ -252,8 +275,7 @@ const PostForm = () => {
           <textarea
             value={formPosts.content || ""}
             onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
-            placeholder="선호하는 산책 동선이나 총 예상 산책 시간,    
-            혹은 특별한 요구 사항이 있다면 적어주세요."
+            placeholder="선호하는 산책 동선이나 총 예상 산책 시간, 혹은 특별한 요구 사항이 있다면 적어주세요."
             className="h-[6.0625rem] w-full resize-none rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
             id="content"
             maxLength={200}
@@ -268,7 +290,7 @@ const PostForm = () => {
             <p className="mt-[2.19rem] text-[1rem] font-[500]">반려견 정보 입력</p>
             <button
               type="button"
-              className="mt-[1.63rem] rounded-full bg-[#D2CDF6] px-[2.34rem] py-[0.5rem] text-[1rem] font-[600] text-[#77746E]"
+              className="mt-[1.63rem] rounded-full bg-mainColor px-[2.34rem] py-[0.5rem] text-[1rem] font-[600] text-white"
               onClick={handleAddPets}
             >
               반려동물 정보 추가
@@ -277,8 +299,8 @@ const PostForm = () => {
           <div className="mt-[0.81rem] flex w-full flex-col px-[0.75rem]">
             <div className="grid grid-cols-1 ">
               {formPets.map((pet, index) => (
-                <div key={index} className="rounded-lg border border-[#E0E0E0] px-[0.75rem] py-[0.69rem]">
-                  <p>반려견 {index+1}</p>
+                <div key={index} className="rounded-lg border border-[#E0E0E0] px-[0.75rem] py-[0.69rem] mb-[1.5rem] ">
+                  <p className="mb-[0.68rem] text-center">반려견 {index+1}</p>
                   <div className="grid grid-cols-1 gap-y-[1rem]">
                     <div className="flex flex-col gap-y-[0.5rem]">
                       <label className="text-md font-semibold">성별</label>
@@ -376,10 +398,7 @@ const PostForm = () => {
                     <button
                       type="button"
                       className="mt-[0.76rem]  px-[0.75rem] py-[0.5rem] rounded-[0.5rem] bg-mainColor text-white"
-                      onClick={() => {
-                        const newPets = formPets.filter((_, i) => i !== index);
-                        setFormPets(newPets);
-                      }}
+                      onClick={() => handleDelPet(index)}
                     >
                       삭제
                     </button>

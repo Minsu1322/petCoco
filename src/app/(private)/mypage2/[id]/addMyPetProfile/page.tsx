@@ -9,6 +9,7 @@ import { defaultPetImg } from "@/components/DefaultImg";
 import Swal from "sweetalert2";
 import MyInput from "../../_components/MyInput";
 import ButtonGroup from "../../_components/ButtonGroup";
+import Image from "next/image";
 
 type PetType = UsersPetType;
 
@@ -147,8 +148,10 @@ const AddMyPetProfile = () => {
   return (
     <div className="flex w-full flex-col justify-center">
       <div className="mt-[22px] flex flex-col items-center justify-center">
-        <img
+        <Image
           className="h-[100px] w-[100px] rounded-xl bg-lime-300 object-cover"
+          width={100}
+          height={100}
           src={previewImage || defaultPetImg}
           alt=""
         />

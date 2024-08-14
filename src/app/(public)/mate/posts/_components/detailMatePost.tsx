@@ -87,8 +87,10 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const updatePost = {
     ...formPosts,
     address,
-    position
+    position,
+    // location: `POINT(${position.center.lng} ${position.center.lat})`,
   };
+
 
   const deletePost = async (id: string) => {
     try {
@@ -205,6 +207,51 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       });
     }
   });
+  // const editMutation = useMutation({
+  //   mutationFn: (id: string) => editPost(id),
+  //   onMutate: async (newPost) => {
+  //     // 진행 중인 쿼리 취소
+  //     await queryClient.cancelQueries({ queryKey: ["matePosts"] });
+  
+  //     // 이전 데이터 스냅샷
+  //     const previousPosts = queryClient.getQueryData<MatePostAllType[]>(["matePosts"]);
+  
+  //     // 옵티미스틱 업데이트
+  //     queryClient.setQueryData<MatePostAllType[]>(["matePosts"], (old) => {
+  //       if (!old) return [updatePost as MatePostAllType];
+  //       return old.map((post) => 
+  //         post.id === newPost ? { ...post, ...updatePost } : post
+  //       );
+  //     });
+  
+  //     // 이전 데이터 반환 (롤백을 위해)
+  //     return { previousPosts };
+  //   },
+  //   onError: (err, newPost, context) => {
+  //     // 에러 발생 시 이전 데이터로 롤백
+  //     if (context?.previousPosts) {
+  //       queryClient.setQueryData<MatePostAllType[]>(["matePosts"], context.previousPosts);
+  //     }
+  //     console.error("수정 중 오류 발생:", err);
+  //     Swal.fire({
+  //       title: "오류가 발생했습니다!",
+  //       text: "게시글 수정에 실패했습니다.",
+  //       icon: "error"
+  //     });
+  //   },
+  //   onSuccess: () => {
+  //     Swal.fire({
+  //       title: "완료!",
+  //       text: "게시글 수정이 완료되었습니다.",
+  //       icon: "success"
+  //     });
+  //     setIstEditting(false);
+  //   },
+  //   onSettled: () => {
+  //     // 뮤테이션 완료 후 쿼리 무효화 및 리페치
+  //     queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+  //   },
+  // });
 
   const toggleMutation = useMutation({
     mutationFn: (id: string) => togglePost(id),
@@ -273,57 +320,59 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     });
   };
 
-  const startChat = async () => {
-    if (!user) {
-      // alert("로그인이 필요합니다.");
-      Swal.fire({
-        title: "로그인이 필요합니다!",
-        text: "1:1 대화를 하려면 로그인이 필요합니다.",
-        icon: "warning"
-      });
-      router.replace("/signin");
-      return;
-    }
+  // const startChat = async () => {
+  //   if (!user) {
+  //     // alert("로그인이 필요합니다.");
+  //     Swal.fire({
+  //       title: "로그인이 필요합니다!",
+  //       text: "1:1 대화를 하려면 로그인이 필요합니다.",
+  //       icon: "warning"
+  //     });
+  //     router.replace("/signin");
+  //     return;
+  //   }
 
-    try {
-      // 채팅방이 이미 존재하는지 확인
-      const { data: existingChat, error: chatError } = await supabase
-        .from("messages")
-        .select("*")
-        .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
-        .or(`sender_id.eq.${post.user_id},receiver_id.eq.${post.user_id}`)
-        .limit(1);
+  //   try {
+  //     // 채팅방이 이미 존재하는지 확인
+  //     const { data: existingChat, error: chatError } = await supabase
+  //       .from("messages")
+  //       .select("*")
+  //       .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
+  //       .or(`sender_id.eq.${post.user_id},receiver_id.eq.${post.user_id}`)
+  //       .limit(1);
 
-      if (chatError) throw chatError;
+  //     if (chatError) throw chatError;
 
-      if (existingChat && existingChat.length > 0) {
-        // 이미 채팅방이 존재하면 해당 채팅방으로 이동
-        router.push(`/message?selectedUser=${post.user_id}`);
-      } else {
-        // 새로운 채팅방 생성
-        const { error: insertError } = await supabase.from("messages").insert([
-          {
-            sender_id: user.id,
-            receiver_id: post.user_id,
-            content: "채팅이 시작되었습니다."
-          }
-        ]);
+  //     if (existingChat && existingChat.length > 0) {
+  //       // 이미 채팅방이 존재하면 해당 채팅방으로 이동
+  //       router.push(`/message?selectedUser=${post.user_id}`);
+  //     } else {
+  //       // 새로운 채팅방 생성
+  //       const { error: insertError } = await supabase.from("messages").insert([
+  //         {
+  //           sender_id: user.id,
+  //           receiver_id: post.user_id,
+  //           content: "채팅이 시작되었습니다."
+  //         }
+  //       ]);
 
-        if (insertError) throw insertError;
+  //       if (insertError) throw insertError;
 
-        // 새로 생성된 채팅방으로 이동
-        router.push(`/message?selectedUser=${post.user_id}`);
-      }
-    } catch (error) {
-      console.error("채팅 시작 오류:", error);
-      // alert("채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.");
-      Swal.fire({
-        title: "채팅 시작 오류",
-        text: "채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.",
-        icon: "warning"
-      });
-    }
-  };
+  //       // 새로 생성된 채팅방으로 이동
+  //       router.push(`/message?selectedUser=${post.user_id}`);
+  //     }
+  //   } catch (error) {
+  //     console.error("채팅 시작 오류:", error);
+  //     // alert("채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.");
+  //     Swal.fire({
+  //       title: "채팅 시작 오류",
+  //       text: "채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.",
+  //       icon: "warning"
+  //     });
+  //   }
+  // };
+
+  // console.log(updatePost)
 
   return (
     <div className="container">
@@ -428,7 +477,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             ></textarea>
             <p className="flex justify-end text-subTitle2">0/200</p>
           </div>
-
           <div className="mb-[2rem] mt-[6.44rem] flex flex-col gap-y-[0.5rem]">
             <div className="flex w-full items-center justify-center px-[1.5rem]">
               <button
@@ -438,7 +486,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 수정 완료
               </button>
             </div>
-            <div className="flex w-full items-center justify-center px-[1.5rem]">
+            <div className="flex w-full items-center justify-center px-[1.5rem] mb-[5.5rem]">
               <button
                 className="w-full cursor-pointer rounded-full border border-mainColor px-[1.5rem] py-[0.75rem] text-mainColor"
                 type="button"
@@ -456,7 +504,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           handleEditPost={handleEditPost}
           handleDeletePost={handleDeletePost}
           handleTogglePost={handleTogglePost}
-          startChat={startChat}
+          // startChat={startChat}
         />
       )}
     </div>

@@ -10,6 +10,7 @@ const FilterDateChip = ({ label, onSelect, selected }: FilterDateChipProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onSelect(e.target.value);
   };
+  
   return (
     <Input 
       type="date" 

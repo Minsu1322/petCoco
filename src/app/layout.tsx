@@ -10,8 +10,11 @@ import TabBar from "@/components/TabBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "펫CoCo",
-  description: "PetCoCo"
+  title: "PetCoco",
+  description: "PetCoco",
+  icons: {
+    icon: "/assets/svg/petcoco.ico",
+  },
 };
 
 export default function RootLayout({

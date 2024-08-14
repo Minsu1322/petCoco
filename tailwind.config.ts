@@ -23,8 +23,8 @@ const config: Config = {
       // },
       colors: {
         mainColor: "#8E6EE8",
-        editBtnColor: "#8CF2B7",
-        delBtnColor: "#FFBCBC",
+        editBtnColor: "#11BBB0",
+        delBtnColor: "#FFB9B9",
         bgGray400: "#A9A7A2",
         bgGray500: "#918E88",
         subTitle1: "#61646B",

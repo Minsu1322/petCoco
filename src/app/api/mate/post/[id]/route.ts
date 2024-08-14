@@ -40,17 +40,17 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   const updatePost = await request.json();
 
   try {
+    // console.log("Updating post with data:", updatePost);
     const { data, error } = await supabase.from("matePosts").update(updatePost).eq("id", id);
-
     if (error) {
-      console.error(error);
+      console.error("Supabase error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-
+    // console.log("Update successful:", data);
     return NextResponse.json(data);
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ err }, { status: 500 });
+    console.error("Unexpected error:", err);
+    return NextResponse.json({ error: "Unexpected error occurred" }, { status: 500 });
   }
 };
 

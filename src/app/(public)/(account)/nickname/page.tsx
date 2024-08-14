@@ -67,23 +67,33 @@ const NicknameInfo = () => {
   };
 
   return (
-    <div>
-      <h1>닉네임 작성 페이지</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>닉네임</label>
-          <input
-            type="text"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            placeholder="닉네임은 8자 이하로 작성해주세요"
-            maxLength={5}
-            required
-          />
-        </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="submit">완료</button>
-      </form>
+    <div className="mx-auto mt-[32px] w-[375px]">
+      <div className="mx-auto max-w-[calc(100%-32px)]">
+        <h1 className="text-center text-[30px] font-semibold">닉네임 작성 페이지</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="mt-[12px] h-[90px]">
+            <label className="w-[100px] text-center text-[15px] font-semibold">닉네임</label>
+            <div className="flex w-full items-center">
+              <input
+                type="text"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                placeholder="닉네임은 8자 이하로 작성해주세요"
+                className="flex-grow rounded-[8px] border px-[16px] py-[12px] text-[0.9375rem] placeholder-[#999]"
+                maxLength={5}
+                required
+              />
+            </div>
+          </div>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          <button
+            type="submit"
+            className="mt-[4rem] w-full rounded-[0.5rem] border bg-mainColor text-[16px] text-white"
+          >
+            <p className="p-[0.5rem]">완료</p>
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
