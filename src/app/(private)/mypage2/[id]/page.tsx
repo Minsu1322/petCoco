@@ -9,6 +9,7 @@ import { EmblaOptionsType } from "embla-carousel";
 import MyPetCarousel from "./../MyPetCarousel/MyPetCarousel";
 import Image from "next/image";
 import { useEffect } from "react";
+import LogoutButton from "../_components/LogoutBtn";
 
 type PetType = UsersPetType;
 
@@ -184,6 +185,10 @@ function MyPage() {
             </div>
           </Link>
         </div>
+      </div>
+
+      <div className="w-full px-[16px]">
+        <LogoutButton />
       </div>
     </div>
   );
