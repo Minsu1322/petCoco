@@ -266,7 +266,7 @@ export default function ClientMessageComponent() {
     <div className="flex h-screen w-full flex-col bg-white">
       <div className="flex h-full flex-col">
         {/* 상단 바 */}
-        <div className="fixed z-10 flex h-16 items-center justify-between border-b border-[#CDCDCD] bg-white px-4">
+        <div className="fixed z-10 flex h-16 w-full max-w-[420px] items-center justify-between border-b border-[#CDCDCD] bg-white px-4">
           <button onClick={handleGoBack} className="text-xl font-bold">
             <Image src="/assets/svg/Arrow - Left 2.svg" alt="Back" width={24} height={24} />
           </button>
