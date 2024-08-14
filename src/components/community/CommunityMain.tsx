@@ -46,7 +46,13 @@ const RecentPosts: React.FC<MainPageRecentPostsProps> = ({ postCount }) => {
                 </div>
                 <div className="flex items-center space-x-2 text-xs text-[#8E6EE8]">
                   <span>{post.users.nickname}</span>
-                  <Image src="/assets/svg/comment.svg" alt="Comment Icon" width={16} height={16} />
+                  <Image
+                    src="/assets/svg/comment.svg"
+                    alt="Comment Icon"
+                    width={16}
+                    height={16}
+                    style={{ width: "16px", height: "16px" }}
+                  />
                   {post.comments.length}
                 </div>
               </div>
