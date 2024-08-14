@@ -304,7 +304,7 @@ export default function ClientMessageComponent() {
 
         {/* 대화방 목록 */}
         {isMobileMenuOpen ? (
-          <div className="flex-grow overflow-y-auto bg-white" style={{ marginTop: "64px" }}>
+          <div className="flex-grow overflow-y-auto bg-white scrollbar-hide" style={{ marginTop: "64px" }}>
             <ul className="w-full">
               {sortedGroupedMessages.length === 0 ? (
                 <div className="flex h-full w-full items-center justify-center p-4 text-gray-500">
@@ -372,7 +372,7 @@ export default function ClientMessageComponent() {
               <>
                 {/* 메시지 영역 */}
                 <div
-                  className="flex-grow overflow-y-auto bg-white p-3 pt-20"
+                  className="flex-grow overflow-y-auto bg-white p-3 pt-20 scrollbar-hide"
                   style={{
                     height: "calc(100vh - 25rem)",
                     paddingBottom: "2rem"
