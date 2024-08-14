@@ -40,7 +40,7 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
   const getCurrentPosition = (): Promise<PositionData | null> => {
     return new Promise((resolve) => {
       if (!navigator.geolocation) {
-        console.error('위치 정보 사용 거부:', error);
+        // console.error('위치 정보 사용 거부:', error);
         const defaultPosition = {
           center: { lat: 37.5556236021213, lng: 126.992199507869 },
           errMsg: "Geolocation is not supported",
@@ -62,12 +62,12 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
             isLoading: false
           };
           setGeoData(newPosition);
-          console.log('위치 정보 획득 성공');
+          // console.log('위치 정보 획득 성공');
           setIsUseGeo(true);
           resolve(newPosition);
         },
         (error) => {
-          console.error('위치 정보 획득 실패:', error);
+          // console.error('위치 정보 획득 실패:', error);
           const defaultPosition = {
             center: { lat: 37.5556236021213, lng: 126.992199507869 },
             errMsg: error.message,
@@ -127,8 +127,8 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
     return (
       <div className="flex items-center justify-center w-full h-screen">
         <div className="flex flex-col items-center">
-          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-blue-500"></div>
-          <p className="text-lg font-semibold text-blue-600">로딩 중...</p>
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
         </div>
       </div>
     );
@@ -138,15 +138,15 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
     return (
     <div className="flex items-center justify-center w-full h-screen">
     <div className="flex flex-col items-center">
-      <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-blue-500"></div>
-      <p className="text-lg font-semibold text-blue-600">사용자의 위치를 계산하는 중입니다...</p>
+      <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+      <p className="text-lg font-semibold text-mainColor">사용자의 위치를 계산하는 중입니다...</p>
     </div>
   </div>)
   }
 
   return (
-    <div className="w-full flex flex-col justify-center items-center mb-14">
-        <div className="flex flex-col justify-center">
+    <div className="w-full flex flex-col justify-center items-center mb-[100px]">
+        <div className="flex flex-col mx-[1.5rem]">
           {posts.length > 0 ? (
             posts.map((post) => <MatePostItem key={post.id} post={post} />)
           ) : (
@@ -160,7 +160,7 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
         </div>
 
       {/* pagination */}
-      <div className=" flex flex-row items-center justify-center">
+      <div className="flex flex-row items-center justify-center">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}

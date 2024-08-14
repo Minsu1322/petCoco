@@ -46,23 +46,25 @@ const LogoutButton = () => {
     router.push("/signin");
   };
 
-  const handleMypageClick = () => {
-    if (user) {
-      router.push(`/mypage/${user.id}/myprofile`);
-    } else {
-      router.push("/signin");
-    }
-  };
+  // const handleMypageClick = () => {
+  //   if (user) {
+  //     router.push(`/mypage/${user.id}/myprofile`);
+  //   } else {
+  //     router.push("/signin");
+  //   }
+  // };
 
   return (
     <div className="flex">
-      <button onClick={handleMypageClick}>
+      {/* <button onClick={handleMypageClick}>
         <p className="mr-2">{nickname}</p>
-      </button>
-      <p>|</p>
-      <button onClick={handleLogout} className="ml-2">
-        {" "}
-        로그아웃
+      </button> */}
+      {/* <p>|</p> */}
+      <button
+        onClick={handleLogout}
+        className="mt-[4rem] w-full rounded-[0.5rem] border border-mainColor text-[16px] text-mainColor"
+      >
+        <p className="p-[0.5rem]">로그아웃</p>
       </button>
     </div>
   );
