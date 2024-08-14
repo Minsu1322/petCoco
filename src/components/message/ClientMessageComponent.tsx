@@ -349,14 +349,16 @@ export default function ClientMessageComponent() {
                             : userMessages[userMessages.length - 1].content}
                         </div>
                       </div>
-                      <div className="min-w-[4rem] text-xs text-gray-500">
-                        {getTimeDifference(userMessages[userMessages.length - 1].created_at)}
-                      </div>
-                      {unreadCounts[userId] > 0 && (
-                        <div className="ml-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
-                          {unreadCounts[userId]}
+                      <div className="flex w-auto flex-col gap-2">
+                        <div className="min-w-[4rem] text-xs text-gray-500">
+                          {getTimeDifference(userMessages[userMessages.length - 1].created_at)}
                         </div>
-                      )}
+                        {unreadCounts[userId] > 0 && (
+                          <div className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-400 p-1 text-xs font-bold text-white">
+                            {unreadCounts[userId]}
+                          </div>
+                        )}
+                      </div>
                     </li>
                   );
                 })
