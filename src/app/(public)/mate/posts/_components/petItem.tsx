@@ -15,7 +15,7 @@ const PetItem = ({ pet }: PetItemProps) => {
 
   return (
     <div className="mb-[0.44rem] flex w-full justify-between gap-x-[1rem] rounded-[0.85rem] border border-[#C2C0BD] px-[0.75rem] py-[0.69rem]">
-      <div className="w-full ml-[0.75rem]">
+      <div className="ml-[0.75rem] w-[55%]">
         <p className="text-[1rem]">
           {age}, {gender}아
         </p>
@@ -34,7 +34,7 @@ const PetItem = ({ pet }: PetItemProps) => {
           </p>
         </div>
       </div>
-      <div className="flex flex-col items-end justify-start w-[40%]">
+      <div className="flex flex-col items-end justify-start w-[45%]">
         <div className="flex items-center justify-center rounded-full bg-gray-100 px-[0.75rem] py-[0.12rem]">
           <p className="text-[0.625rem] text-mainColor">호스트 반려견</p>
         </div>

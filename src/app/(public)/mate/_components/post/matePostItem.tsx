@@ -60,73 +60,69 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   return (
-    <div className="shadow-custom mb-[1.5rem] flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem]">
+    <div className="mb-[1.5rem] flex flex-col rounded-xl border border-gray-300 px-[0.3rem] pb-[1rem] pt-[0.88rem] shadow-custom">
       <Link href={`/mate/posts/${post.id}`}>
-      <div className="flex justify-between px-[1rem]">
-        <p className="flex items-center text-xs text-gray-400">{post.created_at.split("T")[0]}</p>
-        {post.distance !== null && (
-          <p className="flex items-center text-xs text-gray-400">현위치에서 {post.distance.toFixed(1)}km 거리</p>
-        )}
-      </div>
-      <div className="mt-[0.75rem] flex">
-        <div className="mt-[0.5rem] ml-[2.4rem] mr-[2.28rem] flex flex-col items-center">
-          <div className="flex h-[3.75rem] w-[3.75rem]">
-            <Image
-              src={
-                post.users[0]?.profile_img ||
-                "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/post_image/1722324396777_xo2ka9.jpg"
-              }
-              alt="사용자 프로필 이미지"
-              width={60}
-              height={60}
-              className="h-full w-full rounded-full object-cover"
-            />
-          </div>
-          <div className="mt-[0.44rem] flex items-center justify-center rounded-full bg-gray-100 px-[0.75rem] py-[0.12rem]">
-            <p className="w-15 overflow-hidden text-ellipsis whitespace-nowrap text-[0.625rem] text-mainColor">
-              {post.users[0]?.nickname}
-            </p>
-          </div>
+        <div className="flex justify-between px-[1rem]">
+          <p className="flex items-center text-xs text-gray-400">{post.created_at.split("T")[0]}</p>
+          {post.distance !== null && (
+            <p className="flex items-center text-xs text-gray-400">현위치에서 {post.distance.toFixed(1)}km 거리</p>
+          )}
         </div>
-        <div className="flex w-full flex-col justify-center">
-          <p className="mb-[0.38rem] w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] font-semibold">
-            {post.title}
-          </p>
-          <div className="mb-[0.25rem] flex">
-            <img src="/assets/svg/ic_location2.svg" />
-            <p className="ml-[0.5rem] w-[145px] overflow-hidden text-ellipsis whitespace-nowrap text-sm">
-              {post.place_name || ""}
-            </p>
+        <div className="mt-[0.75rem] flex">
+          <div className="ml-[2.4rem] mr-[2.28rem] mt-[0.5rem] flex flex-col items-center">
+            <div className="flex h-[3.75rem] w-[3.75rem]">
+              <Image
+                src={
+                  post.users[0]?.profile_img ||
+                  "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/post_image/1722324396777_xo2ka9.jpg"
+                }
+                alt="사용자 프로필 이미지"
+                width={60}
+                height={60}
+                className="h-full w-full rounded-full object-cover"
+              />
+            </div>
+            <div className="mt-[0.44rem] flex items-center justify-center rounded-full bg-gray-100 px-[0.75rem] py-[0.12rem]">
+              <p className="w-15 overflow-hidden text-ellipsis whitespace-nowrap text-[0.625rem] text-mainColor">
+                {post.users[0]?.nickname}
+              </p>
+            </div>
           </div>
-          <div className="mb-[0.25rem] flex">
-            <img src="/assets/svg/ic_calendar2.svg" />
-            <p className="ml-[0.5rem] text-sm">
-              {/* {post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })} */}
-              {formatDateTimeContent(post.date_time)}
+          <div className="flex w-full flex-col justify-center">
+            <p className="mb-[0.38rem] w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] font-semibold">
+              {post.title}
             </p>
-          </div>
-          <div className="flex items-center">
-            <img src="/assets/svg/ic_user2.svg" className="mr-[0.5rem]" />
-            <p className="mr-[0.5rem] flex text-sm">{post.members}명 모집</p>
-            <div
-              className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} text-white flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
-            >
-              <p className="text-[0.625rem]">{post.recruiting ? "모집중" : "모집 완료"}</p>
+            <div className="mb-[0.25rem] flex">
+              <img src="/assets/svg/ic_location2.svg" />
+              <p className="ml-[0.5rem] w-[145px] overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+                {post.place_name || ""}
+              </p>
+            </div>
+            <div className="mb-[0.25rem] flex">
+              <img src="/assets/svg/ic_calendar2.svg" />
+              <p className="ml-[0.5rem] text-sm">
+                {/* {post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })} */}
+                {formatDateTimeContent(post.date_time)}
+              </p>
+            </div>
+            <div className="flex items-center">
+              <img src="/assets/svg/ic_user2.svg" className="mr-[0.5rem]" />
+              <p className="mr-[0.5rem] flex text-sm">{post.members}명 모집</p>
+              <div
+                className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem] text-white`}
+              >
+                <p className="text-[0.625rem]">{post.recruiting ? "모집중" : "모집 완료"}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </Link>
-      <div className="mx-auto mt-[0.88rem] flex items-center">
+      <div className="mx-[0.95rem] mt-[0.88rem] flex items-center justify-end">
         <Button
-          className="ml-[8.19rem] mr-[1.5rem] flex flex-shrink-0 flex-col items-center justify-center cursor-pointer rounded-full bg-mainColor text-white px-[2rem] py-[0.5rem]"
+          className="flex flex-shrink-0 cursor-pointer flex-col items-center justify-center rounded-full bg-mainColor px-[3.88rem] py-[0.5rem] text-white"
           onClick={handleStartChat}
           text="채팅하기"
         ></Button>
-          {/* <Link
-            className="flex flex-shrink-0 flex-col items-center justify-center rounded-full bg-gray-300 p-2.5 px-[2.25rem] py-[0.5rem]"
-            href={`/mate/posts/${post.id}`}
-          >자세히 보기</Link> */}
       </div>
     </div>
   );

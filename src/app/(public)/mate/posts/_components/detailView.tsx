@@ -123,7 +123,7 @@ const DetailView = ({
               </p>
               <div className="flex flex-col">
                 <p className="mr-[0.5rem] text-gray-400">한 마디</p>
-                <p className="whitespace-wrap flex w-[180px] overflow-hidden text-ellipsis font-semibold">
+                <p className="whitespace-wrap flex w-[220px] overflow-hidden text-ellipsis font-[400]">
                   {post.content}
                 </p>
               </div>
