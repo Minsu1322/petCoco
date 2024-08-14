@@ -68,8 +68,8 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="mx-auto mt-[32px] w-[375px]">
-      <div className="mx-auto max-w-[calc(100%-32px)]">
+    <div className="mx-auto mt-[32px] min-h-screen">
+      <div className="width-full mx-auto px-[16px]">
         <h1 className="text-center text-[30px] font-semibold">회원가입</h1>
         <div className="mt-10 flex flex-col items-center">
           <form onSubmit={handleSubmit} className="w-full">
@@ -104,7 +104,9 @@ const SignupForm = () => {
                     className="ml-[4px] rounded-[10px] border border-mainColor"
                     onClick={handleEmailCheck}
                   >
-                    <p className="flex-grow px-[16px] py-[12px] text-[15px] text-mainColor">중복 확인</p>
+                    <p className="flex-grow whitespace-nowrap px-[16px] py-[12px] text-[13px] text-mainColor">
+                      중복 확인
+                    </p>
                   </button>
                 </div>
               </div>
