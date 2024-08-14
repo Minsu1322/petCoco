@@ -2,6 +2,7 @@ import Comments from "@/components/community/[id]/Comment";
 import { createClient } from "@/supabase/server";
 import { Tables } from "@/types/supabase";
 import { Post } from "@/types/TypeOfCommunity/CommunityTypes";
+import Image from "next/image";
 
 import Link from "next/link";
 import React from "react";
@@ -42,9 +43,9 @@ const MyPosts: React.FC<PageProps> = async ({ params }) => {
   if (!post) return;
 
   return (
-    <div className="">
+    <div>
       {post.map((post, index) => (
-        <div key={post.id}>
+        <div className="px-6" key={post.id}>
           <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community2/${post.id}`}>
             <div className="flex w-full items-center gap-[1.06rem] border-t-[1px] py-[0.75rem]">
               {/* 일상 */}
@@ -80,10 +81,12 @@ const MyPosts: React.FC<PageProps> = async ({ params }) => {
               {/* 이미지 */}
               {/* <div>
                 {post?.post_imageURL?.[0] && (
-                  <img
-                    src={post?.imageURL[0]}
+                  <Image
+                    src={post?.post_imageURL}
                     alt="Post Image"
-                    className="h-[2.75rem] w-[2.75rem] rounded-[0.22rem] bg-blue-200"
+                    width={44}
+                    height={44}
+                    className="h-11 w-11 rounded-md bg-blue-200"
                   />
                 )}
               </div> */}

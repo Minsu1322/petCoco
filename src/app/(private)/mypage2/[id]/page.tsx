@@ -3,19 +3,23 @@
 import { UsersPetType } from "@/types/auth.type";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { defaultUserImg, defaultPetImg } from "@/components/DefaultImg";
 import { EmblaOptionsType } from "embla-carousel";
 import MyPetCarousel from "./../MyPetCarousel/MyPetCarousel";
 import Image from "next/image";
+import { useEffect } from "react";
 
 type PetType = UsersPetType;
 
 function MyPage() {
   const params = useParams();
+  const router = useRouter();
+  let id = params?.id || 0;
+  id = id === "undefined" ? 0 : id;
 
-  const id = params?.id || 0;
   const getProfileData = async () => {
+    if (!id) return null;
     const response = await fetch(`/api/mypage/${id}/myprofile`, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
@@ -35,6 +39,7 @@ function MyPage() {
   });
 
   const getPetData = async () => {
+    if (!id) return null;
     const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
@@ -53,9 +58,15 @@ function MyPage() {
     queryFn: getPetData
   });
 
+  useEffect(() => {
+    if (!id) {
+      router.push(`/signin`);
+    }
+  }, [id]);
+
   if (isPending || isPetPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
-  if (isError || isPetError) {
+  if (isError || isPetError || !user) {
     return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
   }
 
