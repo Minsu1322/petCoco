@@ -257,7 +257,7 @@ const CreatePostPage = () => {
       <div className="flex flex-col">
         <label htmlFor="title" className="mb-[0.5rem] text-[1rem] font-semibold">
           제목
-        </label> 
+        </label>
         <div className="rounded-[0.5rem] border border-mainColor p-[0.75rem]">
           <input
             placeholder="제목을 입력해주세요."

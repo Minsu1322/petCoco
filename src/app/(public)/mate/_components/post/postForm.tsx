@@ -189,7 +189,7 @@ const PostForm = () => {
   };
 
   return (
-    <div className="">
+    <div className="min-h-screen">
       <form onSubmit={handleUploadPost} className="flex flex-col">
         {/* 소개 부분 */}
         <div className="mt-[2.69rem] flex flex-col px-[1.5rem]">
@@ -205,7 +205,7 @@ const PostForm = () => {
         </div>
         <div className="mt-[2.69rem] flex flex-col justify-center px-[1.5rem]">
           <div className="mb-[1rem] flex flex-col gap-y-[0.5rem]">
-            <label htmlFor="title" className="w-full text-[1rem] font-[500]">
+            <label htmlFor="title" className="w-full text-[1rem] font-[600]">
               제목
             </label>
             <input
@@ -218,7 +218,7 @@ const PostForm = () => {
             />
           </div>
           <div className="mb-[1rem] flex w-full flex-col gap-y-[0.5rem]">
-            <label htmlFor="date_time" className="w-fulltext-[1rem] font-[500]">
+            <label htmlFor="date_time" className="w-fulltext-[1rem] font-[600]">
               산책 일시
             </label>
             <input
@@ -230,7 +230,7 @@ const PostForm = () => {
             />
           </div>
           <div className="flex flex-col gap-y-[0.5rem]">
-            <label htmlFor="members" className="text-[1rem] font-[500]">
+            <label htmlFor="members" className="text-[1rem] font-[600]">
               모집 인원 수
             </label>
             <input
@@ -244,26 +244,26 @@ const PostForm = () => {
           </div>
         </div>
         <div className="mb-[1rem] mt-[1.94rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
-          <label className="text-[1rem] font-[500]">산책 장소</label>
+          <label className="text-[1rem] font-[600]">산책 장소</label>
           <div className="relative z-10">
             <DynamicMapComponent center={{ lat: 37.5556236021213, lng: 126.992199507869 }} />
           </div>
         </div>
         <div className="px-[1.5rem]">
           <div className="mb-[2rem] flex flex-col gap-y-[0.5rem]">
-            <p className="text-[1rem] font-[500]">주소</p>
+            <p className="text-[1rem] font-[600]">주소</p>
             <div className="border-b border-subTitle2 p-[0.75rem]">
               <p className="text-subTitle1">{roadAddress}</p>
             </div>
           </div>
           <div className="flex flex-col gap-y-[0.5rem]">
-            <label>장소 정보</label>
+            <label className="text-[1rem] font-[600]">장소 정보</label>
             <input
               type="text"
               className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
               value={formPosts.place_name || ""}
               onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
-              placeholder="장소 정보를 추가로 기입해 주세요"
+              placeholder="장소 정보를 추가로 기입해 주세요. ex) 00공원 등"
             />
           </div>
         </div>
@@ -285,12 +285,12 @@ const PostForm = () => {
         {/* 반려동물 정보 등록 */}
         <div>
           {/* 반려동물 정보 */}
-          <div className="flex justify-between px-[1.5rem]">
+          <div className="flex justify-between  px-[1.5rem]">
             {/* TODO: 폰트 정해지면 간격 재조절 필요 */}
-            <p className="mt-[2.19rem] text-[1rem] font-[500]">반려견 정보 입력</p>
+            <p className="mt-[2.19rem] text-[0.85rem] font-[500]">반려견 정보 입력</p>
             <button
               type="button"
-              className="mt-[1.63rem] rounded-full bg-mainColor px-[2.34rem] py-[0.5rem] text-[1rem] font-[600] text-white"
+              className="mt-[1.63rem] rounded-full bg-mainColor px-[2.34rem] py-[0.5rem] text-[0.85rem] font-[600] text-white"
               onClick={handleAddPets}
             >
               반려동물 정보 추가

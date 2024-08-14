@@ -51,8 +51,8 @@ const Header = () => {
       return <Image src="/assets/svg/_logo-small.svg" alt="홈" width={76} height={76} />;
     }
 
-    if (pathname.startsWith("/mate/posts")) {
-      return "산책메이트";
+    if (pathname.startsWith("/mate/posts/")) {
+      return "산책메이트 상세보기";
     }
 
     switch (pathname) {
@@ -60,6 +60,8 @@ const Header = () => {
         return "커뮤니티";
       case "/mate":
         return "산책메이트";
+      case "/mate/post":
+        return "산책메이트"; 
       case `/mypage/${user?.id}/myprofile`:
         return "마이페이지";
       default:

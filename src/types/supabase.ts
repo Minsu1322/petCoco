@@ -95,6 +95,7 @@ export type Database = {
           id: string
           male_female: string | null
           neutered: string | null
+          pet_name: string | null
           post_id: string | null
           weight: number | null
         }
@@ -105,6 +106,7 @@ export type Database = {
           id: string
           male_female?: string | null
           neutered?: string | null
+          pet_name?: string | null
           post_id?: string | null
           weight?: number | null
         }
@@ -115,6 +117,7 @@ export type Database = {
           id?: string
           male_female?: string | null
           neutered?: string | null
+          pet_name?: string | null
           post_id?: string | null
           weight?: number | null
         }
@@ -186,6 +189,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          image_url: string | null
           read: boolean | null
           receiver_id: string | null
           sender_id: string | null
@@ -194,6 +198,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          image_url?: string | null
           read?: boolean | null
           receiver_id?: string | null
           sender_id?: string | null
@@ -202,6 +207,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          image_url?: string | null
           read?: boolean | null
           receiver_id?: string | null
           sender_id?: string | null
