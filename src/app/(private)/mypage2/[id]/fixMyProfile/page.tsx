@@ -199,8 +199,8 @@ const FixMyProfile = () => {
             label="닉네임"
             ref={null}
             id="changeNickName"
-            placeholder="변경할 닉네임(최대 8자)"
-            maxLength={8}
+            placeholder="변경할 닉네임(최대 5자)"
+            maxLength={4}
             defaultValue={user.nickname}
             onChange={handleNickNameChange}
           />

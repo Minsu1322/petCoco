@@ -115,44 +115,6 @@ function MyPage() {
           )}
         </div>
 
-        {/* 여기부터 */}
-        {/* <div className="mt-3 flex w-full flex-col rounded-[10px] bg-[#EFEFF0] p-3">
-          {pets?.map(
-            (pet, i) =>
-              i === 0 && (
-                <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
-                  <div className="flex gap-[10px]">
-                    <div className="my-2 px-5">
-                      <img
-                        className="h-[60px] w-[60px] rounded-full bg-lime-300 object-cover"
-                        src={pet.petImage ? pet.petImage : defaultPetImg}
-                        alt="..."
-                      />
-                    </div>
-                    <div className="pl-2">
-                      <div>
-                        <span className="text-lg font-normal">{pet.petName} </span>
-                        <span className="text-sm font-normal">({pet.male_female})</span>
-                      </div>
-                      <div>
-                        <span className="text-base font-normal text-[#939396]">몸무게 </span>
-                        <span className="text-base font-normal">{pet.weight}kg</span>
-                      </div>
-                      <div>
-                        <span className="text-base font-normal text-[#939396]">중성화 여부 </span>
-                        <span className="text-base font-normal">{pet.neutralized}</span>
-                      </div>
-                      <div>
-                        <span className="text-base font-normal text-[#939396]">성향 </span>
-                        <span className="text-base font-normal">{pet.introduction}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              )
-          )}
-        </div> */}
-        {/* 여기까지 */}
         <div className="w-full">
           <MyPetCarousel slides={SLIDES} options={OPTIONS} />
         </div>

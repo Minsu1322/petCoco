@@ -68,7 +68,7 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
         <div className={`${styles.embla__container} mt-3`}>
           {pets && pets.length ? (
             pets?.map((pet, i) => (
-              <div className={`${styles.embla__slide} ml-2 rounded-lg border-1 border-[#C2C0BD]`} key={i}>
+              <div className={`${styles.embla__slide} ml-[0.005rem] rounded-lg border-1 border-[#C2C0BD]`} key={i}>
                 <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
                   <div className="flex items-center">
                     <div className="px-6">
