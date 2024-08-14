@@ -45,32 +45,17 @@
 
 ## 🛠️ 프로젝트 핵심 사용 기술
 
-<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white" />
-- 정적 타이핑을 통해 안정적인 코드를 작성
--
-<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript-&logoColor=white" />
-- React 기반의 서버 사이드 렌더링 및 정적 사이트 생성 프레임워크
-
-<img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB"/>
-- 컴포넌트 기반의 UI 라이브러리
-
-<img src="https://img.shields.io/badge/NextUI-000000?style=for-the-badge&logo=NextUI&logoColor=white" />
-- React와 함께 사용하기 쉬운 현대적인 UI 컴포넌트 라이브러리
-
-<img src="https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white" /> 
-- ReactQuery (TanstackQuery)**: 서버 상태 관리 및 데이터 페칭 최적화
-
-<img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" />
-- PostgreSQL을 기반으로 한 실시간 데이터베이스 및 인증 관리
-
-<img src="https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white" />
-- 자동 배포 및 서버리스 기능을 제공하는 Next.js 최적화 플랫폼
-
-<img src="https://img.shields.io/badge/Zustand-DC7C26?style=for-the-badge&logo=#000000&logoColor=white" />
-- 경량화된 상태 관리 라이브러리
-
-<img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=for-the-badge&logo=Tailwind CSS&logoColor=white" />
-- 유틸리티 퍼스트 CSS 프레임워크로 빠르고 효율적인 스타일링 구현
+| 기술 | 아이콘 | 설명 |
+| --- | --- | --- |
+| **Next.js** | ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white) | React 기반의 서버 사이드 렌더링 및 정적 사이트 생성 프레임워크 |
+| **TypeScript** | ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white) | 정적 타이핑을 통해 안정적인 코드를 작성 |
+| **React** | ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) | 컴포넌트 기반의 UI 라이브러리 |
+| **NextUI** | ![NextUI](https://img.shields.io/badge/NextUI-000000?style=for-the-badge&logo=NextUI&logoColor=white) | React와 함께 사용하기 쉬운 현대적인 UI 컴포넌트 라이브러리 |
+| **React Query** | ![React Query](https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white) | 서버 상태 관리 및 데이터 페칭 최적화 |
+| **Supabase** | ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white) | PostgreSQL을 기반으로 한 실시간 데이터베이스 및 인증 관리 |
+| **Vercel** | ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) | 자동 배포 및 서버리스 기능을 제공하는 Next.js 최적화 플랫폼 |
+| **Zustand** | ![Zustand](https://img.shields.io/badge/Zustand-DC7C26?style=for-the-badge&logo=zustand&logoColor=white) | 경량화된 상태 관리 라이브러리 |
+| **Tailwind CSS** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=for-the-badge&logo=Tailwind%20CSS&logoColor=white) | 유틸리티 퍼스트 CSS 프레임워크로 빠르고 효율적인 스타일링 구현 |
 
 
 - **🟦 TypeScript**: 
