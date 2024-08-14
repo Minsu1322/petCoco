@@ -68,7 +68,7 @@ function MyPage() {
       <div className="flex w-full justify-between whitespace-nowrap border-y-1 px-[24px] py-[34px] text-lg leading-tight text-neutral-800">
         <div className="flex gap-6">
           <Image
-            className="aspect-square h-[60px] w-[60px] shrink-0 rounded-full"
+            className="aspect-square h-[60px] w-[60px] shrink-0 rounded-full object-cover"
             width={60}
             height={60}
             src={user.profile_img || defaultUserImg}
@@ -150,7 +150,7 @@ function MyPage() {
           <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 활동</div>
         </div>
         <div className="my-[16px] flex w-full flex-col rounded-lg bg-[#EFEFF0] px-[8px] pt-[8px]">
-          <Link href={`/mypage/${id}/myposts`}>
+          <Link href={`/mypage2/${id}/myPosts`}>
             <div className="flex items-center justify-between border-b-1 px-[16px] py-[12px]">
               <div className="text-base font-medium text-[#61646B]">내 포스트</div>
               {/* <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -161,7 +161,7 @@ function MyPage() {
               </svg> */}
             </div>
           </Link>
-          <Link href={`/mypage/${id}/mymateposts`}>
+          <Link href={`/mypage2/${id}/myMatePosts`}>
             <div className="flex items-center justify-between border-b-1 px-[16px] py-[12px]">
               <div className="text-base font-medium text-[#61646B]">내 산책메이트</div>
               {/* <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">

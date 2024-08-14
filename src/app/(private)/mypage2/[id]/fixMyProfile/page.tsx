@@ -171,7 +171,7 @@ const FixMyProfile = () => {
       <div className="flex w-full flex-col justify-center px-6" onClick={(e) => e.stopPropagation()}>
         <div className="mt-[21px] flex flex-col items-center justify-center">
           <Image
-            className="h-[100px] w-[100px] rounded-xl bg-lime-300 object-cover"
+            className="rounded-xl bg-lime-300 object-cover"
             width={100}
             height={100}
             src={previewImage || defaultUserImg}
@@ -221,7 +221,6 @@ const FixMyProfile = () => {
               className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-sm font-normal"
               onChange={handleAgeChange}
               value={age}
-              defaultValue={user.age}
             >
               {ageOptions.map((option) => (
                 <option key={option.label} value={option.value}>
