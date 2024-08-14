@@ -184,7 +184,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
               }}
               className="flex items-center justify-center"
             >
-              <Image src="/assets/svg/chat(message).svg" alt="Chat" width={24} height={24} />
+              <Image src="/assets/svg/comunitychat(message).svg" alt="Chat" width={24} height={24} />
             </button>
           )}
         </div>
