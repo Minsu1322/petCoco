@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import LoginButton from "./auth/LoginBtn";
 import LogoutButton from "../app/(private)/mypage2/_components/LogoutBtn";
 import Link from "next/link";
+import Image from "next/image";
 
 const supabase = createClient();
 
@@ -46,13 +47,15 @@ const Header = () => {
   };
 
   const getHeaderTitle = () => {
+    if (pathname === "/") {
+      return <Image src="/assets/svg/_logo-small.svg" alt="홈" width={76} height={76} />;
+    }
+
     if (pathname.startsWith("/mate/posts")) {
       return "산책메이트";
     }
 
     switch (pathname) {
-      case "/":
-        return "홈";
       case "/community2":
         return "커뮤니티";
       case "/mate":
