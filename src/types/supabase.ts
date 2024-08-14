@@ -95,6 +95,7 @@ export type Database = {
           id: string
           male_female: string | null
           neutered: string | null
+          pet_name: string | null
           post_id: string | null
           weight: number | null
         }
@@ -105,6 +106,7 @@ export type Database = {
           id: string
           male_female?: string | null
           neutered?: string | null
+          pet_name?: string | null
           post_id?: string | null
           weight?: number | null
         }
@@ -115,6 +117,7 @@ export type Database = {
           id?: string
           male_female?: string | null
           neutered?: string | null
+          pet_name?: string | null
           post_id?: string | null
           weight?: number | null
         }
