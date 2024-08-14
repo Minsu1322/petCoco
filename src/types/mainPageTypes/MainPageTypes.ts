@@ -17,6 +17,7 @@ export type Post = {
   comments: { id: string }[];
   post_imageURL: string;
   category: string;
+  likes: string[];
   users: {
     id: string;
     nickname: string;

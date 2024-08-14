@@ -84,25 +84,13 @@ const MateCarousel: React.FC<PropType> = (props) => {
                         {/* 닉네임&좋아요 */}
                         <div className="mb-4 flex flex-col items-center">
                           <p className="mb-1 text-sm text-gray-600">{users?.nickname || "닉네임"}</p>
-                          <div className="flex items-center">
-                            <div className="flex h-6 w-6 items-center justify-center rounded-full text-xl">
-                              <Image
-                                src="/assets/svg/heart.svg"
-                                width={24}
-                                height={24}
-                                alt="Heart Icon"
-                                style={{ width: "auto", height: "auto" }}
-                              />
-                            </div>
-                            <span className="ml-2 text-sm">15</span>
-                          </div>
                         </div>
                       </div>
 
                       {/* 우측영역 */}
                       <div className="ml-4 w-2/3">
                         {/* 제목&세부사항 */}
-                        <h3 className="mb-2 text-lg font-semibold">{post.title}</h3>
+                        <h3 className="mb-2 truncate text-lg font-semibold">{post.title}</h3>
                         <p className="mb-2 text-sm text-gray-600">{post.place_name}</p>
                         <p className="mb-2 text-sm text-gray-600">{formattedDateTime}</p>
                         <div className="mb-2 flex items-center">
