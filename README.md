@@ -47,8 +47,7 @@
 
 <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white" />
 - 정적 타이핑을 통해 안정적인 코드를 작성
-
-
+-
 <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript-&logoColor=white" />
 - React 기반의 서버 사이드 렌더링 및 정적 사이트 생성 프레임워크
 
