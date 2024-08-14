@@ -124,7 +124,8 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
                   </div>
                   <div className="flex gap-[0.25rem]">
                     <img src="/assets/svg/heart.svg" />
-                    <div>12</div>
+                    {/*  게시글 좋아요 개수를 보여주는 부분 */}
+                    <div>{post.likes.length}</div>
                   </div>
                 </div>
               </div>
@@ -145,7 +146,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
       ))}
       <div>
         {/* 기존 코드 */}
-        <div className="mb-[400px] flex w-full justify-center">
+        <div className="mb-[80px] flex w-full justify-center">
           <button
             onClick={scrollToTop}
             className="fixed bottom-[8rem] flex items-center gap-[0.25rem] rounded-full bg-[#F3F2F2] px-[0.5rem] py-[0.25rem] text-[1rem] text-mainColor shadow-lg"

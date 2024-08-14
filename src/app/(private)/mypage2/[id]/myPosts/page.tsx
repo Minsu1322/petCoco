@@ -57,9 +57,6 @@ const MyPosts: React.FC<PageProps> = async ({ params }) => {
               >
                 {post.category}
               </span>
-              {/* <p className="whitespace-nowrap rounded-full bg-yellow-200 px-[0.5rem] py-[0.25rem] text-[0.75rem] text-mainColor">
-					{post.category}
-				  </p> */}
 
               {/* 가운데 내용 */}
               <div className="w-full">
@@ -74,23 +71,9 @@ const MyPosts: React.FC<PageProps> = async ({ params }) => {
                   </div>
                   <div className="flex gap-[0.25rem]">
                     <img src="/assets/svg/heart.svg" />
-                    <div>12</div>
                   </div>
                 </div>
               </div>
-
-              {/* 이미지 */}
-              {/* <div>
-                {post?.post_imageURL?.[0] && (
-                  <Image
-                    src={post?.post_imageURL}
-                    alt="Post Image"
-                    width={44}
-                    height={44}
-                    className="h-11 w-11 rounded-md bg-blue-200"
-                  />
-                )}
-              </div> */}
             </div>
           </Link>
         </div>
