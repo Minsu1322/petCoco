@@ -33,7 +33,7 @@ const DetailView = ({
   handleTogglePost
   // startChat
 }: DetailViewProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const { user } = useAuthStore();
 
@@ -59,12 +59,12 @@ const DetailView = ({
           <div className="flex flex-col">
             {userId === post.user_id && (
               <div className="mb-[0.5rem] flex justify-end gap-x-[0.625rem]">
-                <button onClick={handleEditPost} className="text-sm text-gray-700 hover:text-mainColor">
+                <button onClick={handleEditPost} className="text-sm text-editBtnColor hover:text-mainColor">
                   수정
                 </button>
                 <button
                   onClick={() => handleDeletePost(post.id)}
-                  className="text-sm text-gray-700 hover:text-mainColor"
+                  className="text-sm text-delBtnColor hover:text-mainColor"
                 >
                   삭제
                 </button>
@@ -123,7 +123,7 @@ const DetailView = ({
               </p>
               <div className="flex flex-col">
                 <p className="mr-[0.5rem] text-gray-400">한 마디</p>
-                <p className="whitespace-wrap flex w-[170px] overflow-hidden text-ellipsis font-semibold">
+                <p className="whitespace-wrap flex w-[185px] overflow-hidden text-ellipsis font-semibold">
                   {post.content}
                 </p>
               </div>
@@ -161,11 +161,12 @@ const DetailView = ({
           {/* <div className="flex gap-x-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide "> 
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
         </div> */}
-          <div className="mb-[5.95rem] flex w-full">
+           <div className="mb-[5.95rem]">
             {post.matepostpets && post.matepostpets.length > 0 && (
               <PetCarousel pets={post.matepostpets} slides={SLIDES} options={OPTIONS} />
             )}
-          </div>
+          </div> 
+         
         </div>
       </div>
     </div>
