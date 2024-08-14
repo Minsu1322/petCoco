@@ -55,7 +55,7 @@ const LogoutButton = () => {
   // };
 
   return (
-    <div className="mb-20 flex">
+    <div className="mb-24 flex">
       {/* <button onClick={handleMypageClick}>
         <p className="mr-2">{nickname}</p>
       </button> */}
