@@ -8,6 +8,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/supabase/client";
 import Swal from "sweetalert2";
+import { getTimeDifference } from "@/app/utils/getTimeDifference";
 
 const supabase = createClient();
 
@@ -148,7 +149,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
   };
 
   return (
-    <div className="">
+    <div className="mb-20">
       <div className="flex justify-between rounded-[0.75rem] border border-mainColor px-4 py-[0.62rem] text-[0.875rem]">
         <input
           type="text"
@@ -156,7 +157,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
           onChange={(e) => setNewComment(e.target.value)}
           onKeyPress={handleKeyPressForAdd}
           placeholder="댓글을 입력해주세요"
-          className="placeholder-[#D2CDF6]"
+          className="placeholder-[#D2CDF6] focus:outline-none"
         />
         <button
           onClick={handleAddComment}
@@ -164,6 +165,11 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
         >
           등록
         </button>
+      </div>
+
+      <div className="flex gap-[0.25rem] py-[1.32rem] text-[#AFB1B6]">
+        <img src="/assets/svg/comment.svg" />
+        <div>댓글 {comments.length}</div>
       </div>
 
       {/* 댓글 컴포넌트 시작 */}
@@ -198,7 +204,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
                     {/* 중간 부분 윗줄 */}
                     <div className="flex gap-[0.25rem]">
                       <p className="text-[0.75rem] text-mainColor">{comment.users?.nickname}</p>
-                      <small className="text-[0.625rem]">{new Date(comment.created_at).toLocaleDateString()}</small>
+                      <small className="text-[0.625rem]">{getTimeDifference(comment.created_at)}</small>
                     </div>
                     {/* 중간 내용 아랫줄 */}
                     <div className="text-[0.875rem]">
@@ -232,7 +238,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
                   <input
                     type="text"
                     value={editingComment[comment.id] ?? ""}
-                    className=""
+                    className="focus:outline-none"
                     onChange={(e) => setEditingComment((prev) => ({ ...prev, [comment.id]: e.target.value }))}
                     onKeyPress={(e) => handleKeyPress(e, comment.id)}
                   />

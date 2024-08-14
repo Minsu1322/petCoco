@@ -3,7 +3,7 @@ import LoginForm from "./_components/LoginForm";
 
 const page = () => {
   return (
-    <div className="">
+    <div className="mb-24 max-w-[420px]">
       <LoginForm />
     </div>
   );

@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { PostsResponse } from "@/types/TypeOfCommunity/CommunityTypes";
 import { scrollToTop } from "@/app/utils/scrollToTop";
+import PlusIcon from "@/app/utils/plusIcon";
+import { useRouter } from "next/navigation";
 
 interface PostListProps {
   selectedCategory: string;
@@ -35,10 +37,15 @@ const fetchPosts = async (page: number, category: string, searchTerm: string, so
 
 const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selectedSort }) => {
   const [page, setPage] = useState(1);
+  const router = useRouter();
   const { data, isLoading, isError, error } = useQuery<PostsResponse, Error>({
     queryKey: ["posts", page, selectedCategory, searchTerm, selectedSort],
     queryFn: () => fetchPosts(page, selectedCategory, searchTerm, selectedSort)
   });
+
+  const handleLoginCheck = () => {
+    router.push("/community2/createPost");
+  };
 
   useEffect(() => {
     setPage(1);
@@ -123,12 +130,12 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
               </div>
 
               {/* 이미지 */}
-              <div>
+              <div className="h-[2.75rem] w-[2.75rem] shrink-0">
                 {post?.post_imageURL?.[0] && (
                   <img
                     src={post?.post_imageURL[0]}
                     alt="Post Image"
-                    className="h-[2.75rem] w-[2.75rem] rounded-[0.22rem] bg-blue-200"
+                    className="h-full w-full rounded-[0.22rem] bg-blue-200 object-cover"
                   />
                 )}
               </div>
@@ -147,6 +154,8 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
             <img src="/assets/svg/chevron-left.svg" alt="..." />
           </button>
         </div>
+
+        <PlusIcon handleLoginCheck={handleLoginCheck} />
 
         {/* 글쓰기 버튼
         <div className="fixed bottom-[4rem] right-[2rem]">
