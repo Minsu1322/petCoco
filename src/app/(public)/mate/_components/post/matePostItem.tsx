@@ -119,7 +119,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
       </Link>
       <div className="mx-auto mt-[0.88rem] flex items-center">
         <Button
-          className="ml-[8.19rem] mr-[0.97rem] flex flex-shrink-0 flex-col items-center justify-center cursor-pointer rounded-full bg-mainColor text-white px-[3.88rem] py-[0.5rem]"
+          className="ml-[8.19rem] mr-[1.5rem] flex flex-shrink-0 flex-col items-center justify-center cursor-pointer rounded-full bg-mainColor text-white px-[3.88rem] py-[0.5rem]"
           onClick={handleStartChat}
           text="채팅하기"
         ></Button>
