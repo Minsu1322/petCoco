@@ -53,7 +53,6 @@ export default function ClientMessageComponent() {
   const [selectedUserProfile, setSelectedUserProfile] = useState<any>(null);
   const [isUserLoading, setIsUserLoading] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(!openChat);
-  const [windowHeight, setWindowHeight] = useState(0);
 
   const { user, setUser } = useAuthStore();
 
@@ -249,17 +248,6 @@ export default function ClientMessageComponent() {
   }, [selectedUser, markMessagesAsRead]);
 
   useEffect(() => {
-    const updateHeight = () => {
-      setWindowHeight(window.innerHeight);
-    };
-
-    updateHeight();
-    window.addEventListener("resize", updateHeight);
-
-    return () => window.removeEventListener("resize", updateHeight);
-  }, []);
-
-  useEffect(() => {
     if (initialSelectedUser) {
       setSelectedUser(initialSelectedUser);
       loadUserProfile(initialSelectedUser);
@@ -275,10 +263,10 @@ export default function ClientMessageComponent() {
   if (error) return <div className="p-4 text-center">메시지를 불러오는 중 오류가 발생했습니다.</div>;
   if (!user) return null;
   return (
-    <div className="flex flex-col bg-white" style={{ height: windowHeight ? `${windowHeight}px` : "100vh" }}>
-      <div className="flex flex-col">
+    <div className="flex h-screen w-full flex-col bg-white">
+      <div className="flex h-full flex-col">
         {/* 상단 바 */}
-        <div className="flex h-16 items-center justify-between border-b border-gray-500 bg-white px-4 shadow-md">
+        <div className="fixed left-0 right-0 top-0 z-10 flex h-16 items-center justify-between border-b border-gray-500 bg-white px-4 shadow-md">
           <button onClick={handleGoBack} className="text-xl font-bold">
             <Image src="/assets/svg/Arrow - Left 2.svg" alt="Back" width={24} height={24} />
           </button>
@@ -383,11 +371,7 @@ export default function ClientMessageComponent() {
             {selectedUser ? (
               <>
                 {/* 메시지 영역 */}
-                <div
-                  className="flex-grow overflow-y-auto bg-white p-3"
-                  style={{ height: windowHeight ? `calc(${windowHeight}px - 12rem)` : "auto" }}
-                >
-                  {" "}
+                <div className="flex-grow overflow-y-auto bg-white p-3" style={{ height: "calc(100vh - 25rem)" }}>
                   {groupedMessages[selectedUser].map((message) => (
                     <div
                       key={message.id}
