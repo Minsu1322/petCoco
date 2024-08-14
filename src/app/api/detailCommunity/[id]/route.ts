@@ -15,7 +15,8 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
     *,
     users (
       *
-    )
+    ),
+    likes (userid)
   `
     )
     .eq("id", id);

@@ -13,7 +13,7 @@ interface PageProps {
   params: { id: string };
 }
 
-interface Post {
+export interface Post {
   id: string;
   user_id: string;
   category: string;
@@ -25,7 +25,11 @@ interface Post {
     profile_img: string;
   };
   post_imageURL: string;
-  likes: number; // Add the 'likes' property
+  likes: LikeInfo[]; // [{userid : "uuid"}]
+}
+
+export interface LikeInfo {
+  userid: string;
 }
 
 const fetchPost = async (postId: string): Promise<Post> => {
@@ -41,6 +45,7 @@ const fetchPost = async (postId: string): Promise<Post> => {
 const CommunityMain: React.FC<PageProps> = ({ params }) => {
   const { id } = params;
   const [post, setPost] = useState<Post | null>(null);
+  const [likes, setLikes] = useState<LikeInfo[]>([]);
   const { user } = useAuthStore();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -50,6 +55,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
       try {
         const fetchedPost = await fetchPost(id);
         setPost(fetchedPost);
+        setLikes(fetchedPost.likes);
       } catch (error) {
         console.error("Error fetching post:", error);
       }
@@ -202,7 +208,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
           </div>
         )}
 
-        <Like likes={post.likes} />
+        <Like postId={post.id} likes={likes} setLikes={setLikes} />
 
         <Comments postId={post.id} />
       </div>
