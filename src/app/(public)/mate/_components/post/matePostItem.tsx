@@ -60,7 +60,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   return (
-    <div className="shadow-custom mb-5 flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem]">
+    <div className="shadow-custom mb-[1.5rem] flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem]">
       <Link href={`/mate/posts/${post.id}`}>
       <div className="flex justify-between px-[1rem]">
         <p className="flex items-center text-xs text-gray-400">{post.created_at.split("T")[0]}</p>
