@@ -34,6 +34,7 @@ const MyMate = () => {
 
   return (
     <div>
+      <div className="my-3 text-center font-semibold">나의 산책메이트</div>
       {data.map((post) => (
         <div key={post.id}>
           <div className="mx-[1.5rem] mb-5 flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem] shadow-custom">
