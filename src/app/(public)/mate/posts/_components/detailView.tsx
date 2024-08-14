@@ -76,7 +76,7 @@ const DetailView = ({
                 </button>
               </div>
             )}
-            <h1 className="mx-auto text-[1.125rem] font-semibold">
+            <h1 className="mx-auto w-[350px] overflow-hidden text-ellipsis whitespace-nowrap text-center  text-[1.125rem] font-semibold">
               [{post.date_time ? formatDateTimeTitle(post.date_time) : ""}] {post.title}
             </h1>
           </div>
@@ -96,9 +96,9 @@ const DetailView = ({
             <img src="/assets/svg/ic_info.svg" />
             <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">상세 위치는 참여 확정 후 확인할 수 있어요</p>
           </div>
-          <div className="mb-[0.94rem] mt-[0.69rem] flex rounded-[0.75rem] border border-[#C2C0BD] px-[0.69rem] py-[0.75rem]">
-            <div className="mr-[2.16rem] flex flex-col">
-              <div className="ml-[1.34rem] h-[3.75rem] w-[3.75rem]">
+          <div className="mb-[0.94rem] mt-[0.69rem] flex gap-x-[1rem] rounded-[0.75rem] border border-[#C2C0BD] px-[0.69rem] py-[0.75rem]">
+            <div className="flex flex-col w-2/6 ml-[0.75rem] items-cneter justify-center">
+              <div className="flex h-[3.75rem] w-[3.75rem] mx-auto">
                 <Image
                   src={
                     post.users && post.users?.profile_img
@@ -112,18 +112,18 @@ const DetailView = ({
                 />
               </div>
               <Button
-                className="ml-[0.75rem] mt-[0.56rem] flex flex-shrink-0  cursor-pointer  flex-col items-center justify-center rounded-full bg-mainColor px-[0.81rem] py-[0.19rem] text-[1rem] text-white"
+                className=" mt-[0.56rem] flex flex-shrink-0 cursor-pointer flex-col items-center justify-center rounded-full bg-mainColor px-[0.81rem] py-[0.19rem] text-[0.85rem] text-white"
                 onClick={handleStartChat}
                 text="채팅하기"
               ></Button>
             </div>
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center w-4/6 ">
               <p className="flex font-semibold">
                 {post.users?.nickname} ({post.users?.gender}, {post.users?.age})
               </p>
               <div className="flex flex-col">
                 <p className="mr-[0.5rem] text-gray-400">한 마디</p>
-                <p className="whitespace-wrap flex w-[185px] overflow-hidden text-ellipsis font-semibold">
+                <p className="whitespace-wrap flex w-[180px] overflow-hidden text-ellipsis font-semibold">
                   {post.content}
                 </p>
               </div>

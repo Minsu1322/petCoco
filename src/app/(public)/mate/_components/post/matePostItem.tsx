@@ -60,7 +60,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   return (
-    <div className="shadow-custom mb-5 flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem]">
+    <div className="shadow-custom mb-[1.5rem] flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem]">
       <Link href={`/mate/posts/${post.id}`}>
       <div className="flex justify-between px-[1rem]">
         <p className="flex items-center text-xs text-gray-400">{post.created_at.split("T")[0]}</p>
@@ -119,7 +119,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
       </Link>
       <div className="mx-auto mt-[0.88rem] flex items-center">
         <Button
-          className="ml-[8.19rem] mr-[0.97rem] flex flex-shrink-0 flex-col items-center justify-center cursor-pointer rounded-full bg-mainColor text-white px-[3.88rem] py-[0.5rem]"
+          className="ml-[8.19rem] mr-[1.5rem] flex flex-shrink-0 flex-col items-center justify-center cursor-pointer rounded-full bg-mainColor text-white px-[2rem] py-[0.5rem]"
           onClick={handleStartChat}
           text="채팅하기"
         ></Button>

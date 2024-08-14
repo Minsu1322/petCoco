@@ -11,10 +11,10 @@ interface MainPageRecentPostsProps {
 }
 
 const categoryStyles: { [key: string]: string } = {
-  자유: "bg-[#D1FFA2] text-[#8E6EE8]",
-  자랑: "bg-[#B1D0FF] text-[#8E6EE8]",
-  고민: "bg-[#D2CDF6] text-[#8E6EE8]",
-  신고: "bg-[#FFB9B9] text-[#8E6EE8]"
+  자유: "bg-[#D1FFA2] text-[#5219F7]",
+  자랑: "bg-[#B1D0FF] text-[#5219F7]",
+  고민: "bg-[#D2CDF6] text-[#5219F7]",
+  신고: "bg-[#FFB9B9] text-[#5219F7]"
   // 추가적인 카테고리가 필요한 경우 여기에 추가 가능
 };
 
@@ -31,7 +31,7 @@ const RecentPosts: React.FC<MainPageRecentPostsProps> = ({ postCount }) => {
     <div className="w-full rounded-lg bg-white p-2">
       {data?.data.slice(0, postCount).map((post, index) => (
         <div key={post.id} className={`mb-1 w-full ${index !== 0 ? "border-t border-gray-200 pt-3" : ""}`}>
-          <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community/${post.id}`}>
+          <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community2/${post.id}`}>
             <div className="flex items-center space-x-2">
               <span
                 className={`flex shrink-0 items-center justify-center whitespace-nowrap rounded-full px-2 py-1 text-sm font-bold ${

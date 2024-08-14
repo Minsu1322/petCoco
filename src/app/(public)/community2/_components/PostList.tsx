@@ -15,10 +15,10 @@ interface PostListProps {
 }
 
 const categoryStyles: { [key: string]: string } = {
-  자유: "bg-[#D1FFA2] text-[#8E6EE8]",
-  자랑: "bg-[#B1D0FF] text-[#8E6EE8]",
-  고민: "bg-[#D2CDF6] text-[#8E6EE8]",
-  신고: "bg-[#FFB9B9] text-[#8E6EE8]"
+  자유: "bg-[#D1FFA2] text-[#5219F7]",
+  자랑: "bg-[#B1D0FF] text-[#5219F7]",
+  고민: "bg-[#D2CDF6] text-[#5219F7]",
+  신고: "bg-[#FFB9B9] text-[#5219F7]"
   // 추가적인 카테고리가 필요한 경우 여기에 추가 가능
 };
 
