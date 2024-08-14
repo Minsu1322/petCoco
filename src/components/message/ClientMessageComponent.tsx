@@ -266,7 +266,7 @@ export default function ClientMessageComponent() {
     <div className="flex h-screen w-full flex-col bg-white">
       <div className="flex h-full flex-col">
         {/* 상단 바 */}
-        <div className="fixed left-0 right-0 top-0 z-10 flex h-16 items-center justify-between border-b border-gray-500 bg-white px-4 shadow-md">
+        <div className="fixed left-0 right-0 top-0 z-10 flex h-16 items-center justify-between border-b border-[#CDCDCD] bg-white px-4">
           <button onClick={handleGoBack} className="text-xl font-bold">
             <Image src="/assets/svg/Arrow - Left 2.svg" alt="Back" width={24} height={24} />
           </button>
@@ -371,7 +371,13 @@ export default function ClientMessageComponent() {
             {selectedUser ? (
               <>
                 {/* 메시지 영역 */}
-                <div className="flex-grow overflow-y-auto bg-white p-3" style={{ height: "calc(100vh - 25rem)" }}>
+                <div
+                  className="flex-grow overflow-y-auto bg-white p-3 pt-20"
+                  style={{
+                    height: "calc(100vh - 25rem)",
+                    paddingBottom: "2rem"
+                  }}
+                >
                   {groupedMessages[selectedUser].map((message) => (
                     <div
                       key={message.id}
