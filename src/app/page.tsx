@@ -17,7 +17,7 @@ export default function Home() {
   const MateSLIDE_COUNT = 5;
   const MateSLIDES = Array.from(Array(MateSLIDE_COUNT).keys());
 
-  const BannerOPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
+  const BannerOPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 0 };
   const BannerSLIDE_COUNT = BannerImages.length;
   const BannerSLIDES = Array.from(Array(BannerSLIDE_COUNT).keys());
 
@@ -38,7 +38,7 @@ export default function Home() {
           <RecentPosts postCount={5} />
 
           <div className="border-t border-gray-200 py-3">
-            <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community`}>
+            <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community2`}>
               <h2 className="text-center text-lg text-gray-400 hover:underline">{`커뮤니티 더보기 >`}</h2>
             </Link>
           </div>
