@@ -25,6 +25,7 @@ interface Post {
     profile_img: string;
   };
   post_imageURL: string;
+  likes: number; // Add the 'likes' property
 }
 
 const fetchPost = async (postId: string): Promise<Post> => {
@@ -201,7 +202,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
           </div>
         )}
 
-        <Like />
+        <Like likes={post.likes} />
 
         <Comments postId={post.id} />
       </div>
