@@ -263,7 +263,7 @@ const PostForm = () => {
               className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
               value={formPosts.place_name || ""}
               onChange={(e) => setFormPosts({ ...formPosts, place_name: e.target.value })}
-              placeholder="장소 정보를 추가로 기입해 주세요"
+              placeholder="장소 정보를 추가로 기입해 주세요. ex) 00공원 등"
             />
           </div>
         </div>
