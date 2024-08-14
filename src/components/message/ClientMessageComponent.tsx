@@ -266,7 +266,7 @@ export default function ClientMessageComponent() {
     <div className="flex h-screen w-full flex-col bg-white">
       <div className="flex h-full flex-col">
         {/* 상단 바 */}
-        <div className="flex h-16 items-center justify-between border-b border-gray-500 bg-white px-4 shadow-md">
+        <div className="fixed left-0 right-0 top-0 z-10 flex h-16 items-center justify-between border-b border-gray-500 bg-white px-4 shadow-md">
           <button onClick={handleGoBack} className="text-xl font-bold">
             <Image src="/assets/svg/Arrow - Left 2.svg" alt="Back" width={24} height={24} />
           </button>
@@ -304,7 +304,7 @@ export default function ClientMessageComponent() {
 
         {/* 대화방 목록 */}
         {isMobileMenuOpen ? (
-          <div className="flex-grow overflow-y-auto bg-white">
+          <div className="flex-grow overflow-y-auto bg-white" style={{ marginTop: "64px" }}>
             <ul className="w-full">
               {sortedGroupedMessages.length === 0 ? (
                 <div className="flex h-full w-full items-center justify-center p-4 text-gray-500">
