@@ -375,7 +375,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   // console.log(updatePost)
 
   return (
-    <div className="container">
+    <div className="container min-h-screen">
       {isEditing ? (
         <form onSubmit={handleUpdatePost} className="flex flex-col">
           {/* 소개 부분 */}

@@ -91,7 +91,7 @@ const FilterPage = () => {
 
   return (
     <div>
-      <div className="w-[375px] mx-auto">
+      <div className="max-w-[420px] mx-auto">
         <p className="ml-[1rem] mt-[1rem] text-[1.5rem] font-[600]">산책 메이트 상세 필터</p>
         <div className="w-full px-[1.5rem]">
           <FilterSelectChip
