@@ -25,6 +25,7 @@ interface Post {
     profile_img: string;
   };
   post_imageURL: string;
+  likes: number; // Add the 'likes' property
 }
 
 const fetchPost = async (postId: string): Promise<Post> => {
@@ -59,7 +60,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
 
   // 이 페이지에서 수정페이지(createPost)로 유저를 이동시킴
   const handleEdit = () => {
-    router.push(`/community/createPost/?id=${id}`);
+    router.push(`/community2/createPost/?id=${id}`);
   };
 
   const handleDelete = async (id: string) => {
@@ -75,7 +76,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await fetch(`/api/detailCommunity/${id}`, {
+          const response = await fetch(`/api/detailCommunity2/${id}`, {
             method: "DELETE"
           });
 
@@ -85,7 +86,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
               text: "게시물이 삭제되었습니다",
               icon: "success"
             }).then(() => {
-              router.replace("/community");
+              router.replace("/community2");
             });
           } else {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -97,7 +98,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
             text: "게시물 삭제 중 오류가 발생했습니다.",
             icon: "error"
           }).then(() => {
-            router.replace("/community");
+            router.replace("/community2");
           });
         }
       }
@@ -201,7 +202,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
           </div>
         )}
 
-        <Like />
+        <Like likes={post.likes} />
 
         <Comments postId={post.id} />
       </div>
