@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Comments from "../_components/comments";
 import Swal from "sweetalert2";
 import Like from "../_components/like";
+import startChat from "@/app/utils/startChat";
 
 interface PageProps {
   params: { id: string };
@@ -167,7 +168,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
             </div>
           </div>
           {/* 수정 삭제 */}
-          {user.id === post.user_id && (
+          {user.id === post.user_id ? (
             <div className="flex h-full gap-[0.75rem] whitespace-nowrap text-[0.75rem]">
               <button onClick={handleEdit} className="text-[#11BBB0]">
                 수정
@@ -176,6 +177,15 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
                 삭제
               </button>
             </div>
+          ) : (
+            <button
+              onClick={() => {
+                startChat(post.user_id, user, router);
+              }}
+              className="flex items-center justify-center"
+            >
+              <Image src="/assets/svg/comunitychat(message).svg" alt="Chat" width={24} height={24} />
+            </button>
           )}
         </div>
 
