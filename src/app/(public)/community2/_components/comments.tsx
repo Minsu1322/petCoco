@@ -149,7 +149,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
   };
 
   return (
-    <div className="">
+    <div className="mb-20">
       <div className="flex justify-between rounded-[0.75rem] border border-mainColor px-4 py-[0.62rem] text-[0.875rem]">
         <input
           type="text"
