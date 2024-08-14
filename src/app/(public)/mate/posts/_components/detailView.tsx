@@ -76,7 +76,7 @@ const DetailView = ({
                 </button>
               </div>
             )}
-            <h1 className="mx-auto text-[1.125rem] font-semibold">
+            <h1 className="mx-auto w-[350px] overflow-hidden text-ellipsis whitespace-nowrap text-center  text-[1.125rem] font-semibold">
               [{post.date_time ? formatDateTimeTitle(post.date_time) : ""}] {post.title}
             </h1>
           </div>
@@ -98,7 +98,7 @@ const DetailView = ({
           </div>
           <div className="mb-[0.94rem] mt-[0.69rem] flex gap-x-[1rem] rounded-[0.75rem] border border-[#C2C0BD] px-[0.69rem] py-[0.75rem]">
             <div className="flex flex-col w-2/6 ml-[0.75rem] items-cneter justify-center">
-              <div className="flex h-[3.75rem] w-[3.75rem] flex mx-auto">
+              <div className="flex h-[3.75rem] w-[3.75rem] mx-auto">
                 <Image
                   src={
                     post.users && post.users?.profile_img
@@ -112,7 +112,7 @@ const DetailView = ({
                 />
               </div>
               <Button
-                className=" mt-[0.56rem] flex flex-shrink-0 cursor-pointer flex-col items-center justify-center rounded-full bg-mainColor px-[0.81rem] py-[0.19rem] text-[1rem] text-white"
+                className=" mt-[0.56rem] flex flex-shrink-0 cursor-pointer flex-col items-center justify-center rounded-full bg-mainColor px-[0.81rem] py-[0.19rem] text-[0.85rem] text-white"
                 onClick={handleStartChat}
                 text="채팅하기"
               ></Button>

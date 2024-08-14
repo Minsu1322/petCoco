@@ -110,7 +110,7 @@ const MateContent = () => {
   }, [searchParams]);
 
   return (
-    <div className="w-[375px] relative mx-auto">
+    <div className="max-w-[420px] min-h-screen relative mx-auto">
     {/* <div className="container  min-h-screen"> */}
       <div className="flex">
         {/* 왼쪽 메인 컨텐츠 영역 */}
