@@ -69,7 +69,7 @@ const SignupForm = () => {
 
   return (
     <div className="mx-auto mt-[32px] min-h-screen">
-      <div className="width-full mx-auto px-[16px]">
+      <div className="mx-auto w-full px-[16px]">
         <h1 className="text-center text-[30px] font-semibold">회원가입</h1>
         <div className="mt-10 flex flex-col items-center">
           <form onSubmit={handleSubmit} className="w-full">
