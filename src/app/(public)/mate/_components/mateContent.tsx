@@ -112,7 +112,7 @@ const MateContent = () => {
   return (
     <div className="max-w-[420px] min-h-screen relative mx-auto">
     {/* <div className="container  min-h-screen"> */}
-      <div className="flex">
+      <div className="flex w-full px-[1rem]">
         {/* 왼쪽 메인 컨텐츠 영역 */}
         <div className="w-full">
           <div className="mt-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide ">
