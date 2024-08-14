@@ -3,18 +3,23 @@
 import { UsersPetType } from "@/types/auth.type";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { defaultUserImg, defaultPetImg } from "@/components/DefaultImg";
 import { EmblaOptionsType } from "embla-carousel";
 import MyPetCarousel from "./../MyPetCarousel/MyPetCarousel";
+import Image from "next/image";
+import { useEffect } from "react";
 
 type PetType = UsersPetType;
 
 function MyPage() {
   const params = useParams();
+  const router = useRouter();
+  let id = params?.id || 0;
+  id = id === "undefined" ? 0 : id;
 
-  const id = params?.id || 0;
   const getProfileData = async () => {
+    if (!id) return null;
     const response = await fetch(`/api/mypage/${id}/myprofile`, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
@@ -34,6 +39,7 @@ function MyPage() {
   });
 
   const getPetData = async () => {
+    if (!id) return null;
     const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
@@ -52,9 +58,15 @@ function MyPage() {
     queryFn: getPetData
   });
 
+  useEffect(() => {
+    if (!id) {
+      router.push(`/signin`);
+    }
+  }, [id]);
+
   if (isPending || isPetPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
 
-  if (isError || isPetError) {
+  if (isError || isPetError || !user) {
     return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
   }
 
@@ -66,8 +78,10 @@ function MyPage() {
     <div className="flex flex-col items-center">
       <div className="flex w-full justify-between whitespace-nowrap border-y-1 px-[24px] py-[34px] text-lg leading-tight text-neutral-800">
         <div className="flex gap-6">
-          <img
-            className="aspect-square h-[60px] w-[60px] shrink-0 rounded-full"
+          <Image
+            className="aspect-square h-[60px] w-[60px] shrink-0 rounded-full object-cover"
+            width={60}
+            height={60}
             src={user.profile_img || defaultUserImg}
             alt=""
           />
@@ -147,7 +161,7 @@ function MyPage() {
           <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 활동</div>
         </div>
         <div className="my-[16px] flex w-full flex-col rounded-lg bg-[#EFEFF0] px-[8px] pt-[8px]">
-          <Link href={`/mypage/${id}/myposts`}>
+          <Link href={`/mypage2/${id}/myPosts`}>
             <div className="flex items-center justify-between border-b-1 px-[16px] py-[12px]">
               <div className="text-base font-medium text-[#61646B]">내 포스트</div>
               {/* <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -158,7 +172,7 @@ function MyPage() {
               </svg> */}
             </div>
           </Link>
-          <Link href={`/mypage/${id}/mymateposts`}>
+          <Link href={`/mypage2/${id}/myMatePosts`}>
             <div className="flex items-center justify-between border-b-1 px-[16px] py-[12px]">
               <div className="text-base font-medium text-[#61646B]">내 산책메이트</div>
               {/* <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
