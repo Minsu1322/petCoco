@@ -37,7 +37,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
   };
 
   return (
-    <div className="rounded-[0.75rem] border px-4 py-[0.75rem] shadow-custom">
+    <div className="w-full rounded-[0.75rem] border px-4 py-[0.75rem] shadow-custom">
       <div onClick={handleLoginCheck} className="flex flex-col">
         {/* 첫번째 줄 */}
         <div className="flex items-center justify-between text-[0.625rem] text-[#A9A7A2]">
@@ -47,9 +47,9 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
         </div>
 
         {/* 두번째 줄 */}
-        <div className="mt-[0.5rem] flex items-center justify-between gap-[2.87rem]">
+        <div className="mt-[0.5rem] flex justify-around">
           {/* 사용자 프로필 */}
-          <div className="flex flex-col gap-[0.5rem]">
+          <div className="mt-4 flex flex-col items-center gap-[0.5rem]">
             <div className="h-[3.75rem] w-[3.75rem] shrink">
               <Image
                 src={
@@ -60,15 +60,16 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
                 width={60}
                 height={60}
                 className="h-full w-full rounded-full object-cover"
+                priority
               />
             </div>
             <div className="rounded-full border border-mainColor bg-[#EAE3FC]">
-              <p className="px-[0.62rem] py-[0.12rem] text-center text-[0.625rem] text-mainColor">
+              <p className="whitespace-nowrap px-[0.62rem] py-[0.12rem] text-center text-[0.625rem] text-mainColor">
                 {post.users[0]?.nickname}
               </p>
             </div>
           </div>
-          
+
           <div className="flex flex-col">
             {/* 본문 내용 */}
             <div>
@@ -78,15 +79,36 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
                 </p>
                 <div className="flex flex-col gap-y-[0.25rem]">
                   <div className="mt-[0.37rem] flex gap-[0.5rem]">
-                    <img src="/assets/svg/ic_location2.svg" />
-                    <p className="text-4 text-[#444447]">{post.place_name || ""}</p>
+                  <Image
+    src="/assets/svg/ic_location2.svg"
+    alt="위치 아이콘"
+    width={20}
+    height={20}
+    priority
+  />
+                    <p className="text-4 w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[#444447]">
+                      {post.place_name || ""}
+                    </p>
                   </div>
                   <div className="text-4 flex gap-[0.5rem] text-[#444447]">
-                    <img src="/assets/svg/ic_calendar2.svg" />
+                    <Image
+                      src="/assets/svg/ic_calendar2.svg"
+                      alt="달력 아이콘"
+                      width={20}
+                      height={20}
+                      
+                      priority
+                    />
                     <p className=""> {formatDateTimeContent(post.date_time)} </p>
                   </div>
                   <div className="flex gap-[0.5rem]">
-                    <img src="/assets/svg/ic_user2.svg" className="" />
+                    <Image
+                      src="/assets/svg/ic_user2.svg"
+                      alt="사용자 아이콘"
+                      width={20}
+                      height={20}
+                      priority
+                    />
                     <p className="">{post.members}명 모집</p>
                     <div className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} rounded-full`}>
                       <p className="px-[0.62rem] py-[0.12rem] text-[0.875rem] text-white">
@@ -97,8 +119,8 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
                 </div>
               </div>
             </div>
-            
-            <div className="flex">
+
+            <div className="mt-[0.69rem] flex">
               <Button
                 className="w-full rounded-full bg-mainColor px-4 py-[0.5rem] text-center font-semibold text-white"
                 onClick={handleStartChat}
