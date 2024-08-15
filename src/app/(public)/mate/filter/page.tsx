@@ -23,7 +23,7 @@ import NeuteredFilter from "../_components/button/neuteredFilter";
 //   };
 //   onClick: () => void;
 // }
-export type Filters =  {
+export type Filters = {
   gender: string | null;
   age: string | null;
   date_time: string | undefined;
@@ -32,7 +32,7 @@ export type Filters =  {
   regions: string | null;
   times: string | null;
   neutered: string | null;
-}
+};
 
 const FilterPage = () => {
   const [filters, setFilters] = useState<Filters>({
@@ -59,7 +59,7 @@ const FilterPage = () => {
 
   const handleSaveFilter = () => {
     const queryParams = new URLSearchParams();
-    
+
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         queryParams.append(key, value);
@@ -91,7 +91,7 @@ const FilterPage = () => {
 
   return (
     <div>
-      <div className="max-w-[420px] mx-auto">
+      <div className="mx-auto max-w-[420px]">
         <p className="ml-[1rem] mt-[1rem] text-[1.5rem] font-[600]">산책 메이트 상세 필터</p>
         <div className="w-full px-[1.5rem]">
           <FilterSelectChip
@@ -126,8 +126,16 @@ const FilterPage = () => {
         </div>
         <p className="ml-[1rem] mt-[3.38rem] text-[1.5rem] font-[600]">반려견 정보 필터</p>
         <div className="mt-5 px-[1.5rem]">
-          <Male_femaleFilter selectedGender={selectedGender} setSelectedGender={setSelectedGender} onSelect={(items) => updateFilter("male_female", items)} />
-          <NeuteredFilter selectedNeutered={selectedNeutered} setSelectedNeutered={setSelectedNeutered} onSelect={(items) => updateFilter("neutered", items)} />
+          <Male_femaleFilter
+            selectedGender={selectedGender}
+            setSelectedGender={setSelectedGender}
+            onSelect={(items) => updateFilter("male_female", items)}
+          />
+          <NeuteredFilter
+            selectedNeutered={selectedNeutered}
+            setSelectedNeutered={setSelectedNeutered}
+            onSelect={(items) => updateFilter("neutered", items)}
+          />
           <FilterWeightChip
             label="몸무게"
             selected={filters.weight}
@@ -136,12 +144,12 @@ const FilterPage = () => {
         </div>
         <div className="mb-[6.63rem] mt-[3.63rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
           <Button
-            className="flex w-full cursor-pointer items-center justify-center rounded-[0.5rem] bg-mainColor px-[8.53rem] py-[0.75rem] text-[0.9375rem] font-[590] text-white"
+            className="flex w-full cursor-pointer items-center justify-center whitespace-nowrap rounded-[0.5rem] bg-mainColor px-[8.53rem] py-[0.75rem] text-[0.9375rem] font-[590] text-white"
             text="저장하기"
             onClick={handleSaveFilter}
           />
           <Button
-            className="flex w-full cursor-pointer items-center justify-center rounded-[0.5rem] border-1 border-mainColor px-[8rem] py-[0.75rem] text-[0.9375rem] font-[590] text-mainColor"
+            className="flex w-full cursor-pointer items-center justify-center whitespace-nowrap rounded-[0.5rem] border-1 border-mainColor px-[8rem] py-[0.75rem] text-[0.9375rem] font-[590] text-mainColor"
             text="초기화 하기"
             onClick={handleResetFilter}
           />

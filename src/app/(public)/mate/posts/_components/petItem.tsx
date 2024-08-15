@@ -15,29 +15,41 @@ const PetItem = ({ pet }: PetItemProps) => {
   const characteristics = pet.characteristics || "";
 
   return (
-    <div className="mb-[0.44rem] flex w-full justify-between gap-x-[1rem] rounded-[0.85rem] border border-[#C2C0BD] px-[0.75rem] py-[0.69rem]">
-      <div className="ml-[0.75rem] w-[55%]">
-        <p className="text-[1rem]">
-          {pet_name} ({age}, {gender}아)
-        </p>
+    <div className="mb-[0.44rem] flex w-full flex-col rounded-[0.85rem] border border-[#C2C0BD] px-[0.75rem] py-[0.69rem]">
+      <div className="ml-[0.75rem]">
+        <div className="flex w-full justify-between">
+          <div className="flex flex-col">
+            <div>
+              <p className="truncate text-[1rem]">{pet_name}</p>
+            </div>
+
+            <div className="flex justify-center">
+              <p>
+                ({age}, {gender}아)
+              </p>
+            </div>
+          </div>
+
+          <div className="ml-auto whitespace-nowrap">
+            <p className="text-[0.625rem] text-mainColor">호스트 반려견</p>
+          </div>
+        </div>
+
         <div className="flex gap-x-[0.5rem]">
           <p className="font-[400] text-[#939396]">몸무게</p>
           <p className="text-[1rem] font-[400]">{weight}</p>
         </div>
+
         <div className="flex gap-x-[0.5rem]">
           <p className="font-[400] text-[#939396]">중성화 여부</p>
           <p className="text-[1rem] font-[400]">{neutered}</p>
         </div>
+
         <div className="flex gap-x-[0.5rem]">
           <p className="font-[400] text-[#939396]">성향</p>
           <p className="w-[148px] overflow-hidden text-ellipsis whitespace-nowrap text-[1rem] font-[400]">
             {characteristics}
           </p>
-        </div>
-      </div>
-      <div className="flex flex-col items-end justify-start w-[45%]">
-        <div className="flex items-center justify-center rounded-full bg-gray-100 px-[0.75rem] py-[0.12rem]">
-          <p className="text-[0.625rem] text-mainColor">호스트 반려견</p>
         </div>
       </div>
     </div>

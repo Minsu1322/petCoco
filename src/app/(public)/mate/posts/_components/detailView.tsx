@@ -50,7 +50,6 @@ const DetailView = ({
     startChat(post.user_id, user, router);
   };
 
-
   return (
     <div className="mx-[1rem] mt-[1.06rem]">
       {/* 제목 및 버튼 영역 */}
@@ -97,8 +96,8 @@ const DetailView = ({
             <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">상세 위치는 참여 확정 후 확인할 수 있어요</p>
           </div>
           <div className="mb-[0.94rem] mt-[0.69rem] flex gap-x-[1rem] rounded-[0.75rem] border border-[#C2C0BD] px-[0.69rem] py-[0.75rem]">
-            <div className="flex flex-col w-2/6 ml-[0.75rem] items-cneter justify-center">
-              <div className="flex h-[3.75rem] w-[3.75rem] mx-auto">
+            <div className="items-cneter ml-[0.75rem] flex w-2/6 flex-col justify-center">
+              <div className="mx-auto flex h-[3.75rem] w-[3.75rem]">
                 <Image
                   src={
                     post.users && post.users?.profile_img
@@ -112,12 +111,12 @@ const DetailView = ({
                 />
               </div>
               <Button
-                className=" mt-[0.56rem] flex flex-shrink-0 cursor-pointer flex-col items-center justify-center rounded-full bg-mainColor px-[0.81rem] py-[0.19rem] text-[0.85rem] text-white"
+                className="mt-[0.56rem] flex flex-shrink-0 cursor-pointer flex-col items-center justify-center whitespace-nowrap rounded-full bg-mainColor px-[0.81rem] py-[0.19rem] text-[0.85rem] text-white"
                 onClick={handleStartChat}
                 text="채팅하기"
               ></Button>
             </div>
-            <div className="flex flex-col justify-center w-4/6 ">
+            <div className="flex w-4/6 flex-col justify-center">
               <p className="flex font-semibold">
                 {post.users?.nickname} ({post.users?.gender}, {post.users?.age})
               </p>
@@ -161,12 +160,11 @@ const DetailView = ({
           {/* <div className="flex gap-x-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide "> 
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
         </div> */}
-           <div className="mb-[5.95rem]">
+          <div className="mb-[5.95rem]">
             {post.matepostpets && post.matepostpets.length > 0 && (
               <PetCarousel pets={post.matepostpets} slides={SLIDES} options={OPTIONS} />
             )}
-          </div> 
-         
+          </div>
         </div>
       </div>
     </div>
