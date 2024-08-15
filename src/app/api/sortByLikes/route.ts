@@ -41,11 +41,11 @@ export async function GET(request: Request) {
       throw countError;
     }
 
-    // 댓글 수에 따라 정렬
-    const sortedPosts = postsWithComments?.sort((a, b) => (b.comments?.length || 0) - (a.comments?.length || 0));
+    // 좋아요 수에 따라 정렬
+    const sortedLikes = postsWithComments?.sort((a, b) => (b.likes?.length || 0) - (a.likes?.length || 0));
 
     // 페이지네이션 적용
-    const paginatedPosts = sortedPosts?.slice((page - 1) * limit, page * limit);
+    const paginatedPosts = sortedLikes?.slice((page - 1) * limit, page * limit);
 
     // post_imageURL 처리
     paginatedPosts?.forEach((post: any) => {

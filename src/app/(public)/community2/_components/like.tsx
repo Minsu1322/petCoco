@@ -47,7 +47,7 @@ const Like: React.FC<LikeProps> = ({ postId, likes, setLikes }) => {
         className="flex h-[2.75rem] w-[7.5rem] justify-center gap-[0.5rem] rounded-[0.5rem] border border-[#D2CDF6] p-[0.5rem]"
         onClick={handleLikeClick}
       >
-        {liked ? <img src="/assets/svg/heart2.svg" alt="heart2" /> : <img src="/assets/svg/heart2.svg" alt="heart2" />}
+        {liked ? <img src="/assets/svg/heart4.svg" alt="heart4" /> : <img src="/assets/svg/heart2.svg" alt="heart2" />}
         <div className="text-[#D2CDF6]">{likes.length}</div>
       </div>
     </div>
