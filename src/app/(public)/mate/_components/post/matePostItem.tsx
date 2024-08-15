@@ -62,40 +62,54 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
                 className="h-full w-full rounded-full object-cover"
               />
             </div>
-            <div className="border border-mainColor rounded-full bg-[#EAE3FC]">
-              <p className="px-[0.62rem] py-[0.12rem] text-[0.625rem] text-mainColor">{post.users[0]?.nickname}</p>
-            </div>
-          </div>
-
-          {/* 본문 내용 */}
-          <div className="flex flex-col">
-            <p className="text-[1.125rem] font-semibold">{post.title}</p>
-            <div className="gap-[0.5rem]">
-              <img src="/assets/svg/ic_location2.svg" />
-              <p className="text-[#444447] text-4">{post.place_name || ""}</p>
-            </div>
-            <div className="text-[#444447] text-4">
-              <img src="/assets/svg/ic_calendar2.svg" />
-              <p className="">
-                {/* {post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })} */}
-                {formatDateTimeContent(post.date_time)}
+            <div className="rounded-full border border-mainColor bg-[#EAE3FC]">
+              <p className="px-[0.62rem] py-[0.12rem] text-center text-[0.625rem] text-mainColor">
+                {post.users[0]?.nickname}
               </p>
             </div>
-            <div className=" ">
-              <img src="/assets/svg/ic_user2.svg" className="" />
-              <p className="">{post.members}명 모집</p>
-              <div className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} `}>
-                <p className="">{post.recruiting ? "모집중" : "모집 완료"}</p>
+          </div>
+          
+          <div className="flex flex-col">
+            {/* 본문 내용 */}
+            <div>
+              <div className="flex flex-col">
+                <p className="w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] font-semibold">
+                  {post.title}
+                </p>
+                <div className="flex flex-col gap-y-[0.25rem]">
+                  <div className="mt-[0.37rem] flex gap-[0.5rem]">
+                    <img src="/assets/svg/ic_location2.svg" />
+                    <p className="text-4 text-[#444447]">{post.place_name || ""}</p>
+                  </div>
+                  <div className="text-4 flex gap-[0.5rem] text-[#444447]">
+                    <img src="/assets/svg/ic_calendar2.svg" />
+                    <p className=""> {formatDateTimeContent(post.date_time)} </p>
+                  </div>
+                  <div className="flex gap-[0.5rem]">
+                    <img src="/assets/svg/ic_user2.svg" className="" />
+                    <p className="">{post.members}명 모집</p>
+                    <div className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} rounded-full`}>
+                      <p className="px-[0.62rem] py-[0.12rem] text-[0.875rem] text-white">
+                        {post.recruiting ? "모집중" : "모집 완료"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
+            
+            <div className="flex">
+              <Button
+                className="w-full rounded-full bg-mainColor px-4 py-[0.5rem] text-center font-semibold text-white"
+                onClick={handleStartChat}
+                text="채팅하기"
+              ></Button>
             </div>
           </div>
         </div>
       </div>
 
       {/* 채팅하기 버튼 */}
-      <div className="">
-        <Button className="" onClick={handleStartChat} text="채팅하기"></Button>
-      </div>
     </div>
   );
 };

@@ -146,7 +146,7 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
 
   return (
     <div className="w-full flex flex-col justify-center items-center mb-[100px]">
-        <div className="flex flex-col mx-[1.5rem]">
+        <div className="flex flex-col mx-[1.5rem] gap-y-[1.5rem]">
           {posts.length > 0 ? (
             posts.map((post) => <MatePostItem key={post.id} post={post} />)
           ) : (
@@ -160,11 +160,11 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
         </div>
 
       {/* pagination */}
-      <div className="flex flex-row items-center justify-center">
+      <div className="flex flex-row items-center justify-center mt-[1.5rem]">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
-          className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
+          className="rounded bg-[#c5b1f7] px-4 py-2 text-black disabled:bg-opacity-50"
         >
           이전
         </button>
@@ -174,7 +174,7 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
         <button
           onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
           disabled={data?.totalPages !== undefined && page === data.totalPages}
-          className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
+          className="rounded bg-[#c5b1f7] px-4 py-2 text-black disabled:bg-opacity-50"
         >
           다음
         </button>
