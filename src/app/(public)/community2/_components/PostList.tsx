@@ -22,11 +22,21 @@ const categoryStyles: { [key: string]: string } = {
   // 추가적인 카테고리가 필요한 경우 여기에 추가 가능
 };
 
+// const fetchPosts = async (page: number, category: string, searchTerm: string, sort: string): Promise<PostsResponse> => {
+//   const url =
+//     sort === "댓글순"
+//       ? `/api/sortByComments?page=${page}&limit=100&category=${category}&search=${searchTerm}`
+//       : `/api/community?page=${page}&limit=100&category=${category}&search=${searchTerm}`;
+
 const fetchPosts = async (page: number, category: string, searchTerm: string, sort: string): Promise<PostsResponse> => {
-  const url =
-    sort === "댓글순"
-      ? `/api/sortByComments?page=${page}&limit=100&category=${category}&search=${searchTerm}`
-      : `/api/community?page=${page}&limit=100&category=${category}&search=${searchTerm}`;
+  let url;
+  if (sort === "댓글순") {
+    url = `/api/sortByComments?page=${page}&limit=100&category=${category}&search=${searchTerm}`;
+  } else if (sort === "좋아요순") {
+    url = `/api/sortByLikes?page=${page}&limit=100&category=${category}&search=${searchTerm}`;
+  } else {
+    url = `/api/community?page=${page}&limit=100&category=${category}&search=${searchTerm}`;
+  }
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -95,7 +105,8 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
 
   return (
     <>
-      {data?.data.map((post, index) => (
+      {/* {data?.data.map((post, index) => ( */}
+      {sortedPosts.map((post, index) => (
         <div key={post.id}>
           <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community2/${post.id}`}>
             <div className="flex w-full items-center gap-[1.06rem] border-b-[1px] py-[0.75rem]">
@@ -124,7 +135,9 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
                   </div>
                   <div className="flex gap-[0.25rem]">
                     <img src="/assets/svg/heart.svg" />
-                    <div>12</div>
+                    {/* 게시글 좋아요 개수를 보여주는 부분 */}
+                    <div>{post.likes?.length}</div>
+                    {/* <div>12</div> */}
                   </div>
                 </div>
               </div>
@@ -145,7 +158,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
       ))}
       <div>
         {/* 기존 코드 */}
-        <div className="mb-[400px] flex w-full justify-center">
+        <div className="mb-[80px] flex w-full justify-center">
           <button
             onClick={scrollToTop}
             className="fixed bottom-[8rem] flex items-center gap-[0.25rem] rounded-full bg-[#F3F2F2] px-[0.5rem] py-[0.25rem] text-[1rem] text-mainColor shadow-lg"

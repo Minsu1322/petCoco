@@ -23,8 +23,10 @@ export async function GET(request: Request) {
         ),
         comments (
         id
-        ).eq("post_id", postId)
-        
+        ),
+        likes (
+        id
+        )
       `,
         { count: "exact" }
       )

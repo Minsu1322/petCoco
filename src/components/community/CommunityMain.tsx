@@ -46,14 +46,27 @@ const RecentPosts: React.FC<MainPageRecentPostsProps> = ({ postCount }) => {
                 </div>
                 <div className="flex items-center space-x-2 text-xs text-[#8E6EE8]">
                   <span>{post.users.nickname}</span>
-                  <Image
-                    src="/assets/svg/comment.svg"
-                    alt="Comment Icon"
-                    width={16}
-                    height={16}
-                    style={{ width: "16px", height: "16px" }}
-                  />
-                  {post.comments.length}
+                  <div className="flex">
+                    <Image
+                      src="/assets/svg/comment.svg"
+                      alt="Comment Icon"
+                      width={16}
+                      height={16}
+                      style={{ width: "16px", height: "16px" }}
+                    />
+                    <span className="ml-1 p-0 text-[#D2CDF6]">{post.comments.length}</span>
+                  </div>
+
+                  <div className="flex">
+                    <Image
+                      src="/assets/svg/heart.svg"
+                      alt="Comment Icon"
+                      width={16}
+                      height={16}
+                      style={{ width: "16px", height: "16px" }}
+                    />
+                    <span className="text-[#D2CDF6]">{post.likes.length}</span>
+                  </div>
                 </div>
               </div>
               {post.post_imageURL[0] && (
