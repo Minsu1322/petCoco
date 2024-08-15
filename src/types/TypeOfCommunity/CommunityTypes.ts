@@ -17,6 +17,7 @@ export type Post = {
   user_id: string;
   comments: string | null;
   category: string;
+  likes: string[];
   post_imageURL: string | null;
   users: {
     id: string;
