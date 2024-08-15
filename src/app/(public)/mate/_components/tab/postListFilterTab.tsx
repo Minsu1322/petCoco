@@ -19,7 +19,7 @@ const PostListFilterTab = ({
   handleRecruiting,
   handleDateSort,
   handleDistanceSort,
-  handleNewSort,
+  handleNewSort
 }: PostListFilterTabProps) => {
   const isSelected = (chipSortBy: string) => {
     return sortBy === chipSortBy || (sortBy === "" && chipSortBy === defaultSort);
@@ -29,35 +29,35 @@ const PostListFilterTab = ({
     <div className="z-40 ml-[1.5rem] flex w-max gap-x-[0.62rem]">
       <Chip
         text="전체"
-        className={`cursor-pointer rounded-[2.25rem] px-[0.75rem] py-[0.5rem] text-[1.125rem] ${
-          isSelected("all")  ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
+        className={`cursor-pointer rounded-[2.25rem] px-[0.75rem] py-[0.2rem] text-[1.125rem] ${
+          isSelected("all") ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
         }`}
         onClick={handleAllPosts}
       ></Chip>
       <Chip
         text="거리순"
-        className={`cursor-pointer rounded-[2.25rem] px-[0.75rem] py-[0.5rem] text-[1.125rem] ${
+        className={`cursor-pointer rounded-[2.25rem] px-[0.75rem] py-[0.2rem] text-[1.125rem] ${
           isSelected("distance") ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
         }`}
         onClick={handleDistanceSort}
       ></Chip>
       <Chip
         text="모집중"
-        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.5rem] text-[1.125rem] ${
+        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.2rem] text-[1.125rem] ${
           isSelected("recruiting") ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
         }`}
         onClick={handleRecruiting}
       ></Chip>
       <Chip
         text="최신순"
-        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.5rem] text-[1.125rem] ${
+        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.2rem] text-[1.125rem] ${
           isSelected("new") ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
         }`}
         onClick={handleNewSort}
       ></Chip>
       <Chip
         text="마감 임박순"
-        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.5rem] text-[1.125rem] ${
+        className={`cursor-pointer rounded-full px-[0.75rem] py-[0.2rem] text-[1.125rem] ${
           isSelected("recruitment_end") ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"
         }`}
         onClick={handleDateSort}
