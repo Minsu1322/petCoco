@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { getConvertAddress } from "../../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType, Pets } from "@/types/mate.type";
-import { characteristicsArr } from "../../selectOptionArray";
 import Swal from "sweetalert2";
 
 // 동적 로딩 설정
@@ -39,7 +38,8 @@ const PostForm = () => {
     neutered: null,
     weight: null,
     characteristics: "",
-    age: ""
+    age: "",
+    pet_name: ""
   };
 
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
@@ -113,7 +113,8 @@ const PostForm = () => {
         neutered: null,
         weight: null,
         characteristics: "",
-        age: ""
+        age: "",
+        pet_name: ""
       }
     ]);
   };
@@ -166,18 +167,18 @@ const PostForm = () => {
 
   const handleDelPet = (index: number) => {
     Swal.fire({
-      title: `반려견 ${index+1} 을 삭제할까요?`,
+      title: `반려견 ${index + 1} 을 삭제할까요?`,
       showCancelButton: true,
       confirmButtonColor: "mainColor",
       cancelButtonColor: "#c0c0c0",
       confirmButtonText: "삭제하기",
       cancelButtonText: "취소하기",
       customClass: {
-        confirmButton: 'swal-confirm-button',
-        cancelButton: 'swal-cancel-button',
-        title: 'swal-title',
-        container: 'swal-container', 
-        actions: 'swal2-actions',
+        confirmButton: "swal-confirm-button",
+        cancelButton: "swal-cancel-button",
+        title: "swal-title",
+        container: "swal-container",
+        actions: "swal2-actions"
       },
       buttonsStyling: false // 기본 스타일링을 비활성화
     }).then((result) => {
@@ -285,7 +286,7 @@ const PostForm = () => {
         {/* 반려동물 정보 등록 */}
         <div>
           {/* 반려동물 정보 */}
-          <div className="flex justify-between  px-[1.5rem]">
+          <div className="flex justify-between px-[1.5rem]">
             {/* TODO: 폰트 정해지면 간격 재조절 필요 */}
             <p className="mt-[2.19rem] text-[0.85rem] font-[500]">반려견 정보 입력</p>
             <button
@@ -297,11 +298,26 @@ const PostForm = () => {
             </button>
           </div>
           <div className="mt-[0.81rem] flex w-full flex-col px-[0.75rem]">
-            <div className="grid grid-cols-1 ">
+            <div className="grid grid-cols-1">
               {formPets.map((pet, index) => (
-                <div key={index} className="rounded-lg border border-[#E0E0E0] px-[0.75rem] py-[0.69rem] mb-[1.5rem] ">
-                  <p className="mb-[0.68rem] text-center">반려견 {index+1}</p>
+                <div key={index} className="mb-[1.5rem] rounded-lg border border-[#E0E0E0] px-[0.75rem] py-[0.69rem]">
+                  <p className="mb-[0.68rem] text-center">반려견 {index + 1}</p>
                   <div className="grid grid-cols-1 gap-y-[1rem]">
+                    <div className="flex flex-col gap-y-[0.5rem]">
+                      <label className="text-md font-semibold">이름</label>
+                      <input
+                        type="text"
+                        id={`name_${index}`}
+                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
+                        value={pet.pet_name || ""}
+                        placeholder="반려견의 이름을 입력해 주세요"
+                        onChange={(e) => {
+                          const newPets = [...formPets];
+                          newPets[index].pet_name = e.target.value;
+                          setFormPets(newPets);
+                        }}
+                      />
+                    </div>
                     <div className="flex flex-col gap-y-[0.5rem]">
                       <label className="text-md font-semibold">성별</label>
                       <select
@@ -341,7 +357,7 @@ const PostForm = () => {
                         나이
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         id={`age_${index}`}
                         className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
                         value={pet.age || ""}
@@ -355,7 +371,7 @@ const PostForm = () => {
                     </div>
                     <div className="flex w-full flex-col gap-y-2">
                       <label htmlFor={`weight_${index}`} className="text-md font-semibold">
-                        무게
+                        무게 (kg)
                       </label>
                       <input
                         type="number"
@@ -375,39 +391,25 @@ const PostForm = () => {
                       <label htmlFor={`characteristics_${index}`} className="text-md font-semibold">
                         성향
                       </label>
-                      <input type="text" id={`characteristics_${index}`} value={pet.characteristics || ""} 
-                        onChange={(e) => {
-                          const newPets = [...formPets];
-                          newPets[index].characteristics = e.target.value;
-                          setFormPets(newPets);
-                        }} 
-                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
-                        maxlength={10}
-                        placeholder="반려견의 성향을 10자 이내로 적어주세요"
-                      />
-                      {/* <select
+                      <input
+                        type="text"
                         id={`characteristics_${index}`}
-                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
                         value={pet.characteristics || ""}
                         onChange={(e) => {
                           const newPets = [...formPets];
                           newPets[index].characteristics = e.target.value;
                           setFormPets(newPets);
                         }}
-                      >
-                        <option value="">반려견의 성향을 선택해 주세요</option>
-                        {characteristicsArr.map((characteristic) => (
-                          <option key={characteristic} value={characteristic}>
-                            {characteristic}
-                          </option>
-                        ))}
-                      </select> */}
+                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
+                        maxLength={10}
+                        placeholder="반려견의 성향을 10자 이내로 적어주세요"
+                      />
                     </div>
                   </div>
                   <div className="flex w-full justify-end">
                     <button
                       type="button"
-                      className="mt-[0.76rem]  px-[0.75rem] py-[0.5rem] rounded-[0.5rem] bg-mainColor text-white"
+                      className="mt-[0.76rem] rounded-[0.5rem] bg-mainColor px-[0.75rem] py-[0.5rem] text-white"
                       onClick={() => handleDelPet(index)}
                     >
                       삭제
@@ -419,7 +421,7 @@ const PostForm = () => {
           </div>
         </div>
         {/* 작성하기 버튼 */}
-        <div className="mb-[5.5rem] mt-[1.5rem] flex w-full items-center justify-center px-[1.5rem]">
+        <div className="mb-[7.5rem] mt-[1.5rem] flex w-full items-center justify-center px-[1.5rem]">
           <button
             type="submit"
             className="w-full cursor-pointer rounded-full bg-mainColor px-[1.5rem] py-[0.75rem] text-white"

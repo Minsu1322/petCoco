@@ -60,8 +60,10 @@ export type MatePostPetType = {
   post_id?: number; // post_id를 추가
   male_female: string;
   neutered: string | null;
-  weight: string;
+  weight: number | null;
   characteristics: string;
+  age: string;
+  pet_name: string;
 };
 
 export type Pets = {
@@ -70,6 +72,7 @@ export type Pets = {
   weight: number | null;
   characteristics: string;
   age: string;
+  pet_name: string;
 };
 
 export type PostsResponse = {
