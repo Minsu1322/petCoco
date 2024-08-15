@@ -20,9 +20,9 @@ const NeuteredFilter = ({ onSelect, selectedNeutered, setSelectedNeutered }: Neu
     <div className="w-full mb-[1.5rem]">
       <p className="mb-[0.69rem] text-[1rem] font-[400]">중성화 여부</p> 
     
-    <div className="flex gap-x-[1rem]">
+    <div className="flex justify-between">
       <div
-        className={`px-[1.66rem] py-[1rem] rounded-[1rem] text-[1rem] text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
+        className={`px-[1.66rem]  py-[1rem] rounded-[1rem] text-[1rem] text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
           selectedNeutered === "true" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
         onClick={() => handleSelect("true")}
