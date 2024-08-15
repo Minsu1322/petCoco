@@ -178,14 +178,16 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
               </button>
             </div>
           ) : (
-            <button
-              onClick={() => {
-                startChat(post.user_id, user, router);
-              }}
-              className="flex items-center justify-center"
-            >
-              <Image src="/assets/svg/comunitychat(message).svg" alt="Chat" width={24} height={24} />
-            </button>
+            <div className="whitespace-nowrap">
+              <button
+                onClick={() => {
+                  startChat(post.user_id, user, router);
+                }}
+                className="rounded-[0.75rem] bg-[#11BBB0] px-[0.88rem] py-[0.38rem] text-[0.875rem] text-white"
+              >
+                채팅
+              </button>
+            </div>
           )}
         </div>
 
