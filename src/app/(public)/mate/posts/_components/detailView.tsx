@@ -72,11 +72,11 @@ const DetailView = ({
                   onClick={() => handleTogglePost(post.id)}
                   className="text-sm text-gray-700 hover:text-mainColor"
                 >
-                  모집상태 변경
+                  {post.recruiting === true ? "모집완료" : "모집중"}
                 </button>
               </div>
             )}
-            <h1 className="mx-auto w-[350px] overflow-hidden text-ellipsis whitespace-nowrap text-center  text-[1.125rem] font-semibold">
+            <h1 className="mx-auto break-words text-center text-[1.125rem] font-[600]">
               [{post.date_time ? formatDateTimeTitle(post.date_time) : ""}] {post.title}
             </h1>
           </div>

@@ -84,7 +84,7 @@ const FilterPage = () => {
     setSelectedGender(null);
     setSelectedNeutered(null);
 
-    router.push('/mate');
+    // router.push('/mate');
   };
 
   // console.log(filters);

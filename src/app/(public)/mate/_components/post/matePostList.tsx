@@ -145,26 +145,30 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
   }
 
   return (
-    <div className="w-full flex flex-col justify-center items-center mb-[100px]">
-        <div className="flex flex-col mx-[1.5rem]">
-          {posts.length > 0 ? (
-            posts.map((post) => <MatePostItem key={post.id} post={post} />)
-          ) : (
-            <div className="flex items-center justify-center w-full h-screen">
-              <div className="flex flex-col items-center">
-                <span className="mr-2 text-3xl">🐶</span>
-                <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
-              </div>
+    <div className="mb-[100px] flex w-full flex-col items-center justify-center px-[1.5rem]">
+      <div className="flex w-full flex-col gap-y-[1.5rem]">
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <div key={post.id} className="w-full">
+              <MatePostItem post={post} />
             </div>
-          )}
-        </div>
+          ))
+        ) : (
+          <div className="flex h-screen w-full items-center justify-center">
+            <div className="flex flex-col items-center">
+              <span className="mr-2 text-3xl">🐶</span>
+              <p className="py-4 text-center">현재 모집 중인 산책 메이트가 없습니다.</p>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* pagination */}
-      <div className="flex flex-row items-center justify-center">
+      <div className="mt-[1.5rem] flex flex-row items-center justify-center">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
-          className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
+          className="rounded bg-[#C5B1F7] px-4 py-2 text-black disabled:bg-opacity-50"
         >
           이전
         </button>
@@ -174,7 +178,7 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
         <button
           onClick={() => setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old))}
           disabled={data?.totalPages !== undefined && page === data.totalPages}
-          className="rounded bg-mainColor px-4 py-2 text-black disabled:bg-opacity-50"
+          className="rounded bg-[#C5B1F7] px-4 py-2 text-black disabled:bg-opacity-50"
         >
           다음
         </button>

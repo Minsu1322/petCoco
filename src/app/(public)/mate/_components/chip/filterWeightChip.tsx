@@ -28,7 +28,13 @@ const FilterWeightChip = ({ label, selected, onSelect }: FilterWeightChipProps) 
         value={selectedValue}
         label={label}
         aria-label={label}        
-        className="w-full"
+        // classNames={{
+        //   base: "max-w-md",
+        //   track: "bg-gray-200 rounded-full", // 사용하지 않은 트랙 부분의 색상
+        //   filler: "bg-mainColor rounded-full", // 사용한 트랙 부분의 색상
+        //   thumb: "bg-mainColor border-0", // 슬라이더 핸들의 색상
+         
+        // }}
         onChange={handleChange}
       />
     </div>
