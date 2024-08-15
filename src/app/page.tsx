@@ -1,7 +1,6 @@
 "use client";
 import AnimalCarousel from "@/components/animalCarousel/AnimalCarousel";
 import { EmblaOptionsType } from "embla-carousel";
-import Image from "next/image";
 import MateCarousel from "@/components/mateCarousel/MateCarousel";
 import RecentPosts from "@/components/community/CommunityMain";
 import Link from "next/link";
