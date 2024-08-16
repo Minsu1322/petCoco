@@ -81,17 +81,17 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
             pets?.map((pet, i) => (
               <div className={`${styles.embla__slide} ml-[0.005rem] rounded-lg border-1 border-[#C2C0BD]`} key={i}>
                 <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
-                  <div className="flex items-center">
-                    <div className="px-6">
+                  <div className="flex items-center px-3 py-3">
+                    <div className="pr-3">
                       <Image
-                        className="h-[80px] w-[80px] rounded-lg bg-lime-300 object-cover"
+                        className="h-[100px] w-[100px] rounded-lg bg-lime-300 object-cover"
                         width={100}
                         height={100}
                         src={pet.petImage ? pet.petImage : defaultPetImg}
                         alt="..."
                       />
                     </div>
-                    <div className="pl-2">
+                    <div className="">
                       <div>
                         <span className="text-lg font-normal">{pet.petName} </span>
                         <span className="text-sm font-normal">({pet.male_female})</span>
