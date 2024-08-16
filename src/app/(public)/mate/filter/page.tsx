@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Male_femaleFilter from "../_components/button/male_femaleFilter";
 import NeuteredFilter from "../_components/button/neuteredFilter";
+import { useFilterStore } from '@/zustand/useFilterStore';
 
 // interface PostItemFilterTabProps {
 //   updateFilter: (filterName: string, value: any) => void;
@@ -35,22 +36,27 @@ export type Filters = {
 };
 
 const FilterPage = () => {
-  const [filters, setFilters] = useState<Filters>({
-    gender: null,
-    age: null,
-    date_time: undefined,
-    male_female: null,
-    weight: null,
-    regions: null,
-    times: null,
-    neutered: null
-  });
+  
+  // const [filters, setFilters] = useState<Filters>(() => {
+  //   // URL 파라미터에서 초기 필터 값을 읽어옵니다
+  //   return {
+  //     gender: searchParams.get('gender') || null,
+  //     age: searchParams.get('age') || null,
+  //     date_time: searchParams.get('date_time') || undefined,
+  //     male_female: searchParams.get('male_female') || null,
+  //     weight: searchParams.get('weight') || null,
+  //     regions: searchParams.get('regions') || null,
+  //     times: searchParams.get('times') || null,
+  //     neutered: searchParams.get('neutered') || null,
+  //   };
+  // });
+  const { filters, setFilters } = useFilterStore();
   const [selectedGender, setSelectedGender] = useState<string | null>(null);
   const [selectedNeutered, setSelectedNeutered] = useState<string | null>(null);
 
   const router = useRouter();
 
-  const updateFilter = (filterName: string, value: string) => {
+  const updateFilter = (filterName: keyof Filters, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [filterName]: value

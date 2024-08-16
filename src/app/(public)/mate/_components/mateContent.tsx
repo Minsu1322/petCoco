@@ -14,6 +14,8 @@ import SearchBar from "@/components/SearchBar";
 import PostListFilterTab from "./tab/postListFilterTab";
 import MatePostList from "./post/matePostList";
 import { Filters } from "../filter/page";
+import NeuteredFilter from "../_components/button/neuteredFilter";
+import { useFilterStore } from '@/zustand/useFilterStore';
 
 
 export type PositionData = {
@@ -36,16 +38,22 @@ const MateContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [filters, setFilters] = useState({
-    gender: null,
-    age: null,
-    date_time: undefined,
-    male_female: null,
-    weight: null,
-    regions: null,
-    times: null,
-    neutered: null,
-  });
+  const { filters, setFilters } = useFilterStore();
+
+
+  // const [filters, setFilters] = useState<Filters>(() => {
+  //   // URL 파라미터에서 필터 값을 읽어옵니다
+  //   return {
+  //     gender: searchParams.get('gender') || null,
+  //     age: searchParams.get('age') || null,
+  //     date_time: searchParams.get('date_time') || undefined,
+  //     male_female: searchParams.get('male_female') || null,
+  //     weight: searchParams.get('weight') || null,
+  //     regions: searchParams.get('regions') || null,
+  //     times: searchParams.get('times') || null,
+  //     neutered: searchParams.get('neutered') || null,
+  //   };
+  // });
 
   // console.log('All query params:', searchParams.toString());
 
