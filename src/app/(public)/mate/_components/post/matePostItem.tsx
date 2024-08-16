@@ -79,36 +79,17 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
                 </p>
                 <div className="flex flex-col gap-y-[0.25rem]">
                   <div className="mt-[0.37rem] flex gap-[0.5rem]">
-                  <Image
-    src="/assets/svg/ic_location2.svg"
-    alt="위치 아이콘"
-    width={20}
-    height={20}
-    priority
-  />
+                    <Image src="/assets/svg/ic_location2.svg" alt="위치 아이콘" width={20} height={20} priority />
                     <p className="text-4 w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[#444447]">
                       {post.place_name || ""}
                     </p>
                   </div>
                   <div className="text-4 flex gap-[0.5rem] text-[#444447]">
-                    <Image
-                      src="/assets/svg/ic_calendar2.svg"
-                      alt="달력 아이콘"
-                      width={20}
-                      height={20}
-                      
-                      priority
-                    />
+                    <Image src="/assets/svg/ic_calendar2.svg" alt="달력 아이콘" width={20} height={20} priority />
                     <p className=""> {formatDateTimeContent(post.date_time)} </p>
                   </div>
                   <div className="flex gap-[0.5rem]">
-                    <Image
-                      src="/assets/svg/ic_user2.svg"
-                      alt="사용자 아이콘"
-                      width={20}
-                      height={20}
-                      priority
-                    />
+                    <Image src="/assets/svg/ic_user2.svg" alt="사용자 아이콘" width={20} height={20} priority />
                     <p className="">{post.members}명 모집</p>
                     <div className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} rounded-full`}>
                       <p className="px-[0.62rem] py-[0.12rem] text-[0.875rem] text-white">

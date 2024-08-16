@@ -1,6 +1,7 @@
 "use client";
 
 import { UsersPetType } from "@/types/auth.type";
+import { MatePostType } from "@/types/mate.type";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -58,6 +59,18 @@ function MyPage() {
     queryKey: ["pets", id],
     queryFn: getPetData
   });
+
+  const { data: myMate } = useQuery<MatePostType[]>({
+    queryKey: ["myMate", id],
+    queryFn: async () => {
+      const response = await fetch(`/api/mate/my/${id}`);
+      const data = response.json();
+      return data;
+    }
+  });
+
+  const recruitingTrueCount = myMate?.filter(post => post.recruiting === true).length || 0;
+  const recruitingFalseCount = myMate?.filter(post => post.recruiting === false).length || 0;
 
   useEffect(() => {
     if (!id) {
@@ -119,6 +132,29 @@ function MyPage() {
           <MyPetCarousel slides={SLIDES} options={OPTIONS} />
         </div>
       </div>
+
+      <div className="w-full px-[14px] py-[16px]">
+        <div className="flex flex-col w-full items-start px-[12px] mt-[12px]">
+          <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 산책</div>
+          <div className="flex w-full gap-x-[0.5rem] px-[12px] py-[8px] ">
+          <div >
+            <p className="text-base font-medium text-[#61646B]">산책 완료</p>          
+            <p>{recruitingFalseCount}</p>
+          </div>
+          <div >
+            <p className="text-base font-medium text-[#61646B]">산책 예정</p>
+            <p>{recruitingTrueCount}</p> 
+          </div>
+          <div >
+             <p className="text-base font-medium text-[#61646B]">기록 완료</p>
+             <p>{myMate?.length}</p>
+          </div>
+        </div>
+        </div>
+        <div>
+        </div>
+      </div>
+      
       <div className="w-full px-[14px] py-[16px]">
         <div className="flex w-full items-center px-[12px]">
           <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 활동</div>

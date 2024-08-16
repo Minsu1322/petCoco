@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { getConvertAddress } from "../../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType, Pets } from "@/types/mate.type";
-import { UsersPetType } from "@/types/usersPet.type";
 import Swal from "sweetalert2";
 
 // 동적 로딩 설정
@@ -21,7 +20,6 @@ const PostForm = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { position } = locationStore();
-  const [selectedPetIds, setSelectedPetIds] = useState<string>("");
 
   const initialState: Omit<MateNextPostType, "user_id"> = {
     title: "",
@@ -36,8 +34,12 @@ const PostForm = () => {
   };
 
   const initialPetState: Pets = {
-    userId,
-    pet_id: "",
+    male_female: "",
+    neutered: null,
+    weight: null,
+    characteristics: "",
+    age: "",
+    pet_name: ""
   };
 
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
@@ -103,38 +105,18 @@ const PostForm = () => {
 
   const address = (addressData && addressData?.documents[0]?.address?.address_name) || "주소 정보를 찾을 수 없어요";
 
-  const { data: userPets } = useQuery<UsersPetType[]>({
-    queryKey: ["userPets", userId],
-    queryFn: async () => {
-      const response = await fetch(`/api/mypage/${userId}/mypetprofile`);
-      return response.json();
-    },
-    enabled: !!userId
-  });
-
-  // const handleAddPets = () => {
-  //   setFormPets([
-  //     ...formPets,
-  //     {
-  //       male_female: "",
-  //       neutered: null,
-  //       weight: null,
-  //       characteristics: "",
-  //       age: "",
-  //       pet_name: ""
-  //     }
-  //   ]);
-  // };
-
-  const handlePetSelect = (petId: string) => {
-    setSelectedPetIds(petId);
-    const selectedPet = userPets?.find((pet) => pet.id === petId);
-    if (selectedPet) {
-      setFormPets([{
-        userId,
-        pet_id: petId,
-      }]);
-    }
+  const handleAddPets = () => {
+    setFormPets([
+      ...formPets,
+      {
+        male_female: "",
+        neutered: null,
+        weight: null,
+        characteristics: "",
+        age: "",
+        pet_name: ""
+      }
+    ]);
   };
 
   const handleUploadPost = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -159,8 +141,10 @@ const PostForm = () => {
         position,
         user_id: userId
       },
-      pets: formPets,
-        // weight: pet.weight === null ? null : Number(pet.weight)
+      pets: formPets.map((pet) => ({
+        ...pet,
+        weight: pet.weight === null ? null : Number(pet.weight)
+      }))
     };
 
     // console.log("formAllData 확인", formAllData);
@@ -181,7 +165,29 @@ const PostForm = () => {
     }
   };
 
-  // console.log(userPets)
+  const handleDelPet = (index: number) => {
+    Swal.fire({
+      title: `반려견 ${index + 1} 을 삭제할까요?`,
+      showCancelButton: true,
+      confirmButtonColor: "mainColor",
+      cancelButtonColor: "#c0c0c0",
+      confirmButtonText: "삭제하기",
+      cancelButtonText: "취소하기",
+      customClass: {
+        confirmButton: "swal-confirm-button",
+        cancelButton: "swal-cancel-button",
+        title: "swal-title",
+        container: "swal-container",
+        actions: "swal2-actions"
+      },
+      buttonsStyling: false // 기본 스타일링을 비활성화
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const newPets = formPets.filter((_, i) => i !== index);
+        setFormPets(newPets);
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen">
@@ -280,39 +286,138 @@ const PostForm = () => {
         {/* 반려동물 정보 등록 */}
         <div>
           {/* 반려동물 정보 */}
-          <div className="flex mt-[1.63rem]  items-center justify-between px-[1.5rem]">
+          <div className="flex justify-between px-[1.5rem]">
             {/* TODO: 폰트 정해지면 간격 재조절 필요 */}
-            {/* <p className="mt-[2.19rem] text-[0.85rem] font-[500]">반려견 정보 입력</p> */}
+            <p className="mt-[2.19rem] text-[0.85rem] font-[500]">반려견 정보 입력</p>
             <button
               type="button"
-              className="text-[1rem] font-[600] text-black"
-              // onClick={handleAddPets}
+              className="mt-[1.63rem] rounded-full bg-mainColor px-[2.34rem] py-[0.5rem] text-[0.85rem] font-[600] text-white"
+              onClick={handleAddPets}
             >
               반려동물 정보 추가
             </button>
-            <p className="mb-2 text-sm font-semibold text-subTitle1">다중 선택 가능</p>
           </div>
-          <div className="mt-[0.81rem] flex w-full">
-          <div className="mx-[1.5rem] w-full">
-    
-    {userPets ? (
-      userPets?.map((pet) => (
-        <div key={pet.id} className="mb-2 flex items-center">
-          <input
-            type="checkbox"
-            id={`pet-${pet.id}`}
-            value={pet.id}
-            
-            onChange={() => handlePetSelect(pet.id)}
-            className="mr-2"
-          />
-          <label htmlFor={`pet-${pet.id}`}>{pet.petName}</label>
-        </div>
-      ))
-    ) : (
-      <p>반려견 정보가 없습니다. 마이페이지에서 반려견을 등록해 주세요!</p>
-    )}
-  </div>
+          <div className="mt-[0.81rem] flex w-full flex-col px-[0.75rem]">
+            <div className="grid grid-cols-1">
+              {formPets.map((pet, index) => (
+                <div key={index} className="mb-[1.5rem] rounded-lg border border-[#E0E0E0] px-[0.75rem] py-[0.69rem]">
+                  <p className="mb-[0.68rem] text-center">반려견 {index + 1}</p>
+                  <div className="grid grid-cols-1 gap-y-[1rem]">
+                    <div className="flex flex-col gap-y-[0.5rem]">
+                      <label className="text-md font-semibold">이름</label>
+                      <input
+                        type="text"
+                        id={`name_${index}`}
+                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
+                        value={pet.pet_name || ""}
+                        placeholder="반려견의 이름을 입력해 주세요"
+                        onChange={(e) => {
+                          const newPets = [...formPets];
+                          newPets[index].pet_name = e.target.value;
+                          setFormPets(newPets);
+                        }}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-y-[0.5rem]">
+                      <label className="text-md font-semibold">성별</label>
+                      <select
+                        name={`male_female_${index}`}
+                        value={pet.male_female}
+                        onChange={(e) => {
+                          const newPets = [...formPets];
+                          newPets[index].male_female = e.target.value;
+                          setFormPets(newPets);
+                        }}
+                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
+                      >
+                        <option value="">선택하세요</option>
+                        <option value="female">암컷</option>
+                        <option value="male">수컷</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-y-[0.5rem]">
+                      <label className="text-md font-semibold">중성화 여부</label>
+                      <select
+                        name={`neutered_${index}`}
+                        value={pet.neutered || ""}
+                        onChange={(e) => {
+                          const newPets = [...formPets];
+                          newPets[index].neutered = e.target.value;
+                          setFormPets(newPets);
+                        }}
+                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
+                      >
+                        <option value="">선택하세요</option>
+                        <option value="true">네</option>
+                        <option value="false">아니오</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-y-[0.5rem]">
+                      <label htmlFor={`age_${index}`} className="text-md font-semibold">
+                        나이
+                      </label>
+                      <input
+                        type="number"
+                        id={`age_${index}`}
+                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
+                        value={pet.age || ""}
+                        placeholder="반려견의 나이를 입력해 주세요"
+                        onChange={(e) => {
+                          const newPets = [...formPets];
+                          newPets[index].age = e.target.value;
+                          setFormPets(newPets);
+                        }}
+                      />
+                    </div>
+                    <div className="flex w-full flex-col gap-y-2">
+                      <label htmlFor={`weight_${index}`} className="text-md font-semibold">
+                        무게 (kg)
+                      </label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        id={`weight_${index}`}
+                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
+                        value={pet.weight === null ? "" : pet.weight}
+                        placeholder="반려견의 몸무게를 입력해 주세요"
+                        onChange={(e) => {
+                          const newPets = [...formPets];
+                          newPets[index].weight = e.target.value === "" ? null : Number(e.target.value);
+                          setFormPets(newPets);
+                        }}
+                      />
+                    </div>
+                    <div className="flex w-full flex-col gap-y-2">
+                      <label htmlFor={`characteristics_${index}`} className="text-md font-semibold">
+                        성향
+                      </label>
+                      <input
+                        type="text"
+                        id={`characteristics_${index}`}
+                        value={pet.characteristics || ""}
+                        onChange={(e) => {
+                          const newPets = [...formPets];
+                          newPets[index].characteristics = e.target.value;
+                          setFormPets(newPets);
+                        }}
+                        className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem] text-subTitle1"
+                        maxLength={10}
+                        placeholder="반려견의 성향을 10자 이내로 적어주세요"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex w-full justify-end">
+                    <button
+                      type="button"
+                      className="mt-[0.76rem] rounded-[0.5rem] bg-mainColor px-[0.75rem] py-[0.5rem] text-white"
+                      onClick={() => handleDelPet(index)}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         {/* 작성하기 버튼 */}
