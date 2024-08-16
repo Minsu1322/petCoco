@@ -78,7 +78,16 @@ function MyPage() {
     }
   }, [id]);
 
-  if (isPending || isPetPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  if (isPending || isPetPending) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (isError || isPetError || !user) {
     return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
@@ -133,22 +142,25 @@ function MyPage() {
         </div>
       </div>
 
-      <div className="px-[14px] py-[16px]">
-        <div className="flex w-full items-center px-3 py-3">
-          <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 산책</div>
-        </div>
-        <div className="flex rounded-lg bg-[#D2CDF6]">
-          <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold text-[#222225]">
-            {recruitingFalseCount}
-            <div className="items-center whitespace-nowrap font-normal leading-tight">산책 완료</div>
-          </div>
-          <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold">
-            {recruitingTrueCount}
-            <div className="items-center whitespace-nowrap font-normal leading-tight">산책 예정</div>
-          </div>
-          <div className="flex flex-col items-center px-5 py-5 font-bold">
-            {myMate?.length}
-            <div className="items-center whitespace-nowrap font-normal leading-tight">기록 완료</div>
+      <div className="flex w-full items-center px-[24px] pt-[16px]">
+        <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 산책</div>
+      </div>
+
+      <div className="border-b-1 px-[14px] py-4">
+        <div>
+          <div className="flex items-center justify-center rounded-lg bg-[#D2CDF6]">
+            <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold text-[#222225]">
+              {recruitingFalseCount}
+              <div className="items-center whitespace-nowrap font-normal leading-tight">산책 완료</div>
+            </div>
+            <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold">
+              {recruitingTrueCount}
+              <div className="items-center whitespace-nowrap font-normal leading-tight">산책 예정</div>
+            </div>
+            <div className="flex flex-col items-center px-5 py-5 font-bold">
+              {myMate?.length}
+              <div className="items-center whitespace-nowrap font-normal leading-tight">기록 완료</div>
+            </div>
           </div>
         </div>
       </div>
