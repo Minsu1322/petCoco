@@ -414,7 +414,7 @@ const FixMyPetProfile = () => {
             <div className="mt-[19px] flex flex-col">
               <label className="text-base font-medium leading-normal text-[#61646B]">의료기록 (선택)</label>
               <textarea
-                className="mt-2 h-[97px] w-full resize-none rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
+                className="mt-2 h-[97px] w-full resize-none rounded-lg border-[0.5px] border-[#999999] p-3 text-[16px] font-medium leading-6 text-[#292826]"
                 placeholder="예방접종 및 기타 의료 기록(최대 200자)"
                 maxLength={200}
                 defaultValue={filteredProfile![0].medicalRecords || ""}
@@ -427,7 +427,7 @@ const FixMyPetProfile = () => {
             <div className="mt-[19px] flex flex-col">
               <label className="text-base font-medium leading-normal text-[#61646B]">메모 (선택)</label>
               <textarea
-                className="mt-2 h-[97px] w-full resize-none rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
+                className="mt-2 h-[97px] w-full resize-none rounded-lg border-[0.5px] border-[#999999] p-3 text-[16px] font-medium leading-6 text-[#292826]"
                 placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
                 maxLength={200}
                 defaultValue={filteredProfile![0].introduction || ""}
