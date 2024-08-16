@@ -81,7 +81,7 @@ const DetailView = ({
             </h1>
           </div>
 
-          {/* 프로필 영역 */}
+         
           <div className="mt-[1.5rem]">
             <DynamicMapComponent
               center={{
@@ -92,11 +92,12 @@ const DetailView = ({
               // onMapLoad={() => setIsMapLoading(false)}
             />
           </div>
-          <div className="mb-[0.69rem] mt-[0.5rem] flex items-center">
+          <div className="mb-[0.79rem] mt-[0.5rem] flex items-center">
             <img src="/assets/svg/ic_info.svg" />
-            <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">상세 위치는 참여 확정 후 확인할 수 있어요</p>
+            <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">상세 위치는 채팅을 통해 추후 확정할 수 있어요</p>
           </div>
-          <div className="mb-[0.94rem] mt-[0.69rem] flex gap-x-[1rem] rounded-[0.75rem] border border-[#C2C0BD] px-[0.69rem] py-[0.75rem]">
+           {/* 프로필 영역 */}
+          <div className="mb-[0.79rem] flex gap-x-[1rem] rounded-[0.75rem] border border-[#C2C0BD] px-[0.69rem] py-[0.75rem]">
             <div className="items-cneter ml-[0.75rem] flex w-2/6 flex-col justify-center">
               <div className="mx-auto flex h-[3.75rem] w-[3.75rem]">
                 <Image
@@ -119,13 +120,13 @@ const DetailView = ({
             </div>
             <div className="flex w-4/6 flex-col justify-center">
               <p className="flex font-semibold">
-                {post.users?.nickname} ({post.users?.gender}, {post.users?.age})
+                {post.users?.nickname}
               </p>
               <div className="flex flex-col">
-                <p className="mr-[0.5rem] text-gray-400">한 마디</p>
-                <p className="whitespace-wrap flex w-[220px] overflow-hidden text-ellipsis font-[400]">
-                  {post.content}
-                </p>
+               <div className="flex gap-x-[0.5rem]">
+                <p className="text-[#939396] text-[400] text-[1rem]">성별 / 연령대 </p>
+                <p>{post.users?.gender} / {post.users?.age}</p>
+               </div>
               </div>
             </div>
           </div>
@@ -147,21 +148,28 @@ const DetailView = ({
               <img src="/assets/svg/ic_user2.svg" className="mr-[0.5rem]" />
               <p className="mr-[0.5rem] flex text-sm">{post.members}명 모집</p>
               <div
-                className={`${post.recruiting ? "bg-[#7BC868]" : "bg-bgGray400"} flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
+                className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} text-white flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
               >
                 <p className="text-[0.625rem]">{post.recruiting ? "모집중" : "모집 완료"}</p>
               </div>
             </div>
           </div>
-
           <div className="mb-[0.87rem] ml-[0.75rem] mt-[0.37rem] flex items-center">
             <img src="/assets/svg/ic_info.svg" />
             <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">우천 시 일정이 변경되거나 취소될 수 있어요.</p>
           </div>
+          <div className="px-[0.75rem] pb-[0.75rem] border-t border-b border-[#EFEFF0] w-full">
+            <p className="flex font-[400] pt-[0.75rem]">
+              {post.content}
+            </p>
+          </div>
+          
+
+          
           {/* <div className="flex gap-x-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide "> 
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
         </div> */}
-          <div className="mb-[5.95rem]">
+          <div className="mb-[5.95rem] mt-[0.5rem]">
             {/* {post.matepostpets && post.matepostpets.length > 0 && (
               <PetCarousel pets={post.matepostpets} slides={SLIDES} options={OPTIONS} />
             )} */}

@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, useCallback } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getDistanceHaversine } from "../../getDistanceHaversine";
+import LoadingComponent from "@/components/loadingComponents/Loading";
 
 import { MatePostAllTypeForItem, PostsResponse } from "@/types/mate.type";
 
@@ -125,11 +126,8 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
 
   if (isPending) {
     return (
-      <div className="flex items-center justify-center w-full h-screen">
-        <div className="flex flex-col items-center">
-          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
-          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
-        </div>
+      <div className="flex items-center justify-center w-full h-full mt-[30%]">
+        <LoadingComponent />
       </div>
     );
   }

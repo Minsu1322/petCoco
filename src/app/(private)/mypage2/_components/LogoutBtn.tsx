@@ -43,7 +43,7 @@ const LogoutButton = () => {
       text: "로그아웃 되었습니다!",
       icon: "success"
     });
-    router.push("/signin");
+    router.replace("/signin");
   };
 
   // const handleMypageClick = () => {

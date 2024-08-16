@@ -12,6 +12,7 @@ import MyInput from "../../../_components/MyInput";
 import ButtonGroup from "../../../_components/ButtonGroup";
 import MyPageTabHeader from "./../../../_components/MyPageTabHeader";
 import Image from "next/image";
+import LoadingComponent from "@/components/loadingComponents/Loading";
 
 type PetType = UsersPetType;
 
@@ -250,17 +251,18 @@ const FixMyPetProfile = () => {
 
   if (isPending || filteredProfile.length === 0) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <div className="flex flex-col items-center">
-          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
-          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
-        </div>
+      <div>
+        <LoadingComponent />
       </div>
     );
   }
 
   if (isError) {
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+    return (
+      <div>
+        <LoadingComponent />
+      </div>
+    );
   }
 
   return (
