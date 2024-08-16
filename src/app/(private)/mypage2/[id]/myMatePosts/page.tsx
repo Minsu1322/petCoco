@@ -2,20 +2,21 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/zustand/useAuth";
-import { MatePostAllTypeForItem, MatePostFullType } from "@/types/mate.type";
+import { MatePostAllType } from "@/types/mate.type";
 import Link from "next/link";
-import { formatDateTimeContent, getConvertTime } from "@/app/utils/getConvertTime";
+import { formatDateTimeContent } from "@/app/utils/getConvertTime";
 import Image from "next/image";
 
-type MatePostItemPorps = MatePostAllTypeForItem;
+type MatePostItemPorps = MatePostAllType;
 
 const MyMate = () => {
   const { user } = useAuthStore();
   const userId = user?.id;
-  const extractDong = (address: string) => {
-    const match = address?.match(/(\S+(?:동\d*가?|읍|면))(?=\s|$)/);
-    return match ? match[0] : "";
-  };
+
+  // const extractDong = (address: string) => {
+  //   const match = address?.match(/(\S+(?:동\d*가?|읍|면))(?=\s|$)/);
+  //   return match ? match[0] : "";
+  // };
 
   const { data, isPending, error } = useQuery<MatePostItemPorps[]>({
     queryKey: ["myMatePosts", userId],
@@ -29,7 +30,16 @@ const MyMate = () => {
     enabled: !!userId
   });
 
-  if (isPending) return <div>로딩 중...</div>;
+  if (isPending) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
   if (error) return <div>에러 발생: {error.message}</div>;
 
   return (
@@ -47,7 +57,7 @@ const MyMate = () => {
                   <div className="h-[3.75rem] w-[3.75rem] shrink">
                     <Image
                       src={
-                        post.users[0]?.profile_img ||
+                        post.users?.profile_img ||
                         "https://eoxrihspempkfnxziwzd.supabase.co/storage/v1/object/public/post_image/1722324396777_xo2ka9.jpg"
                       }
                       alt="사용자 프로필 이미지"
