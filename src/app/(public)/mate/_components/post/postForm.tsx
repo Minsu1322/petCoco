@@ -9,8 +9,9 @@ import { useRouter } from "next/navigation";
 import { getConvertAddress } from "../../getConvertAddress";
 import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType, Pets } from "@/types/mate.type";
-import { UsersPetType } from "@/types/usersPet.type";
+
 import Swal from "sweetalert2";
+import PetForm from "../post/petForm";
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapForm"), { ssr: false });
@@ -103,14 +104,6 @@ const PostForm = () => {
 
   const address = (addressData && addressData?.documents[0]?.address?.address_name) || "주소 정보를 찾을 수 없어요";
 
-  const { data: userPets } = useQuery<UsersPetType[]>({
-    queryKey: ["userPets", userId],
-    queryFn: async () => {
-      const response = await fetch(`/api/mypage/${userId}/mypetprofile`);
-      return response.json();
-    },
-    enabled: !!userId
-  });
 
   // const handleAddPets = () => {
   //   setFormPets([
@@ -126,16 +119,6 @@ const PostForm = () => {
   //   ]);
   // };
 
-  const handlePetSelect = (petId: string) => {
-    setSelectedPetIds(petId);
-    const selectedPet = userPets?.find((pet) => pet.id === petId);
-    if (selectedPet) {
-      setFormPets([{
-        userId,
-        pet_id: petId,
-      }]);
-    }
-  };
 
   const handleUploadPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -182,6 +165,7 @@ const PostForm = () => {
   };
 
   // console.log(userPets)
+
 
   return (
     <div className="min-h-screen">
@@ -278,43 +262,10 @@ const PostForm = () => {
           <p className="flex justify-end text-subTitle2">0/200</p>
         </div>
         {/* 반려동물 정보 등록 */}
-        <div>
-          {/* 반려동물 정보 */}
-          <div className="flex mt-[1.63rem]  items-center justify-between px-[1.5rem]">
-            {/* TODO: 폰트 정해지면 간격 재조절 필요 */}
-            {/* <p className="mt-[2.19rem] text-[0.85rem] font-[500]">반려견 정보 입력</p> */}
-            <button
-              type="button"
-              className="text-[1rem] font-[600] text-black"
-              // onClick={handleAddPets}
-            >
-              반려동물 정보 추가
-            </button>
-            <p className="mb-2 text-sm font-semibold text-subTitle1">다중 선택 가능</p>
-          </div>
-          <div className="mt-[0.81rem] flex w-full">
-          <div className="mx-[1.5rem] w-full">
-    
-    {userPets ? (
-      userPets?.map((pet) => (
-        <div key={pet.id} className="mb-2 flex items-center">
-          <input
-            type="checkbox"
-            id={`pet-${pet.id}`}
-            value={pet.id}
-            
-            onChange={() => handlePetSelect(pet.id)}
-            className="mr-2"
-          />
-          <label htmlFor={`pet-${pet.id}`}>{pet.petName}</label>
-        </div>
-      ))
-    ) : (
-      <p>반려견 정보가 없습니다. 마이페이지에서 반려견을 등록해 주세요!</p>
-    )}
-  </div>
-          </div>
-        </div>
+       <PetForm 
+       setSelectedPetIds={setSelectedPetIds}
+      setFormPets={setFormPets}
+      userId={userId} />
         {/* 작성하기 버튼 */}
         <div className="mb-[7.5rem] mt-[1.5rem] flex w-full items-center justify-center px-[1.5rem]">
           <button
