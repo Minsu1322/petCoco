@@ -20,6 +20,10 @@ function MyPage() {
   let id = params?.id || 0;
   id = id === "undefined" ? 0 : id;
 
+  if (!id) {
+    router.push(`/signin`);
+  }
+
   const getProfileData = async () => {
     if (!id) return null;
     const response = await fetch(`/api/mypage/${id}/myprofile`, {
@@ -69,14 +73,12 @@ function MyPage() {
     }
   });
 
-  const recruitingTrueCount = myMate?.filter((post) => post.recruiting === true).length || 0;
-  const recruitingFalseCount = myMate?.filter((post) => post.recruiting === false).length || 0;
-
-  useEffect(() => {
-    if (!id) {
-      router.push(`/signin`);
-    }
-  }, [id]);
+  if (!id) {
+    return;
+  } else {
+    const recruitingTrueCount = myMate?.filter((post) => post.recruiting === true).length || 0;
+    const recruitingFalseCount = myMate?.filter((post) => post.recruiting === false).length || 0;
+  }
 
   if (isPending || isPetPending) {
     return (
