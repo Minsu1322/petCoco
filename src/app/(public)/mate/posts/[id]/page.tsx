@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import DetailMatePost from "../_components/detailMatePost";
+import LoadingComponent from "@/components/loadingComponents/Loading";
 
 
 const MatePost = ({ params }: { params: { id: string } }) => {
@@ -20,15 +21,11 @@ const MatePost = ({ params }: { params: { id: string } }) => {
       return data;
     }
   });
-
-  //console.log(post);
-
   if (!post) return;
-
   if (isPending) {
-    return <div>
-      {/* <LoadingComponent /> */}
-    </div>;
+      <div className="flex items-center justify-center w-full h-full mt-[30%]">
+        <LoadingComponent />
+      </div>
   }
 
   if (error) {
