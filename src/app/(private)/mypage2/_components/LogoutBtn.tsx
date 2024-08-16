@@ -62,7 +62,7 @@ const LogoutButton = () => {
       {/* <p>|</p> */}
       <button
         onClick={handleLogout}
-        className="mt-[4rem] w-full rounded-[0.5rem] border border-mainColor text-[16px] text-mainColor"
+        className="mt-[4rem] w-full rounded-[0.5rem] border border-mainColor text-[16px] font-semibold leading-6 text-mainColor"
       >
         <p className="p-[0.5rem]">로그아웃</p>
       </button>

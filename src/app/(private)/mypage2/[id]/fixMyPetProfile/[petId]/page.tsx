@@ -269,19 +269,17 @@ const FixMyPetProfile = () => {
     <>
       <MyPageTabHeader />
       <div className="flex justify-between bg-[#F3F2F2]">
-        <div className="mb-[14px] ml-[23px] mt-[14px] flex gap-[31px]">
+        <div className="m-[14px] flex gap-4 overflow-x-scroll scrollbar-hide">
           {pet?.map((pet) => (
             <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
-              <div className="mt-2">
-                <div className="rounded-lg bg-[#8E6EE8] px-3 py-2 text-xs font-semibold text-[#FFFFFF]">
-                  {pet.petName}
-                </div>
-                {/* <img
+              <div className="w-auto whitespace-nowrap rounded-lg bg-[#8E6EE8] px-3 py-2 text-xs font-semibold text-[#FFFFFF]">
+                {pet.petName}
+              </div>
+              {/* <img
                   className="h-[50px] w-[50px] rounded bg-lime-300 object-cover"
                   src={pet.petImage ? pet.petImage : defaultPetImg}
                   alt="..."
                 /> */}
-              </div>
             </Link>
           ))}
         </div>
@@ -310,7 +308,7 @@ const FixMyPetProfile = () => {
           </Link>
         </div>
       </div>
-      <div className="flex w-full flex-col justify-center">
+      <div className="flex w-full flex-col px-3 py-3">
         <div className="mt-[27px] flex flex-col items-center justify-center">
           <Image
             className="h-[100px] w-[100px] rounded-xl bg-lime-300 object-cover"
@@ -373,8 +371,8 @@ const FixMyPetProfile = () => {
               <ButtonGroup
                 label="성별"
                 buttonInfos={[
-                  { text: "남아", value: "수" },
-                  { text: "여아", value: "암" }
+                  { text: "남아", value: "남아" },
+                  { text: "여아", value: "여아" }
                 ]}
                 defaultValue={filteredProfile![0].male_female || ""}
                 onChange={handleMaleFemaleChange}
@@ -404,38 +402,38 @@ const FixMyPetProfile = () => {
             </div>
             <div className="mt-[35px]">
               <MyInput
-                label="무게"
+                label="무게 (kg)"
                 ref={null}
                 id="changeWeight"
                 placeholder="1kg 미만은 소수점으로 표기"
                 maxLength={20}
-                defaultValue={filteredProfile![0].weight + "kg" || ""}
+                defaultValue={filteredProfile![0].weight || ""}
                 onChange={handleWeight}
               />
             </div>
-            <div className="mt-[23px] flex flex-col">
-              <label className="text-base font-medium leading-normal text-[#61646B]">의료기록</label>
+            <div className="mt-[19px] flex flex-col">
+              <label className="text-base font-medium leading-normal text-[#61646B]">의료기록 (선택)</label>
               <textarea
-                className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
+                className="mt-2 h-[97px] w-full resize-none rounded-lg border-[0.5px] border-[#999999] p-3 text-[16px] font-medium leading-6 text-[#292826]"
                 placeholder="예방접종 및 기타 의료 기록(최대 200자)"
-                maxLength={199}
+                maxLength={200}
                 defaultValue={filteredProfile![0].medicalRecords || ""}
                 onChange={handleMedicalRecords}
               />
-              <div className="flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
+              <div className="mt-[10px] flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
                 {medicalRecords?.length}/200
               </div>
             </div>
-            <div className="mt-[22px] flex flex-col">
-              <label className="text-base font-medium leading-normal text-[#61646B]">자기소개</label>
+            <div className="mt-[19px] flex flex-col">
+              <label className="text-base font-medium leading-normal text-[#61646B]">메모 (선택)</label>
               <textarea
-                className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
+                className="mt-2 h-[97px] w-full resize-none rounded-lg border-[0.5px] border-[#999999] p-3 text-[16px] font-medium leading-6 text-[#292826]"
                 placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
-                maxLength={199}
+                maxLength={200}
                 defaultValue={filteredProfile![0].introduction || ""}
                 onChange={handleIntroductionChange}
               />
-              <div className="flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
+              <div className="mt-[10px] flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
                 {introduction?.length}/200
               </div>
             </div>

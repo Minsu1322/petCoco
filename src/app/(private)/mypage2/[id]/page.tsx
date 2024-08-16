@@ -116,7 +116,7 @@ function MyPage() {
           </div>
         </div>
         <Link href={`/mypage2/${user.id}/fixMyProfile`}>
-          <div className="mb-[13px] mt-[15px] rounded-lg bg-[#8E6EE8] px-4 py-[6px] text-xs font-semibold leading-relaxed tracking-wide text-[#FFFFFF]">
+          <div className="mb-[13px] mt-[15px] whitespace-nowrap rounded-lg bg-[#8E6EE8] px-4 py-[6px] text-xs font-semibold leading-relaxed tracking-wide text-[#FFFFFF]">
             내 프로필 수정
           </div>
         </Link>
@@ -127,7 +127,7 @@ function MyPage() {
           <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 반려동물 ({pets?.length})</div>
           {pets && pets.length ? (
             <Link href={`/mypage2/${user.id}/fixMyPetProfile/${pets[0]?.id}`}>
-              <button className="ml-2 rounded-lg bg-[#8E6EE8] px-4 py-[6px] text-sm font-semibold tracking-wide text-[#FFFFFF]">
+              <button className="ml-2 self-stretch rounded-lg bg-[#8E6EE8] px-4 py-[6px] text-sm font-semibold text-[#FFFFFF]">
                 반려동물 프로필 수정
               </button>
             </Link>
@@ -175,12 +175,24 @@ function MyPage() {
         <div className="my-[16px] flex w-full flex-col rounded-lg bg-[#EFEFF0] px-[8px] pt-[8px]">
           <Link href={`/mypage2/${id}/myPosts`}>
             <div className="flex items-center justify-between border-b-1 px-[16px] py-[12px]">
-              <div className="text-base font-medium text-[#61646B]">내 포스트</div>
+              <div className="text-[16px] font-normal leading-5 text-[#61646B]">내 포스트</div>
+              <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M0.313439 11.0201C0.135928 10.8425 0.11979 10.5648 0.265027 10.369L0.313439 10.313L4.62633 5.99984L0.313439 1.68672C0.135928 1.50921 0.11979 1.23144 0.265027 1.0357L0.313439 0.979617C0.49095 0.802106 0.768726 0.785969 0.964467 0.931205L1.02055 0.979617L5.68721 5.64628C5.86472 5.82379 5.88086 6.10157 5.73562 6.29731L5.68721 6.35339L1.02055 11.0201C0.825283 11.2153 0.508701 11.2153 0.313439 11.0201Z"
+                  fill="#999999"
+                />
+              </svg>
             </div>
           </Link>
           <Link href={`/mypage2/${id}/myMatePosts`}>
-            <div className="flex items-center justify-between border-b-1 px-[16px] py-[12px]">
-              <div className="text-base font-medium text-[#61646B]">내 산책메이트</div>
+            <div className="flex items-center justify-between border-b-1 px-[16px] py-[12px] leading-5">
+              <div className="text-[16px] font-normal leading-5 text-[#61646B]">내 산책메이트</div>
+              <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M0.313439 11.0201C0.135928 10.8425 0.11979 10.5648 0.265027 10.369L0.313439 10.313L4.62633 5.99984L0.313439 1.68672C0.135928 1.50921 0.11979 1.23144 0.265027 1.0357L0.313439 0.979617C0.49095 0.802106 0.768726 0.785969 0.964467 0.931205L1.02055 0.979617L5.68721 5.64628C5.86472 5.82379 5.88086 6.10157 5.73562 6.29731L5.68721 6.35339L1.02055 11.0201C0.825283 11.2153 0.508701 11.2153 0.313439 11.0201Z"
+                  fill="#999999"
+                />
+              </svg>
             </div>
           </Link>
         </div>
