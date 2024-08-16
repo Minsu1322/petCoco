@@ -130,11 +130,6 @@ const DetailView = ({
               </div>
             </div>
           </div>
-          <div className="px-[0.75rem] pb-[0.75rem] border-t border-[#EFEFF0] w-full">
-            <p className="flex font-[400]  pt-[0.75rem]">
-              {post.content}
-            </p>
-          </div>
           <div className="border-b border-t border-gray-200 pb-[0.94rem] pl-[0.75rem] pt-[0.87rem]">
             <div className="mb-[0.25rem] flex">
               <img src="/assets/svg/ic_location2.svg" />
@@ -153,21 +148,28 @@ const DetailView = ({
               <img src="/assets/svg/ic_user2.svg" className="mr-[0.5rem]" />
               <p className="mr-[0.5rem] flex text-sm">{post.members}명 모집</p>
               <div
-                className={`${post.recruiting ? "bg-[#7BC868]" : "bg-bgGray400"} flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
+                className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} text-white flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem]`}
               >
                 <p className="text-[0.625rem]">{post.recruiting ? "모집중" : "모집 완료"}</p>
               </div>
             </div>
           </div>
-
           <div className="mb-[0.87rem] ml-[0.75rem] mt-[0.37rem] flex items-center">
             <img src="/assets/svg/ic_info.svg" />
             <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">우천 시 일정이 변경되거나 취소될 수 있어요.</p>
           </div>
+          <div className="px-[0.75rem] pb-[0.75rem] border-t border-b border-[#EFEFF0] w-full">
+            <p className="flex font-[400] pt-[0.75rem]">
+              {post.content}
+            </p>
+          </div>
+          
+
+          
           {/* <div className="flex gap-x-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide "> 
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
         </div> */}
-          <div className="mb-[5.95rem]">
+          <div className="mb-[5.95rem] mt-[0.5rem]">
             {/* {post.matepostpets && post.matepostpets.length > 0 && (
               <PetCarousel pets={post.matepostpets} slides={SLIDES} options={OPTIONS} />
             )} */}
