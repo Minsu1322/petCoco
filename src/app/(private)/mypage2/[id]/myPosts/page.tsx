@@ -1,7 +1,8 @@
 import Comments from "@/components/community/[id]/Comment";
 import { createClient } from "@/supabase/server";
 import { Tables } from "@/types/supabase";
-import { Post } from "@/types/TypeOfCommunity/CommunityTypes";
+import { Post, PostsResponse } from "@/types/TypeOfCommunity/CommunityTypes";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
 import Link from "next/link";
@@ -29,9 +30,11 @@ const categoryStyles: { [key: string]: string } = {
 
 const fetchMyPosts = async (userId: string) => {
   const supabase = createClient();
-  console.log("id", userId);
 
-  const { data, error } = await supabase.from("posts").select("*,users(*)").eq("user_id", userId);
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*,users(*),likes(id),comments(id)")
+    .eq("user_id", userId);
 
   return data; // API가 배열을 반환하므로 첫 번째 항목을 가져옵니다
 };
@@ -41,6 +44,10 @@ const MyPosts: React.FC<PageProps> = async ({ params }) => {
   const post = await fetchMyPosts(id);
 
   if (!post) return;
+
+  post.forEach((post: any) => {
+    post.post_imageURL = post.post_imageURL?.split(",") || [];
+  });
 
   return (
     <div>
@@ -66,13 +73,23 @@ const MyPosts: React.FC<PageProps> = async ({ params }) => {
                 <div className="flex gap-[0.25rem] text-[0.75rem] text-[#D2CDF6]">
                   <div className="text-mainColor">{post.users?.nickname}</div>
                   <div className="flex gap-[0.25rem]">
-                    <img src="/assets/svg/comment.svg" />
-                    {/* <div>{post.comments?.length}</div> */}
+                    <img src="/assets/svg/comment.svg" alt="" />
+                    <div>{post.comments?.length}</div>
                   </div>
                   <div className="flex gap-[0.25rem]">
-                    <img src="/assets/svg/heart.svg" />
+                    <img src="/assets/svg/heart.svg" alt="" />
+                    <div>{post.likes?.length}</div>
                   </div>
                 </div>
+              </div>
+              <div className="h-[2.75rem] w-[2.75rem] shrink-0">
+                {post?.post_imageURL?.[0] && (
+                  <img
+                    src={post?.post_imageURL[0]}
+                    alt="Post Image"
+                    className="h-full w-full rounded-[0.22rem] bg-blue-200 object-cover"
+                  />
+                )}
               </div>
             </div>
           </Link>

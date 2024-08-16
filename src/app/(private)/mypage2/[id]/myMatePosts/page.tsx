@@ -36,20 +36,15 @@ const MyMate = () => {
     <div>
       <div className="my-3 text-center font-semibold">나의 산책메이트</div>
       {data.map((post) => (
-        <div key={post.id}>
-          <div className="mx-[1.5rem] mb-5 flex flex-col rounded-xl border border-gray-300 pb-[1rem] pt-[0.88rem] shadow-custom">
+        <div className="my-3 px-[1.5rem]" key={post.id}>
+          <div className="w-full rounded-[0.75rem] border px-4 py-[0.75rem] shadow-custom">
             <Link href={`/mate/posts/${post.id}`}>
-              {/* <div className="flex justify-between px-[1rem]">
-                <p className="flex items-center text-xs text-gray-400">{post.created_at.split("T")[0]}</p>
-                {post.distance !== null && (
-                  <p className="flex items-center text-xs text-gray-400">
-                    현위치에서 {post.distance.toFixed(1)}km 거리
-                  </p>
-                )}
-              </div> */}
-              <div className="mt-[0.75rem] flex">
-                <div className="ml-[2.4rem] mr-[2.28rem] mt-[0.5rem] flex flex-col items-center">
-                  <div className="flex h-[3.75rem] w-[3.75rem]">
+              <div className="flex items-center justify-between text-[0.625rem] text-[#A9A7A2]">
+                <p className="">{post.created_at.split("T")[0]}</p>
+              </div>
+              <div className="mt-[0.5rem] flex justify-around">
+                <div className="mt-4 flex flex-col items-center gap-[0.5rem]">
+                  <div className="h-[3.75rem] w-[3.75rem] shrink">
                     <Image
                       src={
                         post.users[0]?.profile_img ||
@@ -61,36 +56,31 @@ const MyMate = () => {
                       className="h-full w-full rounded-full object-cover"
                     />
                   </div>
-                  <div className="mt-[0.44rem] flex items-center justify-center rounded-full bg-gray-100 px-[0.75rem] py-[0.12rem]">
-                    <p className="w-15 overflow-hidden text-ellipsis whitespace-nowrap text-[0.625rem] text-mainColor">
-                      {post.users[0]?.nickname}
-                    </p>
-                  </div>
                 </div>
-                <div className="flex w-full flex-col justify-center">
-                  <p className="mb-[0.38rem] w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] font-semibold">
+
+                <div className="flex flex-col">
+                  <p className="w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] font-semibold">
                     {post.title}
                   </p>
-                  <div className="mb-[0.25rem] flex">
-                    <img src="/assets/svg/ic_location2.svg" />
-                    <p className="ml-[0.5rem] w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-sm">
-                      {post.place_name || ""}
-                    </p>
-                  </div>
-                  <div className="mb-[0.25rem] flex">
-                    <img src="/assets/svg/ic_calendar2.svg" />
-                    <p className="ml-[0.5rem] text-sm">
-                      {/* {post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })} */}
-                      {formatDateTimeContent(post.date_time)}
-                    </p>
-                  </div>
-                  <div className="flex items-center">
-                    <img src="/assets/svg/ic_user2.svg" className="mr-[0.5rem]" />
-                    <p className="mr-[0.5rem] flex text-sm">{post.members}명 모집</p>
-                    <div
-                      className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem] text-white`}
-                    >
-                      <p className="text-[0.625rem]">{post.recruiting ? "모집중" : "모집 완료"}</p>
+                  <div className="flex flex-col gap-y-[0.25rem]">
+                    <div className="mt-[0.37rem] flex gap-[0.5rem]">
+                      <Image src="/assets/svg/ic_location2.svg" alt="위치 아이콘" width={20} height={20} priority />
+                      <p className="text-4 w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[#444447]">
+                        {post.place_name || ""}
+                      </p>
+                    </div>
+                    <div className="text-4 flex gap-[0.5rem] text-[#444447]">
+                      <Image src="/assets/svg/ic_calendar2.svg" alt="달력 아이콘" width={20} height={20} priority />
+                      <p className=""> {formatDateTimeContent(post.date_time)} </p>
+                    </div>
+                    <div className="flex gap-[0.5rem]">
+                      <Image src="/assets/svg/ic_user2.svg" alt="사용자 아이콘" width={20} height={20} priority />
+                      <p className="">{post.members}명 모집</p>
+                      <div className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} rounded-full`}>
+                        <p className="px-[0.62rem] py-[0.12rem] text-[0.875rem] text-white">
+                          {post.recruiting ? "모집중" : "모집 완료"}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -119,6 +119,22 @@ function MyPage() {
           <MyPetCarousel slides={SLIDES} options={OPTIONS} />
         </div>
       </div>
+      <div className="px-[14px] py-[16px]">
+        <div className="flex w-full items-center px-3 py-3">
+          <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 산책</div>
+        </div>
+        <div className="flex rounded-lg bg-[#D2CDF6]">
+          <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold text-[#222225]">
+            3<div className="items-center whitespace-nowrap font-normal leading-tight">산책 완료</div>
+          </div>
+          <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold">
+            3<div className="items-center whitespace-nowrap font-normal leading-tight">산책 예정</div>
+          </div>
+          <div className="flex flex-col items-center px-5 py-5 font-bold">
+            3<div className="items-center whitespace-nowrap font-normal leading-tight">기록 완료</div>
+          </div>
+        </div>
+      </div>
       <div className="w-full px-[14px] py-[16px]">
         <div className="flex w-full items-center px-[12px]">
           <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 활동</div>
