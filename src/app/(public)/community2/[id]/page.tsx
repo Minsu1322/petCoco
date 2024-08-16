@@ -67,7 +67,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
 
   // 이 페이지에서 수정페이지(createPost)로 유저를 이동시킴
   const handleEdit = () => {
-    router.push(`/community2/createPost/?id=${id}`);
+    router.replace(`/community2/createPost/?id=${id}`);
   };
 
   const handleDelete = async (id: string) => {

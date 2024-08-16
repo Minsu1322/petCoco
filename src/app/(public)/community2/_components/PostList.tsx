@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { PostsResponse } from "@/types/TypeOfCommunity/CommunityTypes";
 import { scrollToTop } from "@/app/utils/scrollToTop";
@@ -31,11 +31,11 @@ const categoryStyles: { [key: string]: string } = {
 const fetchPosts = async (page: number, category: string, searchTerm: string, sort: string): Promise<PostsResponse> => {
   let url;
   if (sort === "댓글순") {
-    url = `/api/sortByComments?page=${page}&limit=100&category=${category}&search=${searchTerm}`;
+    url = `/api/sortByComments?page=${page}&limit=10&category=${category}&search=${searchTerm}`;
   } else if (sort === "좋아요순") {
-    url = `/api/sortByLikes?page=${page}&limit=100&category=${category}&search=${searchTerm}`;
+    url = `/api/sortByLikes?page=${page}&limit=10&category=${category}&search=${searchTerm}`;
   } else {
-    url = `/api/community?page=${page}&limit=100&category=${category}&search=${searchTerm}`;
+    url = `/api/community?page=${page}&limit=10&category=${category}&search=${searchTerm}`;
   }
 
   const response = await fetch(url);
@@ -46,20 +46,53 @@ const fetchPosts = async (page: number, category: string, searchTerm: string, so
 };
 
 const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selectedSort }) => {
-  const [page, setPage] = useState(1);
   const router = useRouter();
-  const { data, isLoading, isError, error } = useQuery<PostsResponse, Error>({
-    queryKey: ["posts", page, selectedCategory, searchTerm, selectedSort],
-    queryFn: () => fetchPosts(page, selectedCategory, searchTerm, selectedSort)
+  const observerTarget = useRef<HTMLDivElement>(null);
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useInfiniteQuery<
+    PostsResponse,
+    Error
+  >({
+    queryKey: ["posts", selectedCategory, searchTerm, selectedSort],
+    queryFn: ({ pageParam = 1 }) => fetchPosts(pageParam as number, selectedCategory, searchTerm, selectedSort),
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage = allPages.length + 1;
+      return lastPage.data.length === 10 ? allPages.length + 1 : undefined;
+    },
+    initialPageParam: 1
   });
+
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [target] = entries;
+      if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage]
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0
+    });
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
+    };
+  }, [handleObserver]);
 
   const handleLoginCheck = () => {
     router.push("/community2/createPost");
   };
-
-  useEffect(() => {
-    setPage(1);
-  }, [selectedCategory, searchTerm, selectedSort]);
 
   const sortPosts = (posts: any[]) => {
     if (selectedSort === "최신순") {
@@ -101,8 +134,8 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
     );
   }
 
-  const sortedPosts = sortPosts([...(data?.data || [])]);
-
+  const allPosts = data?.pages.flatMap((page) => page.data) || [];
+  const sortedPosts = sortPosts(allPosts);
   return (
     <>
       {/* {data?.data.map((post, index) => ( */}
@@ -156,8 +189,14 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
           </Link>
         </div>
       ))}
+      <div ref={observerTarget} className="h-10 w-full">
+        {isFetchingNextPage && (
+          <div className="flex justify-center">
+            <div className="h-8 w-8 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+          </div>
+        )}
+      </div>
       <div>
-        {/* 기존 코드 */}
         <div className="mb-[80px] flex w-full justify-center">
           <button
             onClick={scrollToTop}
@@ -167,19 +206,7 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
             <img src="/assets/svg/chevron-left.svg" alt="..." />
           </button>
         </div>
-
         <PlusIcon handleLoginCheck={handleLoginCheck} />
-
-        {/* 글쓰기 버튼
-        <div className="fixed bottom-[4rem] right-[2rem]">
-          <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community2/write`}>
-            <button 
-            onClick={}
-            className="flex items-center justify-center rounded-full bg-mainColor p-4 shadow-lg">
-              <FcPlus />
-            </button>
-          </Link>
-        </div> */}
       </div>
     </>
   );
