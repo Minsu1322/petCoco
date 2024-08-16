@@ -77,7 +77,7 @@ export type Pets_ = {
 
 export type Pets = {
   userId: string;
-  pet_id: string;
+  pet_id?: string[];
 };
 
 export type PostsResponse = {
@@ -89,19 +89,19 @@ export type PostsResponse = {
 };
 
 export type valiMatePostAllTypeForItem = {
-  id: string
-  created_at: string
-  title: string
-  content: string
-  user_id: string
-  position: Json
-  members: string
-  date_time: string
-  recruiting: boolean
-  address: string
-  place_name: string
-  location: unknown
-  users: Json
-  matepostpets: Json
-  distance: number
+  id: string;
+  created_at: string;
+  title: string;
+  content: string;
+  user_id: string;
+  position: Json;
+  members: string;
+  date_time: string;
+  recruiting: boolean;
+  address: string;
+  place_name: string;
+  location: unknown;
+  users: Json;
+  matepostpets: Json;
+  distance: number;
 };
