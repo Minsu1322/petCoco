@@ -107,35 +107,35 @@ export const GET = async (request: NextRequest) => {
     }
 
     // 반려견 필터
-    if (filter.weight) {
-      const weightValue = parseFloat(filter.weight);
-      validPosts = validPosts.filter((post) => {
-        if (Array.isArray(post.matepostpets)) {
-          return (post.matepostpets as Pets[]).some((pet) => pet.weight !== null && pet.weight >= weightValue);
-        }
-        return false;
-      });
-    }
+    // if (filter.weight) {
+    //   const weightValue = parseFloat(filter.weight);
+    //   validPosts = validPosts.filter((post) => {
+    //     if (Array.isArray(post.matepostpets)) {
+    //       return (post.matepostpets as Pets[]).some((pet) => pet.weight !== null && pet.weight >= weightValue);
+    //     }
+    //     return false;
+    //   });
+    // }
 
-    if (filter.male_female && filter.male_female !== "전체") {
-      validPosts = validPosts.filter((post) => {
-        if (Array.isArray(post.matepostpets)) {
-          return (post.matepostpets as Pets[]).some((pet) => pet.male_female === filter.male_female);
-        }
-        return false;
-      });
-    }
+    // if (filter.male_female && filter.male_female !== "전체") {
+    //   validPosts = validPosts.filter((post) => {
+    //     if (Array.isArray(post.matepostpets)) {
+    //       return (post.matepostpets as Pets[]).some((pet) => pet.male_female === filter.male_female);
+    //     }
+    //     return false;
+    //   });
+    // }
 
-    if (filter.neutered && filter.neutered !== "all") {
-      validPosts = validPosts.filter((post) => {
-        if (Array.isArray(post.matepostpets)) {
-          return (post.matepostpets as Pets[]).some((pet) => 
-            pet.neutered === filter.neutered
-          );
-        }
-        return false;
-      });
-    }
+    // if (filter.neutered && filter.neutered !== "all") {
+    //   validPosts = validPosts.filter((post) => {
+    //     if (Array.isArray(post.matepostpets)) {
+    //       return (post.matepostpets as Pets[]).some((pet) => 
+    //         pet.neutered === filter.neutered
+    //       );
+    //     }
+    //     return false;
+    //   });
+    // }
 
     // 페이지네이션 처리
     const total = validPosts.length;
