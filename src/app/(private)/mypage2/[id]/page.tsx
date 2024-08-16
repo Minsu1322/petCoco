@@ -11,6 +11,7 @@ import MyPetCarousel from "./../MyPetCarousel/MyPetCarousel";
 import Image from "next/image";
 import { useEffect } from "react";
 import LogoutButton from "../_components/LogoutBtn";
+import LoadingComponent from "@/components/loadingComponents/Loading";
 
 type PetType = UsersPetType;
 
@@ -81,17 +82,18 @@ function MyPage() {
 
   if (isPending || isPetPending) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <div className="flex flex-col items-center">
-          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
-          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
-        </div>
+      <div>
+        <LoadingComponent />
       </div>
     );
   }
 
   if (isError || isPetError || !user) {
-    return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
+    return (
+      <div>
+        <LoadingComponent />
+      </div>
+    );
   }
 
   const OPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
