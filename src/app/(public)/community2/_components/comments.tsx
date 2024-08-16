@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { createClient } from "@/supabase/client";
 import Swal from "sweetalert2";
 import { getTimeDifference } from "@/app/utils/getTimeDifference";
+import LoadingComponent from "@/components/loadingComponents/Loading";
 
 const supabase = createClient();
 
@@ -48,7 +49,8 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
     }
   }, [initialComments]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingComponent />;
+  // if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const handleKeyPressForAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
