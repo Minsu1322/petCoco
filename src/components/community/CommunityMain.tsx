@@ -3,6 +3,7 @@ import { PostsResponse } from "@/types/mainPageTypes/MainPageTypes";
 import { fetchPosts } from "@/app/utils/mainPageFetch";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import LoadingComponent from "../loadingComponents/Loading";
 
 // 메인커뮤니티 글 호출 컴포넌트
 
@@ -24,7 +25,8 @@ const RecentPosts: React.FC<MainPageRecentPostsProps> = ({ postCount }) => {
     queryFn: fetchPosts
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingComponent />;
+
   if (error) return <div>Error: {error?.message}</div>;
 
   return (
