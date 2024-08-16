@@ -130,8 +130,8 @@ const DetailView = ({
               </div>
             </div>
           </div>
-          <div className="p-[0.75rem]">
-            <p className="flex font-[400]">
+          <div className="px-[0.75rem] pb-[0.75rem] border-t border-[#EFEFF0] w-full">
+            <p className="flex font-[400]  pt-[0.75rem]">
               {post.content}
             </p>
           </div>
