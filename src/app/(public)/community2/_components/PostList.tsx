@@ -7,6 +7,7 @@ import { PostsResponse } from "@/types/TypeOfCommunity/CommunityTypes";
 import { scrollToTop } from "@/app/utils/scrollToTop";
 import PlusIcon from "@/app/utils/plusIcon";
 import { useRouter } from "next/navigation";
+import LoadingComponent from "@/components/loadingComponents/Loading";
 
 interface PostListProps {
   selectedCategory: string;
@@ -106,10 +107,11 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
   if (isLoading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <div className="flex flex-col items-center">
+        <LoadingComponent />
+        {/* <div className="flex flex-col items-center">
           <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
           <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
-        </div>
+        </div> */}
       </div>
     );
   }
