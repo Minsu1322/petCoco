@@ -61,18 +61,18 @@ function MyPage() {
     queryFn: getPetData
   });
 
-  const { data: myMate } = useQuery<MatePostType[]>({
-    queryKey: ["myMate", id],
-    queryFn: async () => {
-      const response = await fetch(`/api/mate/my/${id}`);
-      const data = response.json();
-      return data;
-    },
-    enabled: !!id
-  });
+  // const { data: myMate } = useQuery<MatePostType[]>({
+  //   queryKey: ["myMate", id],
+  //   queryFn: async () => {
+  //     const response = await fetch(`/api/mate/my/${id}`);
+  //     const data = response.json();
+  //     return data;
+  //   },
+  //   enabled: !!id
+  // });
 
-  const recruitingTrueCount = myMate?.filter((post) => post.recruiting === true).length || 0;
-  const recruitingFalseCount = myMate?.filter((post) => post.recruiting === false).length || 0;
+  // const recruitingTrueCount = myMate?.filter((post) => post.recruiting === true).length || 0;
+  // const recruitingFalseCount = myMate?.filter((post) => post.recruiting === false).length || 0;
 
   useEffect(() => {
     if (!id) {
@@ -149,7 +149,7 @@ function MyPage() {
         <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 산책</div>
       </div>
 
-      <div className="border-b-1 px-[14px] py-4">
+      {/* <div className="border-b-1 px-[14px] py-4">
         <div>
           <div className="flex items-center justify-center rounded-lg bg-[#D2CDF6]">
             <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold text-[#222225]">
@@ -166,7 +166,7 @@ function MyPage() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="w-full px-[14px] py-[16px]">
         <div className="flex w-full items-center px-[12px]">
