@@ -1,4 +1,8 @@
+"use client";
+
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
+
 import { matepostpetsType } from "@/types/mate.type";
 
 interface PetItemProps {
@@ -6,6 +10,21 @@ interface PetItemProps {
 }
 
 const PetItem = ({ pet }: PetItemProps) => {
+  const petId = pet.pet_id;
+
+  const {
+    data: post,
+    isPending,
+    error
+  } = useQuery({
+    queryKey: ["usersPets", petId],
+    queryFn: async () => {
+      const response = await fetch(`/api/mate/pets/${petId}`);
+      const data = response.json();
+      //  console.log(data);
+      return data;
+    }
+  });
   // 값이 없을 때 빈 문자열로 처리
   const pet_name = pet.pet_name ? `${pet.pet_name}` : "익명";
   const age = pet.age ? `${pet.age}살` : "";

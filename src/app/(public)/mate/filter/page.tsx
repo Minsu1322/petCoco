@@ -84,7 +84,7 @@ const FilterPage = () => {
     setSelectedGender(null);
     setSelectedNeutered(null);
 
-    // router.push('/mate');
+    router.push('/mate');
   };
 
   // console.log(filters);
@@ -126,7 +126,7 @@ const FilterPage = () => {
         </div>
         <p className="ml-[1rem] mt-[3.38rem] text-[1.5rem] font-[600]">반려견 정보 필터</p>
         <div className="mt-5 px-[1.5rem]">
-          <Male_femaleFilter
+          {/* <Male_femaleFilter
             selectedGender={selectedGender}
             setSelectedGender={setSelectedGender}
             onSelect={(items) => updateFilter("male_female", items)}
@@ -140,7 +140,8 @@ const FilterPage = () => {
             label="몸무게"
             selected={filters.weight}
             onSelect={(items) => updateFilter("weight", items)}
-          />
+          /> */}
+          <div>기능 구현 중입니다! </div>
         </div>
         <div className="mb-[6.63rem] mt-[3.63rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
           <Button

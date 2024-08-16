@@ -56,7 +56,16 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
     }
   }, [emblaApi, handleSelect]);
 
-  if (isPetPending) return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  if (isPetPending) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (isPetError) {
     return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
