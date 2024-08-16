@@ -6,6 +6,7 @@ import { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
 import { usePrevNextButtons } from "./components/AnimalCarouselArrowButtons";
 import { useDotButton } from "./components/AnimalCarouselDotButtons";
 import { useQuery } from "@tanstack/react-query";
+import LoadingComponent from "../loadingComponents/Loading";
 
 type AnimalData = {
   age: string;
@@ -84,7 +85,7 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
     }
   }, [emblaApi]);
 
-  if (isLoading) return <div className="py-8 text-center">Loading...</div>;
+  if (isLoading) return <LoadingComponent />;
   if (error) return <div className="py-8 text-center text-red-500">Error: {(error as Error).message}</div>;
 
   return (
