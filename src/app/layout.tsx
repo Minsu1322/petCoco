@@ -14,7 +14,15 @@ export const metadata: Metadata = {
   description: "PetCoco",
   icons: {
     icon: "/assets/svg/petcoco.ico"
-  }
+  },
+  metadataBase: new URL("https://www.petcoco.kr"),
+  openGraph: {
+    siteName: "PetCoco",
+    title: "PetCoco",
+    description: "함께하는 반려동물 커뮤니티, 내 반려견에게 산책 친구를 만들어주세요!",
+    images: "/assets/img/BannerPetcoco.png",
+    url: "https://www.petcoco.kr",
+  },
 };
 
 export default function RootLayout({
