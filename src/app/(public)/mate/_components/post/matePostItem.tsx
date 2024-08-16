@@ -72,7 +72,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
 
           <div className="flex flex-col">
             {/* 본문 내용 */}
-            <div>
+            <div className="cursor-pointer">
               <div className="flex flex-col">
                 <p className="w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] font-semibold">
                   {post.title}
