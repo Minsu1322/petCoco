@@ -215,6 +215,7 @@ const PostForm = () => {
               className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
               value={formPosts.members || ""}
               onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
+              min="0"
             />
           </div>
         </div>
