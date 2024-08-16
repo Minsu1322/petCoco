@@ -225,9 +225,9 @@ const FixMyProfile = () => {
             onChange={handleGenderChange}
           ></ButtonGroup>
           <div className="mt-[29px]">
-            <p className="text-base font-normal leading-tight">연령대</p>
+            <p className="text-base font-medium leading-normal text-[#61646B]">연령대</p>
             <select
-              className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-sm font-normal"
+              className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-[16px] font-medium leading-normal"
               onChange={handleAgeChange}
               value={age}
             >
@@ -249,12 +249,12 @@ const FixMyProfile = () => {
               onChange={handleMbtiChange}
             />
           </div>
-          <div className="mt-[29px] flex flex-col">
-            <label className="text-base font-normal leading-tight">자기소개</label>
+          <div className="mt-[24px] flex flex-col">
+            <label className="text-base font-medium leading-normal text-[#61646B]">자기소개</label>
             <textarea
-              className="mt-2 h-[97px] w-full rounded-lg border-[0.5px] border-[#999999] p-3 text-[15px] font-normal leading-[20px]"
-              placeholder="자기소개(최대 200자)"
-              maxLength={199}
+              className="mt-2 h-[97px] resize-none rounded-lg border-[0.5px] border-[#999999] p-3 text-[16px] font-medium leading-6 text-[#292826]"
+              placeholder="자기소개(선택, 최대 200자)"
+              maxLength={200}
               defaultValue={user.introduction}
               onChange={handleIntroductionChange}
             />
