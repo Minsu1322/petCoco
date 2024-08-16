@@ -9,6 +9,7 @@ import { UsersPetType } from "@/types/auth.type";
 import Link from "next/link";
 import { defaultPetImg } from "@/components/DefaultImg";
 import Image from "next/image";
+import LoadingComponent from "@/components/loadingComponents/Loading";
 
 type PropType = {
   slides: number[];
@@ -58,17 +59,18 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
 
   if (isPetPending) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <div className="flex flex-col items-center">
-          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
-          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
-        </div>
+      <div>
+        <LoadingComponent />
       </div>
     );
   }
 
   if (isPetError) {
-    return <div className="flex h-screen items-center justify-center">데이터 로딩 실패</div>;
+    return (
+      <div>
+        <LoadingComponent />
+      </div>
+    );
   }
 
   return (
@@ -79,17 +81,17 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
             pets?.map((pet, i) => (
               <div className={`${styles.embla__slide} ml-[0.005rem] rounded-lg border-1 border-[#C2C0BD]`} key={i}>
                 <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
-                  <div className="flex items-center">
-                    <div className="px-6">
+                  <div className="flex items-center px-3 py-3">
+                    <div className="pr-3">
                       <Image
-                        className="h-[80px] w-[80px] rounded-lg bg-lime-300 object-cover"
+                        className="h-[100px] w-[100px] rounded-lg bg-lime-300 object-cover"
                         width={100}
                         height={100}
                         src={pet.petImage ? pet.petImage : defaultPetImg}
                         alt="..."
                       />
                     </div>
-                    <div className="pl-2">
+                    <div className="">
                       <div>
                         <span className="text-lg font-normal">{pet.petName} </span>
                         <span className="text-sm font-normal">({pet.male_female})</span>

@@ -6,6 +6,7 @@ import { MatePostAllType } from "@/types/mate.type";
 import Link from "next/link";
 import { formatDateTimeContent } from "@/app/utils/getConvertTime";
 import Image from "next/image";
+import LoadingComponent from "@/components/loadingComponents/Loading";
 
 type MatePostItemPorps = MatePostAllType;
 
@@ -32,15 +33,17 @@ const MyMate = () => {
 
   if (isPending) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <div className="flex flex-col items-center">
-          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
-          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
-        </div>
+      <div>
+        <LoadingComponent />
       </div>
     );
   }
-  if (error) return <div>에러 발생: {error.message}</div>;
+  if (error)
+    return (
+      <div>
+        <LoadingComponent />
+      </div>
+    );
 
   return (
     <div>
