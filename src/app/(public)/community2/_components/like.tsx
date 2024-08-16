@@ -12,6 +12,7 @@ interface LikeProps {
 
 const Like: React.FC<LikeProps> = ({ postId, likes, setLikes }) => {
   const [liked, setLiked] = useState<boolean>(false);
+  const [sendLike, setSendLike] = useState<boolean>(false);
   const { user } = useAuthStore();
   useEffect(() => {
     const found = likes.find((f) => f.userid === user.id);
@@ -23,6 +24,9 @@ const Like: React.FC<LikeProps> = ({ postId, likes, setLikes }) => {
   }, [likes]);
 
   const handleLikeClick = async () => {
+    if (sendLike) return;
+
+    setSendLike(true);
     // 좋아요가 눌러져 있으면 console.log("좋아요 해제"), 좋아요가 눌러져 있지 않으면 console.log("좋아요");
     const supabase = createClient();
     if (liked) {
@@ -38,6 +42,7 @@ const Like: React.FC<LikeProps> = ({ postId, likes, setLikes }) => {
 
     const { data: newLikes } = await supabase.from("likes").select("userid").eq("postid", postId);
     console.log(newLikes);
+    setSendLike(false);
     setLikes(newLikes || []);
   };
 

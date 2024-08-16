@@ -248,8 +248,16 @@ const FixMyPetProfile = () => {
   const handleMedicalRecords = (e: ChangeEvent<HTMLTextAreaElement>) => setMedicalRecords(e.target.value);
   const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
 
-  if (isPending || filteredProfile.length === 0)
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  if (isPending || filteredProfile.length === 0) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+          <p className="text-lg font-semibold text-mainColor">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (isError) {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;

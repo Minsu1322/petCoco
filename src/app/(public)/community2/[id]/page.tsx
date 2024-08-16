@@ -83,7 +83,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await fetch(`/api/detailCommunity2/${id}`, {
+          const response = await fetch(`/api/detailCommunity/${id}`, {
             method: "DELETE"
           });
 
