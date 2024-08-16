@@ -88,7 +88,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     ...formPosts,
     address,
     position,
-    // location: `POINT(${position.center.lng} ${position.center.lat})`,
+    location: `POINT(${position.center.lng} ${position.center.lat})`,
   };
 
 
@@ -131,7 +131,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const togglePost = async (id: string) => {
     try {
       const result = await Swal.fire({
-        title: "모집 상태를 변경하시겠어요?",
+        title: `${post.recruiting ? "모집 완료하시겠습니까?" : "모집 중으로 변경하시겠습니까?"}`,
         showCancelButton: true,
         confirmButtonText: "확인",
         cancelButtonText: "취소",
@@ -185,61 +185,11 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     }
   });
 
-  const editMutation = useMutation({
-    mutationFn: (id: string) => editPost(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-      // alert("수정이 완료되었습니다.");
-      Swal.fire({
-        title: "완료!",
-        text: "게시글 수정이 완료되었습니다.",
-        icon: "success"
-      });
-      setIstEditting(false);
-    },
-    onError: (error) => {
-      console.error("수정 중 오류 발생:", error);
-      // alert("수정 중 오류가 발생했습니다.");
-      Swal.fire({
-        title: "오류가 발생했습니다!",
-        text: "게시글 수정에 실패했습니다.",
-        icon: "error"
-      });
-    }
-  });
   // const editMutation = useMutation({
   //   mutationFn: (id: string) => editPost(id),
-  //   onMutate: async (newPost) => {
-  //     // 진행 중인 쿼리 취소
-  //     await queryClient.cancelQueries({ queryKey: ["matePosts"] });
-  
-  //     // 이전 데이터 스냅샷
-  //     const previousPosts = queryClient.getQueryData<MatePostAllType[]>(["matePosts"]);
-  
-  //     // 옵티미스틱 업데이트
-  //     queryClient.setQueryData<MatePostAllType[]>(["matePosts"], (old) => {
-  //       if (!old) return [updatePost as MatePostAllType];
-  //       return old.map((post) => 
-  //         post.id === newPost ? { ...post, ...updatePost } : post
-  //       );
-  //     });
-  
-  //     // 이전 데이터 반환 (롤백을 위해)
-  //     return { previousPosts };
-  //   },
-  //   onError: (err, newPost, context) => {
-  //     // 에러 발생 시 이전 데이터로 롤백
-  //     if (context?.previousPosts) {
-  //       queryClient.setQueryData<MatePostAllType[]>(["matePosts"], context.previousPosts);
-  //     }
-  //     console.error("수정 중 오류 발생:", err);
-  //     Swal.fire({
-  //       title: "오류가 발생했습니다!",
-  //       text: "게시글 수정에 실패했습니다.",
-  //       icon: "error"
-  //     });
-  //   },
   //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+  //     // alert("수정이 완료되었습니다.");
   //     Swal.fire({
   //       title: "완료!",
   //       text: "게시글 수정이 완료되었습니다.",
@@ -247,11 +197,61 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   //     });
   //     setIstEditting(false);
   //   },
-  //   onSettled: () => {
-  //     // 뮤테이션 완료 후 쿼리 무효화 및 리페치
-  //     queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-  //   },
+  //   onError: (error) => {
+  //     console.error("수정 중 오류 발생:", error);
+  //     // alert("수정 중 오류가 발생했습니다.");
+  //     Swal.fire({
+  //       title: "오류가 발생했습니다!",
+  //       text: "게시글 수정에 실패했습니다.",
+  //       icon: "error"
+  //     });
+  //   }
   // });
+  const editMutation = useMutation({
+    mutationFn: (id: string) => editPost(id),
+    onMutate: async (newPost) => {
+      // 진행 중인 쿼리 취소
+      await queryClient.cancelQueries({ queryKey: ["matePosts"] });
+  
+      // 이전 데이터 스냅샷
+      const previousPosts = queryClient.getQueryData<MatePostAllType[]>(["matePosts"]);
+  
+      // 옵티미스틱 업데이트
+      queryClient.setQueryData<MatePostAllType[]>(["matePosts"], (old) => {
+        if (!old) return [updatePost as MatePostAllType];
+        return old.map((post) => 
+          post.id === newPost ? { ...post, ...updatePost } : post
+        );
+      });
+  
+      // 이전 데이터 반환 (롤백을 위해)
+      return { previousPosts };
+    },
+    onError: (err, newPost, context) => {
+      // 에러 발생 시 이전 데이터로 롤백
+      if (context?.previousPosts) {
+        queryClient.setQueryData<MatePostAllType[]>(["matePosts"], context.previousPosts);
+      }
+      console.error("수정 중 오류 발생:", err);
+      Swal.fire({
+        title: "오류가 발생했습니다!",
+        text: "게시글 수정에 실패했습니다.",
+        icon: "error"
+      });
+    },
+    onSuccess: () => {
+      Swal.fire({
+        title: "완료!",
+        text: "게시글 수정이 완료되었습니다.",
+        icon: "success"
+      });
+      setIstEditting(false);
+    },
+    onSettled: () => {
+      // 뮤테이션 완료 후 쿼리 무효화 및 리페치
+      queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+    },
+  });
 
   const toggleMutation = useMutation({
     mutationFn: (id: string) => togglePost(id),
@@ -477,7 +477,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             ></textarea>
             <p className="flex justify-end text-subTitle2">0/200</p>
           </div>
-          <div className="mb-[2rem] mt-[6.44rem] flex flex-col gap-y-[0.5rem]">
+          <div className="mb-[2rem] mt-[2rem] flex flex-col gap-y-[0.5rem]">
             <div className="flex w-full items-center justify-center px-[1.5rem]">
               <button
                 className="w-full cursor-pointer rounded-full bg-mainColor px-[1.5rem] py-[0.75rem] text-white"

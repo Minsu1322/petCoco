@@ -9,11 +9,11 @@ type SearchBarProps = {
 
 const SearchBar = ({ onSubmit, value, setSearchTerm }: SearchBarProps) => {
   return (
-    <div className="rounded-full border border-mainColor mb-[0.75rem]">
+    <div className="mb-[0.75rem] w-full rounded-full border border-mainColor">
       <form onSubmit={onSubmit} className="flex px-[1.5rem] py-[0.75rem]">
         <input
           type="text"
-          className="mr-[1.12rem] w-full placeholder-[#D2CDF6] focus:outline-none text-[0.875rem]"
+          className="mr-[1.12rem] w-full text-[0.875rem] placeholder-[#D2CDF6] focus:outline-none"
           placeholder="검색어를 입력하세요."
           value={value}
           onChange={(e) => setSearchTerm(e.target.value)}

@@ -48,7 +48,15 @@ const Header = () => {
 
   const getHeaderTitle = () => {
     if (pathname === "/") {
-      return <Image src="/assets/svg/_logo-small.svg" alt="홈" width={76} height={76} />;
+      return (
+        <Image
+          src="/assets/svg/_logo-small.svg"
+          alt="홈"
+          width={76}
+          height={76}
+          style={{ width: "auto", height: "auto" }}
+        />
+      );
     }
 
     if (pathname.startsWith("/mate/posts/")) {
@@ -61,9 +69,13 @@ const Header = () => {
       case "/mate":
         return "산책메이트";
       case "/mate/post":
-        return "산책메이트"; 
+        return "산책메이트";
       case `/mypage/${user?.id}/myprofile`:
         return "마이페이지";
+      case `/signup`:
+        return "회원가입";
+      case `/signin`:
+        return "로그인";
       default:
         return "";
     }

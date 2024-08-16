@@ -12,6 +12,7 @@ import startChat from "@/app/utils/startChat";
 import Link from "next/link";
 import { format, parseISO } from "date-fns";
 import Image from "next/image";
+import LoadingComponent from "../loadingComponents/Loading";
 
 type PropType = {
   slides: number[];
@@ -47,6 +48,8 @@ const MateCarousel: React.FC<PropType> = (props) => {
       emblaApi.on("select", handleSelect);
     }
   }, [emblaApi, handleSelect]);
+
+  if (isMateLoading) return <LoadingComponent />;
 
   return (
     <section className={carouselStyles.embla}>

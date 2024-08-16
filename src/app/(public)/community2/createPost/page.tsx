@@ -203,7 +203,7 @@ const CreatePostPage = () => {
         icon: "success"
       });
 
-      router.push(postId ? `/community2/${postId}` : "/community2");
+      router.replace(postId ? `/community2/${postId}` : "/community2");
     } catch (error) {
       console.error("게시글 처리 중 오류가 발생했습니다:", error);
       // alert("게시글 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");

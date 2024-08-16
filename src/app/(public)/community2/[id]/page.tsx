@@ -67,7 +67,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
 
   // 이 페이지에서 수정페이지(createPost)로 유저를 이동시킴
   const handleEdit = () => {
-    router.push(`/community2/createPost/?id=${id}`);
+    router.replace(`/community2/createPost/?id=${id}`);
   };
 
   const handleDelete = async (id: string) => {
@@ -178,14 +178,16 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
               </button>
             </div>
           ) : (
-            <button
-              onClick={() => {
-                startChat(post.user_id, user, router);
-              }}
-              className="flex items-center justify-center"
-            >
-              <Image src="/assets/svg/comunitychat(message).svg" alt="Chat" width={24} height={24} />
-            </button>
+            <div className="whitespace-nowrap">
+              <button
+                onClick={() => {
+                  startChat(post.user_id, user, router);
+                }}
+                className="rounded-[0.75rem] bg-[#11BBB0] px-[0.88rem] py-[0.38rem] text-[0.875rem] text-white"
+              >
+                채팅
+              </button>
+            </div>
           )}
         </div>
 
