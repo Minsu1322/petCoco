@@ -53,7 +53,9 @@ const LoginForm = () => {
   return (
     <div className="mx-auto mt-[32px] min-h-screen">
       <div className="mx-auto w-full px-[16px]">
-        <h1 className="text-center text-[30px] font-semibold">로그인</h1>
+        <div className="flex items-center justify-center">
+          <img src="/assets/svg/petCoco.svg" alt="petCocoLogo" />
+        </div>
         <div className="mt-10 flex flex-col items-center">
           <form onSubmit={handleSubmit} className="w-full gap-[1.25rem]">
             <div className="mt-[12px] h-[90px]">
