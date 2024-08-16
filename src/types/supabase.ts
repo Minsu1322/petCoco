@@ -95,6 +95,53 @@ export type Database = {
           id: string
           male_female: string | null
           neutered: string | null
+          pet_id: Json | null
+          pet_name: string | null
+          post_id: string | null
+          weight: number | null
+        }
+        Insert: {
+          age?: string | null
+          characteristics?: string | null
+          created_at?: string
+          id: string
+          male_female?: string | null
+          neutered?: string | null
+          pet_id?: Json | null
+          pet_name?: string | null
+          post_id?: string | null
+          weight?: number | null
+        }
+        Update: {
+          age?: string | null
+          characteristics?: string | null
+          created_at?: string
+          id?: string
+          male_female?: string | null
+          neutered?: string | null
+          pet_id?: Json | null
+          pet_name?: string | null
+          post_id?: string | null
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matePostPets_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "matePosts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      matepostpets_duplicate: {
+        Row: {
+          age: string | null
+          characteristics: string | null
+          created_at: string
+          id: string
+          male_female: string | null
+          neutered: string | null
           pet_name: string | null
           post_id: string | null
           weight: number | null
@@ -123,7 +170,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "matePostPets_post_id_fkey"
+            foreignKeyName: "matepostpets_duplicate_post_id_fkey"
             columns: ["post_id"]
             isOneToOne: false
             referencedRelation: "matePosts"
