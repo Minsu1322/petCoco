@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { UsersPetType } from "@/types/usersPet.type";
 import { Pets } from "@/types/mate.type";
@@ -7,12 +8,13 @@ import { PetFormSkeleton } from "../Skeleton_UI/petFormSkeleton";
 
 
 interface handlePetSelect {
-  setSelectedPetIds: React.Dispatch<React.SetStateAction<string>>;
   setFormPets: React.Dispatch<React.SetStateAction<Pets[]>>;
   userId: string;
 }
 
-const PetForm = ({ setSelectedPetIds, setFormPets, userId }: handlePetSelect) => {
+const PetForm = ({ setFormPets, userId }: handlePetSelect) => {
+  const [selectedPetIds, setSelectedPetIds] = useState<string[]>([]);
+
   const {
     data: userPets,
     isPending: isPetPending,
@@ -27,14 +29,26 @@ const PetForm = ({ setSelectedPetIds, setFormPets, userId }: handlePetSelect) =>
   });
 
   const handlePetSelect = (petId: string) => {
-    setSelectedPetIds(petId);
-    const selectedPet = userPets?.find((pet) => pet.id === petId);
-    if (selectedPet) {
-      setFormPets([{
-        userId,
-        pet_id: petId,
-      }]);
-    }
+    setSelectedPetIds(prevIds => {
+      if (prevIds.includes(petId)) {
+        return prevIds.filter(id => id !== petId);
+      } else {
+        return [...prevIds, petId];
+      }
+    });
+  
+    setFormPets(prevPets => {
+      const updatedPets = prevPets.map(pet => ({
+        ...pet,
+        pet_id: pet.pet_id ? 
+          (pet.pet_id.includes(petId) ? 
+            pet.pet_id.filter(id => id !== petId) : 
+            [...pet.pet_id, petId]
+          ) : 
+          [petId]
+      }));
+      return updatedPets;
+    });
   };
 
 
@@ -71,6 +85,7 @@ const PetForm = ({ setSelectedPetIds, setFormPets, userId }: handlePetSelect) =>
                   id={`pet-${pet.id}`}
                   value={pet.id}
                   onChange={() => handlePetSelect(pet.id)}
+                  checked={selectedPetIds.includes(pet.id)}
                   className="mr-2"
                 />
                 <label htmlFor={`pet-${pet.id}`}>{pet.petName}</label>

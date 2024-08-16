@@ -22,7 +22,7 @@ const PostForm = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { position } = locationStore();
-  const [selectedPetIds, setSelectedPetIds] = useState<string>("");
+  
 
   const initialState: Omit<MateNextPostType, "user_id"> = {
     title: "",
@@ -38,13 +38,13 @@ const PostForm = () => {
 
   const initialPetState: Pets = {
     userId,
-    pet_id: "",
+    pet_id: []
   };
 
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
   const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
-  // console.log(formPosts);
+  console.log(formPets);
 
   // 게시물 등록
   const addPost = async (formAllData: { post: MateNextPostType; pets: Pets[] }) => {
@@ -104,7 +104,6 @@ const PostForm = () => {
 
   const address = (addressData && addressData?.documents[0]?.address?.address_name) || "주소 정보를 찾을 수 없어요";
 
-
   // const handleAddPets = () => {
   //   setFormPets([
   //     ...formPets,
@@ -118,7 +117,6 @@ const PostForm = () => {
   //     }
   //   ]);
   // };
-
 
   const handleUploadPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -142,8 +140,8 @@ const PostForm = () => {
         position,
         user_id: userId
       },
-      pets: formPets,
-        // weight: pet.weight === null ? null : Number(pet.weight)
+      pets: formPets
+      // weight: pet.weight === null ? null : Number(pet.weight)
     };
 
     // console.log("formAllData 확인", formAllData);
@@ -165,7 +163,6 @@ const PostForm = () => {
   };
 
   // console.log(userPets)
-
 
   return (
     <div className="min-h-screen">
@@ -262,10 +259,7 @@ const PostForm = () => {
           <p className="flex justify-end text-subTitle2">0/200</p>
         </div>
         {/* 반려동물 정보 등록 */}
-       <PetForm 
-       setSelectedPetIds={setSelectedPetIds}
-      setFormPets={setFormPets}
-      userId={userId} />
+        <PetForm setFormPets={setFormPets} userId={userId} />
         {/* 작성하기 버튼 */}
         <div className="mb-[7.5rem] mt-[1.5rem] flex w-full items-center justify-center px-[1.5rem]">
           <button

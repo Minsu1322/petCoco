@@ -14,6 +14,7 @@ import { MatePostAllType } from "@/types/mate.type";
 import PetCarousel from "../../_components/petCarousel/petCarousel";
 import startChat from "@/app/utils/startChat";
 import { useAuthStore } from "@/zustand/useAuth";
+import { Pets } from "@/types/mate.type";
 
 interface DetailViewProps {
   post: MatePostAllType;
@@ -161,9 +162,10 @@ const DetailView = ({
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
         </div> */}
           <div className="mb-[5.95rem]">
-            {post.matepostpets && post.matepostpets.length > 0 && (
+            {/* {post.matepostpets && post.matepostpets.length > 0 && (
               <PetCarousel pets={post.matepostpets} slides={SLIDES} options={OPTIONS} />
-            )}
+            )} */}
+            <p className="ml-[0.75rem] text-gray-500">기능 구현 중입니다-!</p>
           </div>
         </div>
       </div>
