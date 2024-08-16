@@ -66,13 +66,18 @@ export type MatePostPetType = {
   pet_name: string;
 };
 
-export type Pets = {
+export type Pets_ = {
   male_female: string;
   neutered: null | string;
   weight: number | null;
   characteristics: string;
   age: string;
   pet_name: string;
+};
+
+export type Pets = {
+  userId: string;
+  pet_id: string;
 };
 
 export type PostsResponse = {
