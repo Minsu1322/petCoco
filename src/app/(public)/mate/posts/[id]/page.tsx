@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import DetailMatePost from "../_components/detailMatePost";
 
+
 const MatePost = ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
@@ -25,7 +26,9 @@ const MatePost = ({ params }: { params: { id: string } }) => {
   if (!post) return;
 
   if (isPending) {
-    return <div>로딩 중...</div>;
+    return <div>
+      {/* <LoadingComponent /> */}
+    </div>;
   }
 
   if (error) {

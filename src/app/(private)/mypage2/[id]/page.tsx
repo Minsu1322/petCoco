@@ -66,7 +66,8 @@ function MyPage() {
       const response = await fetch(`/api/mate/my/${id}`);
       const data = response.json();
       return data;
-    }
+    },
+    enabled: !!id
   });
 
   const recruitingTrueCount = myMate?.filter((post) => post.recruiting === true).length || 0;

@@ -92,11 +92,11 @@ const DetailView = ({
               // onMapLoad={() => setIsMapLoading(false)}
             />
           </div>
-          <div className="mb-[0.69rem] mt-[0.5rem] flex items-center">
+          <div className="mb-[0.79rem] mt-[0.5rem] flex items-center">
             <img src="/assets/svg/ic_info.svg" />
-            <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">상세 위치는 참여 확정 후 확인할 수 있어요</p>
+            <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">상세 위치는 채팅을 통해 후 확정할 수 있어요</p>
           </div>
-          <div className="mb-[0.94rem] mt-[0.69rem] flex gap-x-[1rem] rounded-[0.75rem] border border-[#C2C0BD] px-[0.69rem] py-[0.75rem]">
+          <div className="mb-[0.94rem] flex gap-x-[1rem] rounded-[0.75rem] border border-[#C2C0BD] px-[0.69rem] py-[0.75rem]">
             <div className="items-cneter ml-[0.75rem] flex w-2/6 flex-col justify-center">
               <div className="mx-auto flex h-[3.75rem] w-[3.75rem]">
                 <Image
