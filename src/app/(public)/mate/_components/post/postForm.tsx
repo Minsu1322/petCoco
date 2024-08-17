@@ -22,7 +22,6 @@ const PostForm = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { position } = locationStore();
-  
 
   const initialState: Omit<MateNextPostType, "user_id"> = {
     title: "",
@@ -44,7 +43,7 @@ const PostForm = () => {
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
   const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
-  console.log(formPets);
+  // console.log(formPets);
 
   // 게시물 등록
   const addPost = async (formAllData: { post: MateNextPostType; pets: Pets[] }) => {
@@ -216,6 +215,7 @@ const PostForm = () => {
               className="rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
               value={formPosts.members || ""}
               onChange={(e) => setFormPosts({ ...formPosts, members: e.target.value })}
+              min="0"
             />
           </div>
         </div>
@@ -252,7 +252,7 @@ const PostForm = () => {
             value={formPosts.content || ""}
             onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
             placeholder="선호하는 산책 동선이나 총 예상 산책 시간, 혹은 특별한 요구 사항이 있다면 적어주세요."
-            className="h-[6.0625rem] w-full resize-none rounded-[0.5rem] border border-subTitle2 p-[0.75rem] scrollbar-hide overflow-x-scroll"
+            className="h-[6.0625rem] w-full resize-none overflow-x-scroll rounded-[0.5rem] border border-subTitle2 p-[0.75rem] scrollbar-hide"
             id="content"
             maxLength={200}
           ></textarea>
