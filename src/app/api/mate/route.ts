@@ -1,8 +1,8 @@
 import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
-import { MateNextPostType, Pets } from "@/types/mate.type";
+import { MateNextPostType, Pets, UsersPetType } from "@/types/mate.type";
 import { UserType } from "@/types/auth.type";
-import { getTiemRage } from "@/app/(public)/mate/getTimeRange";
+import { getTimeRange } from "@/app/(public)/mate/getTimeRange";
 
 export type CreateMatePostWithPetsData = {
   post_data: MateNextPostType;
@@ -73,7 +73,7 @@ export const GET = async (request: NextRequest) => {
       validPosts = validPosts.filter((post) => post.recruiting).sort((a, b) => (a.distance || 0) - (b.distance || 0));
     } else if (filter.sort === "all") {
       validPosts = validPosts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    }
+    } 
 
     // 게시글 필터링
     if (filter.gender && filter.gender !== "전체") {
@@ -104,39 +104,41 @@ export const GET = async (request: NextRequest) => {
     }
 
     if (filter.times) {
-      validPosts = getTiemRage(validPosts, filter.times);
+      validPosts = getTimeRange(validPosts, filter.times);
     }
 
     // 반려견 필터
-    // if (filter.weight) {
-    //   const weightValue = parseFloat(filter.weight);
-    //   validPosts = validPosts.filter((post) => {
-    //     if (Array.isArray(post.matepostpets)) {
-    //       return (post.matepostpets as Pets[]).some((pet) => pet.weight !== null && pet.weight >= weightValue);
-    //     }
-    //     return false;
-    //   });
-    // }
+    if (filter.weight) {
+      const weightValue = parseFloat(filter.weight);
+      validPosts = validPosts.filter((post) => {
+        if (Array.isArray(post.usersPet)) {
+          return (post.usersPet as UsersPetType[]).some((pet) => pet && pet.weight !== null && pet.weight >= weightValue);
+        }
+        return false;
+      });
+    }
 
-    // if (filter.male_female && filter.male_female !== "전체") {
-    //   validPosts = validPosts.filter((post) => {
-    //     if (Array.isArray(post.matepostpets)) {
-    //       return (post.matepostpets as Pets[]).some((pet) => pet.male_female === filter.male_female);
-    //     }
-    //     return false;
-    //   });
-    // }
+    if (filter.male_female && filter.male_female !== "전체") {
+      validPosts = validPosts.filter((post) => {
+        if (Array.isArray(post.usersPet)) {
+          return (post.usersPet as UsersPetType[]).some(
+            (pet) => pet && pet.male_female === filter.male_female
+          );
+        }
+        return false;
+      });
+    }
 
-    // if (filter.neutered && filter.neutered !== "all") {
-    //   validPosts = validPosts.filter((post) => {
-    //     if (Array.isArray(post.matepostpets)) {
-    //       return (post.matepostpets as Pets[]).some((pet) => 
-    //         pet.neutered === filter.neutered
-    //       );
-    //     }
-    //     return false;
-    //   });
-    // }
+    if (filter.neutralized && filter.neutralized !== "all") {
+      validPosts = validPosts.filter((post) => {
+        if (Array.isArray(post.usersPet)) {
+          return (post.usersPet as UsersPetType[]).some((pet) => 
+            pet && pet.neutralized === filter.neutralized
+          );
+        }
+        return false;
+      });
+    }
 
     // 페이지네이션 처리
     const total = validPosts.length;
