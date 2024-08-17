@@ -1,5 +1,5 @@
 export const fetchPostsMate = async () => {
-  const response = await fetch("/api/mate?page=1&limit=5");
+  const response = await fetch("/api/mate?page=1&limit=5&sort=new");
 
   if (!response.ok) {
     throw new Error("Network response was not ok");
