@@ -455,6 +455,7 @@ export type Database = {
           location: unknown
           users: Json
           matepostpets: Json
+          usersPet: Json
           distance: number
         }[]
       }
