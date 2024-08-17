@@ -9,7 +9,7 @@ export type Filters = {
   weight: string | null;
   regions: string | null;
   times: string | null;
-  neutered: string | null;
+  neutralized: string | null;
 };
 
 type FilterStore = {
@@ -25,7 +25,7 @@ const initialFilters: Filters = {
   weight: null,
   regions: null,
   times: null,
-  neutered: null,
+  neutralized: null,
 };
 
 export const useFilterStore = create(persist<FilterStore>(
