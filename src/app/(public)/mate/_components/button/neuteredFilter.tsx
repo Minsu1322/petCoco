@@ -23,17 +23,17 @@ const NeuteredFilter = ({ onSelect, selectedNeutered, setSelectedNeutered }: Neu
     <div className="flex justify-between">
       <div
         className={`px-[1.66rem]  py-[1rem] rounded-[1rem] text-[1rem] text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
-          selectedNeutered === "true" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
+          selectedNeutered === "YES" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
-        onClick={() => handleSelect("true")}
+        onClick={() => handleSelect("YES")}
       >
         했어요 
       </div>
       <div
         className={`px-[1.25rem] py-[1rem] rounded-[1rem] text-[1rem] text-[#999]  font-[500] tracking-[0.0125rem] cursor-pointer ${
-          selectedNeutered === "false" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
+          selectedNeutered === "NO" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
-        onClick={() => handleSelect("false")}
+        onClick={() => handleSelect("NO")}
       >
         안 했어요
       </div>
