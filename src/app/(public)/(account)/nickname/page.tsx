@@ -80,7 +80,7 @@ const NicknameInfo = () => {
                 onChange={(e) => setNickname(e.target.value)}
                 placeholder="닉네임은 5자 이하로 작성해주세요"
                 className="flex-grow rounded-[8px] border px-[16px] py-[12px] text-[0.9375rem] placeholder-[#999]"
-                maxLength={5}
+                maxLength={4}
                 required
               />
             </div>
