@@ -49,7 +49,8 @@ export const GET = async (request: NextRequest) => {
       validPosts = validPosts.filter(
         (post) =>
           post.content.toLowerCase().includes(search.toLowerCase()) ||
-          post.title.toLowerCase().includes(search.toLowerCase())
+          post.title.toLowerCase().includes(search.toLowerCase()) ||
+          post.place_name.toLowerCase().includes(search.toLowerCase())
       );
     }
 

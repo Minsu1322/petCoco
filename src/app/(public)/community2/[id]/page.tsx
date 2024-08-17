@@ -9,6 +9,7 @@ import Comments from "../_components/comments";
 import Swal from "sweetalert2";
 import Like from "../_components/like";
 import startChat from "@/app/utils/startChat";
+import LoadingComponent from "@/components/loadingComponents/Loading";
 
 interface PageProps {
   params: { id: string };
@@ -111,9 +112,13 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
       }
     });
   };
-
+  // return <p>Loading...</p>;
   if (!post) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex h-[80vh] w-full items-center justify-center">
+        <LoadingComponent />
+      </div>
+    );
   }
 
   if (!user) {

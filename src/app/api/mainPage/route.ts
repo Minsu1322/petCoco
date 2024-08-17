@@ -6,6 +6,7 @@ const API_BASE_URL = "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/aban
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const animalType = searchParams.get("type") || "dog";
+  const region = searchParams.get("region") || "6110000";
 
   const today = new Date();
   const MonthsAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
@@ -15,7 +16,7 @@ export async function GET(request: Request) {
 
   const upkind = animalType === "cat" ? "422400" : "417000";
 
-  const apiUrl = `${API_BASE_URL}?serviceKey=${process.env.SERVICE_KEY}&bgnde=${bgnde}&endde=${endde}&upkind=${upkind}&pageNo=1&numOfRows=100`;
+  const apiUrl = `${API_BASE_URL}?serviceKey=${process.env.SERVICE_KEY}&bgnde=${bgnde}&endde=${endde}&upkind=${upkind}&upr_cd=${region}&pageNo=1&numOfRows=20`;
 
   try {
     const response = await fetch(apiUrl);
