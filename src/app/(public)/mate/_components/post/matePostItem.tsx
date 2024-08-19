@@ -7,8 +7,6 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
 import { formatDateTimeContent } from "@/app/utils/getConvertTime";
-import Swal from "sweetalert2";
-import Chip from "@/components/Chip";
 import Button from "@/components/Button";
 import startChat from "@/app/utils/startChat";
 
@@ -79,17 +77,23 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
                 </p>
                 <div className="flex flex-col gap-y-[0.25rem]">
                   <div className="mt-[0.37rem] flex gap-[0.5rem]">
-                    <Image src="/assets/svg/ic_location2.svg" alt="위치 아이콘" width={20} height={20} priority />
+                    <div className="w-[1.25rem] h-[1.25rem]">
+                     <Image src="/assets/svg/ic_location2.svg" alt="위치 아이콘" width={20} height={20} priority className="w-full h-full object-cover" />
+                    </div>
                     <p className="text-4 w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[#444447]">
                       {post.place_name || ""}
                     </p>
                   </div>
                   <div className="text-4 flex gap-[0.5rem] text-[#444447]">
-                    <Image src="/assets/svg/ic_calendar2.svg" alt="달력 아이콘" width={20} height={20} priority />
+                  <div className="w-[1.25rem] h-[1.25rem]">
+                    <Image src="/assets/svg/ic_calendar2.svg" alt="달력 아이콘" width={20} height={20} priority className="w-full h-full object-cover"  />
+                    </div>
                     <p className=""> {formatDateTimeContent(post.date_time)} </p>
                   </div>
                   <div className="flex gap-[0.5rem]">
-                    <Image src="/assets/svg/ic_user2.svg" alt="사용자 아이콘" width={20} height={20} priority />
+                  <div className="w-[1.25rem] h-[1.25rem]">
+                    <Image src="/assets/svg/ic_user2.svg" alt="사용자 아이콘" width={20} height={20} priority className="w-full h-full object-cover"  />
+                    </div>
                     <p className="">{post.members}명 모집</p>
                     <div className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} rounded-full`}>
                       <p className="px-[0.62rem] py-[0.12rem] text-[0.875rem] text-white">
@@ -103,7 +107,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
 
             <div className="mt-[0.69rem] flex">
               <Button
-                className="w-full rounded-full bg-mainColor px-4 py-[0.5rem] text-center font-semibold text-white"
+                className="w-full cursor-pointer rounded-full bg-mainColor px-4 py-[0.5rem] text-center font-semibold text-white"
                 onClick={handleStartChat}
                 text="채팅하기"
               ></Button>
