@@ -382,8 +382,9 @@ export default function ClientMessageComponent() {
                     <div
                       key={message.id}
                       className={`mb-4 flex ${message.sender_id === user.id ? "justify-end" : "justify-start"}`}
+                      style={{ flexShrink: 0 }}
                     >
-                      <div className="flex items-end">
+                      <div className="flex max-w-[60%] items-end">
                         {message.sender_id === user.id && (
                           <span className="mr-2 text-xs text-gray-500">
                             {new Date(message.created_at).toLocaleTimeString([], {
@@ -399,6 +400,9 @@ export default function ClientMessageComponent() {
                               ? "rounded-bl-2xl rounded-br-none rounded-tl-2xl rounded-tr-2xl bg-mainColor text-white"
                               : "rounded-bl-2xl rounded-br-2xl rounded-tl-none rounded-tr-2xl bg-gray-200 text-black"
                           }`}
+                          style={{
+                            wordBreak: "break-word"
+                          }}
                         >
                           {message.image_url && (
                             <div className="mb-2">

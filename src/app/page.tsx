@@ -12,7 +12,7 @@ export default function Home() {
   const AnimalSLIDE_COUNT = 7;
   const AnimalSLIDES = Array.from(Array(AnimalSLIDE_COUNT).keys());
 
-  const MateOPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
+  const MateOPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 0 };
   const MateSLIDE_COUNT = 5;
   const MateSLIDES = Array.from(Array(MateSLIDE_COUNT).keys());
 

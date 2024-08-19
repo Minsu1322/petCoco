@@ -4,10 +4,10 @@ import Autoplay from "embla-carousel-autoplay";
 import styles from "./styles/AnimalCarousel.module.css";
 import { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
 import { usePrevNextButtons } from "./components/AnimalCarouselArrowButtons";
-import { useDotButton } from "./components/AnimalCarouselDotButtons";
+import { DotButton, useDotButton } from "./components/AnimalCarouselDotButtons";
 import { useQuery } from "@tanstack/react-query";
 import LoadingComponent from "../loadingComponents/Loading";
-
+import Image from "next/image";
 type AnimalData = {
   age: string;
   careAddr: string;
@@ -30,10 +30,31 @@ type AnimalCarouselProps = {
 
 const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
   const [animalType, setAnimalType] = useState<"dog" | "cat">("dog");
+  const [selectedRegion, setSelectedRegion] = useState<string>("6110000");
+
+  const regions = [
+    { orgCd: "6110000", orgdownNm: "서울특별시" },
+    { orgCd: "6260000", orgdownNm: "부산광역시" },
+    { orgCd: "6270000", orgdownNm: "대구광역시" },
+    { orgCd: "6280000", orgdownNm: "인천광역시" },
+    { orgCd: "6290000", orgdownNm: "광주광역시" },
+    { orgCd: "5690000", orgdownNm: "세종특별자치시" },
+    { orgCd: "6300000", orgdownNm: "대전광역시" },
+    { orgCd: "6310000", orgdownNm: "울산광역시" },
+    { orgCd: "6410000", orgdownNm: "경기도" },
+    { orgCd: "6530000", orgdownNm: "강원특별자치도" },
+    { orgCd: "6430000", orgdownNm: "충청북도" },
+    { orgCd: "6440000", orgdownNm: "충청남도" },
+    { orgCd: "6540000", orgdownNm: "전북특별자치도" },
+    { orgCd: "6460000", orgdownNm: "전라남도" },
+    { orgCd: "6470000", orgdownNm: "경상북도" },
+    { orgCd: "6480000", orgdownNm: "경상남도" },
+    { orgCd: "6500000", orgdownNm: "제주특별자치도" }
+  ];
 
   const fetchAnimalData = async () => {
     try {
-      const response = await fetch(`/api/mainPage?type=${animalType}`);
+      const response = await fetch(`/api/mainPage?type=${animalType}&region=${selectedRegion}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -50,7 +71,7 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
     isLoading,
     error
   } = useQuery({
-    queryKey: [animalType],
+    queryKey: [animalType, selectedRegion],
     queryFn: fetchAnimalData
   });
 
@@ -63,17 +84,7 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
   const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false });
   const [emblaRef, emblaApi] = useEmblaCarousel(options, [autoplay]);
 
-  const onNavButtonClick = useCallback((emblaApi: EmblaCarouselType) => {
-    const autoplay = emblaApi?.plugins()?.autoplay;
-    if (!autoplay) return;
-    autoplay.reset();
-  }, []);
-
-  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi, onNavButtonClick);
-  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(
-    emblaApi,
-    onNavButtonClick
-  );
+  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
 
   useEffect(() => {
     if (emblaApi) {
@@ -89,59 +100,83 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
   if (error) return <div className="py-8 text-center text-red-500">Error: {(error as Error).message}</div>;
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <h2 className="p-4 pb-2 text-xl font-bold text-[#e67e6c] hover:underline">가족을 기다리고 있어요!</h2>
-      <div className={styles.toggleContainer}>
+    <div className="mx-auto max-w-6xl">
+      <h2 className="p-4 pb-2 text-2xl font-bold text-[#e67e6c]">가족을 기다리고 있어요!</h2>
+      <div className="mb-4 mt-2 flex justify-center space-x-4 whitespace-nowrap px-3">
         <button
-          className={`${styles.toggleButton} ${animalType === "dog" ? styles.active : ""}`}
+          className={`rounded-full border px-10 py-2 text-lg font-semibold transition-all duration-300 ${
+            animalType === "dog"
+              ? "border-[#7FA6EE] bg-[rgba(177,208,255,0.30)] font-semibold text-[#7FA6EE]"
+              : "border-[#7FA6EE] bg-white text-gray-700"
+          }`}
           onClick={() => setAnimalType("dog")}
         >
           🐶 강아지
         </button>
         <button
-          className={`${styles.toggleButton} ${animalType === "cat" ? styles.active : ""}`}
+          className={`rounded-full border px-10 py-2 text-lg font-semibold transition-all duration-300 ${
+            animalType === "cat"
+              ? "border-[#11BBB0] bg-[rgba(17,187,176,0.10)] font-semibold text-[#11BBB0]"
+              : "border-[#11BBB0] bg-white text-gray-700"
+          }`}
           onClick={() => setAnimalType("cat")}
         >
           😺 고양이
         </button>
       </div>
 
-      <div className={styles.toggleContainer}></div>
+      <div className="mb-2 px-4">
+        <select
+          value={selectedRegion}
+          onChange={(e) => setSelectedRegion(e.target.value)}
+          className="w-full rounded-2xl border border-gray-300 p-2"
+        >
+          {regions.map((region) => (
+            <option key={region.orgCd} value={region.orgCd}>
+              {region.orgdownNm}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="relative w-full overflow-hidden">
-        <div className={`${styles.embla} ${styles.shrink} w-full`}>
+        <div className={`${styles.embla} w-full`}>
           <div className={`${styles.embla__viewport} w-full`} ref={emblaRef}>
             <div className={`${styles.embla__container} flex`}>
               {randomAnimals.map((animal, index) => (
                 <div className={`${styles.embla__slide} w-full flex-shrink-0`} key={index}>
-                  <div className="m-2 rounded-lg bg-white p-3 shadow-md">
-                    <h2 className="mb-1 text-center text-base font-semibold">{animal.careAddr}</h2>
-                    <div className="mb-1 flex justify-center text-xs">
-                      <span className="font-medium">{animal.careNm} 📞</span>
-                      <span>{animal.officetel}</span>
-                    </div>
+                  <div className="m-2 rounded-lg bg-white p-2 shadow-md">
+                    <h2 className="text-14 mb-1 text-base font-semibold">
+                      {animal.careNm}(📞{animal.officetel})
+                    </h2>
+                    <p className="text-12 mb-4 truncate font-normal">{animal.careAddr}</p>
                     <div className="flex">
-                      <img src={animal.popfile} alt={animal.kindCd} className="h-32 w-1/2 rounded-lg object-cover" />
-                      <div className="w-1/2 space-y-0.5 pl-2 text-xs">
-                        <p>
-                          <span className="font-medium">나이:</span> {animal.age}
+                      <Image
+                        src={animal.popfile}
+                        alt={animal.kindCd}
+                        width={128}
+                        height={128}
+                        style={{ width: "128px", height: "128px" }}
+                        className="rounded-lg object-cover"
+                      />
+                      <div className="ml-4 space-y-1">
+                        <p className="text-14 font-normal">
+                          <span className="font-medium">이름:</span> {animal.kindCd}
                         </p>
-                        <p>
-                          <span className="font-medium">색상:</span> {animal.colorCd}
-                        </p>
-                        <p>
-                          <span className="font-medium">중성화:</span> {animal.neuterYn === "Y" ? "예" : "아니오"}
-                        </p>
-                        <p>
+                        <p className="text-14 font-normal">
                           <span className="font-medium">성별:</span> {animal.sexCd === "M" ? "수컷" : "암컷"}
                         </p>
-                        <p>
+                        <p className="text-14 font-normal">
+                          <span className="font-medium">나이:</span> {animal.age}
+                        </p>
+                        <p className="text-14 font-normal">
+                          <span className="font-medium">색상:</span> {animal.colorCd}
+                        </p>
+                        <p className="text-14 font-normal">
                           <span className="font-medium">체중:</span> {animal.weight}
                         </p>
                       </div>
                     </div>
-                    <p className="mt-1 text-xs">
-                      <span className="font-medium">특징:</span> {animal.specialMark}
-                    </p>
                   </div>
                 </div>
               ))}
