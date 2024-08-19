@@ -8,6 +8,7 @@ import Image from "next/image";
 import { getTimeDifference } from "@/app/utils/getTimeDifference";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import LoadingComponent from "../loadingComponents/Loading";
 
 const supabase = createClient();
 
@@ -151,10 +152,34 @@ export default function ClientMessageListComponent() {
     checkUser();
   }, [router, setUser]);
 
-  if (isUserLoading) return <div className="p-4 text-center">사용자 정보를 불러오는 중...</div>;
-  if (!user) return <div className="p-4 text-center">로그인이 필요합니다.</div>;
-  if (isLoading) return <div className="p-4 text-center">메시지를 불러오는 중...</div>;
-  if (error) return <div className="p-4 text-center">메시지를 불러오는 중 오류가 발생했습니다.</div>;
+  if (isUserLoading)
+    return (
+      <div className="p-4 text-center">
+        <LoadingComponent />
+        사용자 정보를 불러오는 중...
+      </div>
+    );
+  if (!user)
+    return (
+      <div className="p-4 text-center">
+        <LoadingComponent />
+        로그인이 필요합니다.
+      </div>
+    );
+  if (isLoading)
+    return (
+      <div className="p-4 text-center">
+        <LoadingComponent />
+        메시지를 불러오는 중...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="p-4 text-center">
+        <LoadingComponent />
+        메시지를 불러오는 중 오류가 발생했습니다.
+      </div>
+    );
 
   return (
     <div className="flex h-screen w-full flex-col bg-white">
