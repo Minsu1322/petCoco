@@ -21,7 +21,7 @@ const categoryStyles: { [key: string]: string } = {
 
 const LikePosts: React.FC<MainPageRecentPostsProps> = ({ postCount }) => {
   const { data, isLoading, error } = useQuery<PostsResponse, Error>({
-    queryKey: ["posts"],
+    queryKey: ["likeposts"],
     queryFn: fetchPostsByLikes
   });
 
