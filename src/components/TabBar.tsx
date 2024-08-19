@@ -19,7 +19,7 @@ const TabBar: React.FC = () => {
     return pathname === path ? "#8E6EE8" : "#292826";
   };
 
-  return pathname === "/message" ? (
+  return pathname === "/message" || "/message/list" ? (
     <></>
   ) : (
     <div className="fixed bottom-0 z-50 w-full max-w-[420px] border border-t-bgGray500 bg-white bg-opacity-80 px-2 pb-[0.7rem] pt-[0.3rem]">
@@ -69,7 +69,7 @@ const TabBar: React.FC = () => {
           </div>
         </Link>
 
-        <Link href="/message" passHref>
+        <Link href="/message/list" passHref>
           <div className="flex flex-col items-center justify-center gap-y-[0.2rem]">
             <Image
               src={getImageSrc("/message", "/assets/svg/chat(message).svg", "/assets/svg/Activechat(message).svg")}
