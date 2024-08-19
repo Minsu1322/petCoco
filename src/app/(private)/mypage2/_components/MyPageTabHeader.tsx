@@ -53,26 +53,26 @@ const MyPageTabHeader = () => {
   });
 
   return (
-    <div className="border-y border-gray-300">
-      <div className="flex items-center justify-center py-3">
+    <div
+      className={`relative ${
+        isViewingPetProfile
+          ? "before:absolute before:bottom-0 before:left-0 before:z-10 before:w-1/2 before:border-[2px] before:border-b-2 before:border-[#D2CDF6] before:content-['']"
+          : "after:absolute after:bottom-0 after:right-0 after:z-10 after:w-1/2 after:border-[2px] after:border-b-2 after:border-[#D2CDF6] after:content-['']"
+      }`}
+    >
+      <div className="flex items-center justify-around py-3">
         {pets && pets.length ? (
           <Link href={`/mypage2/${id}/fixMyPetProfile/${pets?.[0]?.id || ""}`}>
-            <span className={`cursor-pointer px-4 ${isViewingPetProfile ? "font-bold" : "text-gray-600"}`}>
-              동물 프로필
-            </span>
+            <span className={`cursor-pointer ${isViewingPetProfile ? "font-bold" : "text-gray-600"}`}>동물 프로필</span>
           </Link>
         ) : (
           <Link href={`/mypage2/${id}/addMyPetProfile`}>
-            <span className={`cursor-pointer px-4 ${isViewingPetProfile ? "font-bold" : "text-gray-600"}`}>
-              동물 프로필
-            </span>
+            <span className={`cursor-pointer ${isViewingPetProfile ? "font-bold" : "text-gray-600"}`}>동물 프로필</span>
           </Link>
         )}
-        <div className="h-6 w-px bg-gray-300"></div>
+
         <Link href={`/mypage2/${id}/fixMyProfile`}>
-          <span className={`cursor-pointer px-4 ${!isViewingPetProfile ? "font-bold" : "text-gray-600"}`}>
-            내 프로필
-          </span>
+          <span className={`cursor-pointer ${!isViewingPetProfile ? "font-bold" : "text-gray-600"}`}>내 프로필</span>
         </Link>
       </div>
     </div>
