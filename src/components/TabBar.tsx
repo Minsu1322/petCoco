@@ -31,6 +31,7 @@ const TabBar: React.FC = () => {
               alt="홈"
               width={24}
               height={24}
+              priority
             />
             <p className="text-center text-[0.61863rem]" style={{ color: getTextColor("/") }}>
               홈
@@ -45,6 +46,7 @@ const TabBar: React.FC = () => {
               alt="커뮤니티"
               width={24}
               height={24}
+              priority
             />
             <p className="text-center text-[0.61863rem]" style={{ color: getTextColor("/community2") }}>
               커뮤니티
@@ -59,6 +61,7 @@ const TabBar: React.FC = () => {
               alt="산책 메이트"
               width={24}
               height={24}
+              priority
             />
             <p className="text-center text-[0.61863rem]" style={{ color: getTextColor("/mate") }}>
               산책 메이트
@@ -73,6 +76,7 @@ const TabBar: React.FC = () => {
               alt="채팅"
               width={24}
               height={24}
+              priority
             />
             <p className="text-center text-[0.61863rem]" style={{ color: getTextColor("/message") }}>
               채팅
@@ -87,6 +91,7 @@ const TabBar: React.FC = () => {
               alt="마이페이지"
               width={24}
               height={24}
+              priority
             />
             <p className="text-center text-[0.61863rem]" style={{ color: getTextColor(`/mypage2/${user?.id}`) }}>
               마이페이지
