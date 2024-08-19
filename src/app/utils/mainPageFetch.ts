@@ -14,3 +14,11 @@ export const fetchPosts = async () => {
   }
   return response.json();
 };
+
+export const fetchPostsByLikes = async () => {
+  const response = await fetch("/api/sortByLikes?page=1&limit=10");
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+};

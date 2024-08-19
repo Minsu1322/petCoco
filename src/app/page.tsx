@@ -6,6 +6,7 @@ import RecentPosts from "@/components/community/CommunityMain";
 import Link from "next/link";
 import BannerCarousel from "./../components/bannerCarousel/BannerCarousel";
 import { BannerImages } from "./utils/Banner";
+import LikePosts from "@/components/community/CommunityMainSortLike";
 
 export default function Home() {
   const AnimalOPTIONS: EmblaOptionsType = { align: "center", dragFree: true, loop: true, startIndex: 2 };
@@ -28,6 +29,21 @@ export default function Home() {
 
       {/* 게시글 영역 */}
       <div className="mb-4 flex w-full flex-col bg-background px-2">
+        {/* 인기글 */}
+        <div className="mt-6 w-full rounded-xl bg-white p-4">
+          <div>
+            <h2 className="text-xl font-bold text-[#8E6EE8] hover:underline">지금 가장 인기 있는 글</h2>
+          </div>
+
+          <LikePosts postCount={5} />
+
+          <div className="border-t border-gray-200 py-3">
+            <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community2`}>
+              <h2 className="text-center text-lg text-gray-400 hover:underline">{`커뮤니티 더보기 >`}</h2>
+            </Link>
+          </div>
+        </div>
+
         {/* 자유게시판 */}
         <div className="mt-6 w-full rounded-xl bg-white p-4">
           <div>
