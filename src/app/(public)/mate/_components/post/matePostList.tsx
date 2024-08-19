@@ -29,7 +29,7 @@ interface MatePostListProps {
     weight: string | null;
     regions: string | null;
     times: string | null;
-    neutered: string | null;
+    neutralized: string | null;
   };
 }
 
@@ -126,7 +126,8 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
 
   if (isPending) {
     return (
-      <div className="flex items-center justify-center w-full h-full mt-[30%]">
+      <div className="flex items-center justify-center w-full h-full mt-[30%] flex-col">
+        <div>사용자의 위치를 계산하는 중입니다 🐶</div>
         <LoadingComponent />
       </div>
     );

@@ -17,28 +17,28 @@ const NeuteredFilter = ({ onSelect, selectedNeutered, setSelectedNeutered }: Neu
   };
 
   return (
-    <div className="w-full mb-[1.5rem]">
+    <div className="w-full mb-[1.5rem] ">
       <p className="mb-[0.69rem] text-[1rem] font-[400]">중성화 여부</p> 
     
-    <div className="flex justify-between">
+    <div className="flex gap-x-[1rem]">
       <div
-        className={`px-[1.66rem]  py-[1rem] rounded-[1rem] text-[1rem] text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
-          selectedNeutered === "true" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
+        className={`px-[1.66rem]  py-[1rem] flex justify-center rounded-[1rem] text-[1rem] w-full text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
+          selectedNeutered === "YES" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
-        onClick={() => handleSelect("true")}
+        onClick={() => handleSelect("YES")}
       >
         했어요 
       </div>
       <div
-        className={`px-[1.25rem] py-[1rem] rounded-[1rem] text-[1rem] text-[#999]  font-[500] tracking-[0.0125rem] cursor-pointer ${
-          selectedNeutered === "false" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
+        className={`px-[1.25rem] py-[1rem] flex justify-center rounded-[1rem] text-[1rem] w-full text-[#999]  font-[500] tracking-[0.0125rem] cursor-pointer ${
+          selectedNeutered === "NO" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
-        onClick={() => handleSelect("false")}
+        onClick={() => handleSelect("NO")}
       >
         안 했어요
       </div>
       <div
-        className={`px-[1.25rem] py-[1rem] rounded-[1rem] text-[1rem] text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
+        className={`px-[1.25rem] py-[1rem] flex justify-center rounded-[1rem] text-[1rem]  w-full text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
           selectedNeutered === "all" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
         onClick={() => handleSelect("all")}

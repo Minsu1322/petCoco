@@ -1,6 +1,6 @@
 "use client";
 
-import { MateNextPostType, MatePostAllType } from "@/types/mate.type";
+import { MateNextPostType, MatePostAllType, Pets } from "@/types/mate.type";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -13,11 +13,11 @@ import { getConvertDate } from "../../_components/getConvertDate";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
 import Swal from "sweetalert2";
-import Button from "@/components/Button";
 
 import { UserPetWithUsersType } from "@/types/usersPet.type";
 import { PostgrestError } from "@supabase/supabase-js";
 import DetailView from "./detailView";
+import PetForm from "../../_components/post/petForm";
 
 interface DetailMatePostProps {
   post: MatePostAllType;
@@ -48,16 +48,14 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     location: post.location || ""
   };
 
-  // const initialPetState: matepostpetsType = {
-  //   male_female: "",
-  //   neutered: null,
-  //   weight: "",
-  //   characteristics: "",
-  //   age: ""
-  // };
+  const initialPetState: Pets = {
+    userId,
+    pet_id: []
+  };
+
 
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id" | "position">>(initialState);
-  // const [formPets, setFormPets] = useState<matepostpetsType[]>([initialPetState]);
+  const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
   const [isEditing, setIstEditting] = useState<boolean>(false);
 
@@ -248,7 +246,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       setIstEditting(false);
     },
     onSettled: () => {
-      // 뮤테이션 완료 후 쿼리 무효화 및 리페치
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
     },
   });
@@ -257,11 +254,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     mutationFn: (id: string) => togglePost(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-      // Swal.fire({
-      //   title: "완료!",
-      //   text: "모집 상태가 변경되었습니다",
-      //   icon: "success"
-      // });
     }
   });
 
@@ -283,7 +275,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // 폼 제출 기본 동작 방지
+    e.preventDefault(); 
     editMutation.mutate(post.id);
   };
 
@@ -319,60 +311,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       isLoading: false
     });
   };
-
-  // const startChat = async () => {
-  //   if (!user) {
-  //     // alert("로그인이 필요합니다.");
-  //     Swal.fire({
-  //       title: "로그인이 필요합니다!",
-  //       text: "1:1 대화를 하려면 로그인이 필요합니다.",
-  //       icon: "warning"
-  //     });
-  //     router.replace("/signin");
-  //     return;
-  //   }
-
-  //   try {
-  //     // 채팅방이 이미 존재하는지 확인
-  //     const { data: existingChat, error: chatError } = await supabase
-  //       .from("messages")
-  //       .select("*")
-  //       .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
-  //       .or(`sender_id.eq.${post.user_id},receiver_id.eq.${post.user_id}`)
-  //       .limit(1);
-
-  //     if (chatError) throw chatError;
-
-  //     if (existingChat && existingChat.length > 0) {
-  //       // 이미 채팅방이 존재하면 해당 채팅방으로 이동
-  //       router.push(`/message?selectedUser=${post.user_id}`);
-  //     } else {
-  //       // 새로운 채팅방 생성
-  //       const { error: insertError } = await supabase.from("messages").insert([
-  //         {
-  //           sender_id: user.id,
-  //           receiver_id: post.user_id,
-  //           content: "채팅이 시작되었습니다."
-  //         }
-  //       ]);
-
-  //       if (insertError) throw insertError;
-
-  //       // 새로 생성된 채팅방으로 이동
-  //       router.push(`/message?selectedUser=${post.user_id}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("채팅 시작 오류:", error);
-  //     // alert("채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.");
-  //     Swal.fire({
-  //       title: "채팅 시작 오류",
-  //       text: "채팅을 시작하는 데 문제가 발생했습니다. 다시 시도해 주세요.",
-  //       icon: "warning"
-  //     });
-  //   }
-  // };
-
-  // console.log(updatePost)
 
   return (
     <div className="container min-h-screen">
@@ -464,7 +402,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
           {/* 한마디 */}
           <div className="mb-[1rem] mt-[1.06rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
             <label htmlFor="content" className="text-[1rem] font-[600]">
-              한 마디
+              내용
             </label>
             <textarea
               value={formPosts.content || ""}
@@ -473,10 +411,11 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             혹은 특별한 요구 사항이 있다면 적어주세요."
               className="h-[6.0625rem] w-full resize-none rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
               id="content"
-              maxLength={200}
+              maxLength={199}
             ></textarea>
-            <p className="flex justify-end text-subTitle2">0/200</p>
+            <p className="flex justify-end text-subTitle2">200자 이내</p>
           </div>
+          <PetForm setFormPets={setFormPets} userId={userId} />
           <div className="mb-[2rem] mt-[2rem] flex flex-col gap-y-[0.5rem]">
             <div className="flex w-full items-center justify-center px-[1.5rem]">
               <button
