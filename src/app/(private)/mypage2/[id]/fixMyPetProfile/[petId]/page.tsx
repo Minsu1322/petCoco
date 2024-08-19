@@ -311,7 +311,7 @@ const FixMyPetProfile = () => {
       <div className="flex w-full flex-col px-3 py-3">
         <div className="mt-[27px] flex flex-col items-center justify-center">
           <Image
-            className="h-[100px] w-[100px] rounded-xl bg-lime-300 object-cover"
+            className="h-[100px] w-[100px] rounded-xl object-cover"
             width={100}
             height={100}
             src={previewImage || defaultPetImg}
