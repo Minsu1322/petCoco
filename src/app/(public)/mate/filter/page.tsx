@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Male_femaleFilter from "../_components/button/male_femaleFilter";
 import NeuteredFilter from "../_components/button/neuteredFilter";
+import { useFilterStore } from '@/zustand/useFilterStore';
 
 // interface PostItemFilterTabProps {
 //   updateFilter: (filterName: string, value: any) => void;
@@ -31,26 +32,31 @@ export type Filters = {
   weight: string | null;
   regions: string | null;
   times: string | null;
-  neutered: string | null;
+  neutralized: string | null;
 };
 
 const FilterPage = () => {
-  const [filters, setFilters] = useState<Filters>({
-    gender: null,
-    age: null,
-    date_time: undefined,
-    male_female: null,
-    weight: null,
-    regions: null,
-    times: null,
-    neutered: null
-  });
+  
+  // const [filters, setFilters] = useState<Filters>(() => {
+  //   // URL 파라미터에서 초기 필터 값을 읽어옵니다
+  //   return {
+  //     gender: searchParams.get('gender') || null,
+  //     age: searchParams.get('age') || null,
+  //     date_time: searchParams.get('date_time') || undefined,
+  //     male_female: searchParams.get('male_female') || null,
+  //     weight: searchParams.get('weight') || null,
+  //     regions: searchParams.get('regions') || null,
+  //     times: searchParams.get('times') || null,
+  //     neutered: searchParams.get('neutered') || null,
+  //   };
+  // });
+  const { filters, setFilters } = useFilterStore();
   const [selectedGender, setSelectedGender] = useState<string | null>(null);
   const [selectedNeutered, setSelectedNeutered] = useState<string | null>(null);
 
   const router = useRouter();
 
-  const updateFilter = (filterName: string, value: string) => {
+  const updateFilter = (filterName: keyof Filters, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [filterName]: value
@@ -79,7 +85,7 @@ const FilterPage = () => {
       weight: null,
       regions: null,
       times: null,
-      neutered: null
+      neutralized: null
     });
     setSelectedGender(null);
     setSelectedNeutered(null);
@@ -91,7 +97,7 @@ const FilterPage = () => {
 
   return (
     <div>
-      <div className="mx-auto max-w-[420px]">
+      <div className="mx-auto max-w-[420px] min-h-screen">
         <p className="ml-[1rem] mt-[1rem] text-[1.5rem] font-[600]">산책 메이트 상세 필터</p>
         <div className="w-full px-[1.5rem]">
           <FilterSelectChip
@@ -126,7 +132,7 @@ const FilterPage = () => {
         </div>
         <p className="ml-[1rem] mt-[3.38rem] text-[1.5rem] font-[600]">반려견 정보 필터</p>
         <div className="mt-5 px-[1.5rem]">
-          {/* <Male_femaleFilter
+          <Male_femaleFilter
             selectedGender={selectedGender}
             setSelectedGender={setSelectedGender}
             onSelect={(items) => updateFilter("male_female", items)}
@@ -134,14 +140,14 @@ const FilterPage = () => {
           <NeuteredFilter
             selectedNeutered={selectedNeutered}
             setSelectedNeutered={setSelectedNeutered}
-            onSelect={(items) => updateFilter("neutered", items)}
+            onSelect={(items) => updateFilter("neutralized", items)}
           />
           <FilterWeightChip
             label="몸무게"
             selected={filters.weight}
             onSelect={(items) => updateFilter("weight", items)}
-          /> */}
-          <div>기능 구현 중입니다! </div>
+          /> 
+          {/* <div>기능 구현 중입니다! /</div> */}
         </div>
         <div className="mb-[6.63rem] mt-[3.63rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
           <Button

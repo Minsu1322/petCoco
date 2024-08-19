@@ -16,7 +16,7 @@ interface PostItemFilterTabProps {
     weight: string | null;
     regions: string | null;
     times: string | null;
-    neutered: string | null;
+    neutralized: string | null;
   };
   onClick: () => void;
 }

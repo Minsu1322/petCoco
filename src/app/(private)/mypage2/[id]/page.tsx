@@ -65,24 +65,6 @@ function MyPage() {
     queryFn: getPetData
   });
 
-<<<<<<< HEAD
-  const { data: myMate } = useQuery<MatePostType[]>({
-    queryKey: ["myMate", id],
-    queryFn: async () => {
-      const response = await fetch(`/api/mate/my/${id}`);
-      const data = response.json();
-      return data;
-    },
-    enabled: !!id
-  });
-
-  if (!id) {
-    return;
-  } else {
-    const recruitingTrueCount = myMate?.filter((post) => post.recruiting === true).length || 0;
-    const recruitingFalseCount = myMate?.filter((post) => post.recruiting === false).length || 0;
-  }
-=======
   // const { data: myMate } = useQuery<MatePostType[]>({
   //   queryKey: ["myMate", id],
   //   queryFn: async () => {
@@ -101,7 +83,6 @@ function MyPage() {
       router.push(`/signin`);
     }
   }, [id]);
->>>>>>> dev
 
   if (isPending || isPetPending) {
     return (
