@@ -116,7 +116,6 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
         </div>
       </div>
 
-      {/* 채팅하기 버튼 */}
     </div>
   );
 };
