@@ -9,6 +9,7 @@ const LoadingComponent = () => {
         width={48}
         height={48}
         className="animate-spin drop-shadow-[0_0_10px_#8E6EE8]"
+        priority
       />
     </div>
   );

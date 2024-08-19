@@ -1,19 +1,20 @@
 import { createClient } from "@/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const GET = async (request: NextRequest) => {
   const supabase = createClient();
-  const { id } = params;
+  const url = new URL(request.url);
+  const ids = url.searchParams.get('ids')?.split(',') || [];
+
+  if (ids.length === 0) {
+    return NextResponse.json({ error: "ids are required" }, { status: 400 });
+  }
 
   try { 
     const { data, error } = await supabase
-    .from("usersPet")
-    .select("*")
-    .eq("id", id); 
-
-    if (!id) {
-      return NextResponse.json({ error: "id is required" }, { status: 400 });
-    }
+      .from("usersPet")
+      .select("*")
+      .in("id", ids);
 
     if (error) {
       throw new Error(error.message);
@@ -23,5 +24,4 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
     return NextResponse.json({ error: "데이터를 가져오는 데 실패했습니다." }, { status: 500 });
   }
-
 }

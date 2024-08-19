@@ -112,7 +112,7 @@ const DetailView = ({
                 />
               </div>
               <Button
-                className="mt-[0.56rem] flex flex-shrink-0 cursor-pointer flex-col items-center justify-center whitespace-nowrap rounded-full bg-mainColor px-[0.81rem] py-[0.19rem] text-[0.85rem] text-white"
+                className="mt-[0.56rem] flex flex-shrink-0 cursor-pointer flex-col items-center justify-center whitespace-nowrap rounded-full bg-mainColor px-[0.71rem] py-[0.19rem] text-[0.85rem] text-white"
                 onClick={handleStartChat}
                 text="채팅하기"
               ></Button>
@@ -168,11 +168,11 @@ const DetailView = ({
           {/* <div className="flex gap-x-[1rem] overflow-x-auto whitespace-nowrap scrollbar-hide "> 
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
         </div> */}
-          <div className="mb-[5.95rem] mt-[0.5rem]">
-            {/* {post.matepostpets && post.matepostpets.length > 0 && (
+          <div className="mb-[5.95rem] mt-[0.75rem]">
+            {post.matepostpets && post.matepostpets.length > 0 && (
               <PetCarousel pets={post.matepostpets} slides={SLIDES} options={OPTIONS} />
-            )} */}
-            <p className="ml-[0.75rem] text-gray-500">기능 구현 중입니다-!</p>
+            )}
+            {/* <p className="ml-[0.75rem] text-gray-500">기능 구현 중입니다-!</p> */}
           </div>
         </div>
       </div>
