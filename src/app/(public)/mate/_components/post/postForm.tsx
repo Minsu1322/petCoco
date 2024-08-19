@@ -254,7 +254,7 @@ const PostForm = () => {
             placeholder="선호하는 산책 동선이나 총 예상 산책 시간, 혹은 특별한 요구 사항이 있다면 적어주세요."
             className="h-[6.0625rem] w-full resize-none overflow-x-scroll rounded-[0.5rem] border border-subTitle2 p-[0.75rem] scrollbar-hide"
             id="content"
-            maxLength={200}
+            maxLength={199}
           ></textarea>
           <p className="flex justify-end text-subTitle2">200자 이내</p>
         </div>
