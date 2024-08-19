@@ -65,12 +65,11 @@ function MyPage() {
     queryFn: getPetData
   });
 
-<<<<<<< HEAD
-  const { data: myMate } = useQuery<MatePostType[]>({
+  const { data: myMate = [] } = useQuery<MatePostType[]>({
     queryKey: ["myMate", id],
     queryFn: async () => {
       const response = await fetch(`/api/mate/my/${id}`);
-      const data = response.json();
+      const data = await response.json();
       return data;
     },
     enabled: !!id
@@ -78,20 +77,7 @@ function MyPage() {
 
   const recruitingTrueCount = Array.isArray(myMate) ? myMate.filter((post) => post.recruiting === true).length : 0;
   const recruitingFalseCount = Array.isArray(myMate) ? myMate.filter((post) => post.recruiting === false).length : 0;
-=======
-  // const { data: myMate } = useQuery<MatePostType[]>({
-  //   queryKey: ["myMate", id],
-  //   queryFn: async () => {
-  //     const response = await fetch(`/api/mate/my/${id}`);
-  //     const data = response.json();
-  //     return data;
-  //   },
-  //   enabled: !!id
-  // });
-
-  // const recruitingTrueCount = myMate?.filter((post) => post.recruiting === true).length || 0;
-  // const recruitingFalseCount = myMate?.filter((post) => post.recruiting === false).length || 0;
->>>>>>> dev
+  const totalCount = Array.isArray(myMate) ? myMate.length : 0;
 
   useEffect(() => {
     if (!id) {
@@ -168,26 +154,24 @@ function MyPage() {
         <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 산책</div>
       </div>
 
-      {myMate && myMate.length > 0 && (
-        <div className="border-b-1 px-[14px] py-4">
-          <div>
-            <div className="flex items-center justify-center rounded-lg bg-[#D2CDF6]">
-              <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold text-[#222225]">
-                {recruitingFalseCount}
-                <div className="items-center whitespace-nowrap font-normal leading-tight">산책 완료</div>
-              </div>
-              <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold">
-                {recruitingTrueCount}
-                <div className="items-center whitespace-nowrap font-normal leading-tight">산책 예정</div>
-              </div>
-              <div className="flex flex-col items-center px-5 py-5 font-bold">
-                {myMate?.length}
-                <div className="items-center whitespace-nowrap font-normal leading-tight">기록 완료</div>
-              </div>
+      <div className="border-b-1 px-[14px] py-4">
+        <div>
+          <div className="flex items-center justify-center rounded-lg bg-[#D2CDF6]">
+            <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold text-[#222225]">
+              {recruitingFalseCount}
+              <div className="items-center whitespace-nowrap font-normal leading-tight">산책 완료</div>
+            </div>
+            <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold">
+              {recruitingTrueCount}
+              <div className="items-center whitespace-nowrap font-normal leading-tight">산책 예정</div>
+            </div>
+            <div className="flex flex-col items-center px-5 py-5 font-bold">
+              {totalCount}
+              <div className="items-center whitespace-nowrap font-normal leading-tight">기록 완료</div>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       <div className="w-full px-[14px] py-[16px]">
         <div className="flex w-full items-center px-[12px]">
