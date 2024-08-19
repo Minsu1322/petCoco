@@ -13,12 +13,16 @@ import { useEffect } from "react";
 
 import LoadingComponent from "@/components/loadingComponents/Loading";
 import MyPetCarousel from "../MyPetCarousel/MyPetCarousel";
+import startChat from "@/app/utils/startChat";
+import { useAuthStore } from "@/zustand/useAuth";
 
 type PetType = UsersPetType;
 
 function UserInfoPage() {
   const params = useParams();
   const router = useRouter();
+  const { user: MyUsers } = useAuthStore();
+
   let id = params?.id || 0;
   id = id === "undefined" ? 0 : id;
 
@@ -197,6 +201,16 @@ function UserInfoPage() {
             </div>
           </Link>
         </div>
+      </div>
+      <div className="w-full px-[14px] whitespace-nowrap">
+        <button
+          onClick={() => {
+            startChat(user.id, MyUsers, router);
+          }}
+          className="w-full rounded-[0.75rem] bg-[#11BBB0] px-[0.88rem] py-[0.38rem] text-[0.875rem] text-white"
+        >
+          채팅
+        </button>
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import LogoutButton from "../_components/LogoutBtn";
 import LoadingComponent from "@/components/loadingComponents/Loading";
+import { MatePostType } from "@/types/mate.type";
 
 type PetType = UsersPetType;
 
