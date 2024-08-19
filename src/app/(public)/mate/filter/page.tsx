@@ -38,7 +38,6 @@ export type Filters = {
 const FilterPage = () => {
   
   // const [filters, setFilters] = useState<Filters>(() => {
-  //   // URL 파라미터에서 초기 필터 값을 읽어옵니다
   //   return {
   //     gender: searchParams.get('gender') || null,
   //     age: searchParams.get('age') || null,
@@ -133,12 +132,12 @@ const FilterPage = () => {
         <p className="ml-[1rem] mt-[3.38rem] text-[1.5rem] font-[600]">반려견 정보 필터</p>
         <div className="mt-5 px-[1.5rem]">
           <Male_femaleFilter
-            selectedGender={selectedGender}
+            selectedGender={selectedGender || filters.male_female}
             setSelectedGender={setSelectedGender}
             onSelect={(items) => updateFilter("male_female", items)}
           />
           <NeuteredFilter
-            selectedNeutered={selectedNeutered}
+            selectedNeutered={selectedNeutered || filters.neutralized}
             setSelectedNeutered={setSelectedNeutered}
             onSelect={(items) => updateFilter("neutralized", items)}
           />
@@ -147,7 +146,6 @@ const FilterPage = () => {
             selected={filters.weight}
             onSelect={(items) => updateFilter("weight", items)}
           /> 
-          {/* <div>기능 구현 중입니다! /</div> */}
         </div>
         <div className="mb-[6.63rem] mt-[3.63rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
           <Button
