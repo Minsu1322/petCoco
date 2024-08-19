@@ -98,14 +98,25 @@ const MateContent = () => {
     }
     if (user === null) {
       // alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
-      Swal.fire({
-        title: "로그인이 필요합니다!",
-        text: "산책메이트 글쓰기를 위해서는 로그인이 필요합니다",
-        icon: "warning"
-      });
-      router.push("/signin");
-    } 
-  };
+        // Swal.fire({
+        //   title: `로그인이 필요합니다.`,
+        //   showCancelButton: true,
+        //   confirmButtonColor: "mainColor",
+        //   cancelButtonColor: "#c0c0c0",
+        //   confirmButtonText: "삭제하기",
+        //   cancelButtonText: "취소하기",
+        //   customClass: {
+        //     confirmButton: 'swal-confirm-button',
+        //     cancelButton: 'swal-cancel-button',
+        //     title: 'swal-title',
+        //     container: 'swal-container', 
+        //     actions: 'swal2-actions',
+        //   },
+        //   buttonsStyling: false // 기본 스타일링을 비활성화
+        // })
+        router.push("/signin");
+      };
+    };
 
   useEffect(() => {
     const newFilters = { ...filters };
@@ -158,7 +169,7 @@ const MateContent = () => {
           right: "calc(50% - 187.5px + 0.56rem)"
         }}
         onClick={handleLoginCheck}
-      >
+      > 
         <img src="/assets/svg/plus-01.svg" alt="plus icon" />
       </div>
       {/* 하단 탭바 생기면 수정해 bottom, right 위치 수정 필요 */}
