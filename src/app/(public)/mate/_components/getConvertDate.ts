@@ -1,8 +1,5 @@
-export const getConvertDate = (dateString: string | null) => {
-  if (!dateString) return '';
-  if (dateString === "") return "";
-  
-  const date = new Date(dateString);
+export const getConvertDate = () => {  
+  const date = new Date();
   
   // 브라우저의 로컬 시간대로 변환
   const year = date.getFullYear();
