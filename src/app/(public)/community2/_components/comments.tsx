@@ -187,7 +187,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
             <div key={comment.id} className="border-b-1">
               <div className="flex gap-[0.75rem] py-4">
                 {/* 프로필 이미지 */}
-                <div className="flex w-full items-center gap-[0.75rem]">
+                <div className="flex w-full shrink items-center gap-[0.75rem]">
                   {
                     <Image
                       src={
@@ -197,7 +197,7 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
                       alt={comment.users?.nickname}
                       width={50}
                       height={50}
-                      className="h-[1.75rem] w-[1.75rem] rounded-full"
+                      className="h-[1.75rem] w-[1.75rem] rounded-full object-cover"
                     />
                   }
 

@@ -135,78 +135,80 @@ const PostList: React.FC<PostListProps> = ({ selectedCategory, searchTerm, selec
   const allPosts = data?.pages.flatMap((page) => page.data) || [];
   const sortedPosts = sortPosts(allPosts);
   return (
-    <>
-      {/* {data?.data.map((post, index) => ( */}
-      {sortedPosts.map((post, index) => (
-        <div key={post.id}>
-          <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community2/${post.id}`}>
-            <div className="flex w-full items-center gap-[1.06rem] border-b-[1px] py-[0.75rem]">
-              {/* 일상 */}
-              <span
-                className={`whitespace-nowrap rounded-full px-[0.5rem] py-[0.25rem] text-[0.75rem] ${
-                  categoryStyles[post.category] || "bg-gray-200 text-black"
-                }`}
-              >
-                {post.category}
-              </span>
-              {/* <p className="whitespace-nowrap rounded-full bg-yellow-200 px-[0.5rem] py-[0.25rem] text-[0.75rem] text-mainColor">
+    <div className="mx-auto min-h-screen">
+      <div className="w-full">
+        {/* {data?.data.map((post, index) => ( */}
+        {sortedPosts.map((post, index) => (
+          <div key={post.id}>
+            <Link href={`${process.env.NEXT_PUBLIC_SITE_URL}/community2/${post.id}`}>
+              <div className="flex w-full items-center gap-[1.06rem] border-b-[1px] py-[0.75rem]">
+                {/* 일상 */}
+                <span
+                  className={`whitespace-nowrap rounded-full px-[0.5rem] py-[0.25rem] text-[0.75rem] ${
+                    categoryStyles[post.category] || "bg-gray-200 text-black"
+                  }`}
+                >
+                  {post.category}
+                </span>
+                {/* <p className="whitespace-nowrap rounded-full bg-yellow-200 px-[0.5rem] py-[0.25rem] text-[0.75rem] text-mainColor">
                 {post.category}
               </p> */}
 
-              {/* 가운데 내용 */}
-              <div className="w-full">
-                <div className="text-[1rem] leading-6">{post.title}</div>
+                {/* 가운데 내용 */}
+                <div className="w-full">
+                  <div className="text-[1rem] leading-6">{post.title}</div>
 
-                {/* 가운데 내용 아랫줄 */}
-                <div className="flex gap-[0.25rem] text-[0.75rem] text-[#D2CDF6]">
-                  <div className="text-mainColor">{post.users.nickname}</div>
-                  <div className="flex gap-[0.25rem]">
-                    <img src="/assets/svg/comment.svg" />
-                    <div>{post.comments?.length}</div>
-                  </div>
-                  <div className="flex gap-[0.25rem]">
-                    <img src="/assets/svg/heart.svg" />
-                    {/* 게시글 좋아요 개수를 보여주는 부분 */}
-                    <div>{post.likes?.length}</div>
-                    {/* <div>12</div> */}
+                  {/* 가운데 내용 아랫줄 */}
+                  <div className="flex gap-[0.25rem] text-[0.75rem] text-[#D2CDF6]">
+                    <div className="text-mainColor">{post.users.nickname}</div>
+                    <div className="flex gap-[0.25rem]">
+                      <img src="/assets/svg/comment.svg" />
+                      <div>{post.comments?.length}</div>
+                    </div>
+                    <div className="flex gap-[0.25rem]">
+                      <img src="/assets/svg/heart.svg" />
+                      {/* 게시글 좋아요 개수를 보여주는 부분 */}
+                      <div>{post.likes?.length}</div>
+                      {/* <div>12</div> */}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* 이미지 */}
-              <div className="h-[2.75rem] w-[2.75rem] shrink-0">
-                {post?.post_imageURL?.[0] && (
-                  <img
-                    src={post?.post_imageURL[0]}
-                    alt="Post Image"
-                    className="h-full w-full rounded-[0.22rem] bg-blue-200 object-cover"
-                  />
-                )}
+                {/* 이미지 */}
+                <div className="h-[2.75rem] w-[2.75rem] shrink-0">
+                  {post?.post_imageURL?.[0] && (
+                    <img
+                      src={post?.post_imageURL[0]}
+                      alt="Post Image"
+                      className="h-full w-full rounded-[0.22rem] bg-blue-200 object-cover"
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          </Link>
-        </div>
-      ))}
-      <div ref={observerTarget} className="h-10 w-full">
-        {isFetchingNextPage && (
-          <div className="flex justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+            </Link>
           </div>
-        )}
-      </div>
-      <div>
-        <div className="mb-[80px] flex w-full justify-center">
-          <button
-            onClick={scrollToTop}
-            className="fixed bottom-[8rem] flex items-center gap-[0.25rem] rounded-full bg-[#F3F2F2] px-[0.5rem] py-[0.25rem] text-[1rem] text-mainColor shadow-lg"
-          >
-            <p>맨위로</p>
-            <img src="/assets/svg/chevron-left.svg" alt="..." />
-          </button>
+        ))}
+        <div ref={observerTarget} className="h-10 w-full">
+          {isFetchingNextPage && (
+            <div className="flex justify-center">
+              <div className="h-8 w-8 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+            </div>
+          )}
         </div>
-        <PlusIcon handleLoginCheck={handleLoginCheck} />
+        <div>
+          <div className="mb-[80px] flex w-full justify-center">
+            <button
+              onClick={scrollToTop}
+              className="fixed bottom-[8rem] flex items-center gap-[0.25rem] rounded-full bg-[#F3F2F2] px-[0.5rem] py-[0.25rem] text-[1rem] text-mainColor shadow-lg"
+            >
+              <p>맨위로</p>
+              <img src="/assets/svg/chevron-left.svg" alt="..." />
+            </button>
+          </div>
+          <PlusIcon handleLoginCheck={handleLoginCheck} />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

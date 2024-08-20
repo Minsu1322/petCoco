@@ -7,7 +7,6 @@ import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { getTimeDifference } from "@/app/utils/getTimeDifference";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 
