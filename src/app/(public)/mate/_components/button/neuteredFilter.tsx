@@ -22,7 +22,7 @@ const NeuteredFilter = ({ onSelect, selectedNeutered, setSelectedNeutered }: Neu
     
     <div className="flex gap-x-[1rem]">
       <div
-        className={`px-[1.66rem]  py-[1rem] flex justify-center rounded-[1rem] text-[1rem] w-full text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
+        className={`px-[1.66rem]  py-[1rem] flex justify-center whitespace-nowrap rounded-[1rem] text-[1rem] w-full text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
           selectedNeutered === "YES" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
         onClick={() => handleSelect("YES")}
@@ -30,7 +30,7 @@ const NeuteredFilter = ({ onSelect, selectedNeutered, setSelectedNeutered }: Neu
         했어요 
       </div>
       <div
-        className={`px-[1.25rem] py-[1rem] flex justify-center rounded-[1rem] text-[1rem] w-full text-[#999]  font-[500] tracking-[0.0125rem] cursor-pointer ${
+        className={`px-[1.25rem] py-[1rem] flex justify-center whitespace-nowrap rounded-[1rem] text-[1rem] w-full text-[#999]  font-[500] tracking-[0.0125rem] cursor-pointer ${
           selectedNeutered === "NO" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
         onClick={() => handleSelect("NO")}
@@ -38,7 +38,7 @@ const NeuteredFilter = ({ onSelect, selectedNeutered, setSelectedNeutered }: Neu
         안 했어요
       </div>
       <div
-        className={`px-[1.25rem] py-[1rem] flex justify-center rounded-[1rem] text-[1rem]  w-full text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
+        className={`px-[1.25rem] py-[1rem] flex justify-center whitespace-nowrap rounded-[1rem] text-[1rem]  w-full text-[#999] font-[500] tracking-[0.0125rem] cursor-pointer ${
           selectedNeutered === "all" ? 'bg-mainColor text-white ' : 'bg-[#EFEFF0] text-[#999]'
         }`}
         onClick={() => handleSelect("all")}
