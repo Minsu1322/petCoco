@@ -403,8 +403,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
             <textarea
               value={formPosts.content || ""}
               onChange={(e) => setFormPosts({ ...formPosts, content: e.target.value })}
-              placeholder="선호하는 산책 동선이나 총 예상 산책 시간,    
-            혹은 특별한 요구 사항이 있다면 적어주세요."
+              placeholder="선호하는 산책 동선이나 총 예상 산책 시간, 혹은 특별한 요구 사항이 있다면 적어주세요."
               className="h-[6.0625rem] w-full resize-none rounded-[0.5rem] border border-subTitle2 p-[0.75rem]"
               id="content"
               maxLength={199}
