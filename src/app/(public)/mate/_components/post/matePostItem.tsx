@@ -36,7 +36,7 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
 
   return (
     <div className="w-full rounded-[0.75rem] border px-4 py-[0.75rem] shadow-custom">
-      <div onClick={handleLoginCheck} className="flex flex-col">
+      <div className="flex flex-col">
         {/* 첫번째 줄 */}
         <div className="flex items-center justify-between text-[0.625rem] text-[#A9A7A2]">
           <p className="">{post.created_at.split("T")[0]}</p>
@@ -61,14 +61,15 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
                 priority
               />
             </div>
-            <div className="rounded-full border border-mainColor bg-[#EAE3FC]">
-              <p className="whitespace-nowrap px-[0.62rem] py-[0.12rem] text-center text-[0.625rem] text-mainColor">
-                {post.users[0]?.nickname}
-              </p>
-            </div>
+            <Link
+              href={`/userInfo/${post.user_id}`}
+              className="whitespace-nowrap rounded-full border border-mainColor bg-[#EAE3FC] px-[0.62rem] py-[0.12rem] text-center text-[0.625rem] text-mainColor cursor-pointer"
+            >
+              {post.users[0]?.nickname}
+            </Link>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col" onClick={handleLoginCheck}>
             {/* 본문 내용 */}
             <div className="cursor-pointer">
               <div className="flex flex-col">
@@ -77,22 +78,43 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
                 </p>
                 <div className="flex flex-col gap-y-[0.25rem]">
                   <div className="mt-[0.37rem] flex gap-[0.5rem]">
-                    <div className="w-[1.25rem] h-[1.25rem]">
-                     <Image src="/assets/svg/ic_location2.svg" alt="위치 아이콘" width={20} height={20} priority className="w-full h-full object-cover" />
+                    <div className="h-[1.25rem] w-[1.25rem]">
+                      <Image
+                        src="/assets/svg/ic_location2.svg"
+                        alt="위치 아이콘"
+                        width={20}
+                        height={20}
+                        priority
+                        className="h-full w-full object-cover"
+                      />
                     </div>
                     <p className="text-4 w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[#444447]">
                       {post.place_name || ""}
                     </p>
                   </div>
                   <div className="text-4 flex gap-[0.5rem] text-[#444447]">
-                  <div className="w-[1.25rem] h-[1.25rem]">
-                    <Image src="/assets/svg/ic_calendar2.svg" alt="달력 아이콘" width={20} height={20} priority className="w-full h-full object-cover"  />
+                    <div className="h-[1.25rem] w-[1.25rem]">
+                      <Image
+                        src="/assets/svg/ic_calendar2.svg"
+                        alt="달력 아이콘"
+                        width={20}
+                        height={20}
+                        priority
+                        className="h-full w-full object-cover"
+                      />
                     </div>
                     <p className=""> {formatDateTimeContent(post.date_time)} </p>
                   </div>
                   <div className="flex gap-[0.5rem]">
-                  <div className="w-[1.25rem] h-[1.25rem]">
-                    <Image src="/assets/svg/ic_user2.svg" alt="사용자 아이콘" width={20} height={20} priority className="w-full h-full object-cover"  />
+                    <div className="h-[1.25rem] w-[1.25rem]">
+                      <Image
+                        src="/assets/svg/ic_user2.svg"
+                        alt="사용자 아이콘"
+                        width={20}
+                        height={20}
+                        priority
+                        className="h-full w-full object-cover"
+                      />
                     </div>
                     <p className="">{post.members}명 모집</p>
                     <div className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} rounded-full`}>
@@ -115,7 +137,6 @@ const MatePostItem = ({ post }: MatePostItemPorps) => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };

@@ -3,19 +3,12 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
-
-
-// import PostItemFilterTab from "./_components/tab/postItemFilterTab";
-
-import Swal from 'sweetalert2';
-// import Button from "@/components/Button";
 import SearchBar from "@/components/SearchBar";
-
 import PostListFilterTab from "./tab/postListFilterTab";
 import MatePostList from "./post/matePostList";
 import { Filters } from "../filter/page";
-import NeuteredFilter from "../_components/button/neuteredFilter";
 import { useFilterStore } from '@/zustand/useFilterStore';
+import PlusIcon from "@/app/utils/plusIcon";
 
 
 export type PositionData = {
@@ -29,7 +22,6 @@ export type PositionData = {
 
 const MateContent = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  // const [isCurrentPosts, setIstCurrentPosts] = useState<boolean>(true);
   const [activeSearchTerm, setActiveSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState("");
   const defaultSort = "all";
@@ -37,32 +29,7 @@ const MateContent = () => {
   const { user } = useAuthStore();
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const { filters, setFilters } = useFilterStore();
-
-
-  // const [filters, setFilters] = useState<Filters>(() => {
-  //   // URL 파라미터에서 필터 값을 읽어옵니다
-  //   return {
-  //     gender: searchParams.get('gender') || null,
-  //     age: searchParams.get('age') || null,
-  //     date_time: searchParams.get('date_time') || undefined,
-  //     male_female: searchParams.get('male_female') || null,
-  //     weight: searchParams.get('weight') || null,
-  //     regions: searchParams.get('regions') || null,
-  //     times: searchParams.get('times') || null,
-  //     neutered: searchParams.get('neutered') || null,
-  //   };
-  // });
-
-  // console.log('All query params:', searchParams.toString());
-
-  // const updateFilter = (filterName: string, value: string) => {
-  //   setFilters((prevFilters) => ({
-  //     ...prevFilters,
-  //     [filterName]: value
-  //   }));
-  // };
 
   const handleSearchPosts = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,50 +37,17 @@ const MateContent = () => {
     setSearchTerm("");
   };
 
-  // const handleToggleAllPosts = () => setIstCurrentPosts(!isCurrentPosts);
   const handleAllPosts = () => setSortBy("all");
   const handleRecruiting = () => setSortBy("recruiting");
   const handleDateSort = () => setSortBy("recruitment_end");
   const handleDistanceSort = () => setSortBy("distance");
   const handleNewSort = () => setSortBy("new");
 
-  // const handleResetFilter = () => {
-  //   setFilters({
-  //     gender: null,
-  //     age: null,
-  //     date_time: undefined,
-  //     male_female: null,
-  //     weight: null,
-  //     regions: null,
-  //     times: null,
-  //     neutered: null,
-  //   });
-  //   setSortBy("");
-  //   setActiveSearchTerm("");
-  // };
-
   const handleLoginCheck = () => {
     if (user) {
       router.push('/mate/posts')
     }
     if (user === null) {
-      // alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
-        // Swal.fire({
-        //   title: `로그인이 필요합니다.`,
-        //   showCancelButton: true,
-        //   confirmButtonColor: "mainColor",
-        //   cancelButtonColor: "#c0c0c0",
-        //   confirmButtonText: "삭제하기",
-        //   cancelButtonText: "취소하기",
-        //   customClass: {
-        //     confirmButton: 'swal-confirm-button',
-        //     cancelButton: 'swal-cancel-button',
-        //     title: 'swal-title',
-        //     container: 'swal-container', 
-        //     actions: 'swal2-actions',
-        //   },
-        //   buttonsStyling: false // 기본 스타일링을 비활성화
-        // })
         router.push("/signin");
       };
     };
@@ -130,7 +64,6 @@ const MateContent = () => {
 
   return (
     <div className="relative mx-auto min-h-screen max-w-[420px]">
-      {/* <div className="container  min-h-screen"> */}
       <div className="flex w-full">
         {/* 왼쪽 메인 컨텐츠 영역 */}
         <div className="w-full">
@@ -163,7 +96,7 @@ const MateContent = () => {
         {/* <PostItemFilterTab updateFilter={updateFilter} filters={filters} onClick={handleResetFilter} /> */}
         {/* </div> */}
       </div>
-      <div
+      {/* <div
         className="fixed bottom-[6.815rem] z-50 cursor-pointer rounded-full bg-mainColor p-[0.81rem] shadow-plusBtn"
         style={{
           right: "calc(50% - 187.5px + 0.56rem)"
@@ -171,8 +104,8 @@ const MateContent = () => {
         onClick={handleLoginCheck}
       > 
         <img src="/assets/svg/plus-01.svg" alt="plus icon" />
-      </div>
-      {/* 하단 탭바 생기면 수정해 bottom, right 위치 수정 필요 */}
+      </div> */}
+      <PlusIcon handleLoginCheck={handleLoginCheck} />
     </div>
   );
 }

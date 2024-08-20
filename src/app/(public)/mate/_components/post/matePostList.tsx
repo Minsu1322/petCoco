@@ -5,7 +5,6 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getDistanceHaversine } from "../../getDistanceHaversine";
 import LoadingComponent from "@/components/loadingComponents/Loading";
-
 import { MatePostAllTypeForItem, PostsResponse } from "@/types/mate.type";
 
 export type PositionData = {
@@ -35,7 +34,7 @@ interface MatePostListProps {
 
 const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) => {
   const { geoData, setIsUseGeo, setGeoData } = locationStore();
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const observerTarget = useRef<HTMLDivElement>(null);
 
   //console.log(geoData)
@@ -94,7 +93,7 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
     retry: false
   });
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useInfiniteQuery<
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending, isError, error } = useInfiniteQuery<
     PostsResponse,
     Error
   >({
@@ -158,10 +157,10 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
 
   const posts = data?.pages.flatMap((page) => page.data) || [];
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="mt-[30%] flex h-full w-full flex-col items-center justify-center">
-        <div>사용자의 위치를 계산하는 중입니다 🐶</div>
+        <div className="text-mainColor">사용자의 위치를 계산하는 중입니다 🐶</div>
         <LoadingComponent />
       </div>
     );
@@ -169,12 +168,10 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
 
   if (isGeoPending) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <div className="flex flex-col items-center">
-          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
-          <p className="text-lg font-semibold text-mainColor">사용자의 위치를 계산하는 중입니다...</p>
-        </div>
-      </div>
+      <div className="mt-[30%] flex h-full w-full flex-col items-center justify-center">
+      <div className="text-mainColor">사용자의 위치를 계산하는 중입니다 🐶</div>
+      <LoadingComponent />
+    </div>
     );
   }
 
@@ -221,7 +218,7 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
       <div ref={observerTarget} className="h-10 w-full">
         {isFetchingNextPage && (
           <div className="flex justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+            <div className="h-8 w-8 mt-10 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
           </div>
         )}
       </div>

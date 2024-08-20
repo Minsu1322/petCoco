@@ -6,7 +6,7 @@ import { getTimeRange } from "@/app/(public)/mate/getTimeRange";
 
 export type CreateMatePostWithPetsData = {
   post_data: MateNextPostType;
-  pets_data: Pets[];
+  // pets_data: Pets[];
 };
 
 export const GET = async (request: NextRequest) => {
@@ -159,7 +159,7 @@ export const GET = async (request: NextRequest) => {
 
 export const POST = async (request: NextRequest, { params }: { params: { id: string } }) => {
   const supabase = createClient();
-  const { post_data, pets_data }: CreateMatePostWithPetsData = await request.json();
+  const { post_data}: CreateMatePostWithPetsData = await request.json();
 
   //console.log("Received Data:", post_data, pets_data);
 
@@ -173,10 +173,12 @@ export const POST = async (request: NextRequest, { params }: { params: { id: str
 
   try {
     // RPC 함수 호출
-    const { data, error } = await supabase.rpc("create_mate_post_with_pets", {
-      post_data: postDataWithLocation, // JSON 객체로 전달
-      pets_data: pets_data // JSON 객체로 전달
-    });
+    // const { data, error } = await supabase.rpc("create_mate_post_with_pets", {
+    //   post_data: postDataWithLocation, // JSON 객체로 전달
+    //   pets_data: pets_data // JSON 객체로 전달
+    // });
+
+    const { data, error } = await supabase.from("matePosts").insert(postDataWithLocation)
 
     if (error) {
       console.error(error);

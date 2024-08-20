@@ -3,6 +3,7 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import PetItem from "./petItem";
 import Button from "@/components/Button";
 import { useState } from "react";
@@ -22,7 +23,6 @@ interface DetailViewProps {
   handleEditPost: () => void;
   handleDeletePost: (id: string) => void;
   handleTogglePost: (id: string) => void;
-  // startChat: () => void;
 }
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapDetail"), { ssr: false });
 
@@ -32,9 +32,7 @@ const DetailView = ({
   handleEditPost,
   handleDeletePost,
   handleTogglePost
-  // startChat
 }: DetailViewProps) => {
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const { user } = useAuthStore();
 
@@ -42,10 +40,6 @@ const DetailView = ({
   const SLIDE_COUNT = 5;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
-  // const toggleMenu = () => {
-  //   // console.log("toggleMenu called");
-  //   setIsMenuOpen(!isMenuOpen);
-  // };
 
   const handleStartChat = () => {
     startChat(post.user_id, user, router);
@@ -118,7 +112,8 @@ const DetailView = ({
               ></Button>
             </div>
             <div className="flex w-4/6 flex-col justify-center">
-              <p className="flex font-semibold">{post.users?.nickname}</p>
+            
+              <Link href={`/userInfo/${post.user_id}`} className="flex font-semibold cursor-pointer">{post.users?.nickname}</Link>
               <div className="flex flex-col">
                 <div className="flex gap-x-[0.5rem]">
                   <p className="text-[1rem] text-[#939396] text-[400]">성별 / 연령대 </p>
@@ -169,8 +164,8 @@ const DetailView = ({
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
         </div> */}
           <div className="mb-[5.95rem] mt-[0.75rem]">
-            {post.matepostpets && post.matepostpets.length > 0 && (
-              <PetCarousel pets={post.matepostpets} slides={SLIDES} options={OPTIONS} />
+            {post.pet_id && (
+              <PetCarousel post={post} slides={SLIDES} options={OPTIONS} />
             )}
             {/* <p className="ml-[0.75rem] text-gray-500">기능 구현 중입니다-!</p> */}
           </div>

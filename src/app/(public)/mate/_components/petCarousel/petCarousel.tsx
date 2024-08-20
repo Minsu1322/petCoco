@@ -7,24 +7,22 @@ import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import styles from "../petCarousel/styles/css/petCarousel.module.css";
 
-import { matepostpetsType } from "@/types/mate.type";
+import { matepostpetsType, MatePostAllType, PetId } from "@/types/mate.type";
 import { UsersPetType } from "@/types/usersPet.type";
 import PetItem from "../../posts/_components/petItem";
 import { useQuery } from "@tanstack/react-query";
 import LoadingComponent from "@/components/loadingComponents/Loading";
 
 
-
 type PropType = {
-  pets: matepostpetsType[];
+  post: MatePostAllType;
   slides: number[];
   options?: EmblaOptionsType;
 };
 
 const PetCarousel: React.FC<PropType> = (props) => {
-  const { slides, options, pets } = props;
-
-  const petIds = pets.map(pet => pet.pet_id);
+  const { slides, options, post } = props;
+  const petIds = post.pet_id ?? [];
 
   const {
     data: petData,
@@ -33,7 +31,7 @@ const PetCarousel: React.FC<PropType> = (props) => {
   } = useQuery<UsersPetType[]>({
     queryKey: ["usersPets", petIds],
     queryFn: async () => {
-      const response = await fetch(`/api/mate/pets?ids=${petIds.join(',')}`);
+      const response = await fetch(`/api/mate/pets?ids=${petIds}`);
       const data = await response.json();
       //  console.log(data);
       return data;
