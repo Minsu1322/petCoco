@@ -22,7 +22,7 @@ const TabBar: React.FC = () => {
   return pathname === "/message" || pathname === "/message/list" ? (
     <></>
   ) : (
-    <div className="fixed bottom-0 z-50 w-full max-w-[420px] border border-t-bgGray500 bg-white bg-opacity-80 px-2 pb-[0.7rem] pt-[0.3rem]">
+    <div className="fixed bottom-0 z-40 w-full max-w-[420px] border border-t-bgGray500 bg-white bg-opacity-80 px-2 pb-[0.7rem] pt-[0.3rem]">
       <div className="flex justify-between gap-x-[1.2rem] px-[0.8rem] py-[0.2rem]">
         <Link href="/" passHref>
           <div className="flex flex-col items-center justify-center gap-y-[0.2rem]">

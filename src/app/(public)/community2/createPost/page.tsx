@@ -20,6 +20,9 @@ const CreatePostPage = () => {
     usePostStore();
   const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const [deleteFiles, setDeleteFiles] = useState<string[]>([]);
+  // 카테고리 선택 여부 관리
+  const [isCategorySelected, setIsCategorySelected] = useState<boolean>(false);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   //게시글 수정페이지(createPost)로 이동해서 id값을 가져와서 postId에 저장
@@ -47,6 +50,9 @@ const CreatePostPage = () => {
           setTitle(postData?.title || "");
           setContent(postData?.content || "");
           setCategory(postData?.category || "");
+
+          // 카테고리 선택 여부 관리
+          setIsCategorySelected(!!postData?.category);
 
           setUploadFiles([]); // 업로드 파일 초기화
           await fetchPostImages(postData as { post_imageURL: string });
@@ -141,6 +147,16 @@ const CreatePostPage = () => {
   // 폼 제출 처리 함수
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // 제목, 내용, 카테고리 입력 여부 확인
+    if (!title || !content || !category) {
+      Swal.fire({
+        title: "입력 오류",
+        text: "제목, 내용, 카테고리는 필수 입력 사항입니다.",
+        icon: "warning"
+      });
+      return;
+    }
     try {
       // 이미지 업로드 및 URL 저장
       const imageUrls: string[] = [];
@@ -227,10 +243,10 @@ const CreatePostPage = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto h-full w-[375px] bg-white px-[1.5rem]">
+    <form onSubmit={handleSubmit} className="mx-auto h-full min-h-screen max-w-[420px] bg-white px-[1.5rem]">
       <h2 className="mb-4 mt-[2rem] text-[2rem] font-semibold">{postId ? "글 수정" : "글 작성"}하기</h2>
       <div className="mb-4 text-[1rem]">
-        서로를 존중하는 말로 건강한 반려인 커뮤니티를 <br />
+        서로 존중하는 말로 건강한 반려인 커뮤니티를 <br />
         만들어가요.
       </div>
       {/* 카테고리 선택 UI */}
@@ -243,7 +259,11 @@ const CreatePostPage = () => {
             <div key={cat.value} className="">
               <button
                 type="button"
-                onClick={() => setCategory(cat.value)}
+                onClick={() => {
+                  setCategory(cat.value);
+                  // 카테고리 선택 여부 관리
+                  setIsCategorySelected(true);
+                }}
                 className={`rounded-full border px-[0.75rem] py-[0.5rem] text-[0.89rem] ${category === cat.value ? "bg-mainColor text-white" : "border border-mainColor text-mainColor"}`}
               >
                 {cat.label}
@@ -334,7 +354,9 @@ const CreatePostPage = () => {
         {/* 제출 버튼 */}
         <button
           type="submit"
-          className="mt-[1.5rem] flex w-full justify-center rounded-full border bg-mainColor px-[1.5rem] py-[0.75rem] text-[1rem] font-bold text-white"
+          className={`flex w-full justify-center rounded-full border bg-mainColor px-[1.5rem] py-[0.75rem] text-[1rem] font-bold text-white ${!isCategorySelected ? "mb-20 cursor-not-allowed opacity-50" : "mb-20"}`}
+          //카테고리가 선택되지 않았을 때 버튼 비활성화
+          disabled={!isCategorySelected}
         >
           {postId ? "수정" : "작성"} 완료
         </button>

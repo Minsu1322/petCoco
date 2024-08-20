@@ -23,8 +23,8 @@ const CommunityMainPage = () => {
   };
 
   return (
-    <>
-      <div className="mx-auto h-full w-[420px] bg-white px-[1.5rem]">
+    <div className="mx-auto min-h-screen max-w-[420px]">
+      <div className="h-full w-full bg-white px-[1.5rem]">
         <h2 className="mb-4 mt-[2rem] text-[2rem] font-semibold">커뮤니티</h2>
         <div className="mb-4 text-[1rem]">
           여러분의 소중한 반려동물 이야기를 <br />
@@ -74,7 +74,7 @@ const CommunityMainPage = () => {
         </div>
         <PostList selectedCategory={selectedTab} searchTerm={activeSearchTerm} selectedSort={selectedSort} />
       </div>
-    </>
+    </div>
   );
 };
 
