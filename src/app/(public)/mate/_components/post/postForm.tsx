@@ -107,12 +107,14 @@ const PostForm = () => {
 
   // 폼 유효성 검사
   const isFormValid = () => {
-    const { title, date_time, members, place_name, content } = formPosts;
-    return !!(title && date_time && members && place_name && content);
+    const { title, date_time, members, place_name, content, pet_id } = formPosts;
+    // pet_id가 배열인지 확인하고, 배열일 경우에만 길이를 체크
+    const isPetSelected = Array.isArray(pet_id) && pet_id.length > 0;
+    return !!(title && date_time && members && place_name && content && isPetSelected);
   };
 
   // 동물 정보 선택했는 지 확인
-  // const isPetSelected = (formPosts: MateNextPostType[]): boolean => {
+  // const isPetSelected = (formPosts: MateNextPostType): boolean => {
   //   return formPosts.some(pet => JSON.stringify(pet) !== JSON.stringify(initialState));
   // };
 
