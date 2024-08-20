@@ -186,7 +186,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
             {/* 가운데 내용 부분 */}
             <div className="flex w-full flex-col">
               <Link href={`/userInfo/${post.user_id}`}>
-                <div className="text-[1rem] text-mainColor">{post.users.nickname}</div>
+                <div className="cursor-pointer text-[1rem] text-mainColor">{post.users.nickname}</div>
               </Link>
               <div className="text-[0.625rem]">{new Date(post.created_at).toLocaleDateString()}</div>
             </div>
@@ -238,7 +238,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
                   style={{
                     objectFit: "cover"
                   }}
-                  className={`rounded ${index === 0 ? "" : ""} rounded-md border border-[#e6efff]`}
+                  className={`rounded ${index === 0 ? "" : ""} cursor-pointer rounded-md border border-[#e6efff]`}
                 />
               </div>
             ))}

@@ -307,7 +307,7 @@ const CreatePostPage = () => {
       {/* 이미지 업로드 UI */}
       <div className="">
         <p className="mb-[0.75rem]">이미지 첨부 (최대 세 장만 첨부할 수 있어요)</p>
-        <label htmlFor="images" className="inline-block">
+        <label htmlFor="images" className="inline-block cursor-pointer">
           <div className="flex items-center gap-[0.5rem] rounded-[0.5rem] border border-mainColor p-[0.5rem] text-mainColor">
             <p className="text-[0.875rem] font-semibold">파일 선택</p>
             <img src="/assets/svg/file.svg" alt="imageIcon" />
