@@ -11,7 +11,7 @@ import Like from "../_components/like";
 import startChat from "@/app/utils/startChat";
 import LoadingComponent from "@/components/loadingComponents/Loading";
 import Link from "next/link";
-
+import Modal from "../_components/modal";
 interface PageProps {
   params: { id: string };
 }
@@ -52,6 +52,10 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
   const { user } = useAuthStore();
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  // 모달 컴포넌트 생성
+  const [modal, setModal] = useState(false);
+  const [selectedImg, setSelectedImg] = useState<string | null>(null);
 
   useEffect(() => {
     const loadPost = async () => {
@@ -113,6 +117,18 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
       }
     });
   };
+
+  // 이미지 클릭 이벤트핸들러 추가
+  const handleImgClick = (img: string) => {
+    setSelectedImg(img);
+    setModal(true);
+  };
+
+  const closeModal = () => {
+    setModal(false);
+    setSelectedImg(null);
+  };
+
   // return <p>Loading...</p>;
   if (!post) {
     return (
@@ -212,6 +228,7 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
                 key={index}
                 style={{ position: "relative", width: "6.25rem", height: "6.25rem" }}
                 className="rounded-md"
+                onClick={() => handleImgClick(img)}
               >
                 <Image
                   key={index}
@@ -232,6 +249,11 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
 
         <Comments postId={post.id} />
       </div>
+      {modal && selectedImg && (
+        <Modal isOpen={modal} onClose={closeModal}>
+          <Image src={selectedImg} alt="post image" width={400} height={400} className="rounded-lg" />
+        </Modal>
+      )}
     </>
   );
 };
