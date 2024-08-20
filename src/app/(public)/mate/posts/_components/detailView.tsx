@@ -4,9 +4,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import PetItem from "./petItem";
 import Button from "@/components/Button";
-import { useState } from "react";
 import { formatDateTimeTitle, formatDateTimeContent } from "@/app/utils/getConvertTime";
 import { EmblaOptionsType } from "embla-carousel";
 import { useRouter } from "next/navigation";
@@ -15,7 +13,6 @@ import { MatePostAllType } from "@/types/mate.type";
 import PetCarousel from "../../_components/petCarousel/petCarousel";
 import startChat from "@/app/utils/startChat";
 import { useAuthStore } from "@/zustand/useAuth";
-import { Pets } from "@/types/mate.type";
 
 interface DetailViewProps {
   post: MatePostAllType;
@@ -67,7 +64,6 @@ const DetailView = ({ post, userId, handleEditPost, handleDeletePost, handleTogg
               [{post.date_time ? formatDateTimeTitle(post.date_time) : ""}] {post.title}
             </h1>
           </div>
-
           <div className="mt-[1.5rem]">
             <DynamicMapComponent
               center={{
