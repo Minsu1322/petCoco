@@ -2,6 +2,7 @@ import { UserType } from "./auth.type";
 import { Database, Json, Tables } from "./supabase";
 export type MatePostType = Tables<"matePosts">;
 export type matepostpetsType = Tables<"matepostpets">;
+export type UsersPetType = Tables<"usersPet">;
 
 export type UserTypeForUsers = {
   id: string;
@@ -59,7 +60,7 @@ export type MateNextPostType = Omit<MatePostFullType, "id" | "created_at" | "use
 export type MatePostPetType = {
   post_id?: number; // post_id를 추가
   male_female: string;
-  neutered: string | null;
+  neutralized: string | null;
   weight: number | null;
   characteristics: string;
   age: string;
@@ -68,7 +69,7 @@ export type MatePostPetType = {
 
 export type Pets_ = {
   male_female: string;
-  neutered: null | string;
+  neutralized: null | string;
   weight: number | null;
   characteristics: string;
   age: string;
@@ -104,4 +105,5 @@ export type valiMatePostAllTypeForItem = {
   users: Json;
   matepostpets: Json;
   distance: number;
+  usersPet: Json | null;
 };

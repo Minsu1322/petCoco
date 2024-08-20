@@ -8,15 +8,12 @@ import { UsersPetType } from "@/types/auth.type";
 import { defaultPetImg } from "@/components/DefaultImg";
 import Swal from "sweetalert2";
 import Link from "next/link";
-import MyInput from "../../../_components/MyInput";
-import ButtonGroup from "../../../_components/ButtonGroup";
-import MyPageTabHeader from "./../../../_components/MyPageTabHeader";
 import Image from "next/image";
 import LoadingComponent from "@/components/loadingComponents/Loading";
 
 type PetType = UsersPetType;
 
-const FixMyPetProfile = () => {
+const UserPetProfile = () => {
   const [petName, setPetNickName] = useState<string | null>("");
   const [age, setAge] = useState<string | null>("");
   const [majorClass, setMajorClass] = useState<string | null>("");
@@ -57,92 +54,6 @@ const FixMyPetProfile = () => {
     queryFn: getPetData
   });
 
-  const submitChange = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const imageId = uuidv4();
-    const FILE_NAME = "profile_image";
-    const fileUrl = `${FILE_NAME}_${imageId}`;
-
-    let uploadUrl = null;
-    if (petImage) {
-      const imgData = await supabase.storage.from("pet_image").upload(fileUrl, petImage);
-      const imgUrl = supabase.storage.from("pet_image").getPublicUrl(imgData.data!.path);
-      setPetImageUrl(imgUrl.data.publicUrl);
-      uploadUrl = imgUrl.data.publicUrl;
-    } else {
-      setPetImageUrl(filteredProfile![0].petImage);
-      uploadUrl = filteredProfile![0].petImage;
-    }
-
-    updateMutate.mutate({
-      petName: petName,
-      petImage: uploadUrl,
-      age: age,
-      majorClass: majorClass,
-      minorClass: minorClass,
-      male_female: maleFemale,
-      neutralized: neutralized,
-      weight: weight,
-      medicalRecords: medicalRecords,
-      introduction: introduction
-    });
-
-    Swal.fire({
-      title: "success!",
-      text: "프로필 변경이 완료되었습니다!"
-    });
-
-    toMyPet();
-  };
-
-  const updateProfileWithSupabase = async ({
-    petName,
-    petImage,
-    age,
-    male_female,
-    neutralized,
-    majorClass,
-    minorClass,
-    weight,
-    medicalRecords,
-    introduction
-  }: Pick<
-    PetType,
-    | "petName"
-    | "petImage"
-    | "age"
-    | "male_female"
-    | "majorClass"
-    | "minorClass"
-    | "weight"
-    | "medicalRecords"
-    | "neutralized"
-    | "introduction"
-  >) => {
-    const response = await fetch(`/api/mypage/${petId}/mypetprofile`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        petName,
-        petImage,
-        age,
-        neutralized,
-        male_female,
-        majorClass,
-        minorClass,
-        weight,
-        medicalRecords,
-        introduction
-      })
-    });
-    return response.json();
-  };
-
-  const updateMutate = useMutation({
-    mutationFn: updateProfileWithSupabase,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pet"] })
-  });
-
   useEffect(() => {
     if (!pet) {
       return;
@@ -174,80 +85,9 @@ const FixMyPetProfile = () => {
     setPetImageUrl(filteredProfile[0].petImage);
   };
 
-  function toMyPet() {
-    router.push(`/mypage2/${id}`);
+  function toUserInfo() {
+    router.push(`/userInfo/${id}`);
   }
-
-  const deleteProfile = async (id: string) => {
-    const response = await fetch(`/api/mypage/${id}/mypetprofile`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(id)
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json();
-  };
-
-  const { mutate: deleteMutation } = useMutation<UsersPetType, Error, string>({
-    mutationFn: (id) => deleteProfile(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pet"] })
-  });
-
-  const handleDelte = async (id: string) => {
-    Swal.fire({
-      title: "정말 삭제하시겠습니까?",
-      icon: "warning",
-
-      showCancelButton: true,
-      confirmButtonText: "확인",
-      cancelButtonText: "취소",
-
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        try {
-          deleteMutation(id);
-        } catch (error) {
-          console.log("삭제에 실패했습니다.", error);
-        }
-
-        Swal.fire({
-          title: "success!",
-          text: "삭제가 완료되었습니다."
-        });
-
-        toMyPet();
-      }
-    });
-  };
-
-  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0];
-    let image = window.URL.createObjectURL(file);
-    setPreviewImage(image);
-    setPetImage(file);
-  };
-
-  const handlePetNameChange = (e: ChangeEvent<HTMLInputElement>) => setPetNickName(e.target.value);
-
-  const handleMajorClassChange = (e: ChangeEvent<HTMLInputElement>) => setMajorClass(e.target.value);
-  const handleMinorClassChange = (e: ChangeEvent<HTMLInputElement>) => setMinorClass(e.target.value);
-
-  const handleMaleFemaleChange = (value: string) => {
-    setMaleFemale(value);
-  };
-
-  const handleNeutralize = (value: string) => {
-    setNeutralized(value);
-  };
-
-  const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => setAge(e.target.value);
-  const handleWeight = (e: ChangeEvent<HTMLInputElement>) => setWeight(Number(e.target.value));
-  const handleMedicalRecords = (e: ChangeEvent<HTMLTextAreaElement>) => setMedicalRecords(e.target.value);
-  const handleIntroductionChange = (e: ChangeEvent<HTMLTextAreaElement>) => setIntroduction(e.target.value);
 
   if (isPending || filteredProfile.length === 0) {
     return (
@@ -267,11 +107,10 @@ const FixMyPetProfile = () => {
 
   return (
     <>
-      <MyPageTabHeader />
       <div className="flex justify-between bg-[#F3F2F2]">
         <div className="m-[14px] flex gap-4 overflow-x-scroll scrollbar-hide">
           {pet?.map((pet) => (
-            <Link key={pet.id} href={`/mypage2/${id}/fixMyPetProfile/${pet.id}`}>
+            <Link key={pet.id} href={`/userInfo/${id}/petProfile/${pet.id}`}>
               <div className="w-auto whitespace-nowrap rounded-lg bg-[#8E6EE8] px-3 py-2 text-xs font-semibold text-[#FFFFFF]">
                 {pet.petName}
               </div>
@@ -283,7 +122,7 @@ const FixMyPetProfile = () => {
             </Link>
           ))}
         </div>
-        <div className="mr-[18px] py-[22px]">
+        {/* <div className="mr-[18px] py-[22px]">
           <Link href={`/mypage2/${id}/addMyPetProfile`}>
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
               <path
@@ -306,109 +145,76 @@ const FixMyPetProfile = () => {
               />
             </svg>
           </Link>
-        </div>
+        </div> */}
       </div>
       <div className="flex w-full flex-col px-3 py-3">
         <div className="mt-[27px] flex flex-col items-center justify-center">
           <Image
-            className="h-[100px] w-[100px] rounded-xl object-cover"
+            className="h-[100px] w-[100px] rounded-xl bg-lime-300 object-cover"
             width={100}
             height={100}
             src={previewImage || defaultPetImg}
             alt=""
           />
-          <div className="inline-flex px-[9px] py-[7px]">
-            <button
-              className="rounded-lg bg-[#8E6EE8] px-3 py-2 text-center text-xs font-normal leading-tight text-[#FFFFFF] drop-shadow-lg"
-              type={"button"}
-              onClick={() => document.getElementById("fileInput")?.click()}
-            >
-              사진 변경
-            </button>
-            <input
-              id="fileInput"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              style={{ display: "none" }}
-            />
-          </div>
+
           <div className="flex w-full flex-col justify-center px-[24px]">
             <div className="mt-[19px]">
-              <MyInput
-                label="이름"
-                ref={null}
-                id="changePetName"
-                placeholder="변경할 이름(최대 8자)"
+              <p className="text-base font-medium leading-normal text-[#61646B]">이름</p>
+              <input
+                className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-[16px] font-medium leading-normal"
                 maxLength={8}
                 defaultValue={filteredProfile![0].petName || ""}
-                onChange={handlePetNameChange}
+                disabled
               />
             </div>
             <div className="mt-[35px]">
-              <MyInput
-                label="종류"
-                ref={null}
-                id="changeMajorClass"
-                placeholder="개, 고양이, 물고기 등등"
+              <p className="text-base font-medium leading-normal text-[#61646B]">종류</p>
+              <input
+                className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-[16px] font-medium leading-normal"
                 maxLength={8}
                 defaultValue={filteredProfile![0].majorClass || ""}
-                onChange={handleMajorClassChange}
+                disabled
               />
             </div>
             <div className="mt-[35px]">
-              <MyInput
-                label="품종"
-                ref={null}
-                id="changeMajorClass"
-                placeholder="치와와, 랙돌, 금붕어 등등"
+              <p className="text-base font-medium leading-normal text-[#61646B]">품종</p>
+              <input
+                className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-[16px] font-medium leading-normal"
                 maxLength={8}
                 defaultValue={filteredProfile![0].minorClass || ""}
-                onChange={handleMinorClassChange}
+                disabled
               />
             </div>
             <div className="mt-[23px]">
-              <ButtonGroup
-                label="성별"
-                buttonInfos={[
-                  { text: "남아", value: "남아" },
-                  { text: "여아", value: "여아" }
-                ]}
+              <p className="text-base font-medium leading-normal text-[#61646B]">성별</p>
+              <input
+                className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-[16px] font-medium leading-normal"
                 defaultValue={filteredProfile![0].male_female || ""}
-                onChange={handleMaleFemaleChange}
-              ></ButtonGroup>
+                disabled
+              />
             </div>
             <div className="mt-[23px]">
-              <ButtonGroup
-                label="중성화 여부"
-                buttonInfos={[
-                  { text: "했어요", value: "YES" },
-                  { text: "안 했어요", value: "NO" }
-                ]}
+              <p className="text-base font-medium leading-normal text-[#61646B]">중성화 여부</p>
+              <input
+                className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-[16px] font-medium leading-normal"
                 defaultValue={filteredProfile![0].neutralized || ""}
-                onChange={handleNeutralize}
-              ></ButtonGroup>
-            </div>
-            <div className="mt-[35px]">
-              <MyInput
-                label="나이 (살)"
-                ref={null}
-                id="changeAge"
-                placeholder="나이"
-                maxLength={20}
-                defaultValue={filteredProfile![0].age || ""}
-                onChange={handleAgeChange}
+                disabled
               />
             </div>
             <div className="mt-[35px]">
-              <MyInput
-                label="무게 (kg)"
-                ref={null}
-                id="changeWeight"
-                placeholder="1kg 미만은 소수점으로 표기"
-                maxLength={20}
+              <p className="text-base font-medium leading-normal text-[#61646B]">나이 (살)</p>
+              <input
+                className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-[16px] font-medium leading-normal"
+                defaultValue={filteredProfile![0].age || ""}
+                disabled
+              />
+            </div>
+            <div className="mt-[35px]">
+              <p className="text-base font-medium leading-normal text-[#61646B]">무게 (kg)</p>
+              <input
+                className="mt-2 w-full rounded-lg border-[0.5px] border-[#999999] px-3 py-3 text-[16px] font-medium leading-normal"
                 defaultValue={filteredProfile![0].weight || ""}
-                onChange={handleWeight}
+                disabled
               />
             </div>
             <div className="mt-[19px] flex flex-col">
@@ -418,7 +224,7 @@ const FixMyPetProfile = () => {
                 placeholder="예방접종 및 기타 의료 기록(최대 200자)"
                 maxLength={200}
                 defaultValue={filteredProfile![0].medicalRecords || ""}
-                onChange={handleMedicalRecords}
+                disabled
               />
               <div className="mt-[10px] flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
                 {medicalRecords?.length}/200
@@ -431,24 +237,18 @@ const FixMyPetProfile = () => {
                 placeholder="좋아하는 것, 싫어하는 것 등등(최대 200자)"
                 maxLength={200}
                 defaultValue={filteredProfile![0].introduction || ""}
-                onChange={handleIntroductionChange}
+                disabled
               />
               <div className="mt-[10px] flex items-end justify-end text-xs font-medium leading-normal text-[#AFB1B6]">
                 {introduction?.length}/200
               </div>
             </div>
-            <div className="flex w-full justify-evenly gap-[11px] pb-[80px] pt-[30px]">
+            <div className="pb-[80px] pt-[30px]">
               <button
-                className="min-w-[155px] rounded-lg border border-[#8E6EE8] bg-[#FFFFFF] px-8 py-3 text-center text-[16px] font-semibold text-[#8E6EE8]"
-                onClick={() => handleDelte(filteredProfile[0]?.id)}
+                className="w-full rounded-lg bg-[#8E6EE8] py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
+                onClick={toUserInfo}
               >
-                프로필 삭제
-              </button>
-              <button
-                className="min-w-[155px] rounded-lg bg-[#8E6EE8] px-8 py-3 text-center text-[16px] font-semibold text-[#FFFFFF]"
-                onClick={submitChange}
-              >
-                수정 완료
+                뒤로가기
               </button>
             </div>
           </div>
@@ -458,4 +258,4 @@ const FixMyPetProfile = () => {
   );
 };
 
-export default FixMyPetProfile;
+export default UserPetProfile;

@@ -71,7 +71,7 @@ const MateCarousel: React.FC<PropType> = (props) => {
                       {/* 좌우구분 */}
                       <div className="flex w-1/3 flex-col items-center justify-between">
                         {/* 프로필이미지 */}
-                        <div className="relative mb-2 h-24 w-24">
+                        <div className="relative mb-2 mt-5 h-24 w-24">
                           <Image
                             src={
                               users?.profile_img ||
@@ -86,7 +86,9 @@ const MateCarousel: React.FC<PropType> = (props) => {
                         </div>
                         {/* 닉네임&좋아요 */}
                         <div className="mb-4 flex flex-col items-center">
-                          <p className="mb-1 text-sm text-gray-600">{users?.nickname || "닉네임"}</p>
+                          <p className="bg-rgba(210, 205, 246, 0.30) mb-1 rounded-2xl border border-[#8E6EE8] px-2 py-1 text-sm text-[#8E6EE8]">
+                            {users?.nickname || "닉네임"}
+                          </p>
                         </div>
                       </div>
 
@@ -105,7 +107,7 @@ const MateCarousel: React.FC<PropType> = (props) => {
                           )}
                         </div>
                         <button
-                          className="w-full rounded-lg bg-[#8E6EE8] py-2 text-white transition duration-300 hover:bg-[#7d5bcd]"
+                          className="w-full rounded-xl bg-[#8E6EE8] py-2 text-white transition duration-300 hover:bg-[#7d5bcd]"
                           onClick={() => startChat(users.id, user, router)}
                         >
                           채팅하기

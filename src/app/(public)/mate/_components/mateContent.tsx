@@ -14,6 +14,8 @@ import SearchBar from "@/components/SearchBar";
 import PostListFilterTab from "./tab/postListFilterTab";
 import MatePostList from "./post/matePostList";
 import { Filters } from "../filter/page";
+import NeuteredFilter from "../_components/button/neuteredFilter";
+import { useFilterStore } from '@/zustand/useFilterStore';
 
 
 export type PositionData = {
@@ -36,16 +38,22 @@ const MateContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [filters, setFilters] = useState({
-    gender: null,
-    age: null,
-    date_time: undefined,
-    male_female: null,
-    weight: null,
-    regions: null,
-    times: null,
-    neutered: null,
-  });
+  const { filters, setFilters } = useFilterStore();
+
+
+  // const [filters, setFilters] = useState<Filters>(() => {
+  //   // URL 파라미터에서 필터 값을 읽어옵니다
+  //   return {
+  //     gender: searchParams.get('gender') || null,
+  //     age: searchParams.get('age') || null,
+  //     date_time: searchParams.get('date_time') || undefined,
+  //     male_female: searchParams.get('male_female') || null,
+  //     weight: searchParams.get('weight') || null,
+  //     regions: searchParams.get('regions') || null,
+  //     times: searchParams.get('times') || null,
+  //     neutered: searchParams.get('neutered') || null,
+  //   };
+  // });
 
   // console.log('All query params:', searchParams.toString());
 
@@ -90,14 +98,25 @@ const MateContent = () => {
     }
     if (user === null) {
       // alert("산책메이트 글쓰기를 위해서는 로그인이 필요합니다");
-      Swal.fire({
-        title: "로그인이 필요합니다!",
-        text: "산책메이트 글쓰기를 위해서는 로그인이 필요합니다",
-        icon: "warning"
-      });
-      router.push("/signin");
-    } 
-  };
+        // Swal.fire({
+        //   title: `로그인이 필요합니다.`,
+        //   showCancelButton: true,
+        //   confirmButtonColor: "mainColor",
+        //   cancelButtonColor: "#c0c0c0",
+        //   confirmButtonText: "삭제하기",
+        //   cancelButtonText: "취소하기",
+        //   customClass: {
+        //     confirmButton: 'swal-confirm-button',
+        //     cancelButton: 'swal-cancel-button',
+        //     title: 'swal-title',
+        //     container: 'swal-container', 
+        //     actions: 'swal2-actions',
+        //   },
+        //   buttonsStyling: false // 기본 스타일링을 비활성화
+        // })
+        router.push("/signin");
+      };
+    };
 
   useEffect(() => {
     const newFilters = { ...filters };
@@ -150,7 +169,7 @@ const MateContent = () => {
           right: "calc(50% - 187.5px + 0.56rem)"
         }}
         onClick={handleLoginCheck}
-      >
+      > 
         <img src="/assets/svg/plus-01.svg" alt="plus icon" />
       </div>
       {/* 하단 탭바 생기면 수정해 bottom, right 위치 수정 필요 */}

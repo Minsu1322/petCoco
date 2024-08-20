@@ -71,13 +71,13 @@ const FixMyProfile = () => {
     if (!user) {
       return;
     }
-    setNickName(user.nickname);
-    setMbti(user.mbti);
-    setAge(user.age);
-    setSelectedGender(user.gender);
-    setIntroduction(user.introduction);
-    setPreviewImage(user.profile_img);
-    setProfileImageUrl(user.profile_img);
+    setNickName(user.nickname || "");
+    setMbti(user.mbti || "");
+    setAge(user.age || "");
+    setSelectedGender(user.gender || "");
+    setIntroduction(user.introduction || "");
+    setPreviewImage(user.profile_img || "");
+    setProfileImageUrl(user.profile_img || "");
   };
 
   useEffect(() => {

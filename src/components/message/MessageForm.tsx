@@ -96,6 +96,10 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessag
     sendMessage.mutate({ content, imageUrl });
     setSelectedImage(null);
     setImagePreviewUrl(null);
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "36px";
+    }
+    setIsSubmitting(false);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {

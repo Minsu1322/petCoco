@@ -76,26 +76,29 @@ const PetForm = ({ setFormPets, userId }: handlePetSelect) => {
         <p className="mb-2 text-sm font-semibold text-subTitle1">다중 선택 가능</p>
       </div>
       <div className="mt-[0.81rem] flex w-full">
-        <div className="mx-[1.5rem] w-full">
-          {userPets ? (
-            userPets?.map((pet) => (
-              <div key={pet.id} className="mb-2 flex items-center">
-                <input
-                  type="checkbox"
-                  id={`pet-${pet.id}`}
-                  value={pet.id}
-                  onChange={() => handlePetSelect(pet.id)}
-                  checked={selectedPetIds.includes(pet.id)}
-                  className="mr-2"
-                />
-                <label htmlFor={`pet-${pet.id}`}>{pet.petName}</label>
-              </div>
-            ))
-          ) : (
-            <p>반려견 정보가 없습니다. 마이페이지에서 반려견을 등록해 주세요!</p>
-          )}
-        </div>
+      <div className="mx-[1.5rem] w-full">
+        {userPets && userPets.length > 0 ? (
+          userPets.map((pet) => (
+            <div key={pet.id} className="mb-2 flex items-center">
+              <input
+                type="checkbox"
+                id={`pet-${pet.id}`}
+                value={pet.id}
+                onChange={() => handlePetSelect(pet.id)}
+                checked={selectedPetIds.includes(pet.id)}
+                className="mr-2"
+              />
+              <label htmlFor={`pet-${pet.id}`}>{pet.petName}</label>
+            </div>
+          ))
+        ) : (
+          <div className="text-subTitle2">
+            <p>반려견 정보가 없습니다! </p>
+            <p>마이페이지에서 반려견을 등록해 주세요🐾</p>
+          </div>
+        )}
       </div>
+    </div>
     </div>
   );
 };

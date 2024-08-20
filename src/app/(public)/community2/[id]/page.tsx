@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import Like from "../_components/like";
 import startChat from "@/app/utils/startChat";
 import LoadingComponent from "@/components/loadingComponents/Loading";
+import Link from "next/link";
 
 interface PageProps {
   params: { id: string };
@@ -168,7 +169,9 @@ const CommunityMain: React.FC<PageProps> = ({ params }) => {
 
             {/* 가운데 내용 부분 */}
             <div className="flex w-full flex-col">
-              <div className="text-[1rem] text-mainColor">{post.users.nickname}</div>
+              <Link href={`/userInfo/${post.user_id}`}>
+                <div className="text-[1rem] text-mainColor">{post.users.nickname}</div>
+              </Link>
               <div className="text-[0.625rem]">{new Date(post.created_at).toLocaleDateString()}</div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 "use client";
 import MatePostItem from "./matePostItem";
-import { useQuery } from "@tanstack/react-query";
-import { useState, useCallback } from "react";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getDistanceHaversine } from "../../getDistanceHaversine";
 import LoadingComponent from "@/components/loadingComponents/Loading";
@@ -29,13 +29,15 @@ interface MatePostListProps {
     weight: string | null;
     regions: string | null;
     times: string | null;
-    neutered: string | null;
+    neutralized: string | null;
   };
 }
 
 const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) => {
   const { geoData, setIsUseGeo, setGeoData } = locationStore();
   const [page, setPage] = useState(1);
+  const observerTarget = useRef<HTMLDivElement>(null);
+
   //console.log(geoData)
 
   const getCurrentPosition = (): Promise<PositionData | null> => {
@@ -89,13 +91,15 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
   } = useQuery<PositionData, Error>({
     queryKey: ["geoData"],
     queryFn: getCurrentPosition,
-    retry: false,
+    retry: false
   });
 
-  const { data, isPending, error } = useQuery<PostsResponse>({
-    queryKey: ["matePosts", page, activeSearchTerm, sortBy, filters, geoData],
-    queryFn: async () => {
-      //console.log('sortBy값 확인', sortBy);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } = useInfiniteQuery<
+    PostsResponse,
+    Error
+  >({
+    queryKey: ["matePosts", activeSearchTerm, sortBy, filters, geoData],
+    queryFn: async ({ pageParam = 1 }) => {
       const getValidFilters = Object.fromEntries(
         Object.entries(filters).filter(([_, value]) => value !== null && value !== "" && value !== undefined)
       );
@@ -111,35 +115,67 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
       const userLat = geoData?.center.lat || 0;
       const userLng = geoData?.center.lng || 0;
 
-      const defaultSortBy = sortBy && sortBy !== 'all' ? sortBy : 'all';
-      // TODO: query안에 userLat, userLng 넣기
+      const defaultSortBy = sortBy && sortBy !== "all" ? sortBy : "all";
       const response = await fetch(
-        `/api/mate?page=${page}&limit=4&search=${activeSearchTerm}&sort=${defaultSortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
+        `/api/mate?page=${pageParam}&limit=4&search=${activeSearchTerm}&sort=${defaultSortBy}&${query}&userLat=${userLat}&userLng=${userLng}`
       );
-      const data = response.json();
-      return data;
+      return response.json();
     },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.data.length === 4 ? allPages.length + 1 : undefined;
+    },
+    initialPageParam: 1,
     enabled: !!geolocationData
   });
 
-  const posts = data?.data ?? [];
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [target] = entries;
+      if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage]
+  );
 
-  if (isPending) {
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0
+    });
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
+    };
+  }, [handleObserver]);
+
+  const posts = data?.pages.flatMap((page) => page.data) || [];
+
+  if (isLoading) {
     return (
-      <div className="flex items-center justify-center w-full h-full mt-[30%]">
+      <div className="mt-[30%] flex h-full w-full flex-col items-center justify-center">
+        <div>사용자의 위치를 계산하는 중입니다 🐶</div>
         <LoadingComponent />
       </div>
     );
   }
 
-  if(isGeoPending) {
+  if (isGeoPending) {
     return (
-    <div className="flex items-center justify-center w-full h-screen">
-    <div className="flex flex-col items-center">
-      <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
-      <p className="text-lg font-semibold text-mainColor">사용자의 위치를 계산하는 중입니다...</p>
-    </div>
-  </div>)
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+          <p className="text-lg font-semibold text-mainColor">사용자의 위치를 계산하는 중입니다...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -162,7 +198,7 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
       </div>
 
       {/* pagination */}
-      <div className="mt-[1.5rem] flex flex-row items-center justify-center">
+      {/* <div className="mt-[1.5rem] flex flex-row items-center justify-center">
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
           disabled={page === 1}
@@ -180,6 +216,14 @@ const MatePostList = ({ activeSearchTerm, sortBy, filters }: MatePostListProps) 
         >
           다음
         </button>
+      </div> */}
+
+      <div ref={observerTarget} className="h-10 w-full">
+        {isFetchingNextPage && (
+          <div className="flex justify-center">
+            <div className="h-8 w-8 animate-spin rounded-full border-t-4 border-solid border-mainColor"></div>
+          </div>
+        )}
       </div>
     </div>
   );

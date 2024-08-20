@@ -16,7 +16,7 @@ const isInTimeRange = (date: Date, timeRange: string): boolean => {
   }
 };
 
-export const getTiemRage = (posts: valiMatePostAllTypeForItem[], timeRange: string): valiMatePostAllTypeForItem[] => {
+export const getTimeRange = (posts: valiMatePostAllTypeForItem[], timeRange: string): valiMatePostAllTypeForItem[] => {
   return posts.filter(post => {
     if (!post.date_time) {
       return false;
@@ -25,3 +25,4 @@ export const getTiemRage = (posts: valiMatePostAllTypeForItem[], timeRange: stri
     return isInTimeRange(postDate, timeRange);
   });
 }
+
