@@ -111,6 +111,7 @@ const Header = () => {
               width={32}
               height={32}
               className="h-full w-full object-cover"
+              priority
             />
           </div>
         </Link>

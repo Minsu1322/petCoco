@@ -38,7 +38,7 @@ export type MatePostAllTypeForItem = MatePostType & {
     isLoading: boolean;
   };
   users: UserType[];
-  matepostpets: matepostpetsType[];
+  // matepostpets: matepostpetsType[];
   distance: number;
 };
 
@@ -52,7 +52,7 @@ export type MatePostAllType = MatePostType & {
     isLoading: boolean;
   };
   users: UserType;
-  matepostpets: matepostpetsType[];
+  // matepostpets: matepostpetsType[];
 };
 
 export type MateNextPostType = Omit<MatePostFullType, "id" | "created_at" | "users">;
@@ -103,7 +103,11 @@ export type valiMatePostAllTypeForItem = {
   place_name: string;
   location: unknown;
   users: Json;
-  matepostpets: Json;
   distance: number;
   usersPet: Json | null;
+  pet_id: Json;
 };
+
+export type PetId = {
+  pet_id: Json;
+}

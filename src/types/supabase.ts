@@ -187,6 +187,62 @@ export type Database = {
           id: string
           location: unknown | null
           members: string | null
+          pet_id: Json | null
+          place_name: string | null
+          position: Json | null
+          recruiting: boolean | null
+          title: string | null
+          user_id: string | null
+        }
+        Insert: {
+          address?: string | null
+          content?: string | null
+          created_at?: string
+          date_time?: string | null
+          id?: string
+          location?: unknown | null
+          members?: string | null
+          pet_id?: Json | null
+          place_name?: string | null
+          position?: Json | null
+          recruiting?: boolean | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          address?: string | null
+          content?: string | null
+          created_at?: string
+          date_time?: string | null
+          id?: string
+          location?: unknown | null
+          members?: string | null
+          pet_id?: Json | null
+          place_name?: string | null
+          position?: Json | null
+          recruiting?: boolean | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matePosts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      matePosts_duplicate: {
+        Row: {
+          address: string | null
+          content: string | null
+          created_at: string
+          date_time: string | null
+          id: string
+          location: unknown | null
+          members: string | null
           place_name: string | null
           position: Json | null
           recruiting: boolean | null
@@ -223,7 +279,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "matePosts_user_id_fkey"
+            foreignKeyName: "matePosts_duplicate_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -453,8 +509,8 @@ export type Database = {
           address: string
           place_name: string
           location: unknown
+          pet_id: Json
           users: Json
-          matepostpets: Json
           usersPet: Json
           distance: number
         }[]

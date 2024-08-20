@@ -11,7 +11,8 @@ import { useAuthStore } from "@/zustand/useAuth";
 import { MateNextPostType, Pets } from "@/types/mate.type";
 
 import Swal from "sweetalert2";
-import PetForm from "../post/petForm";
+import PetForm from "./pet/petForm";
+import { getConvertDate } from "../getConvertDate";
 
 // 동적 로딩 설정
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapForm"), { ssr: false });
@@ -27,26 +28,27 @@ const PostForm = () => {
     title: "",
     content: "",
     position: { center: { lat: 37.5556236021213, lng: 126.992199507869 }, errMsg: null, isLoading: true },
-    date_time: "",
+    date_time: getConvertDate(),
     members: "",
     recruiting: true,
     address: "",
     place_name: "",
-    location: ""
-  };
-
-  const initialPetState: Pets = {
-    userId,
+    location: "",
     pet_id: []
   };
 
+  // const initialPetState: Pets = {
+  //   userId,
+  //   pet_id: []
+  // };
+
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id">>(initialState);
-  const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
+  // const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
   // console.log(formPets);
 
   // 게시물 등록
-  const addPost = async (formAllData: { post: MateNextPostType; pets: Pets[] }) => {
+  const addPost = async (formAllData: { post: MateNextPostType }) => {
     // console.log("데이터 넘어오는 거 확인", formAllData);
     try {
       const response = await fetch(`/api/mate`, {
@@ -55,8 +57,8 @@ const PostForm = () => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          post_data: formAllData.post,
-          pets_data: formAllData.pets
+          post_data: formAllData.post
+          // pets_data: formAllData.pets
         })
       });
 
@@ -76,7 +78,7 @@ const PostForm = () => {
   };
 
   const addMutation = useMutation({
-    mutationFn: async (formAllData: { post: MateNextPostType; pets: Pets[] }) => await addPost(formAllData),
+    mutationFn: async (formAllData: { post: MateNextPostType }) => await addPost(formAllData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
     }
@@ -103,26 +105,21 @@ const PostForm = () => {
 
   const address = (addressData && addressData?.documents[0]?.address?.address_name) || "주소 정보를 찾을 수 없어요";
 
-  // const handleAddPets = () => {
-  //   setFormPets([
-  //     ...formPets,
-  //     {
-  //       male_female: "",
-  //       neutered: null,
-  //       weight: null,
-  //       characteristics: "",
-  //       age: "",
-  //       pet_name: ""
-  //     }
-  //   ]);
+  // 폼 유효성 검사
+  const isFormValid = () => {
+    const { title, date_time, members, place_name, content } = formPosts;
+    return !!(title && date_time && members && place_name && content);
+  };
+
+  // 동물 정보 선택했는 지 확인
+  // const isPetSelected = (formPosts: MateNextPostType[]): boolean => {
+  //   return formPosts.some(pet => JSON.stringify(pet) !== JSON.stringify(initialState));
   // };
 
   const handleUploadPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { title, date_time, members, place_name, content } = formPosts;
-
-    if (!title || !date_time || !members || !place_name || !content) {
+    if (!isFormValid()) {
       // alert("모든 항목을 입력해 주세요!");
       Swal.fire({
         title: "모든 항목을 입력해 주세요!",
@@ -138,8 +135,8 @@ const PostForm = () => {
         address,
         position,
         user_id: userId
-      },
-      pets: formPets
+      }
+      // pets: formPets
       // weight: pet.weight === null ? null : Number(pet.weight)
     };
 
@@ -147,7 +144,7 @@ const PostForm = () => {
     try {
       addMutation.mutate(formAllData);
       setFormPosts(initialState);
-      setFormPets([initialPetState]);
+      // setFormPets([initialPetState]);
 
       // alert("등록되었습니다!");
       Swal.fire({
@@ -243,7 +240,7 @@ const PostForm = () => {
             />
           </div>
         </div>
-        {/* 한마디 */}
+        {/* 내용 */}
         <div className="mb-[1rem] mt-[1.06rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
           <label htmlFor="content" className="text-[1rem] font-[600]">
             내용
@@ -256,15 +253,18 @@ const PostForm = () => {
             id="content"
             maxLength={199}
           ></textarea>
-          <p className="flex justify-end text-subTitle2">200자 이내</p>
+          <p className="flex justify-end text-subTitle2">{formPosts.content?.length}/200</p>
         </div>
         {/* 반려동물 정보 등록 */}
-        <PetForm setFormPets={setFormPets} userId={userId} />
+        <PetForm setFormPosts={setFormPosts} userId={userId} />
         {/* 작성하기 버튼 */}
         <div className="mb-[7.5rem] mt-[1.5rem] flex w-full items-center justify-center px-[1.5rem]">
           <button
             type="submit"
-            className="w-full cursor-pointer rounded-full bg-mainColor px-[1.5rem] py-[0.75rem] text-white"
+            className={`w-full cursor-pointer rounded-full px-[1.5rem] py-[0.75rem] text-white ${
+              !isFormValid() ? "cursor-not-allowed bg-gray-400 opacity-50" : "bg-mainColor"
+            }`}
+            disabled={!isFormValid()}
           >
             작성완료
           </button>

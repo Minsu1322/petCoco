@@ -11,19 +11,6 @@ import Male_femaleFilter from "../_components/button/male_femaleFilter";
 import NeuteredFilter from "../_components/button/neuteredFilter";
 import { useFilterStore } from '@/zustand/useFilterStore';
 
-// interface PostItemFilterTabProps {
-//   updateFilter: (filterName: string, value: any) => void;
-//   filters: {
-//     gender: string | null;
-//     date_time: string | undefined;
-//     male_female: string | null;
-//     age: string | null;
-//     weight: string | null;
-//     regions: string | null;
-//     times: string | null;
-//   };
-//   onClick: () => void;
-// }
 export type Filters = {
   gender: string | null;
   age: string | null;
@@ -36,19 +23,6 @@ export type Filters = {
 };
 
 const FilterPage = () => {
-  
-  // const [filters, setFilters] = useState<Filters>(() => {
-  //   return {
-  //     gender: searchParams.get('gender') || null,
-  //     age: searchParams.get('age') || null,
-  //     date_time: searchParams.get('date_time') || undefined,
-  //     male_female: searchParams.get('male_female') || null,
-  //     weight: searchParams.get('weight') || null,
-  //     regions: searchParams.get('regions') || null,
-  //     times: searchParams.get('times') || null,
-  //     neutered: searchParams.get('neutered') || null,
-  //   };
-  // });
   const { filters, setFilters } = useFilterStore();
   const [selectedGender, setSelectedGender] = useState<string | null>(null);
   const [selectedNeutered, setSelectedNeutered] = useState<string | null>(null);

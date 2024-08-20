@@ -18,10 +18,10 @@ export const age = [
 ];
 
 export const times = [
-  { key: "새벽", label: "새벽 (00:00-06:00)" },
-  { key: "아침", label: "아침 (06:00-12:00)" },
-  { key: "오후", label: "오후 (12:00-18:00)" },
-  { key: "저녁", label: "저녁 (18:00-24:00)" }
+  { key: "아침", label: "아침 (6 am ~ 12 pm)" },
+  { key: "오후", label: "오후 (12 am ~ 18 pm)" },
+  { key: "저녁", label: "저녁 (18 am ~ 24 pm)" },
+  { key: "새벽", label: "새벽 (24 am ~ 6 am)" },
 ];
 
 export const regions = [

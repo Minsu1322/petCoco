@@ -17,8 +17,8 @@ const PetItem = ({ pet }: PetItemProps) => {
   const introduction = pet.introduction || "";
 
   return (
-    <div className="mb-[0.44rem] flex gap-x-[1rem] rounded-lg border px-[0.69rem] py-[0.79rem]">
-      <div className="flex flex-col items-center gap-y-[0.5rem] px-[1.19rem] my-auto">
+    <div className="mb-[0.44rem] flex gap-x-[1rem] rounded-lg border border-[#C2C0BD] px-[0.69rem] py-[0.79rem]">
+      <div className="my-auto flex flex-col items-center gap-y-[0.5rem] px-[1.19rem]">
         <div className="h-[3.75rem] w-[3.75rem]">
           <Image
             className="h-full w-full rounded-full object-cover"
@@ -28,10 +28,11 @@ const PetItem = ({ pet }: PetItemProps) => {
             alt="반려견 이미지"
           />
         </div>
-        <div className="rounded-full bg-purple-100 px-2 py-1 text-xs whitespace-nowrap text-purple-600">호스트 반려견</div>
+        <div className="whitespace-nowrap rounded-full bg-purple-100 px-2 py-1 text-xs text-purple-600">
+          호스트 반려견
+        </div>
       </div>
       <div className="flex-grow">
-        {/* <div className="flex items-start mb-2"> */}
         <div className="flex items-center">
           <p className="mr-2 text-[1.25rem] font-bold">{petName}</p>
           <span className="flex items-center text-[1rem]">
@@ -39,17 +40,17 @@ const PetItem = ({ pet }: PetItemProps) => {
           </span>
         </div>
         <div className="flex gap-x-[0.5rem] text-[1rem]">
-          <p className="text-[#939396]">몸무게</p> 
+          <p className="text-[#939396]">몸무게</p>
           <p>{weight}</p>
         </div>
         {/* </div> */}
         <div className="flex gap-x-[0.5rem] text-[1rem]">
-          <p className="text-[#939396]">중성화 여부</p> 
+          <p className="text-[#939396]">중성화 여부</p>
           <p>{neutralized}</p>
         </div>
         <div className="flex gap-x-[0.5rem] text-[1rem]">
-          <p className="text-[#939396] whitespace-nowrap">성향</p> 
-          <p>{introduction}</p>
+          <p className="whitespace-nowrap text-[#939396]">성향</p>
+          <p className="max-h-[50px] scrollbar-hide overflow-y-auto">{introduction}</p>
         </div>
       </div>
     </div>
