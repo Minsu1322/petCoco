@@ -8,16 +8,13 @@ import Image from "next/image";
 import { useState } from "react";
 import { locationStore } from "@/zustand/locationStore";
 import { getConvertAddress } from "../../getConvertAddress";
-import { getConvertTime } from "@/app/utils/getConvertTime";
-import { getConvertDate } from "../../_components/getConvertDate";
+// import { getConvertTime } from "@/app/utils/getConvertTime";
+// import { getConvertDate } from "../../_components/getConvertDate";
 import { useAuthStore } from "@/zustand/useAuth";
 import { createClient } from "@/supabase/client";
 import Swal from "sweetalert2";
-
-import { UserPetWithUsersType } from "@/types/usersPet.type";
-import { PostgrestError } from "@supabase/supabase-js";
 import DetailView from "./detailView";
-import PetForm from "../../_components/post/petForm";
+import PetEdit from "../../_components/post/pet/petEdit";
 
 interface DetailMatePostProps {
   post: MatePostAllType;
@@ -45,17 +42,17 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     recruiting: post.recruiting || true,
     address: post.address || "",
     place_name: post.place_name || "",
-    location: post.location || ""
+    location: post.location || "",
+    pet_id: post.pet_id || []
   };
 
-  const initialPetState: Pets = {
-    userId,
-    pet_id: []
-  };
-
+  // const initialPetState: Pets = {
+  //   userId,
+  //   pet_id: []
+  // };
 
   const [formPosts, setFormPosts] = useState<Omit<MateNextPostType, "user_id" | "position">>(initialState);
-  const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
+  // const [formPets, setFormPets] = useState<Pets[]>([initialPetState]);
 
   const [isEditing, setIstEditting] = useState<boolean>(false);
 
@@ -86,9 +83,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     ...formPosts,
     address,
     position,
-    location: `POINT(${position.center.lng} ${position.center.lat})`,
+    location: `POINT(${position.center.lng} ${position.center.lat})`
   };
-
 
   const deletePost = async (id: string) => {
     try {
@@ -210,18 +206,16 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     onMutate: async (newPost) => {
       // 진행 중인 쿼리 취소
       await queryClient.cancelQueries({ queryKey: ["matePosts"] });
-  
+
       // 이전 데이터 스냅샷
       const previousPosts = queryClient.getQueryData<MatePostAllType[]>(["matePosts"]);
-  
+
       // 옵티미스틱 업데이트
       queryClient.setQueryData<MatePostAllType[]>(["matePosts"], (old) => {
         if (!old) return [updatePost as MatePostAllType];
-        return old.map((post) => 
-          post.id === newPost ? { ...post, ...updatePost } : post
-        );
+        return old.map((post) => (post.id === newPost ? { ...post, ...updatePost } : post));
       });
-  
+
       // 이전 데이터 반환 (롤백을 위해)
       return { previousPosts };
     },
@@ -247,7 +241,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-    },
+    }
   });
 
   const toggleMutation = useMutation({
@@ -275,7 +269,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); 
+    e.preventDefault();
     editMutation.mutate(post.id);
   };
 
@@ -311,6 +305,8 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       isLoading: false
     });
   };
+
+  // console.log(formPosts)
 
   return (
     <div className="container min-h-screen">
@@ -399,7 +395,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               />
             </div>
           </div>
-          {/* 한마디 */}
+          {/* 내용 */}
           <div className="mb-[1rem] mt-[1.06rem] flex flex-col gap-y-[0.5rem] px-[1.5rem]">
             <label htmlFor="content" className="text-[1rem] font-[600]">
               내용
@@ -413,9 +409,9 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
               id="content"
               maxLength={199}
             ></textarea>
-            <p className="flex justify-end text-subTitle2">200자 이내</p>
+            <p className="flex justify-end text-subTitle2">{formPosts.content?.length}/200</p>
           </div>
-          <PetForm setFormPets={setFormPets} userId={userId} />
+          <PetEdit post={post} setFormPosts={setFormPosts} userId={userId} />
           <div className="mb-[2rem] mt-[2rem] flex flex-col gap-y-[0.5rem]">
             <div className="flex w-full items-center justify-center px-[1.5rem]">
               <button
@@ -425,7 +421,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
                 수정 완료
               </button>
             </div>
-            <div className="flex w-full items-center justify-center px-[1.5rem] mb-[5.5rem]">
+            <div className="mb-[5.5rem] flex w-full items-center justify-center px-[1.5rem]">
               <button
                 className="w-full cursor-pointer rounded-full border border-mainColor px-[1.5rem] py-[0.75rem] text-mainColor"
                 type="button"
