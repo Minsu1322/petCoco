@@ -93,7 +93,7 @@ const DetailView = ({ post, userId, handleEditPost, handleDeletePost, handleTogg
           </div>
           {/* 프로필 영역 */}
           <div className="mb-[0.79rem] flex gap-x-[1rem] rounded-[0.75rem] border border-[#C2C0BD] px-[0.69rem] py-[0.75rem]">
-            <div className="items-cneter ml-[0.75rem] flex w-2/6 flex-col justify-center">
+            <div className="my-auto flex flex-col items-center gap-y-[0.5rem] px-[1rem]">
               <div className="mx-auto flex h-[3.75rem] w-[3.75rem]">
                 <Image
                   src={
@@ -108,12 +108,12 @@ const DetailView = ({ post, userId, handleEditPost, handleDeletePost, handleTogg
                 />
               </div>
               <Button
-                className="mt-[0.56rem] flex flex-shrink-0 cursor-pointer flex-col items-center justify-center whitespace-nowrap rounded-full bg-mainColor px-[0.71rem] py-[0.19rem] text-[0.85rem] text-white"
+                className=" flex flex-shrink-0 cursor-pointer flex-col items-center justify-center whitespace-nowrap rounded-full bg-mainColor px-[0.71rem] py-[0.19rem] text-[0.85rem] text-white"
                 onClick={handleStartChat}
                 text="채팅하기"
               ></Button>
             </div>
-            <div className="flex w-4/6 flex-col justify-center">
+            <div className="flex flex-col justify-center ml-1">
               <Link href={`/userInfo/${post.user_id}`} className="flex cursor-pointer font-semibold">
                 {post.users?.nickname}
               </Link>
