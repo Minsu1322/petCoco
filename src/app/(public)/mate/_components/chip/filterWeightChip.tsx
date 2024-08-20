@@ -1,4 +1,6 @@
-import { Slider } from "@nextui-org/react";
+// import { Slider } from "@nextui-org/react";
+import { useState } from "react";
+import {Slider, SliderValue} from "@nextui-org/react";
 
 interface FilterWeightChipProps {
   label: string;
@@ -9,6 +11,7 @@ interface FilterWeightChipProps {
 const FilterWeightChip = ({ label, selected, onSelect }: FilterWeightChipProps) => {
   const selectedValue = selected ? parseInt(selected, 10) : 0;
 
+
   const handleChange = (value: number | number[]) => {
     // value가 배열이 아닌 경우에만 처리
     if (typeof value === "number") {
@@ -18,9 +21,8 @@ const FilterWeightChip = ({ label, selected, onSelect }: FilterWeightChipProps) 
 
   return (
     <div className="mt-5 flex w-full flex-col gap-6">
-      <p className="text-[1rem] font-[400]">반려견 몸무게</p>
       <Slider
-        color="foreground"
+        // color="foreground"
         step={1}
         maxValue={20}
         minValue={0}
@@ -28,15 +30,33 @@ const FilterWeightChip = ({ label, selected, onSelect }: FilterWeightChipProps) 
         value={selectedValue}
         label={label}
         aria-label={label}        
-        // classNames={{
-        //   base: "max-w-md",
-        //   track: "bg-gray-200 rounded-full", // 사용하지 않은 트랙 부분의 색상
-        //   filler: "bg-mainColor rounded-full", // 사용한 트랙 부분의 색상
-        //   thumb: "bg-mainColor border-0", // 슬라이더 핸들의 색상
-         
-        // }}
         onChange={handleChange}
+        getValue={(weight) => `${weight}kg 이상`}
+        showTooltip={true}
+        classNames={{
+          base: "max-w-md",
+          filler: "bg-mainColor",
+          label: "text-[1rem] font-[400]",
+          value: "text-sm  font-[400] text-gray-500",
+          thumb: [
+            "bg-mainColor",
+            "border border-mainColor",
+            "shadow-md",
+          ],
+          track: "bg-gray-200",
+        }}
       />
+      {/* <Slider 
+        // label={label}
+        color="foreground"
+        step={10}
+        maxValue={40}
+        minValue={0}
+        value={value} 
+        onChange={handleChange}
+        className="max-w-md"
+        getValue={(value) => `${value}kg 이상`}
+      /> */}
     </div>
   );
 };
