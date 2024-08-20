@@ -26,20 +26,13 @@ interface DetailViewProps {
 }
 const DynamicMapComponent = dynamic(() => import("@/app/(public)/mate/_components/map/mapDetail"), { ssr: false });
 
-const DetailView = ({
-  post,
-  userId,
-  handleEditPost,
-  handleDeletePost,
-  handleTogglePost
-}: DetailViewProps) => {
+const DetailView = ({ post, userId, handleEditPost, handleDeletePost, handleTogglePost }: DetailViewProps) => {
   const router = useRouter();
   const { user } = useAuthStore();
 
   const OPTIONS: EmblaOptionsType = { align: "start", dragFree: true, loop: true };
   const SLIDE_COUNT = 5;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
-
 
   const handleStartChat = () => {
     startChat(post.user_id, user, router);
@@ -86,12 +79,21 @@ const DetailView = ({
             />
           </div>
           <div className="mb-[0.79rem] mt-[0.5rem] flex items-center">
-            <img src="/assets/svg/ic_info.svg" />
+            <div className="h-[1rem] w-[1rem]">
+              <Image
+                src="/assets/svg/ic_info.svg"
+                alt="설명 아이콘"
+                width={16}
+                height={16}
+                priority
+                className="h-full w-full object-cover"
+              />
+            </div>
             <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">상세 위치는 채팅을 통해 추후 확정할 수 있어요</p>
           </div>
           {/* 프로필 영역 */}
           <div className="mb-[0.79rem] flex gap-x-[1rem] rounded-[0.75rem] border border-[#C2C0BD] px-[0.69rem] py-[0.75rem]">
-            <div className="items-cneter ml-[0.75rem] flex w-2/6 flex-col justify-center">
+            <div className="my-auto flex flex-col items-center gap-y-[0.5rem] px-[1rem]">
               <div className="mx-auto flex h-[3.75rem] w-[3.75rem]">
                 <Image
                   src={
@@ -106,14 +108,15 @@ const DetailView = ({
                 />
               </div>
               <Button
-                className="mt-[0.56rem] flex flex-shrink-0 cursor-pointer flex-col items-center justify-center whitespace-nowrap rounded-full bg-mainColor px-[0.71rem] py-[0.19rem] text-[0.85rem] text-white"
+                className=" flex flex-shrink-0 cursor-pointer flex-col items-center justify-center whitespace-nowrap rounded-full bg-mainColor px-[0.71rem] py-[0.19rem] text-[0.85rem] text-white"
                 onClick={handleStartChat}
                 text="채팅하기"
               ></Button>
             </div>
-            <div className="flex w-4/6 flex-col justify-center">
-            
-              <Link href={`/userInfo/${post.user_id}`} className="flex font-semibold cursor-pointer">{post.users?.nickname}</Link>
+            <div className="flex flex-col justify-center ml-1">
+              <Link href={`/userInfo/${post.user_id}`} className="flex cursor-pointer font-semibold">
+                {post.users?.nickname}
+              </Link>
               <div className="flex flex-col">
                 <div className="flex gap-x-[0.5rem]">
                   <p className="text-[1rem] text-[#939396] text-[400]">성별 / 연령대 </p>
@@ -130,30 +133,66 @@ const DetailView = ({
           </div>
           <div className="border-b border-t border-gray-200 pb-[0.94rem] pl-[0.75rem] pt-[0.87rem]">
             <div className="mb-[0.25rem] flex">
-              <img src="/assets/svg/ic_location2.svg" />
-              <p className="ml-[0.5rem] w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+              <div className="h-[1.25rem] w-[1.25rem]">
+                <Image
+                  src="/assets/svg/ic_location2.svg"
+                  alt="위치 아이콘"
+                  width={20}
+                  height={20}
+                  priority
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <p className="ml-[0.5rem] w-[170px] overflow-hidden text-ellipsis whitespace-nowrap text-[1rem] font-[400]">
                 {post.place_name || ""}
               </p>
             </div>
             <div className="mb-[0.25rem] flex">
-              <img src="/assets/svg/ic_calendar2.svg" />
-              <p className="ml-[0.5rem] text-sm">
+              <div className="h-[1.25rem] w-[1.25rem]">
+                <Image
+                  src="/assets/svg/ic_calendar2.svg"
+                  alt="달력 아이콘"
+                  width={20}
+                  height={20}
+                  priority
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <p className="ml-[0.5rem] text-[1rem] font-[400]">
                 {/* {post.date_time?.split("T")[0]} | {getConvertTime({ date_time: post.date_time || "" })} */}
                 {formatDateTimeContent(post.date_time)}
               </p>
             </div>
             <div className="flex items-center">
-              <img src="/assets/svg/ic_user2.svg" className="mr-[0.5rem]" />
-              <p className="mr-[0.5rem] flex text-sm">{post.members}명 모집</p>
+            <div className="h-[1.25rem] w-[1.25rem]">
+                      <Image
+                        src="/assets/svg/ic_user2.svg"
+                        alt="사용자 아이콘"
+                        width={20}
+                        height={20}
+                        priority
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+              <p className="mr-[0.5rem] flex text-[1rem] font-[400]">{post.members}명 모집</p>
               <div
                 className={`${post.recruiting ? "bg-[#11BBB0]" : "bg-bgGray400"} flex items-center justify-center rounded-full px-[0.62rem] py-[0.12rem] text-white`}
               >
-                <p className="text-[0.625rem]">{post.recruiting ? "모집중" : "모집 완료"}</p>
+                <p className="text-[0.875rem] font-[400]">{post.recruiting ? "모집중" : "모집 완료"}</p>
               </div>
             </div>
           </div>
           <div className="mb-[0.87rem] ml-[0.75rem] mt-[0.37rem] flex items-center">
-            <img src="/assets/svg/ic_info.svg" />
+            <div className="h-[1rem] w-[1rem]">
+              <Image
+                src="/assets/svg/ic_info.svg"
+                alt="설명 아이콘"
+                width={16}
+                height={16}
+                priority
+                className="h-full w-full object-cover"
+              />
+            </div>
             <p className="ml-[0.5rem] text-[0.75rem] text-gray-400">우천 시 일정이 변경되거나 취소될 수 있어요.</p>
           </div>
           <div className="w-full border-b border-t border-[#EFEFF0] px-[0.75rem] pb-[0.75rem]">
@@ -164,9 +203,7 @@ const DetailView = ({
         {post.matepostpets?.map((pet) => <PetItem key={pet.id} pet={pet} />)}
         </div> */}
           <div className="mb-[5.95rem] mt-[0.75rem]">
-            {post.pet_id && (
-              <PetCarousel post={post} slides={SLIDES} options={OPTIONS} />
-            )}
+            {post.pet_id && <PetCarousel post={post} slides={SLIDES} options={OPTIONS} />}
             {/* <p className="ml-[0.75rem] text-gray-500">기능 구현 중입니다-!</p> */}
           </div>
         </div>

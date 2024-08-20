@@ -18,7 +18,7 @@ const PetItem = ({ pet }: PetItemProps) => {
 
   return (
     <div className="mb-[0.44rem] flex gap-x-[1rem] rounded-lg border border-[#C2C0BD] px-[0.69rem] py-[0.79rem]">
-      <div className="my-auto flex flex-col items-center gap-y-[0.5rem] px-[1.19rem]">
+      <div className="my-auto flex flex-col items-center gap-y-[0.5rem] px-[1rem]">
         <div className="h-[3.75rem] w-[3.75rem]">
           <Image
             className="h-full w-full rounded-full object-cover"
