@@ -49,3 +49,13 @@
 .swal2-cancel {
   order: 1; /* Cancel 버튼을 왼쪽으로 이동 */
 }
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+body {
+  font-family: 'Pretendard-Regular', sans-serif;
+}

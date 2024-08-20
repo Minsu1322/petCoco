@@ -7,7 +7,7 @@ import Script from "next/script";
 import Footer from "@/components/Footer";
 import TabBar from "@/components/TabBar";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "PetCoco",
@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} mx-auto flex min-h-screen max-w-[420px] flex-col bg-white`}>
+      <body className={`mx-auto flex min-h-screen max-w-[420px] flex-col bg-white`}>
         <QueryProvider>
           <Header />
           <main className="mx-auto w-full flex-grow">{children}</main>
