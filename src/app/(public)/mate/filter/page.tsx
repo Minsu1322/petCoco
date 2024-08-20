@@ -70,7 +70,7 @@ const FilterPage = () => {
 
   return (
     <div>
-      <div className="mx-auto max-w-[420px] min-h-screen">
+      <div className="mx-auto max-w-[420px] ">
         <p className="ml-[1rem] mt-[1rem] text-[1.5rem] font-[600]">산책 메이트 상세 필터</p>
         <div className="w-full px-[1.5rem]">
           <FilterSelectChip
@@ -128,7 +128,7 @@ const FilterPage = () => {
             onClick={handleSaveFilter}
           />
           <Button
-            className="flex w-full cursor-pointer items-center justify-center whitespace-nowrap rounded-[0.5rem] border-1 border-mainColor px-[8rem] py-[0.75rem] text-[0.9375rem] font-[590] text-mainColor"
+            className="mb-[2rem] flex w-full cursor-pointer items-center justify-center whitespace-nowrap rounded-[0.5rem] border-1 border-mainColor px-[8rem] py-[0.75rem] text-[0.9375rem] font-[590] text-mainColor"
             text="초기화 하기"
             onClick={handleResetFilter}
           />
