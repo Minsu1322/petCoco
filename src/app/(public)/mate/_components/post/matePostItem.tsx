@@ -5,7 +5,6 @@ import Image from "next/image";
 // import { locationStore } from "@/zustand/locationStore";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/zustand/useAuth";
-import { createClient } from "@/supabase/client";
 import { formatDateTimeContent } from "@/app/utils/getConvertTime";
 import Button from "@/components/Button";
 import startChat from "@/app/utils/startChat";
@@ -13,7 +12,6 @@ import startChat from "@/app/utils/startChat";
 interface MatePostItemPorps {
   post: MatePostAllTypeForItem;
 }
-const supabase = createClient();
 
 const MatePostItem = ({ post }: MatePostItemPorps) => {
   // const { geoData, isUseGeo } = locationStore();
