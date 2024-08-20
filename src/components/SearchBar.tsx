@@ -1,5 +1,5 @@
 import React from "react";
-import { RiSearch2Line } from "react-icons/ri";
+import Image from "next/image";
 
 type SearchBarProps = {
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -20,7 +20,10 @@ const SearchBar = ({ onSubmit, value, setSearchTerm }: SearchBarProps) => {
         />
         {/* setSearchTerm */}
         <button type="submit" className="">
-          <img src="/assets/svg/search.svg" />
+          <div className="w-[1.5rem] h-[1.5rem]">
+            <Image src="/assets/svg/search.svg" alt="검색 아이콘" width={24} height={24} className="w-full h-full object-cover" />
+          {/* <img src="/assets/svg/search.svg" /> */}
+          </div>
         </button>
       </form>
     </div>
