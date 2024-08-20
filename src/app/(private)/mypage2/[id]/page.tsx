@@ -150,21 +150,27 @@ function MyPage() {
         </div>
       </div>
 
-      {/* <div className="flex w-full items-center px-[24px] pt-[16px]">
+      <div className="flex w-full items-center px-[24px] pt-[16px]">
         <div className="text-lg font-bold leading-[23.4px] text-[#3e3e3e]">나의 산책</div>
-      </div> */}
+      </div>
 
-      <div className="border-b-1 px-[14px] py-4">
-        <div>
-          <div className="flex items-center justify-center rounded-lg bg-[#D2CDF6]">
-            <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold text-[#222225]">
+      <div className="h-full w-full border-b-1 px-[14px] py-4">
+        <div className="">
+          <div className="flex items-center justify-around rounded-lg bg-[#D2CDF6]">
+            <div className="flex flex-col items-center px-5 py-5 font-bold text-[#222225]">
               {recruitingFalseCount}
               <div className="items-center whitespace-nowrap font-normal leading-tight">산책 완료</div>
             </div>
-            <div className="flex flex-col items-center border-r-1 px-5 py-5 font-bold">
+
+            <div className="h-[60px] w-[0.8px] bg-white"></div>
+
+            <div className="flex flex-col items-center px-5 py-5 font-bold">
               {recruitingTrueCount}
               <div className="items-center whitespace-nowrap font-normal leading-tight">산책 예정</div>
             </div>
+
+            <div className="h-[60px] w-[0.8px] bg-white"></div>
+
             <div className="flex flex-col items-center px-5 py-5 font-bold">
               {totalCount}
               <div className="items-center whitespace-nowrap font-normal leading-tight">기록 완료</div>
