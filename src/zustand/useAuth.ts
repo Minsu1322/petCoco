@@ -91,9 +91,7 @@ export const useAuthStore = create<useAuth>((set, get) => ({
       }
       set({ user: loginInfo.user, error: null });
 
-      setTimeout(() => {
-        console.log("user signin: ", get().user);
-      }, 0);
+      setTimeout(() => {}, 0);
 
       return true;
     } catch (error: any) {
