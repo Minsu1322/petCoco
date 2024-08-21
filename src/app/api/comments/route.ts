@@ -24,7 +24,6 @@ export async function GET(request: Request) {
   `
     )
     .eq("post_id", postId);
-  console.log(data);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

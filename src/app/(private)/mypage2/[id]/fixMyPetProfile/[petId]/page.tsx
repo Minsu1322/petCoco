@@ -212,7 +212,6 @@ const FixMyPetProfile = () => {
         try {
           deleteMutation(id);
         } catch (error) {
-          console.log("삭제에 실패했습니다.", error);
         }
 
         Swal.fire({

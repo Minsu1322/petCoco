@@ -18,7 +18,6 @@ const CommunityMainPage = () => {
 
   const handleSearchSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(searchTerm);
     setActiveSearchTerm(searchTerm);
   };
 
