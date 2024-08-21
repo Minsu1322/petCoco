@@ -125,6 +125,11 @@ const FixMyProfile = () => {
     mutationFn: updateProfileWithSupabase,
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ["user"] });
+      Swal.fire({
+        title: "success!",
+        text: "프로필 변경이 완료되었습니다!"
+      });
+      toMyPage();
     }
   });
 
@@ -150,12 +155,6 @@ const FixMyProfile = () => {
       gender: selectedGender,
       introduction: introduction
     });
-
-    Swal.fire({
-      title: "success!",
-      text: "프로필 변경이 완료되었습니다!"
-    });
-    toMyPage();
   };
 
   if (isPending) {
