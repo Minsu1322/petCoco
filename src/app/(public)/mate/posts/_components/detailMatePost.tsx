@@ -158,7 +158,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   const deleteMutation = useMutation({
-    mutationFn: deletePost,
+    mutationFn: (id: string) => deletePost(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
       Swal.fire({
@@ -178,37 +178,53 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     }
   });
 
+  // const editMutation = useMutation({
+  //   mutationFn: (id: string) => editPost(id),
+  //   onMutate: async (newPost) => {
+  //     // 진행 중인 쿼리 취소
+  //     await queryClient.cancelQueries({ queryKey: ["matePosts"] });
+
+  //     // 이전 데이터 스냅샷
+  //     const previousPosts = queryClient.getQueryData<MatePostAllType[]>(["matePosts"]);
+
+  //     // 옵티미스틱 업데이트
+  //     queryClient.setQueryData<MatePostAllType[]>(["matePosts"], (old) => {
+  //       if (!old) return [updatePost as MatePostAllType];
+  //       return old.map((post) => (post.id === newPost ? { ...post, ...updatePost } : post));
+  //     });
+
+  //     // 이전 데이터 반환 (롤백을 위해)
+  //     return { previousPosts };
+  //   },
+  //   onError: (err, newPost, context) => {
+  //     // 에러 발생 시 이전 데이터로 롤백
+  //     if (context?.previousPosts) {
+  //       queryClient.setQueryData<MatePostAllType[]>(["matePosts"], context.previousPosts);
+  //     }
+  //     console.error("수정 중 오류 발생:", err);
+  //     Swal.fire({
+  //       title: "오류가 발생했습니다!",
+  //       text: "게시글 수정에 실패했습니다.",
+  //       icon: "error"
+  //     });
+  //   },
+  //   onSuccess: () => {
+  //     Swal.fire({
+  //       title: "완료!",
+  //       text: "게시글 수정이 완료되었습니다.",
+  //       icon: "success"
+  //     });
+  //     setIstEditting(false);
+  //   },
+  //   onSettled: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+  //   }
+  // });
+
   const editMutation = useMutation({
     mutationFn: (id: string) => editPost(id),
-    onMutate: async (newPost) => {
-      // 진행 중인 쿼리 취소
-      await queryClient.cancelQueries({ queryKey: ["matePosts"] });
-
-      // 이전 데이터 스냅샷
-      const previousPosts = queryClient.getQueryData<MatePostAllType[]>(["matePosts"]);
-
-      // 옵티미스틱 업데이트
-      queryClient.setQueryData<MatePostAllType[]>(["matePosts"], (old) => {
-        if (!old) return [updatePost as MatePostAllType];
-        return old.map((post) => (post.id === newPost ? { ...post, ...updatePost } : post));
-      });
-
-      // 이전 데이터 반환 (롤백을 위해)
-      return { previousPosts };
-    },
-    onError: (err, newPost, context) => {
-      // 에러 발생 시 이전 데이터로 롤백
-      if (context?.previousPosts) {
-        queryClient.setQueryData<MatePostAllType[]>(["matePosts"], context.previousPosts);
-      }
-      console.error("수정 중 오류 발생:", err);
-      Swal.fire({
-        title: "오류가 발생했습니다!",
-        text: "게시글 수정에 실패했습니다.",
-        icon: "error"
-      });
-    },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["matePosts"] });
       Swal.fire({
         title: "완료!",
         text: "게시글 수정이 완료되었습니다.",
@@ -216,10 +232,15 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
       });
       setIstEditting(false);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+    onError: (error) => {
+      console.error("수정 중 오류 발생:", error);
+      Swal.fire({
+        title: "오류가 발생했습니다!",
+        text: "게시글 수정에 실패했습니다.",
+        icon: "error"
+      });
     }
-  });
+  })
 
   const toggleMutation = useMutation({
     mutationFn: (id: string) => togglePost(id),
