@@ -20,7 +20,6 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
   `
     )
     .eq("id", id);
-  console.log(data);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -41,7 +41,6 @@ const Like: React.FC<LikeProps> = ({ postId, likes, setLikes }) => {
     }
 
     const { data: newLikes } = await supabase.from("likes").select("userid").eq("postid", postId);
-    console.log(newLikes);
     setSendLike(false);
     setLikes(newLikes || []);
   };

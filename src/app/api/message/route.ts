@@ -5,7 +5,6 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  console.log("API route called"); // API 호출 로깅
   const supabase = createRouteHandlerClient({ cookies });
   const { searchParams } = new URL(req.url);
   const type = searchParams.get("type");
@@ -24,7 +23,6 @@ export async function GET(req: Request) {
   }
 
   const { data, error } = await query.order("created_at", { ascending: false });
-  console.log("Query result:", { data, error }); // 쿼리 결과 로깅
 
   if (error) {
     console.error("Database error:", error); // 데이터베이스 에러 로깅

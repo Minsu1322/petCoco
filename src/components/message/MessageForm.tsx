@@ -65,7 +65,6 @@ export const MessageForm: React.FC<MessageFormProps> = ({ receiverId, markMessag
       return data;
     },
     onSuccess: async (data) => {
-      console.log("Message sent successfully:", data);
       setContent("");
       setSelectedImage(null);
       setImagePreviewUrl(null);
