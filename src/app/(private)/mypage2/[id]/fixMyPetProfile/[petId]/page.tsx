@@ -86,13 +86,6 @@ const FixMyPetProfile = () => {
       medicalRecords: medicalRecords,
       introduction: introduction
     });
-
-    Swal.fire({
-      title: "success!",
-      text: "프로필 변경이 완료되었습니다!"
-    });
-
-    toMyPet();
   };
 
   const updateProfileWithSupabase = async ({
@@ -140,7 +133,15 @@ const FixMyPetProfile = () => {
 
   const updateMutate = useMutation({
     mutationFn: updateProfileWithSupabase,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pet"] })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pet"] });
+      Swal.fire({
+        title: "success!",
+        text: "프로필 변경이 완료되었습니다!"
+      });
+
+      toMyPet();
+    }
   });
 
   useEffect(() => {
