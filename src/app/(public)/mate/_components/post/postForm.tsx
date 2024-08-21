@@ -81,6 +81,12 @@ const PostForm = () => {
     mutationFn: async (formAllData: { post: MateNextPostType }) => await addPost(formAllData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+      Swal.fire({
+        title: "완료!",
+        text: "게시글이 등록되었습니다!",
+        icon: "success"
+      });
+      router.replace("/mate");
     }
   });
 
@@ -138,13 +144,6 @@ const PostForm = () => {
     try {
       addMutation.mutate(formAllData);
       setFormPosts(initialState);
-
-      Swal.fire({
-        title: "완료!",
-        text: "게시글이 등록되었습니다!",
-        icon: "success"
-      });
-      router.replace("/mate");
     } catch (err) {
       console.error(err);
     }
