@@ -113,11 +113,6 @@ const PostForm = () => {
     return !!(title && date_time && members && place_name && content && isPetSelected);
   };
 
-  // 동물 정보 선택했는 지 확인
-  // const isPetSelected = (formPosts: MateNextPostType): boolean => {
-  //   return formPosts.some(pet => JSON.stringify(pet) !== JSON.stringify(initialState));
-  // };
-
   const handleUploadPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -138,17 +133,12 @@ const PostForm = () => {
         position,
         user_id: userId
       }
-      // pets: formPets
-      // weight: pet.weight === null ? null : Number(pet.weight)
     };
 
-    // console.log("formAllData 확인", formAllData);
     try {
       addMutation.mutate(formAllData);
       setFormPosts(initialState);
-      // setFormPets([initialPetState]);
 
-      // alert("등록되었습니다!");
       Swal.fire({
         title: "완료!",
         text: "게시글이 등록되었습니다!",

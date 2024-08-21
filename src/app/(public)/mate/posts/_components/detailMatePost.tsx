@@ -160,14 +160,13 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const deleteMutation = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
-      router.replace("/mate");
+      queryClient.invalidateQueries({ queryKey: ["matePosts"] });
       Swal.fire({
         title: "완료!",
         text: "게시글 삭제가 완료되었습니다.",
         icon: "success"
-      }).then(() => {
-        queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-      });
+      })
+      router.replace("/mate");
     },
     onError: (error) => {
       console.error("삭제 중 오류 발생:", error);
@@ -179,28 +178,6 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
     }
   });
 
-  // const editMutation = useMutation({
-  //   mutationFn: (id: string) => editPost(id),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ["matePosts"] });
-  //     // alert("수정이 완료되었습니다.");
-  //     Swal.fire({
-  //       title: "완료!",
-  //       text: "게시글 수정이 완료되었습니다.",
-  //       icon: "success"
-  //     });
-  //     setIstEditting(false);
-  //   },
-  //   onError: (error) => {
-  //     console.error("수정 중 오류 발생:", error);
-  //     // alert("수정 중 오류가 발생했습니다.");
-  //     Swal.fire({
-  //       title: "오류가 발생했습니다!",
-  //       text: "게시글 수정에 실패했습니다.",
-  //       icon: "error"
-  //     });
-  //   }
-  // });
   const editMutation = useMutation({
     mutationFn: (id: string) => editPost(id),
     onMutate: async (newPost) => {
