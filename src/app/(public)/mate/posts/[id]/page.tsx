@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import DetailMatePost from "../_components/detailMatePost";
 import LoadingComponent from "@/components/loadingComponents/Loading";
 
-
 const MatePost = ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
@@ -17,15 +16,15 @@ const MatePost = ({ params }: { params: { id: string } }) => {
     queryFn: async () => {
       const response = await fetch(`/api/mate/post/${id}`);
       const data = response.json();
-      //  console.log(data);
+
       return data;
     }
   });
   if (!post) return;
   if (isPending) {
-      <div className="flex items-center justify-center w-full h-full mt-[30%]">
-        <LoadingComponent />
-      </div>
+    <div className="mt-[30%] flex h-full w-full items-center justify-center">
+      <LoadingComponent />
+    </div>;
   }
 
   if (error) {
@@ -33,7 +32,7 @@ const MatePost = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="max-w-[420px] mx-auto">
+    <div className="mx-auto max-w-[420px]">
       <DetailMatePost post={post} />
     </div>
   );

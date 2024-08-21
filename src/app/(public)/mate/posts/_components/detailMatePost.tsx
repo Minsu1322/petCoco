@@ -88,6 +88,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
 
   const deletePost = async (id: string) => {
     try {
+
       const response = await fetch(`/api/mate/post/${post.id}`, {
         method: "DELETE"
       });
@@ -103,6 +104,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   };
 
   const editPost = async (id: string) => {
+
     try {
       const response = await fetch(`/api/mate/post/${post.id}`, {
         method: "PUT",
@@ -160,12 +162,12 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deletePost(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["matePosts"] });
+      queryClient.removeQueries({ queryKey: ["matePosts", post.id] });
       Swal.fire({
         title: "완료!",
         text: "게시글 삭제가 완료되었습니다.",
         icon: "success"
-      })
+      });
       router.replace("/mate");
     },
     onError: (error) => {
@@ -240,7 +242,7 @@ const DetailMatePost = ({ post }: DetailMatePostProps) => {
         icon: "error"
       });
     }
-  })
+  });
 
   const toggleMutation = useMutation({
     mutationFn: (id: string) => togglePost(id),
