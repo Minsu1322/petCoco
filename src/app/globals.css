@@ -1,3 +1,61 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.swal-confirm-button {
+  background-color: #8e6ee8;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 2rem;
+  margin-left: 0.5rem; /* 기본 여백 제거 */
+}
+
+.swal-cancel-button {
+  background-color: white;
+  color: #8e6ee8;
+  border: 1px solid #8e6ee8;
+  border-radius: 0.5rem;
+  padding: 0.75rem 2rem;
+  margin: 0; /* 기본 여백 제거 */
+}
+
+.swal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #333;
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.swal2-popup {
+  width: 90%;
+  max-width: 300px;
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+
+/* 버튼 컨테이너 스타일 */
+.swal2-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.swal2-confirm {
+  order: 2; /* Confirm 버튼을 오른쪽으로 이동 */
+}
+
+.swal2-cancel {
+  order: 1; /* Cancel 버튼을 왼쪽으로 이동 */
+}
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+body {
+  font-family: 'Pretendard-Regular', sans-serif;
+}

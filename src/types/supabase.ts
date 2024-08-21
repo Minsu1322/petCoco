@@ -1,167 +1,608 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export type Database = {
   public: {
     Tables: {
       comments: {
         Row: {
-          content: string | null;
-          created_at: string;
-          id: string;
-          post_id: string | null;
-          title: string | null;
-          user_id: string | null;
-          writer: string | null;
-        };
+          content: string | null
+          created_at: string
+          id: string
+          post_id: string | null
+          read: boolean | null
+          user_id: string | null
+        }
         Insert: {
-          content?: string | null;
-          created_at?: string;
-          id?: string;
-          post_id?: string | null;
-          title?: string | null;
-          user_id?: string | null;
-          writer?: string | null;
-        };
+          content?: string | null
+          created_at?: string
+          id?: string
+          post_id?: string | null
+          read?: boolean | null
+          user_id?: string | null
+        }
         Update: {
-          content?: string | null;
-          created_at?: string;
-          id?: string;
-          post_id?: string | null;
-          title?: string | null;
-          user_id?: string | null;
-          writer?: string | null;
-        };
+          content?: string | null
+          created_at?: string
+          id?: string
+          post_id?: string | null
+          read?: boolean | null
+          user_id?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "comments_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          }
-        ];
-      };
+            foreignKeyName: "comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      likes: {
+        Row: {
+          created_at: string
+          id: string
+          postid: string
+          userid: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          postid?: string
+          userid?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          postid?: string
+          userid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "likes_postid_fkey"
+            columns: ["postid"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "likes_userid_fkey"
+            columns: ["userid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      matepostpets: {
+        Row: {
+          age: string | null
+          characteristics: string | null
+          created_at: string
+          id: string
+          male_female: string | null
+          neutered: string | null
+          pet_id: Json | null
+          pet_name: string | null
+          post_id: string | null
+          weight: number | null
+        }
+        Insert: {
+          age?: string | null
+          characteristics?: string | null
+          created_at?: string
+          id: string
+          male_female?: string | null
+          neutered?: string | null
+          pet_id?: Json | null
+          pet_name?: string | null
+          post_id?: string | null
+          weight?: number | null
+        }
+        Update: {
+          age?: string | null
+          characteristics?: string | null
+          created_at?: string
+          id?: string
+          male_female?: string | null
+          neutered?: string | null
+          pet_id?: Json | null
+          pet_name?: string | null
+          post_id?: string | null
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matePostPets_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "matePosts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      matepostpets_duplicate: {
+        Row: {
+          age: string | null
+          characteristics: string | null
+          created_at: string
+          id: string
+          male_female: string | null
+          neutered: string | null
+          pet_name: string | null
+          post_id: string | null
+          weight: number | null
+        }
+        Insert: {
+          age?: string | null
+          characteristics?: string | null
+          created_at?: string
+          id: string
+          male_female?: string | null
+          neutered?: string | null
+          pet_name?: string | null
+          post_id?: string | null
+          weight?: number | null
+        }
+        Update: {
+          age?: string | null
+          characteristics?: string | null
+          created_at?: string
+          id?: string
+          male_female?: string | null
+          neutered?: string | null
+          pet_name?: string | null
+          post_id?: string | null
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matepostpets_duplicate_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "matePosts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      matePosts: {
+        Row: {
+          address: string | null
+          content: string | null
+          created_at: string
+          date_time: string | null
+          id: string
+          location: unknown | null
+          members: string | null
+          pet_id: Json | null
+          place_name: string | null
+          position: Json | null
+          recruiting: boolean | null
+          title: string | null
+          user_id: string | null
+        }
+        Insert: {
+          address?: string | null
+          content?: string | null
+          created_at?: string
+          date_time?: string | null
+          id?: string
+          location?: unknown | null
+          members?: string | null
+          pet_id?: Json | null
+          place_name?: string | null
+          position?: Json | null
+          recruiting?: boolean | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          address?: string | null
+          content?: string | null
+          created_at?: string
+          date_time?: string | null
+          id?: string
+          location?: unknown | null
+          members?: string | null
+          pet_id?: Json | null
+          place_name?: string | null
+          position?: Json | null
+          recruiting?: boolean | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matePosts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      matePosts_duplicate: {
+        Row: {
+          address: string | null
+          content: string | null
+          created_at: string
+          date_time: string | null
+          id: string
+          location: unknown | null
+          members: string | null
+          place_name: string | null
+          position: Json | null
+          recruiting: boolean | null
+          title: string | null
+          user_id: string | null
+        }
+        Insert: {
+          address?: string | null
+          content?: string | null
+          created_at?: string
+          date_time?: string | null
+          id?: string
+          location?: unknown | null
+          members?: string | null
+          place_name?: string | null
+          position?: Json | null
+          recruiting?: boolean | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          address?: string | null
+          content?: string | null
+          created_at?: string
+          date_time?: string | null
+          id?: string
+          location?: unknown | null
+          members?: string | null
+          place_name?: string | null
+          position?: Json | null
+          recruiting?: boolean | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matePosts_duplicate_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          read: boolean | null
+          receiver_id: string | null
+          sender_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          read?: boolean | null
+          receiver_id?: string | null
+          sender_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          read?: boolean | null
+          receiver_id?: string | null
+          sender_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          category: string
+          content: string | null
+          created_at: string
+          id: string
+          post_imageURL: string | null
+          title: string | null
+          user_id: string | null
+        }
+        Insert: {
+          category: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          post_imageURL?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          category?: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          post_imageURL?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
-          avatar: string;
-          created_at: string;
-          email: string;
-          id: string;
-          nickname: string;
-        };
+          age: string | null
+          created_at: string
+          email: string | null
+          gender: string | null
+          id: string
+          introduction: string | null
+          mbti: string | null
+          nickname: string | null
+          profile_img: string | null
+        }
         Insert: {
-          avatar?: string;
-          created_at?: string;
-          email: string;
-          id?: string;
-          nickname: string;
-        };
+          age?: string | null
+          created_at?: string
+          email?: string | null
+          gender?: string | null
+          id?: string
+          introduction?: string | null
+          mbti?: string | null
+          nickname?: string | null
+          profile_img?: string | null
+        }
         Update: {
-          avatar?: string;
-          created_at?: string;
-          email?: string;
-          id?: string;
-          nickname?: string;
-        };
+          age?: string | null
+          created_at?: string
+          email?: string | null
+          gender?: string | null
+          id?: string
+          introduction?: string | null
+          mbti?: string | null
+          nickname?: string | null
+          profile_img?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "users_id_fkey";
-            columns: ["id"];
-            isOneToOne: true;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          }
-        ];
-      };
-    };
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      usersPet: {
+        Row: {
+          age: string | null
+          created_at: string
+          id: string
+          introduction: string | null
+          majorClass: string | null
+          male_female: string | null
+          medicalRecords: string | null
+          minorClass: string | null
+          neutralized: string | null
+          petImage: string | null
+          petName: string | null
+          users_id: string
+          weight: number | null
+        }
+        Insert: {
+          age?: string | null
+          created_at?: string
+          id?: string
+          introduction?: string | null
+          majorClass?: string | null
+          male_female?: string | null
+          medicalRecords?: string | null
+          minorClass?: string | null
+          neutralized?: string | null
+          petImage?: string | null
+          petName?: string | null
+          users_id?: string
+          weight?: number | null
+        }
+        Update: {
+          age?: string | null
+          created_at?: string
+          id?: string
+          introduction?: string | null
+          majorClass?: string | null
+          male_female?: string | null
+          medicalRecords?: string | null
+          minorClass?: string | null
+          neutralized?: string | null
+          petImage?: string | null
+          petName?: string | null
+          users_id?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "usersPet_users_id_fkey"
+            columns: ["users_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
-      delete_user: {
+      calculate_distance_km: {
         Args: {
-          user_id: string;
-        };
-        Returns: undefined;
-      };
-    };
+          lat1: number
+          lng1: number
+          lat2: number
+          lng2: number
+        }
+        Returns: number
+      }
+      create_mate_post_with_pets: {
+        Args: {
+          post_data: Json
+          pets_data: Json
+        }
+        Returns: Json
+      }
+      get_mate_posts_with_distance: {
+        Args: {
+          lat: number
+          lng: number
+        }
+        Returns: {
+          id: string
+          created_at: string
+          title: string
+          content: string
+          user_id: string
+          position: Json
+          members: string
+          date_time: string
+          recruiting: boolean
+          address: string
+          place_name: string
+          location: unknown
+          pet_id: Json
+          users: Json
+          usersPet: Json
+          distance: number
+        }[]
+      }
+    }
     Enums: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-};
+      [_ in never]: never
+    }
+  }
+}
 
-type PublicSchema = Database[Extract<keyof Database, "public">];
+type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
-  PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] & PublicSchema["Views"]) | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R;
+      Row: infer R
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    ? (PublicSchema["Tables"] & PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R;
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
       }
       ? R
       : never
-    : never;
+    : never
 
 export type TablesInsert<
-  PublicTableNameOrOptions extends keyof PublicSchema["Tables"] | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I;
+      Insert: infer I
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I;
+        Insert: infer I
       }
       ? I
       : never
-    : never;
+    : never
 
 export type TablesUpdate<
-  PublicTableNameOrOptions extends keyof PublicSchema["Tables"] | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U;
+      Update: infer U
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U;
+        Update: infer U
       }
       ? U
       : never
-    : never;
+    : never
 
 export type Enums<
-  PublicEnumNameOrOptions extends keyof PublicSchema["Enums"] | { schema: keyof Database },
+  PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
+    | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never
+    : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never;
+    : never
