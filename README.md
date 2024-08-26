@@ -2,6 +2,10 @@
 
 **반려동물 자랑 및 산책 메이트 커뮤니티**
 
+
+## 🔗 링크
+www.petcoco.kr
+
 ## 📱 사용기기
 - 모바일UI 최적화
   
@@ -84,5 +88,3 @@
 ![image (10)](https://github.com/user-attachments/assets/a8f8ad87-4a0d-49ab-8b98-0d6fbf5e9397)
 
 
-## 🔗 링크
-www.petcoco.kr
