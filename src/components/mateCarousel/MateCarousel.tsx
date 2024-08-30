@@ -13,6 +13,7 @@ import Link from "next/link";
 import { format, parseISO } from "date-fns";
 import Image from "next/image";
 import LoadingComponent from "../loadingComponents/Loading";
+import useEmblaSelect from "@/hooks/useEmblaSelect";
 
 type PropType = {
   slides: number[];
@@ -36,18 +37,7 @@ const MateCarousel: React.FC<PropType> = (props) => {
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
 
-  const handleSelect = useCallback(() => {
-    if (emblaApi) {
-      const selectedIndex = emblaApi.selectedScrollSnap();
-      emblaApi.scrollTo(selectedIndex);
-    }
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (emblaApi) {
-      emblaApi.on("select", handleSelect);
-    }
-  }, [emblaApi, handleSelect]);
+  useEmblaSelect(emblaApi);
 
   if (isMateLoading) return <LoadingComponent />;
 

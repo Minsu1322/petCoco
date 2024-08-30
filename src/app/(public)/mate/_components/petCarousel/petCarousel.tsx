@@ -12,7 +12,7 @@ import { UsersPetType } from "@/types/usersPet.type";
 import PetItem from "../../posts/_components/petItem";
 import { useQuery } from "@tanstack/react-query";
 import LoadingComponent from "@/components/loadingComponents/Loading";
-
+import useEmblaSelect from "@/hooks/useEmblaSelect";
 
 type PropType = {
   post: MatePostAllType;
@@ -47,20 +47,15 @@ const PetCarousel: React.FC<PropType> = (props) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay(autoplayOptions)]);
   const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
 
-  const handleSelect = useCallback(() => {
-    if (emblaApi) {
-      const selectedIndex = emblaApi.selectedScrollSnap();
-      emblaApi.scrollTo(selectedIndex);
-    }
-  }, [emblaApi]);
+  useEmblaSelect(emblaApi);
 
-  useEffect(() => {
-    if (emblaApi) {
-      emblaApi.on("select", handleSelect);
-    }
-  }, [emblaApi, handleSelect]);
-
-  if (isPending) return <div> <LoadingComponent /></div>;
+  if (isPending)
+    return (
+      <div>
+        {" "}
+        <LoadingComponent />
+      </div>
+    );
   if (error) return <div>An error occurred</div>;
 
   return (
@@ -68,8 +63,8 @@ const PetCarousel: React.FC<PropType> = (props) => {
       <div className={styles.embla__viewport} ref={emblaRef}>
         <div className={styles.embla__container}>
           {petData.map((pet) => (
-           <div key={pet.id} className={`${styles.embla__slide}`}>
-            <PetItem pet={pet} />
+            <div key={pet.id} className={`${styles.embla__slide}`}>
+              <PetItem pet={pet} />
             </div>
           ))}
         </div>
