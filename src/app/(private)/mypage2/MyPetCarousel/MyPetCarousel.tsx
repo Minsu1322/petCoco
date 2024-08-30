@@ -10,6 +10,7 @@ import Link from "next/link";
 import { defaultPetImg } from "@/components/DefaultImg";
 import Image from "next/image";
 import LoadingComponent from "@/components/loadingComponents/Loading";
+import useEmblaSelect from "@/hooks/useEmblaSelect";
 
 type PropType = {
   slides: number[];
@@ -44,18 +45,7 @@ const MyPetCarousel: React.FC<PropType> = (props) => {
     queryFn: getPetData
   });
 
-  const handleSelect = useCallback(() => {
-    if (emblaApi) {
-      const selectedIndex = emblaApi.selectedScrollSnap();
-      emblaApi.scrollTo(selectedIndex);
-    }
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (emblaApi) {
-      emblaApi.on("select", handleSelect);
-    }
-  }, [emblaApi, handleSelect]);
+  useEmblaSelect(emblaApi);
 
   if (isPetPending) {
     return (

@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import styles from "./styles/AnimalCarousel.module.css";
-import { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
-import { usePrevNextButtons } from "./components/AnimalCarouselArrowButtons";
-import { DotButton, useDotButton } from "./components/AnimalCarouselDotButtons";
+import { EmblaOptionsType } from "embla-carousel";
 import { useQuery } from "@tanstack/react-query";
 import LoadingComponent from "../loadingComponents/Loading";
 import Image from "next/image";
+import useStopAutoplayOnInteraction from "@/hooks/useStopAutoplayOnInteraction";
 type AnimalData = {
   age: string;
   careAddr: string;
@@ -84,17 +83,7 @@ const AnimalCarousel: React.FC<AnimalCarouselProps> = ({ slides, options }) => {
   const autoplay = Autoplay({ delay: 3000, stopOnInteraction: false });
   const [emblaRef, emblaApi] = useEmblaCarousel(options, [autoplay]);
 
-  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
-
-  useEffect(() => {
-    if (emblaApi) {
-      emblaApi.on("pointerDown", () => {
-        const autoplay = emblaApi?.plugins()?.autoplay;
-        if (!autoplay) return;
-        autoplay.stop();
-      });
-    }
-  }, [emblaApi]);
+  useStopAutoplayOnInteraction(emblaApi);
 
   if (isLoading) return <LoadingComponent />;
   if (error) return <div className="py-8 text-center text-red-500">Error: {(error as Error).message}</div>;

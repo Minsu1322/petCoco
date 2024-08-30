@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Script from "next/script";
 import Footer from "@/components/Footer";
 import TabBar from "@/components/TabBar";
+import Head from "next/head";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +22,9 @@ export const metadata: Metadata = {
     title: "PetCoco",
     description: "함께하는 반려동물 커뮤니티, 내 반려견에게 산책 친구를 만들어주세요!",
     images: "/assets/img/BannerPetcoco.png",
-    url: "https://www.petcoco.kr",
+    url: "https://www.petcoco.kr"
   },
+  manifest: "/manifest.json"
 };
 
 export default function RootLayout({
@@ -32,6 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <link rel="manifest" href="/manifest.json" />
+      </Head>
       <body className={`mx-auto flex min-h-screen max-w-[420px] flex-col bg-white`}>
         <QueryProvider>
           <Header />
