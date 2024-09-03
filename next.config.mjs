@@ -1,3 +1,5 @@
+import withPWA from "next-pwa";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -24,4 +26,9 @@ const nextConfig = {
   }
 };
 
-export default nextConfig;
+const pwaConfig = {
+  dest: "public"
+  // disable: process.env.NODE_ENV === 'development',  // 개발 환경에서 PWA를 테스트하려면 이 줄을 주석 처리하세요
+};
+
+export default withPWA(pwaConfig)(nextConfig);
